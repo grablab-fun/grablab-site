@@ -1,0 +1,12 @@
+# local-only files: previews, brand sources, dev server
+_*.jpg
+_*.png
+assets/_*
+assets/brand/hf/
+assets/brand/glass-test.html
+assets/brand/chrome-render.html
+assets/brand/preview-*.png
+palette.html
+serve.py
+_headers
+.vercel
