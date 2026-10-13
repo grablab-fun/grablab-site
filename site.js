@@ -117,7 +117,8 @@ function footHTML(){
     </div>
   </div>
   <div class="foot-bottom">
-    <span>© 2026 Grablab</span>
+    <span>© 2026 Grablab · Not financial advice</span>
+    <span class="foot-legal"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><button type="button" data-consent-open>Cookie settings</button></span>
   </div>`;
 }
 
