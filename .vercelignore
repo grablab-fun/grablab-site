@@ -10,3 +10,4 @@ palette.html
 serve.py
 _headers
 .vercel
+.env*

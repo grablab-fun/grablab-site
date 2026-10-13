@@ -8,3 +8,6 @@ assets/brand/chrome-render.html
 assets/brand/preview-*.png
 palette.html
 .vercel
+
+.vercel
+.env*
