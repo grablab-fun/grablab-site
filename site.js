@@ -83,7 +83,7 @@ function navHTML(){
       ${link("participate.html","nav.participate","participate")}
     </nav>
     <div class="nav-right">
-      <button class="cta" id="connectBtn" data-i18n="cta.connect">${t("cta.connect")}</button>
+      <span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /><img src="assets/wallets/metamask.png" alt="" /><img src="assets/wallets/coinbase.svg" alt="" /></span></button></span>
     </div>
   </div>`;
 }
@@ -384,7 +384,7 @@ async function chooseWallet(w, detected){
 }
 function shorten(a){ return a && a.length>12 ? a.slice(0,6)+"…"+a.slice(-4) : a; }
 function onConnected(addr){
-  document.querySelectorAll("#connectBtn, #connectBtn2").forEach(b=> b.textContent = shorten(addr));
+  document.querySelectorAll("#connectBtn, #connectBtn2").forEach(b=> (b.querySelector(".f") || b).textContent = shorten(addr));
   const input = document.getElementById("addrInput"); if (input){ input.value = addr; renderResult(addr); document.getElementById("check")?.scrollIntoView({behavior:"smooth",block:"center"}); }
 }
 document.addEventListener("click", e=>{
