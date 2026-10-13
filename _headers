@@ -1,0 +1,3 @@
+# Netlify / Cloudflare Pages: SimArena (app.simarena.ai) fetches the lab scene cross-origin
+/lab/*
+  Access-Control-Allow-Origin: *

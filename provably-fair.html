@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Provably fair, Grablab</title>
+<meta name="description" content="Every Grablab play leaves a receipt on Solana: inventory, grip, signature, drop and payout. Check any play yourself." />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=20261015g" />
+<link rel="stylesheet" href="pages.css?v=20261015g" />
+<link rel="stylesheet" href="sub.css?v=18" />
+</head>
+<body data-page="fair">
+<!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
+<div class="loader" id="loader" aria-hidden="true">
+  <script>try{if(sessionStorage.getItem("gl_loaded")){document.getElementById("loader").remove();}}catch(e){}</script>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"></header>
+<main>
+  <!-- HERO : a live play receipt, every proof ticks in -->
+  <section class="ph">
+    <div class="ph-copy">
+      <span class="eyebrow reveal">Provably fair · on Solana</span>
+      <h1 class="reveal d1"><span class="line">Every play</span><span class="line">leaves a</span><span class="line hl">receipt.</span></h1>
+      <p class="sub reveal d2">Inventory, grip, drop and payout, all checked on-chain.<br>Look up any play yourself.</p>
+      <div class="acts reveal d3"><a href="#verify" class="btn btn-primary big">Verify a play</a><a href="participate.html" class="btn btn-ghost big">How to play</a></div>
+    </div>
+    <div class="ph-art reveal d2">
+      <div class="rcpt-wrap">
+        <img class="claw" src="assets/icons/claw.png" alt="" />
+        <div class="rcpt glass" id="heroRcpt">
+          <div class="rh"><span>Play receipt</span><b class="pn">#000427</b></div>
+          <div class="rrow"><img src="assets/sub/inventory.png" alt="" /><div class="t">Inventory published<small>&nbsp;</small></div><i class="ok"></i></div>
+          <div class="rrow"><img src="assets/icons/gauge.png" alt="" /><div class="t">Grip promised<small>&nbsp;</small></div><i class="ok"></i></div>
+          <div class="rrow"><img src="assets/icons/chip.png" alt="" /><div class="t">Grip measured and signed<small>&nbsp;</small></div><i class="ok"></i></div>
+          <div class="rrow"><img src="assets/icons/lens.png" alt="" /><div class="t">Drop confirmed<small>&nbsp;</small></div><i class="ok"></i></div>
+          <div class="rrow"><img src="assets/icons/wallet.png" alt="" /><div class="t">Prize settled<small>&nbsp;</small></div><i class="ok"></i></div>
+          <div class="rf"><span></span><b>Settled in 1.8 s</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FIVE PROOFS -->
+  <section class="blk">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">How it works</span><h2 class="reveal d1">Five proofs. <span class="hl">Every play.</span></h2></div>
+      <div class="cd" id="countdown">
+        <div class="cd-pin">
+          <div class="cd-num"><b>1</b><span>/5</span></div>
+          <div class="cd-stage">
+          <div class="cd-s on"><img src="assets/sub/inventory.png" alt="" /><div><h3>Inventory published</h3><p>Every capsule, on-chain.</p></div></div>
+          <div class="cd-s"><img src="assets/icons/gauge.png" alt="" /><div><h3>Grip promised</h3><p>Locked before you play.</p></div></div>
+          <div class="cd-s"><img src="assets/icons/chip.png" alt="" /><div><h3>The machine signs</h3><p>Signed by the claw itself.</p></div></div>
+          <div class="cd-s"><img src="assets/icons/lens.png" alt="" /><div><h3>Seen twice</h3><p>Beam and camera agree.</p></div></div>
+          <div class="cd-s"><img src="assets/icons/wallet.png" alt="" /><div><h3>Paid in seconds</h3><p>Straight from escrow.</p></div></div>
+          </div>
+          <div class="cd-dots"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IF IT FAILS -->
+  <section class="blk">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">No grey zone</span><h2 class="reveal d1">If it fails, <span class="hl">you're refunded.</span></h2></div>
+      <div class="cases">
+        <div class="case glass reveal"><div class="if">If</div><h3>Grip below the promise</h3><div class="then">Machine flagged</div></div>
+        <div class="case glass reveal d1"><div class="if">If</div><h3>The drop isn't confirmed</h3><div class="then">Play voided</div></div>
+        <div class="case glass reveal d2"><div class="if">If</div><h3>Stream or machine goes down</h3><div class="then">Play cancelled</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERIFIER -->
+  <section class="blk" id="verify">
+    <div class="blk-in vfy">
+      <div>
+        <div class="sh"><span class="k reveal">Try it</span><h2 class="reveal d1">Check<br><span class="hl">any play.</span></h2><p class="reveal d2">Enter a play number</p></div>
+        <div class="in-row reveal d2"><input id="vfyIn" type="text" inputmode="numeric" value="427" aria-label="Play number" /><button class="btn btn-primary" id="vfyBtn">Verify</button></div>
+      </div>
+      <div class="rcpt glass reveal d1" id="vfyRcpt">
+        <div class="rh"><span>Play receipt</span><b class="pn">#000427</b></div>
+        <div class="rrow"><img src="assets/sub/inventory.png" alt="" /><div class="t">Inventory published<small>&nbsp;</small></div><i class="ok"></i></div>
+        <div class="rrow"><img src="assets/icons/gauge.png" alt="" /><div class="t">Grip promised<small>&nbsp;</small></div><i class="ok"></i></div>
+        <div class="rrow"><img src="assets/icons/chip.png" alt="" /><div class="t">Grip measured and signed<small>&nbsp;</small></div><i class="ok"></i></div>
+        <div class="rrow"><img src="assets/icons/lens.png" alt="" /><div class="t">Drop confirmed<small>&nbsp;</small></div><i class="ok"></i></div>
+        <div class="rrow"><img src="assets/icons/wallet.png" alt="" /><div class="t">Prize settled<small>&nbsp;</small></div><i class="ok"></i></div>
+        <div class="rf"><span>Preview data</span><b>Verified</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="callout glass reveal">
+    <h2 class="chrome">Watch a play prove itself.</h2>
+    <a href="participate.html" class="btn btn-primary big">How to play</a>
+  </section>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js?v=20261015g"></script>
+<script src="sub.js?v=6"></script>
+</body>
+</html>

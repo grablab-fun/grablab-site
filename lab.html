@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Physics lab, Grablab</title>
+<meta name="description" content="Our claw machine rebuilt in MuJoCo physics. Drive it in SimArena: move, lower, squeeze at 70%, drop it in the chute." />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=20261015e" />
+<link rel="stylesheet" href="pages.css?v=20261015e" />
+<link rel="stylesheet" href="sub.css?v=17" />
+<link rel="stylesheet" href="lab.css?v=2" />
+</head>
+<body data-page="lab">
+<div class="loader" id="loader" aria-hidden="true">
+  <script>try{if(sessionStorage.getItem("gl_loaded")){document.getElementById("loader").remove();}}catch(e){}</script>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"></header>
+<main>
+  <!-- HERO -->
+  <section class="ph">
+    <div class="ph-copy">
+      <span class="eyebrow reveal">Physics lab</span>
+      <h1 class="reveal d1"><span class="line">Real physics.</span><span class="line"><span class="hl">Same claw.</span></span></h1>
+      <p class="sub reveal d2">Our machine, rebuilt in MuJoCo.<br>Drive it yourself in SimArena.</p>
+      <div class="acts reveal d3"><a href="#lab" class="btn btn-primary big" data-lab-load>Open the lab</a><a href="participate.html#simulate" class="btn btn-ghost big">Quick simulator</a></div>
+    </div>
+    <div class="ph-art reveal d2">
+      <div class="lab-machine">
+        <video muted loop autoplay playsinline poster="assets/claw-grab-poster-alpha.webp?v=2">
+          <source src="assets/claw-grab-alpha.webm?v=2" type="video/webm" />
+          <source src="assets/claw-grab.mp4" type="video/mp4" />
+        </video>
+        <span class="lab-tag t1">MuJoCo</span>
+        <span class="lab-tag t2">3-finger claw</span>
+        <span class="lab-tag t3">Grip 70%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE LAB : SimArena with our scene, loaded on demand -->
+  <section class="blk" id="lab">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Live in your browser</span><h2 class="reveal d1">Drive the <span class="hl">real claw.</span></h2></div>
+      <div class="lab-frame glass reveal" id="labFrame">
+        <div class="lab-cover" id="labCover">
+          <img src="assets/sim-preview-poster.jpg" alt="" />
+          <div class="lab-cta">
+            <button class="lab-play" type="button" data-lab-load aria-label="Load the physics lab"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></button>
+            <b>Load the lab</b>
+            <small id="labNote">9 MB physics engine · desktop works best</small>
+          </div>
+        </div>
+      </div>
+      <div class="lab-links reveal">
+        <a id="labOpen" href="https://app.simarena.ai/editor" target="_blank" rel="noopener">Open in SimArena</a>
+        <a href="lab/grablab-claw.scene.json" download>Scene</a>
+        <a href="lab/grablab-claw-mech.asset.json" download>Claw asset</a>
+        <a href="lab/claw-scene.js" download>Generator</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUR CONTROLS -->
+  <section class="blk" id="controls">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Press run, select the claw</span><h2 class="reveal d1">Four <span class="hl">sliders.</span></h2></div>
+      <div class="lab-ctrl">
+        <div class="card glass glass-hover reveal"><div class="top"><img class="ico" src="assets/icons/joystick.png" alt="" /><span class="lab-slot">gantry_x</span></div><h3>Left, right</h3><p>Chute is at <code>-0.44</code></p></div>
+        <div class="card glass glass-hover reveal d1"><div class="top"><img class="ico" src="assets/icons/joystick.png" alt="" /><span class="lab-slot">gantry_y</span></div><h3>Front, back</h3><p>Chute is at <code>-0.27</code></p></div>
+        <div class="card glass glass-hover reveal d2"><div class="top"><img class="ico" src="assets/icons/claw.png" alt="" /><span class="lab-slot">lift</span></div><h3>Lower</h3><p>About <code>-0.42</code> to cradle</p></div>
+        <div class="card glass glass-hover reveal d3"><div class="top"><img class="ico" src="assets/icons/gauge.png" alt="" /><span class="lab-slot">grip</span></div><h3>Squeeze</h3><p><code>0.105</code> is our 70%</p></div>
+      </div>
+      <p class="lab-credit reveal">Physics by MuJoCo · Editor by <a href="https://app.simarena.ai" target="_blank" rel="noopener">SimArena</a> from CodecFlow</p>
+    </div>
+  </section>
+
+  <section class="callout glass reveal">
+    <h2 class="chrome">Then grab it live.</h2>
+    <a href="participate.html" class="btn btn-primary big">Participate</a>
+  </section>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js?v=20261015e"></script>
+<script src="sub.js?v=6"></script>
+<script src="lab.js?v=1"></script>
+</body>
+</html>

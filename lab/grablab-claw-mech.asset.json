@@ -1,0 +1,522 @@
+{
+ "_format": "simarena/asset@1.0",
+ "name": "grablab_claw",
+ "entities": [
+  {
+   "name": "gantry_x",
+   "transform": {
+    "pos": [
+     0.12,
+     0,
+     1.4
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.6
+   },
+   "joint": {
+    "type": "slide",
+    "axis": [
+     1,
+     0,
+     0
+    ],
+    "range": [
+     -0.5,
+     0.26
+    ],
+    "damping": 4,
+    "drive": {
+     "mode": "position",
+     "stiffness": 150,
+     "damping": 70,
+     "forceLimit": 80,
+     "ctrlrange": [
+      -0.5,
+      0.26
+     ]
+    }
+   },
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.035,
+      0.64,
+      0.025
+     ],
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "gantry_y",
+   "relation": {
+    "parent": "gantry_x"
+   },
+   "transform": {
+    "pos": [
+     0,
+     0.05,
+     -0.035
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.4
+   },
+   "joint": {
+    "type": "slide",
+    "axis": [
+     0,
+     1,
+     0
+    ],
+    "range": [
+     -0.3,
+     0.22
+    ],
+    "damping": 4,
+    "drive": {
+     "mode": "position",
+     "stiffness": 150,
+     "damping": 70,
+     "forceLimit": 80,
+     "ctrlrange": [
+      -0.3,
+      0.22
+     ]
+    }
+   },
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.09,
+      0.08,
+      0.045
+     ],
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "material": "navy2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.092,
+      0.01,
+      0.01
+     ],
+     "pos": [
+      0,
+      -0.041,
+      0
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "lift",
+   "relation": {
+    "parent": "gantry_y"
+   },
+   "transform": {
+    "pos": [
+     0,
+     0,
+     -0.07
+    ]
+   },
+   "gravcomp": 1,
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.3
+   },
+   "joint": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "range": [
+     -0.5,
+     0
+    ],
+    "damping": 10,
+    "drive": {
+     "mode": "position",
+     "stiffness": 150,
+     "damping": 90,
+     "forceLimit": 120,
+     "ctrlrange": [
+      -0.5,
+      0
+     ]
+    }
+   },
+   "geoms": [
+    {
+     "type": "cylinder",
+     "radius": 0.032,
+     "height": 0.05,
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "material": "chrome"
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.006,
+     "height": 0.09,
+     "pos": [
+      0,
+      0,
+      0.07
+     ],
+     "material": "chrome_dk",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.034,
+     "height": 0.006,
+     "pos": [
+      0,
+      0,
+      -0.012
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "finger_1",
+   "relation": {
+    "parent": "lift"
+   },
+   "transform": {
+    "pos": [
+     0.024,
+     0,
+     -0.025
+    ],
+    "quat": [
+     1,
+     0,
+     0,
+     0
+    ]
+   },
+   "gravcomp": 1,
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.02
+   },
+   "joint": {
+    "type": "hinge",
+    "axis": [
+     0,
+     1,
+     0
+    ],
+    "range": [
+     -0.3,
+     0.7
+    ],
+    "damping": 0.02,
+    "armature": 0.0005
+   },
+   "geoms": [
+    {
+     "type": "capsule",
+     "radius": 0.0065,
+     "height": 0.09,
+     "pos": [
+      0.0216,
+      0,
+      -0.0395
+     ],
+     "quat": [
+      0.9689,
+      0,
+      0.2474,
+      0
+     ],
+     "material": "chrome",
+     "friction": 1.4
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0065,
+     "height": 0.05,
+     "pos": [
+      0.0221,
+      0,
+      -0.0925
+     ],
+     "quat": [
+      0.8776,
+      0,
+      -0.4794,
+      0
+     ],
+     "material": "chrome",
+     "friction": 1.6
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "finger_2",
+   "relation": {
+    "parent": "lift"
+   },
+   "transform": {
+    "pos": [
+     -0.012,
+     0.0208,
+     -0.025
+    ],
+    "quat": [
+     0.5,
+     0,
+     0,
+     0.866
+    ]
+   },
+   "gravcomp": 1,
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.02
+   },
+   "joint": {
+    "type": "hinge",
+    "axis": [
+     0,
+     1,
+     0
+    ],
+    "range": [
+     -0.3,
+     0.7
+    ],
+    "damping": 0.02,
+    "armature": 0.0005
+   },
+   "geoms": [
+    {
+     "type": "capsule",
+     "radius": 0.0065,
+     "height": 0.09,
+     "pos": [
+      0.0216,
+      0,
+      -0.0395
+     ],
+     "quat": [
+      0.9689,
+      0,
+      0.2474,
+      0
+     ],
+     "material": "chrome",
+     "friction": 1.4
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0065,
+     "height": 0.05,
+     "pos": [
+      0.0221,
+      0,
+      -0.0925
+     ],
+     "quat": [
+      0.8776,
+      0,
+      -0.4794,
+      0
+     ],
+     "material": "chrome",
+     "friction": 1.6
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "finger_3",
+   "relation": {
+    "parent": "lift"
+   },
+   "transform": {
+    "pos": [
+     -0.012,
+     -0.0208,
+     -0.025
+    ],
+    "quat": [
+     -0.5,
+     0,
+     0,
+     0.866
+    ]
+   },
+   "gravcomp": 1,
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.02
+   },
+   "joint": {
+    "type": "hinge",
+    "axis": [
+     0,
+     1,
+     0
+    ],
+    "range": [
+     -0.3,
+     0.7
+    ],
+    "damping": 0.02,
+    "armature": 0.0005
+   },
+   "geoms": [
+    {
+     "type": "capsule",
+     "radius": 0.0065,
+     "height": 0.09,
+     "pos": [
+      0.0216,
+      0,
+      -0.0395
+     ],
+     "quat": [
+      0.9689,
+      0,
+      0.2474,
+      0
+     ],
+     "material": "chrome",
+     "friction": 1.4
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0065,
+     "height": 0.05,
+     "pos": [
+      0.0221,
+      0,
+      -0.0925
+     ],
+     "quat": [
+      0.8776,
+      0,
+      -0.4794,
+      0
+     ],
+     "material": "chrome",
+     "friction": 1.6
+    }
+   ],
+   "collider": {}
+  }
+ ],
+ "material": {
+  "chrome": {
+   "rgba": [
+    0.86,
+    0.89,
+    0.95,
+    1
+   ],
+   "metalness": 1,
+   "roughness": 0.16
+  },
+  "chrome_dk": {
+   "rgba": [
+    0.42,
+    0.46,
+    0.58,
+    1
+   ],
+   "metalness": 1,
+   "roughness": 0.25
+  },
+  "navy2": {
+   "rgba": [
+    0.06,
+    0.1,
+    0.29,
+    1
+   ],
+   "metalness": 0.35,
+   "roughness": 0.45
+  },
+  "led_blue": {
+   "rgba": [
+    0.23,
+    0.48,
+    1,
+    1
+   ],
+   "emission": 1
+  }
+ },
+ "coupling": {
+  "grip": {
+   "type": "fixed_tendon",
+   "joints": [
+    {
+     "joint": "finger_1",
+     "coefficient": 1
+    },
+    {
+     "joint": "finger_2",
+     "coefficient": 1
+    },
+    {
+     "joint": "finger_3",
+     "coefficient": 1
+    }
+   ],
+   "drive": {
+    "forceLimit": 0.15,
+    "ctrlrange": [
+     -0.15,
+     0.15
+    ]
+   }
+  }
+ }
+}

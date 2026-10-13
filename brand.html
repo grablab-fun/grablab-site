@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Grablab brand</title>
+<link rel="icon" href="assets/brand/favicon-64.png" />
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+<style>
+  :root{--bg:#070912;--ink:#f4f3ee;--ink-2:#aeb1c2;--ink-3:#6c7189;--accent:#9a7bff;--accent-2:#c9bfff;
+        --display:'Clash Display',system-ui,sans-serif;--font:'Satoshi',system-ui,sans-serif;--mono:ui-monospace,Menlo,monospace}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);padding:48px clamp(16px,4vw,64px) 120px;-webkit-font-smoothing:antialiased}
+  h1{font-family:var(--display);font-weight:600;font-size:34px;letter-spacing:-.02em;margin-bottom:6px}
+  h2{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-2);margin:56px 0 18px;font-weight:500}
+  p{color:var(--ink-2);max-width:60ch;line-height:1.6}
+  .row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+  .tile{background:#0b0e1b;border:1px solid rgba(244,243,238,.08);border-radius:12px;padding:28px;display:flex;align-items:center;justify-content:center;gap:28px}
+  .tile.light{background:#f4f3ee}
+  .mark{display:block}
+
+  /* lockup */
+  .lockup{display:inline-flex;align-items:center;gap:.5em;font-family:var(--display);font-weight:700;letter-spacing:.12em;line-height:1;white-space:nowrap}
+  .lockup img{height:1.15em;width:auto;flex:none}
+  .lockup span{display:block;transform:translateY(.04em)}
+  .lockup.navy{color:#070912}
+
+  /* exports */
+  .export{position:relative;overflow:hidden;background:var(--bg);flex:none}
+  #avatar{width:400px;height:400px;display:grid;place-items:center}
+  #avatar img{width:272px;height:272px}
+  #banner,#banner2{width:1500px;height:500px}
+  #banner .bg,#banner2 .bg{position:absolute;inset:0;background:url(assets/brand/hf/banner-bg-1.png) center 42%/cover no-repeat}
+  #banner2 .bg{position:absolute;inset:0;background:url(assets/brand/hf/banner-bg-2.png) center 50%/cover no-repeat}
+  #banner2.slogan .slg{right:560px}
+  #banner .scrim,#banner2 .scrim{position:absolute;inset:0;background:
+      linear-gradient(90deg,rgba(7,9,18,.72) 0%,rgba(7,9,18,.35) 45%,rgba(7,9,18,0) 75%),
+      linear-gradient(180deg,rgba(7,9,18,.25),rgba(7,9,18,0) 40%,rgba(7,9,18,.55))}
+  #banner .grain2,#banner2 .grain2{position:absolute;inset:0;opacity:.28;mix-blend-mode:soft-light;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9  0 0 0 0 0.88  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>")}
+  #banner .grain,#banner2 .grain{position:absolute;inset:0;opacity:.42;mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+  #banner .content,#banner2 .content{position:absolute;left:120px;top:0;bottom:0;padding-bottom:64px;display:flex;flex-direction:column;justify-content:center;gap:26px}
+  #banner .lockup,#banner2 .lockup{font-size:72px;letter-spacing:.14em}
+  #banner .tag,#banner2 .tag{font-family:var(--mono);font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-2);display:flex;gap:22px;align-items:center}
+  #banner .tag i,#banner2 .tag i{width:6px;height:6px;border-radius:50%;background:var(--accent-2);opacity:.7}
+  #banner .tag em,#banner2 .tag em{font-style:normal;color:var(--ink);opacity:.92}
+  #banner .corner,#banner2 .corner{position:absolute;width:22px;height:22px;border:2px solid var(--accent-2);opacity:.6}
+  #banner .c1,#banner2 .c1{left:40px;top:40px;border-right:0;border-bottom:0}
+  #banner .c2,#banner2 .c2{right:40px;top:40px;border-left:0;border-bottom:0}
+  #banner .c3,#banner2 .c3{right:40px;bottom:40px;border-left:0;border-top:0}
+  #banner .c4,#banner2 .c4{left:40px;bottom:40px;border-right:0;border-top:0}
+  #banner .handle,#banner2 .handle{position:absolute;right:56px;bottom:46px;font-family:var(--mono);font-size:14px;letter-spacing:.16em;color:var(--ink-2);text-shadow:0 1px 12px rgba(7,9,18,.9)}
+  #banner .safe,#banner2 .safe{position:absolute;left:0;bottom:0;width:360px;height:160px;outline:1px dashed rgba(255,92,174,.6);display:none}
+
+  #lockup-dark{padding:48px 72px}
+  #lockup-dark .lockup{font-size:64px}
+  #lockup-light{padding:48px 72px;background:#f4f3ee}
+  #lockup-light .lockup{font-size:64px}
+  #mark-1024{width:1024px;height:1024px;display:grid;place-items:center;background:transparent}
+  #mark-1024 img{width:1024px;height:1024px}
+  #tile-1024{width:1024px;height:1024px;display:grid;place-items:center;background:#070912;border-radius:0}
+  #tile-1024 img{width:640px;height:640px}
+  .small{display:flex;gap:28px;align-items:center}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.1em;margin-top:8px}
+  .scroll{overflow:auto;max-width:100%}
+
+  /* X profile mockup */
+  .xp{width:600px;background:#000;color:#e7e9ea;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;border:1px solid #2f3336;flex:none}
+  .xp .hdr{height:200px;background-size:cover;background-position:center;position:relative}
+  .xp .av{position:absolute;left:16px;bottom:-66px;width:134px;height:134px;border-radius:50%;border:4px solid #000;background:#070912 url(assets/brand/x-avatar-400.png) center/cover}
+  .xp .bar{display:flex;justify-content:flex-end;padding:12px 16px}
+  .xp .bar b{border:1px solid #536471;border-radius:999px;padding:6px 16px;font-size:15px;font-weight:700}
+  .xp .body{padding:26px 16px 18px}
+  .xp .nm{font-size:20px;font-weight:800;line-height:1.2}
+  .xp .hd{color:#71767b;font-size:15px}
+  .xp .bio{font-size:15px;line-height:1.4;margin:12px 0}
+  .xp .meta{color:#71767b;font-size:15px;display:flex;gap:14px;flex-wrap:wrap}
+  .xp .meta span{color:#1d9bf0}
+
+  #banner.slogan .scrim,#banner2.slogan .scrim{background:linear-gradient(180deg,rgba(7,9,18,.15),rgba(7,9,18,0) 35%,rgba(7,9,18,.35)),radial-gradient(60% 70% at 36% 48%,rgba(7,9,18,.45),rgba(7,9,18,0))}
+  #banner.slogan .slg,#banner2.slogan .slg{position:absolute;left:0;right:430px;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:40px;
+     font-family:var(--display);font-weight:700;font-size:80px;line-height:1;letter-spacing:-.005em;text-transform:uppercase;text-align:center;
+     background:linear-gradient(180deg,#ffffff 0%,#f4f3ee 45%,#b9bccb 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+     filter:drop-shadow(0 6px 30px rgba(7,9,18,.7)) drop-shadow(0 1px 2px rgba(7,9,18,.9))}
+  #banner.slogan .slg span,#banner2.slogan .slg span{display:block}
+</style>
+</head>
+<body>
+
+<h1>Grablab brand</h1>
+<p>A bold G whose inner bar is the claw, holding a capsule in its counter. Generated with Higgsfield, cut to a transparent mark, finished as blue chrome with a chromatic fringe (user pick, Oct 13 2026). Ivory and navy flats remain for one-color uses. Ivory on navy by default, violet only as an accent.</p>
+
+<h2>Mark</h2>
+<div class="row">
+  <div class="tile" style="padding:48px 64px"><img src="assets/brand/mark-chrome.png" alt="" class="mark" width="160" height="160"></div>
+  <div class="tile light" style="padding:48px 64px"><img src="assets/brand/mark-navy.png" alt="" class="mark" width="160" height="160"></div>
+  <div class="tile" style="padding:48px 64px"><img src="assets/brand/mark-violet.png" alt="" class="mark" width="160" height="160"></div>
+  <div class="tile small">
+    <img src="assets/brand/mark.svg" width="64" height="64" alt="">
+    <img src="assets/brand/mark.svg" width="32" height="32" alt="">
+    <img src="assets/brand/mark.svg" width="24" height="24" alt="">
+    <img src="assets/brand/mark.svg" width="16" height="16" alt="">
+    <img src="assets/brand/favicon-32.png" width="32" height="32" alt="">
+    <img src="assets/brand/favicon-32.png" width="16" height="16" alt="">
+  </div>
+</div>
+
+<h2>Lockup</h2>
+<div class="row">
+  <div id="lockup-dark" class="tile export"><div class="lockup"><img src="assets/brand/mark-chrome.png" alt=""><span>GRABLAB</span></div></div>
+  <div id="lockup-light" class="tile export"><div class="lockup navy"><img src="assets/brand/mark-navy.png" alt=""><span>GRABLAB</span></div></div>
+</div>
+
+<h2>X / Twitter avatar · 400 × 400</h2>
+<div class="row">
+  <div id="avatar" class="export"><img src="assets/brand/mark-chrome.png" alt=""></div>
+  <div style="width:400px;height:400px;border-radius:50%;overflow:hidden;flex:none"><div style="width:400px;height:400px;background:#070912;display:grid;place-items:center"><img src="assets/brand/mark-chrome.png" alt="" width="236" height="236"></div></div>
+</div>
+<div class="meta">LEFT: EXPORT · RIGHT: HOW X CROPS IT</div>
+
+<h2>X / Twitter banner · 1500 × 500</h2>
+<div class="scroll">
+<div id="banner" class="export slogan">
+  <div class="bg"></div><div class="scrim"></div>
+  <div class="slg"><span>We undo</span><span>the rigged machines</span></div>
+</div>
+</div>
+
+<div style="height:24px"></div>
+<div id="banner2" class="export slogan">
+  <div class="bg"></div><div class="scrim"></div>
+  <div class="slg"><span>Every capsule</span><span>is a stock</span></div>
+</div>
+</div>
+</div>
+<div class="meta">AVATAR OVERLAPS THE BOTTOM-LEFT ON X, SO THE LOCKUP SITS IN THE VERTICAL CENTER</div>
+
+<h2>X profile preview</h2>
+<div class="row">
+  <div id="xp1" class="xp">
+    <div class="hdr" style="background-image:url(assets/brand/x-banner-1500x500.png)"><div class="av"></div></div>
+    <div class="bar"><b>Follow</b></div>
+    <div class="body">
+      <div class="nm">Grablab</div>
+      <div class="hd">@grablabfun</div>
+      <div class="bio">A real claw machine, played from your browser. Every capsule holds an on-chain prize. Every grab is proven fair on Solana. Rent the claw for your launch.</div>
+      <div class="meta">📍 Inside the machine · Solana &nbsp; 🔗 <span>grablab.fun</span> &nbsp; 📅 Joined October 2026</div>
+    </div>
+  </div>
+  <div id="xp2" class="xp">
+    <div class="hdr" style="background-image:url(assets/brand/x-banner-claw-1500x500.png)"><div class="av"></div></div>
+    <div class="bar"><b>Follow</b></div>
+    <div class="body">
+      <div class="nm">Grablab</div>
+      <div class="hd">@grablabfun</div>
+      <div class="bio">A real claw machine, played from your browser. Every capsule holds an on-chain prize. Every grab is proven fair on Solana. Rent the claw for your launch.</div>
+      <div class="meta">📍 Inside the machine · Solana &nbsp; 🔗 <span>grablab.fun</span> &nbsp; 📅 Joined October 2026</div>
+    </div>
+  </div>
+</div>
+
+<h2>Large exports</h2>
+<div class="scroll"><div class="row">
+  <div id="mark-1024" class="export"><img src="assets/brand/mark-chrome.png" alt=""></div>
+  <div id="tile-1024" class="export"><img src="assets/brand/mark-chrome.png" alt=""></div>
+</div></div>
+
+</body>
+</html>

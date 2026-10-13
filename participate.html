@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Participate, Grablab</title>
+<meta name="description" content="Hold the token, open the stream, drive a real claw. The prize lands in your wallet." />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=20261015g" />
+<link rel="stylesheet" href="pages.css?v=20261015g" />
+<link rel="stylesheet" href="sub.css?v=18" />
+<link rel="stylesheet" href="sim.css?v=5" />
+</head>
+<body data-page="participate">
+<!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
+<div class="loader" id="loader" aria-hidden="true">
+  <script>try{if(sessionStorage.getItem("gl_loaded")){document.getElementById("loader").remove();}}catch(e){}</script>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"></header>
+<main>
+  <!-- HERO : the stream, in your hand -->
+  <section class="ph">
+    <div class="ph-copy">
+      <span class="eyebrow reveal">For players</span>
+      <h1 class="reveal d1"><span class="line">Grab it <span class="hl">live.</span></span></h1>
+      <p class="sub reveal d2">Drive a real claw from your phone.<br>The prize lands in your wallet.</p>
+      <div class="acts reveal d3"><a href="#simulate" class="btn btn-primary big" data-sim>Simulate a play</a><a href="#check" class="btn btn-ghost big">Check eligibility</a></div>
+    </div>
+    <div class="ph-art reveal d2">
+      <button class="sim-cta" type="button" data-sim aria-label="Open the simulator"><span class="pb"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span><b>Simulate</b><small>Try it · 60 sec</small></button>
+      <a class="lab-link" href="lab.html">Real physics lab</a>
+      <div class="phone" data-sim>
+        <div class="scr">
+          <video id="phVid" autoplay muted loop playsinline poster="assets/sim-preview-poster.jpg"><source src="assets/sim-preview.mp4" type="video/mp4" /></video>
+          <span class="notch"></span>
+          <div class="ui top"><span class="chip live">Live</span><span class="chip">1,284 watching</span></div>
+          <div class="ui mid"><span class="chip">Grip 70% · on-chain</span><span class="timer" id="phTimer" data-sync>0:30</span></div>
+          <div class="ph-won" id="phWon"><small>You won</small><b>+2,500 $ROVR</b></div>
+          <div class="ui bot"><div class="pad"><span class="stick"><i></i></span><button class="ph-grab" type="button" tabindex="-1">Grab</button></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THREE STEPS -->
+  <section class="blk" id="how">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">20 seconds</span><h2 class="reveal d1">Three steps. <span class="hl">No app.</span></h2></div>
+      <div class="steps3">
+        <div class="card glass glass-hover reveal"><div class="top"><img class="ico" src="assets/icons/wallet.png" alt="" /><span class="num">01</span></div><h3>Connect</h3><p>Wallet only, read-only.<br>No approvals.</p></div>
+        <div class="card glass glass-hover reveal d1"><div class="top"><img class="ico" src="assets/icons/joystick.png" alt="" /><span class="num">02</span></div><h3>Drive the claw</h3><p>Live video, a real machine, 30 seconds.</p></div>
+        <div class="card glass glass-hover reveal d2"><div class="top"><img class="ico" src="assets/sub/token.png" alt="" /><span class="num">03</span></div><h3>Get paid</h3><p>The prize lands in seconds.<br>Or you're refunded.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELIGIBILITY -->
+  <section class="blk" id="check">
+    <div class="blk-in check2">
+      <div class="sh"><span class="k reveal">Airdrop claw</span><h2 class="reveal d1">Are you<br><span class="hl">on the list?</span></h2><p class="reveal d2">Paste an address or connect</p></div>
+      <div class="glass reveal d1">
+        <div class="check-row"><input id="addrInput" type="text" placeholder="Solana / EVM address" autocomplete="off" spellcheck="false" /><button class="btn btn-primary" id="checkBtn">Check</button></div>
+        <div class="check-or">or</div>
+        <button class="btn btn-wallet" id="connectBtn2">Connect wallet</button>
+        <div class="check-result" id="checkResult" hidden></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE APP : opening soon -->
+  <section class="blk" id="app">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Opening soon</span><h2 class="reveal d1">Every airdrop. <span class="hl">One place.</span></h2><p class="reveal d2">Live drops, new projects and quests that earn you plays</p></div>
+      <div class="app glass reveal">
+        <div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="tabs"><span class="on">Live drops</span><span>Discover</span><span>Quests</span></span><span class="chip soon">Opening soon</span></div>
+        <div class="body">
+          <div class="col">
+            <h4><img src="assets/sub/para.png" alt="" />Live airdrops</h4>
+            <div class="dr">
+              <img class="lg" src="assets/proj/rover.png" alt="" />
+              <div class="dr-m"><div class="dr-t"><b>Rover Labs</b><span class="tk">$ROVR</span></div><div class="tags"><span>Delivery</span><span>Robotics</span></div></div>
+              <div class="dr-s"><span class="pill live">Live</span><span class="cap"><i style="--f:.62"></i></span><small>62% grabbed</small></div>
+            </div>
+            <div class="dr">
+              <img class="lg" src="assets/proj/kinetic.png" alt="" />
+              <div class="dr-m"><div class="dr-t"><b>Kinetic Arm</b><span class="tk">$KNTC</span></div><div class="tags"><span>Industrial</span><span>Robot arm</span></div></div>
+              <div class="dr-s"><span class="pill">Next</span><b class="clock" id="nextClock">02:14:09</b></div>
+            </div>
+            <div class="dr">
+              <img class="lg" src="assets/proj/pallet.png" alt="" />
+              <div class="dr-m"><div class="dr-t"><b>Pallet Bots</b><span class="tk">$PLT</span></div><div class="tags"><span>Warehouse</span><span>Logistics</span></div></div>
+              <div class="dr-s"><span class="pill">Soon</span><b class="clock">Sat 20:00 <small class="tz">UTC</small></b></div>
+            </div>
+          </div>
+          <div class="col">
+            <h4><img src="assets/sub/quest.png" alt="" />Quests</h4>
+            <div class="task done"><i></i><span>Follow on X</span><em>+1 play</em></div>
+            <div class="task done"><i></i><span>Join the Discord</span><em>+1 play</em></div>
+            <div class="task"><i></i><span>Hold 1,000 $ROVR</span><em>+3 plays</em></div>
+            <div class="task"><i></i><span>Invite a friend</span><em>+1 play</em></div>
+          </div>
+          <div class="col">
+            <h4><img src="assets/sub/megaphone.png" alt="" />Discover</h4>
+            <div class="pj"><img class="lg" src="assets/proj/orbit.png" alt="" /><div><b>Orbit Drone</b><div class="tags"><span>Drones</span><span>Mapping</span></div></div><span class="mf">machine.fun</span></div>
+            <div class="pj"><img class="lg" src="assets/proj/fieldbot.png" alt="" /><div><b>Fieldbot</b><div class="tags"><span>Agritech</span><span>DePIN</span></div></div><span class="mf">machine.fun</span></div>
+            <div class="pj"><img class="lg" src="assets/proj/lumen.png" alt="" /><div><b>Lumen Hand</b><div class="tags"><span>Humanoid</span><span>Grippers</span></div></div><span class="mf">machine.fun</span></div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="callout glass reveal">
+    <h2 class="chrome">Be early.</h2>
+    <a href="https://x.com/grablabfun" target="_blank" rel="noopener" class="btn btn-primary big">Get notified on X</a>
+  </section>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js?v=20261015g"></script>
+<script src="sub.js?v=6"></script>
+<script src="sim.js?v=4"></script>
+</body>
+</html>

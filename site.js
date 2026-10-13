@@ -1,0 +1,460 @@
+/* ============================================================
+   GRABLAB : shared site engine (loaded on every page)
+   - i18n (EN / 中文 / Español) with a language switcher
+   - shared islands nav + footer + wallet modal, injected
+   - glassmorphic page transitions
+   - scroll-reveal
+   - wallet connect (SAFE: read-only, no approvals)  + eligibility
+   ============================================================ */
+
+/* ---------------- i18n ---------------- */
+const I18N = {
+  en: {
+    _name:"English", _flag:"EN",
+    "nav.home":"Home", "nav.inside":"INSIDE", "nav.fair":"Provably fair", "nav.rent":"Rent", "nav.participate":"Participate",
+    "cta.connect":"CONNECT WALLET",
+    "foot.tagline":"The first claw machine that can't cheat you, and every capsule is a coin.",
+    "foot.explore":"Explore", "foot.projects":"Projects", "foot.connect":"Connect",
+    "foot.inside":"Inside the machine", "foot.fair":"Provably fair", "foot.rent":"Rent the claw",
+    "foot.participate":"Participate", "foot.formats":"Formats", "foot.book":"Book a launch night",
+    "wallet.title":"Connect a wallet", "wallet.side":"Connect a wallet to check eligibility and grab live.",
+    "wallet.secured":"Secured by Privy", "wallet.new":"New to wallets?", "wallet.get":"Get Phantom ↗",
+  },
+  zh: {
+    _name:"中文", _flag:"中文",
+    "nav.home":"首页", "nav.inside":"机器内部", "nav.fair":"公平可证", "nav.rent":"租用", "nav.participate":"参与",
+    "cta.connect":"连接钱包",
+    "foot.tagline":"第一台无法作弊的抓娃娃机，每一个胶囊都是一枚代币。",
+    "foot.explore":"探索", "foot.projects":"项目方", "foot.connect":"联系",
+    "foot.inside":"机器内部", "foot.fair":"公平可证", "foot.rent":"租用机器",
+    "foot.participate":"参与", "foot.formats":"玩法", "foot.book":"预订发射之夜",
+    "wallet.title":"连接钱包", "wallet.side":"连接钱包以查看资格并实时抓取。只读，我们从不请求授权。",
+    "wallet.secured":"由 Privy 保护", "wallet.new":"还没有钱包？", "wallet.get":"获取 Phantom ↗",
+  },
+  es: {
+    _name:"Español", _flag:"ES",
+    "nav.home":"Inicio", "nav.inside":"POR DENTRO", "nav.fair":"Juego justo", "nav.rent":"Alquilar", "nav.participate":"Participar",
+    "cta.connect":"CONECTAR WALLET",
+    "foot.tagline":"La primera máquina de garra que no puede hacer trampa, y cada cápsula es una moneda.",
+    "foot.explore":"Explorar", "foot.projects":"Proyectos", "foot.connect":"Conectar",
+    "foot.inside":"Por dentro", "foot.fair":"Juego justo", "foot.rent":"Alquila la garra",
+    "foot.participate":"Participar", "foot.formats":"Formatos", "foot.book":"Reserva una noche de lanzamiento",
+    "wallet.title":"Conecta una wallet", "wallet.side":"Conecta una wallet para ver tu elegibilidad y jugar en vivo.<br>Solo lectura, nunca pedimos aprobaciones.",
+    "wallet.secured":"Protegido por Privy", "wallet.new":"¿Nuevo en wallets?", "wallet.get":"Descarga Phantom ↗",
+  },
+};
+const LANGS = ["en","zh","es"];
+let LANG = "en"; /* English only (language switcher removed) */
+try { localStorage.removeItem("gc_lang"); } catch(e){}
+
+function t(key){ return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || key; }
+function applyI18n(root=document){
+  root.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k = el.getAttribute("data-i18n"); const v = t(k);
+    if (v){ if (v.includes("<br>")) el.innerHTML = v; else el.textContent = v; }
+  });
+  document.documentElement.lang = LANG;
+}
+function setLang(l){
+  LANG = l; try { localStorage.setItem("gc_lang", l); } catch(e){}
+  applyI18n();
+  const cur = document.querySelector("#langCur"); if (cur) cur.textContent = I18N[l]._flag;
+  document.querySelectorAll(".lang-menu button").forEach(b=>b.classList.toggle("on", b.dataset.l===l));
+}
+
+/* ---------------- shared markup ---------------- */
+const PAGE = document.body.dataset.page || "home";
+const PFX = ""; // all pages sit in the same folder
+
+function navHTML(){
+  const link = (href,key,id)=>`<a href="${href}" class="${id===PAGE?"active":""}${id==="home"?" nav-home":""}" data-i18n="${key}">${t(key)}</a>`;
+  return `
+  <div class="islands">
+    <div class="brand-isl">
+      <a class="brand" href="index.html">
+        <img class="brand-mark" src="assets/brand/mark-chrome-256.png?v=20261014g" alt="" />
+        <span class="brand-name">GRABLAB</span>
+      </a>
+    </div>
+    <nav class="isl nav-links">
+      ${link("index.html","nav.home","home")}
+      ${link("provably-fair.html","nav.fair","fair")}
+      ${link("rent.html","nav.rent","rent")}
+      ${link("participate.html","nav.participate","participate")}
+    </nav>
+    <div class="nav-right">
+      <button class="cta" id="connectBtn" data-i18n="cta.connect">${t("cta.connect")}</button>
+    </div>
+  </div>`;
+}
+
+function footHTML(){
+  return `
+  <div class="footer-bg" aria-hidden="true"></div>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="brand" href="index.html"><img class="brand-mark" src="assets/brand/mark-chrome-256.png?v=20261013b" alt="" /><span class="brand-name">GRABLAB</span></a>
+      <p data-i18n="foot.tagline">${t("foot.tagline")}</p>
+    </div>
+    <div class="foot-col">
+      <h5 data-i18n="foot.explore">${t("foot.explore")}</h5>
+      <a href="index.html#inside" data-i18n="foot.inside">${t("foot.inside")}</a>
+      <a href="provably-fair.html" data-i18n="foot.fair">${t("foot.fair")}</a>
+      <a href="rent.html#formats" data-i18n="foot.formats">${t("foot.formats")}</a>
+    </div>
+    <div class="foot-col">
+      <h5 data-i18n="foot.projects">${t("foot.projects")}</h5>
+      <a href="rent.html" data-i18n="foot.rent">${t("foot.rent")}</a>
+      <a href="participate.html" data-i18n="foot.participate">${t("foot.participate")}</a>
+      <a href="mailto:contact@grablab.fun" data-i18n="foot.book">${t("foot.book")}</a>
+    </div>
+    <div class="foot-col">
+      <h5 data-i18n="foot.connect">${t("foot.connect")}</h5>
+      <a href="https://x.com/grablabfun" target="_blank" rel="noopener">X / Twitter</a>
+      <a href="https://machine.fun" target="_blank" rel="noopener">machine.fun</a>
+      <a href="https://peaq.xyz" target="_blank" rel="noopener">peaq</a>
+      <a href="mailto:contact@grablab.fun">contact@grablab.fun</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Grablab</span>
+  </div>`;
+}
+
+function walletHTML(){
+  return `
+  <div class="wallet-sheet" role="dialog" aria-modal="true" aria-label="Connect a wallet">
+    <div class="wallet-side">
+      <div class="wallet-logo"><img src="assets/brand/mark-chrome-256.png?v=20261013b" alt="" /><b>Grablab</b></div>
+      <p data-i18n="wallet.side">${t("wallet.side")}</p>
+      <span class="wallet-secured" data-i18n="wallet.secured">${t("wallet.secured")}</span>
+    </div>
+    <div class="wallet-main">
+      <div class="wallet-head">
+        <h4 data-i18n="wallet.title">${t("wallet.title")}</h4>
+        <button class="wallet-close" id="walletClose" aria-label="Close">×</button>
+      </div>
+      <div class="wallet-list" id="walletList"></div>
+      <p class="wallet-foot"><span data-i18n="wallet.new">${t("wallet.new")}</span> <a href="https://phantom.com" target="_blank" rel="noopener" data-i18n="wallet.get">${t("wallet.get")}</a></p>
+    </div>`;
+}
+
+function bookingHTML(){
+  return `
+  <div class="booking-sheet" role="dialog" aria-modal="true" aria-label="Book a launch night">
+    <button class="booking-close" id="bookingClose" aria-label="Close">×</button>
+    <div class="booking-head">
+      <div class="booking-logo"><img src="assets/brand/mark-chrome-256.png?v=20261013b" alt="" /><b>Book a launch night</b></div>
+      <p>One machine, one project per night.<br>Tell us about your drop, we read every inquiry.</p>
+    </div>
+    <form class="booking-form" id="bookingForm" novalidate>
+      <div class="bk-grid">
+        <label class="bk-field"><span>Project / token</span><input name="project" required placeholder="e.g. Grablab" autocomplete="off" spellcheck="false" /></label>
+        <label class="bk-field"><span>Your name or handle</span><input name="name" required placeholder="@you" autocomplete="off" spellcheck="false" /></label>
+        <label class="bk-field bk-span"><span>Email or Telegram</span><input name="contact" required placeholder="you@email.com or @telegram" autocomplete="off" spellcheck="false" /></label>
+      </div>
+      <div class="bk-choice">
+        <span class="bk-lbl">Format</span>
+        <div class="bk-chips" data-field="format">
+          <button type="button" class="bk-chip on" data-val="Airdrop claw"><b>Airdrop claw</b><small>holders play free</small></button>
+          <button type="button" class="bk-chip" data-val="Paid play"><b>Paid play</b><small>pay per grab</small></button>
+          <button type="button" class="bk-chip" data-val="Mixed"><b>Mixed</b><small>both</small></button>
+        </div>
+      </div>
+      <div class="bk-choice">
+        <span class="bk-lbl">When</span>
+        <div class="bk-chips bk-chips-s" data-field="when">
+          <button type="button" class="bk-chip on" data-val="This week"><b>This week</b></button>
+          <button type="button" class="bk-chip" data-val="This month"><b>This month</b></button>
+          <button type="button" class="bk-chip" data-val="Flexible"><b>Flexible</b></button>
+        </div>
+      </div>
+      <label class="bk-field"><span>What are you dropping?</span><textarea name="details" rows="3" placeholder="Token, NFTs, allocations. Pool size, chain, anything we should know."></textarea></label>
+      <button type="submit" class="btn btn-primary big bk-submit">Send inquiry</button>
+    </form>
+    <div class="booking-done" id="bookingDone" hidden>
+      <div class="bk-check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></div>
+      <h4>Inquiry ready.</h4>
+      <p>Your email app just opened with everything filled in. Hit send and we reply fast.</p>
+      <button class="btn btn-ghost" id="bookingDoneClose">Close</button>
+    </div>
+  </div>`;
+}
+
+/* ---------------- inject layout ---------------- */
+(function layout(){
+  const header = document.getElementById("site-header");
+  if (header){ header.className = "nav"; header.id = "top"; header.innerHTML = navHTML(); }
+  const footer = document.getElementById("site-footer");
+  if (footer){ footer.className = "footer"; footer.innerHTML = footHTML(); }
+  // wallet modal
+  const ov = document.createElement("div");
+  ov.className = "wallet-overlay"; ov.id = "walletOverlay"; ov.hidden = true;
+  ov.innerHTML = walletHTML();
+  document.body.appendChild(ov);
+  // booking modal (Book a launch night)
+  const bov = document.createElement("div");
+  bov.className = "booking-overlay"; bov.id = "bookingOverlay"; bov.hidden = true;
+  bov.innerHTML = bookingHTML();
+  document.body.appendChild(bov);
+  // shared atmosphere behind everything
+  if (!document.querySelector(".page-atmosphere")){
+    const atmo = document.createElement("div");
+    atmo.className = "page-atmosphere"; atmo.setAttribute("aria-hidden","true");
+    document.body.appendChild(atmo);
+  }
+  // page-transition wipe
+  const wipe = document.createElement("div");
+  wipe.className = "page-wipe"; wipe.id = "pageWipe"; wipe.setAttribute("aria-hidden","true");
+  document.body.appendChild(wipe);
+})();
+
+
+/* ---------------- preloader : colorizing machine + roaming counter, opens like a double door ---------------- */
+(function preloader(){
+  const el = document.getElementById("loader"); if (!el) return;
+  document.body.classList.add("is-loading");
+  const V = "?v=2";
+  const scene = `
+    <div class="ld-glow"></div>
+    <div class="ld-machine"><img class="bw" src="assets/claw-grab-poster-alpha.webp${V}" alt=""><img class="col" src="assets/claw-grab-poster-alpha.webp${V}" alt=""><span class="scan"></span></div>
+    <div class="ld-load">LOADING<i class="dots">...</i></div>
+    <div class="ld-pct"><span class="n">00</span><small>%</small></div>
+    <div class="ld-brand"><img src="assets/brand/mark-chrome-256.png${V}" alt="">GRABLAB</div>`;
+  el.innerHTML = `<div class="leaf l"><div class="inner">${scene}</div><img class="ld-hand" src="assets/glove-l.webp${V}" alt=""></div><div class="leaf r"><div class="inner">${scene}</div><img class="ld-hand" src="assets/glove-r.webp${V}" alt=""></div><span class="seam"></span>`;
+  const q = s => [...el.querySelectorAll(s)];
+  /* the counter roams to a new spot every quarter */
+  const SPOTS = [
+    { left:"calc(100vw - clamp(24px,4vw,72px))", top:"clamp(70px,12vh,120px)", t:"translateX(-100%)" },
+    { left:"clamp(24px,4vw,72px)", top:"calc(100vh - clamp(30px,6vh,60px))", t:"translateY(-100%)" },
+    { left:"calc(100vw - clamp(24px,4vw,72px))", top:"calc(100vh - clamp(30px,6vh,60px))", t:"translate(-100%,-100%)" },
+    { left:"50%", top:"50%", t:"translate(-50%,-50%)" },
+  ];
+  let spot = -1;
+  function place(i){ if (i === spot) return; spot = i; const s = SPOTS[i]; q(".ld-pct").forEach(p => { p.style.left = s.left; p.style.top = s.top; p.style.transform = s.t; }); }
+  place(0);
+  let d = 0; const dots = setInterval(() => { d = (d+1)%4; q(".dots").forEach(x => x.textContent = ".".repeat(d)); }, 260);
+  const t0 = performance.now(), MIN = 2200, MAX = 7000;
+  const tasks = [];
+  if (document.fonts && document.fonts.ready) tasks.push(document.fonts.ready);
+  tasks.push(new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", r, { once:true })));
+  const v = document.getElementById("clawVideo");
+  if (v) tasks.push(new Promise(r => { if (v.readyState >= 3) return r(); v.addEventListener("canplaythrough", r, { once:true }); v.addEventListener("error", r, { once:true }); }));
+  let done = 0, shown = 0, finished = false; tasks.forEach(t => t.then(() => done++));
+  function paint(n){
+    q(".n").forEach(x => x.textContent = String(n).padStart(2, "0"));
+    q(".ld-machine").forEach(m => m.style.setProperty("--p", n + "%"));
+    place(n >= 100 ? 3 : Math.min(2, Math.floor(n / 34)));
+  }
+  function open(){
+    clearInterval(dots);
+    /* crack glows -> two white gloves reach through and grab the edges -> strain -> pull the screen apart onto the sky */
+    el.classList.add("split");
+    setTimeout(() => el.classList.add("grab"), 380);
+    setTimeout(() => el.classList.add("strain"), 1050);
+    setTimeout(() => { el.classList.add("open"); document.body.classList.remove("is-loading"); window.dispatchEvent(new Event("gl:open")); try{ sessionStorage.setItem("gl_loaded","1"); }catch(e){} }, 1550);
+    setTimeout(() => el.remove(), 3300);
+  }
+  function tick(){
+    const time = Math.min(1, (performance.now() - t0) / MIN), real = done / tasks.length;
+    const target = finished ? 100 : Math.min(99, Math.round(100 * Math.min(real * .8 + time * .2, time)));
+    shown += Math.max(0, (target - shown) * .14);
+    const n = Math.min(100, Math.round(shown)); paint(n);
+    if (finished && n >= 100){ setTimeout(open, 420); return; }
+    setTimeout(tick, 16);
+  }
+  Promise.race([Promise.all(tasks), new Promise(r => setTimeout(r, MAX))]).then(() => { setTimeout(() => { finished = true; }, Math.max(0, MIN - (performance.now() - t0))); });
+  tick();
+})();
+
+/* ---------------- nav behavior ---------------- */
+const nav = document.getElementById("top");
+if (nav){
+  /* scroll-linked morph: target follows the first 260px of scroll, the drawn value eases toward it every frame (smooth, never a jump) */
+  const isl = nav.querySelector(".islands"), RANGE = 260;
+  let target = 0, shown = -1, raf = 0;
+  function measure(){
+    const kids = [...isl.children]; let w = 0;
+    kids.forEach(k => { const prev = k.style.flex; k.style.flex = "none"; w += k.getBoundingClientRect().width; k.style.flex = prev; });
+    w += 18 * (kids.length - 1) + 20 + 16 + 2 + 8;
+    const home = isl.querySelector(".nav-home"); if (home) w -= home.scrollWidth + (parseFloat(getComputedStyle(home.parentElement).columnGap) || 0); /* HOME folds away once condensed */
+    isl.style.setProperty("--pillw", Math.min(w, innerWidth - 24) + "px");
+  }
+  function frame(){
+    shown = shown < 0 ? target : shown + (target - shown) * 0.12;
+    if (Math.abs(target - shown) < 0.002) shown = target;
+    nav.style.setProperty("--np", shown.toFixed(4));
+    nav.classList.toggle("scrolled", shown > 0.5);
+    raf = shown === target ? 0 : requestAnimationFrame(frame);
+  }
+  const onScroll = () => { const r = Math.min(1, Math.max(0, scrollY / RANGE)); target = r * r * (3 - 2 * r); if (!raf) raf = requestAnimationFrame(frame); };
+  measure(); addEventListener("resize", () => { measure(); onScroll(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  onScroll(); addEventListener("scroll", onScroll, { passive:true });
+}
+/* language switcher */
+(function langUI(){
+  const btn = document.getElementById("langBtn"), menu = document.getElementById("langMenu"), wrap = document.getElementById("lang");
+  if (!btn) return;
+  btn.addEventListener("click", e=>{ e.stopPropagation(); wrap.classList.toggle("open"); btn.setAttribute("aria-expanded", wrap.classList.contains("open")); });
+  menu.querySelectorAll("button").forEach(b=> b.addEventListener("click", ()=>{ setLang(b.dataset.l); wrap.classList.remove("open"); }));
+  document.addEventListener("click", ()=> wrap.classList.remove("open"));
+})();
+applyI18n();
+
+/* ---------------- glass page transitions ---------------- */
+(function transitions(){
+  const wipe = document.getElementById("pageWipe");
+  // entrance: clear the wipe after load
+  requestAnimationFrame(()=> document.body.classList.add("page-in"));
+  // intercept internal links
+  document.addEventListener("click", e=>{
+    const a = e.target.closest("a");
+    if (!a) return;
+    const href = a.getAttribute("href") || "";
+    if (a.target === "_blank" || href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("#")) return;
+    if (!/\.html(\#.*)?$/.test(href) && href !== "index.html") return;
+    // same-page hash handled natively; only wipe on real page change
+    const samePage = href.split("#")[0] === (location.pathname.split("/").pop() || "index.html");
+    if (samePage) return;
+    e.preventDefault();
+    document.body.classList.add("page-out");
+    setTimeout(()=> { location.href = href; }, 420);
+  });
+})();
+
+/* ---------------- atmosphere parallax (gives depth on scroll) ---------------- */
+(function parallax(){
+  const atmo = document.querySelector(".page-atmosphere"); if (!atmo) return;
+  let ticking = false;
+  /* gentle parallax: the layer is 130vh tall and travels at most 10vh over the whole page, so it stays close to the hero sky at the handoff and never leaves the screen */
+  function update(){ const max = Math.max(1, document.documentElement.scrollHeight - innerHeight); const p = Math.min(1, scrollY / max); atmo.style.transform = `translate3d(0, ${-p * 10}vh, 0)`; ticking = false; }
+  window.addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(update); } }, { passive:true });
+  update();
+})();
+
+/* ---------------- scroll reveal ---------------- */
+(function reveal(){
+  const els = document.querySelectorAll(".reveal");
+  if (!els.length) return;
+  if (!("IntersectionObserver" in window)){ els.forEach(e=>e.classList.add("in")); return; }
+  const io = new IntersectionObserver((es)=> es.forEach(en=>{ if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } }), { rootMargin:"0px 0px -12% 0px" });
+  els.forEach(e=>io.observe(e));
+})();
+
+/* ============================================================
+   WALLET (SAFE : read-only, no approve/permit, nothing sent out)
+   Production = Privy (dashboard.privy.io), PRIVY_APP_ID below.
+   ============================================================ */
+const PRIVY_APP_ID = "";
+const WALLETS = [
+  { id:"phantom",  name:"Phantom",  icon:"assets/wallets/phantom.png",  chain:"solana", detect:()=>window.solana?.isPhantom },
+  { id:"solflare", name:"Solflare", icon:"assets/wallets/solflare.png", chain:"solana", detect:()=>window.solflare?.isSolflare || window.solflare },
+  { id:"backpack", name:"Backpack", icon:"assets/wallets/backpack.png", chain:"solana", detect:()=>window.backpack?.isBackpack },
+  { id:"metamask", name:"MetaMask", icon:"assets/wallets/metamask.png", chain:"evm",    detect:()=>window.ethereum?.isMetaMask },
+  { id:"coinbase", name:"Coinbase Wallet", icon:"assets/wallets/coinbase.svg", chain:"evm", detect:()=>window.ethereum?.isCoinbaseWallet },
+  { id:"walletconnect", name:"WalletConnect", icon:"assets/wallets/walletconnect.png", chain:"multi", detect:()=>false },
+];
+const installUrls = { phantom:"https://phantom.com", solflare:"https://solflare.com", backpack:"https://backpack.app", metamask:"https://metamask.io", coinbase:"https://www.coinbase.com/wallet", walletconnect:"https://walletconnect.network" };
+const overlay = document.getElementById("walletOverlay");
+const walletList = document.getElementById("walletList");
+function buildWalletList(){
+  if (!walletList) return; walletList.innerHTML = "";
+  WALLETS.forEach(w=>{
+    const detected = (()=>{ try { return !!w.detect(); } catch(e){ return false; } })();
+    const btn = document.createElement("button");
+    btn.className = "wallet-item";
+    btn.innerHTML = `<span class="wi-ic"><img src="${w.icon}" alt="" /></span><span class="wi-name">${w.name}</span><span class="wi-meta ${detected?"detected":""}">${detected?"Detected":"Install ↗"}</span>`;
+    btn.addEventListener("click", ()=> chooseWallet(w, detected));
+    walletList.appendChild(btn);
+  });
+}
+function openWallet(){ if (overlay){ buildWalletList(); overlay.hidden = false; } }
+function closeWallet(){ if (overlay) overlay.hidden = true; }
+async function chooseWallet(w, detected){
+  if (PRIVY_APP_ID){ /* Privy init in production */ }
+  if (!detected){ window.open(installUrls[w.id] || "https://phantom.com", "_blank", "noopener"); return; }
+  let addr = null;
+  try {
+    if (w.chain === "solana"){ const prov = w.id==="solflare"?window.solflare:w.id==="backpack"?window.backpack:window.solana; const r = await prov.connect(); addr = (r?.publicKey||prov.publicKey)?.toString(); }
+    else if (w.chain === "evm"){ const a = await window.ethereum.request({ method:"eth_requestAccounts" }); addr = a?.[0]; }
+  } catch(e){ return; }
+  if (!addr) return; closeWallet(); onConnected(addr);
+}
+function shorten(a){ return a && a.length>12 ? a.slice(0,6)+"…"+a.slice(-4) : a; }
+function onConnected(addr){
+  document.querySelectorAll("#connectBtn, #connectBtn2").forEach(b=> b.textContent = shorten(addr));
+  const input = document.getElementById("addrInput"); if (input){ input.value = addr; renderResult(addr); document.getElementById("check")?.scrollIntoView({behavior:"smooth",block:"center"}); }
+}
+document.addEventListener("click", e=>{
+  if (e.target.closest("#connectBtn") || e.target.closest("#connectBtn2")) openWallet();
+  if (e.target.id === "walletClose") closeWallet();
+  if (e.target.id === "walletOverlay") closeWallet();
+});
+document.addEventListener("keydown", e=>{ if (e.key==="Escape") closeWallet(); });
+
+/* ---------------- booking modal (Book a launch night) : inquiry form, opens an email, no backend ---------------- */
+(function booking(){
+  const ov = document.getElementById("bookingOverlay"); if (!ov) return;
+  const form = ov.querySelector("#bookingForm"), done = ov.querySelector("#bookingDone");
+  function open(){ if (form){ form.hidden = false; } if (done){ done.hidden = true; } ov.hidden = false; }
+  function close(){ ov.hidden = true; }
+  window.__openBooking = open;
+  ov.addEventListener("click", e=>{
+    if (e.target === ov || e.target.closest("#bookingClose") || e.target.closest("#bookingDoneClose")){ close(); return; }
+    const chip = e.target.closest(".bk-chip");
+    if (chip){ chip.parentElement.querySelectorAll(".bk-chip").forEach(c=>c.classList.remove("on")); chip.classList.add("on"); }
+  });
+  if (form) form.addEventListener("submit", e=>{
+    e.preventDefault();
+    let ok = true;
+    form.querySelectorAll("[required]").forEach(f=>{ const bad = !f.value.trim(); f.closest(".bk-field")?.classList.toggle("invalid", bad); if (bad) ok = false; });
+    if (!ok){ form.querySelector(".invalid input")?.focus(); return; }
+    const g = n => (form.querySelector(`[name="${n}"]`)?.value || "").trim();
+    const chosen = f => ov.querySelector(`.bk-chips[data-field="${f}"] .bk-chip.on`)?.dataset.val || "";
+    const subject = `Launch night inquiry: ${g("project") || "new project"}`;
+    const body = [
+      `Project / token: ${g("project")}`,
+      `Name / handle: ${g("name")}`,
+      `Contact: ${g("contact")}`,
+      `Format: ${chosen("format")}`,
+      `When: ${chosen("when")}`,
+      ``,
+      `What they are dropping:`,
+      g("details") || "(not specified)",
+      ``,
+      `Sent from grablab.fun`
+    ].join("\n");
+    window.location.href = `mailto:contact@grablab.fun?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    if (form) form.hidden = true; if (done) done.hidden = false;
+  });
+  /* any "Book a launch night" / "Be the first project" CTA opens the form instead of a raw mailto */
+  document.addEventListener("click", e=>{
+    const a = e.target.closest('a[href^="mailto:contact@grablab.fun"]');
+    if (a && (a.classList.contains("btn") || a.dataset.i18n === "foot.book")){ e.preventDefault(); open(); }
+  });
+  document.addEventListener("keydown", e=>{ if (e.key === "Escape") close(); });
+})();
+
+/* ---------------- eligibility (local, read-only) ---------------- */
+function demoTierFor(addr){
+  let h=0; for (let i=0;i<addr.length;i++) h=(h*31+addr.charCodeAt(i))>>>0; const r=h%100;
+  if (r<8) return {tier:"Diamond", note:"5 free plays in the airdrop claw"};
+  if (r<28) return {tier:"Gold", note:"3 free plays in the airdrop claw"};
+  if (r<60) return {tier:"Iron", note:"1 free play in the airdrop claw"};
+  return null;
+}
+function renderResult(addr){
+  const box = document.getElementById("checkResult"); if (!box) return;
+  const e = demoTierFor(addr); box.hidden = false;
+  if (e){ box.className="check-result ok"; box.innerHTML = `<span class="tier">Eligible · ${e.tier}</span><div><code>${shorten(addr)}</code> gets <b>${e.note}</b>.<br>Grab your capsule live on launch night.</div>`; }
+  else { box.className="check-result no"; box.innerHTML = `<span class="tier">Not on the snapshot yet</span><div><code>${shorten(addr)}</code> isn't on the list for this draw.<br>Be early for the next launch.</div>`; }
+}
+document.addEventListener("click", e=>{
+  if (e.target.id === "checkBtn"){
+    const v = (document.getElementById("addrInput")?.value||"").trim(); const box = document.getElementById("checkResult");
+    if (v.length<8){ if (box){ box.hidden=false; box.className="check-result no"; box.innerHTML=`<span class="tier">Invalid address</span><div>Paste a valid Solana or EVM address.</div>`; } return; }
+    renderResult(v);
+  }
+});
+document.addEventListener("keydown", e=>{ if (e.key==="Enter" && e.target.id==="addrInput") document.getElementById("checkBtn")?.click(); });

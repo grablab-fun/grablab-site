@@ -1,0 +1,42 @@
+/* ============ PHYSICS LAB : our claw in MuJoCo, embedded from SimArena ============ */
+.lab-machine{position:relative;height:min(74vh,700px);aspect-ratio:3/4;display:grid;place-items:center}
+.lab-machine video{width:100%;height:100%;object-fit:contain}
+.lab-tag{position:absolute;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);padding:9px 14px;border-radius:999px;
+  background:rgba(5,9,24,.62);border:1px solid rgba(180,186,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:labFloat 5s ease-in-out infinite}
+.lab-tag::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#3b7bff;box-shadow:0 0 10px #3b7bff;margin-right:9px;vertical-align:1px}
+.lab-tag.t1{top:16%;left:-4%}
+.lab-tag.t2{top:46%;right:-6%;animation-delay:-1.6s}
+.lab-tag.t3{bottom:18%;left:2%;animation-delay:-3.2s}
+@keyframes labFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.lab-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:24px;overflow:hidden;padding:0;
+  box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px rgba(59,123,255,.12)}
+.lab-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#0b1024}
+.lab-cover{position:absolute;inset:0;display:grid;place-items:center}
+.lab-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(6px) brightness(.45) saturate(1.2);transform:scale(1.06)}
+.lab-cta{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.lab-play{position:relative;width:104px;height:104px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;background:var(--blue-chrome);
+  box-shadow:0 0 50px rgba(59,123,255,.55),inset 0 -8px 18px rgba(7,16,41,.3);transition:transform .25s}
+.lab-play::after{content:"";position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(125,176,255,.55);animation:labRing 2.4s ease-out infinite}
+@keyframes labRing{from{transform:scale(.85);opacity:1}to{transform:scale(1.5);opacity:0}}
+.lab-play svg{width:36px;height:36px;margin-left:6px;fill:#071029}
+.lab-play:hover{transform:scale(1.06)}
+.lab-cta b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:28px;letter-spacing:.06em;text-transform:uppercase}
+.lab-cta small{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#9cc0ff;max-width:46ch;line-height:1.7}
+.lab-frame.on .lab-cover{display:none}
+
+.lab-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px}
+.lab-links a{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2);padding:10px 16px;border-radius:999px;
+  border:1px solid rgba(180,186,255,.22);background:rgba(5,9,24,.45);transition:color .2s,border-color .2s}
+.lab-links a:hover{color:var(--ink);border-color:rgba(180,186,255,.5)}
+.lab-links a:first-child{color:#071029;background:var(--blue-chrome);border-color:transparent}
+
+.lab-ctrl{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.lab-slot{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:#071029;background:var(--blue-chrome);padding:5px 10px;border-radius:999px}
+.lab-ctrl code{font-family:var(--mono);font-size:13px;color:#9cc0ff}
+.lab-credit{text-align:center;margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.lab-credit a{color:var(--ink-2);border-bottom:1px solid rgba(180,186,255,.3)}
+
+@media(max-width:1000px){.lab-ctrl{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.lab-machine{height:56vh}.lab-tag.t1{left:0}.lab-tag.t2{right:0}}
+@media(max-width:620px){.lab-ctrl{grid-template-columns:1fr}.lab-frame{aspect-ratio:3/4}}

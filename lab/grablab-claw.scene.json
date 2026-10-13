@@ -1,0 +1,1628 @@
+{
+ "_format": "simarena/scene@1.0",
+ "name": "Grablab claw machine",
+ "sim": {
+  "timestep": 0.002,
+  "gravity": [
+   0,
+   0,
+   -9.81
+  ]
+ },
+ "material": {
+  "navy": {
+   "rgba": [
+    0.03,
+    0.05,
+    0.13,
+    1
+   ],
+   "metalness": 0.3,
+   "roughness": 0.55
+  },
+  "navy2": {
+   "rgba": [
+    0.06,
+    0.1,
+    0.29,
+    1
+   ],
+   "metalness": 0.35,
+   "roughness": 0.45
+  },
+  "trim": {
+   "rgba": [
+    0.12,
+    0.2,
+    0.56,
+    1
+   ],
+   "metalness": 0.6,
+   "roughness": 0.35
+  },
+  "chrome": {
+   "rgba": [
+    0.86,
+    0.89,
+    0.95,
+    1
+   ],
+   "metalness": 1,
+   "roughness": 0.16
+  },
+  "chrome_dk": {
+   "rgba": [
+    0.42,
+    0.46,
+    0.58,
+    1
+   ],
+   "metalness": 1,
+   "roughness": 0.25
+  },
+  "glass": {
+   "rgba": [
+    0.7,
+    0.76,
+    1,
+    0.1
+   ],
+   "metalness": 0.1,
+   "roughness": 0.05
+  },
+  "glass_bk": {
+   "rgba": [
+    0.18,
+    0.22,
+    0.55,
+    0.55
+   ],
+   "metalness": 0.1,
+   "roughness": 0.2
+  },
+  "shell": {
+   "rgba": [
+    0.85,
+    0.89,
+    1,
+    0.3
+   ],
+   "metalness": 0.2,
+   "roughness": 0.05
+  },
+  "gold": {
+   "rgba": [
+    1,
+    0.7,
+    0.29,
+    1
+   ],
+   "metalness": 0.9,
+   "roughness": 0.25,
+   "emission": 0.35
+  },
+  "violet": {
+   "rgba": [
+    0.6,
+    0.48,
+    1,
+    1
+   ],
+   "metalness": 0.8,
+   "roughness": 0.3,
+   "emission": 0.4
+  },
+  "rare": {
+   "rgba": [
+    0.23,
+    0.48,
+    1,
+    1
+   ],
+   "metalness": 0.9,
+   "roughness": 0.2,
+   "emission": 0.6
+  },
+  "led_blue": {
+   "rgba": [
+    0.23,
+    0.48,
+    1,
+    1
+   ],
+   "emission": 1
+  },
+  "led_cyan": {
+   "rgba": [
+    0.25,
+    0.91,
+    1,
+    1
+   ],
+   "emission": 1
+  },
+  "led_pink": {
+   "rgba": [
+    1,
+    0.36,
+    0.68,
+    1
+   ],
+   "emission": 1
+  },
+  "led_gold": {
+   "rgba": [
+    1,
+    0.75,
+    0.4,
+    1
+   ],
+   "emission": 1
+  },
+  "floor": {
+   "rgba": [
+    0.16,
+    0.19,
+    0.32,
+    1
+   ],
+   "metalness": 0.1,
+   "roughness": 0.9
+  }
+ },
+ "task": {
+  "instruction": "Drive the claw over a capsule, lower it to about -0.42, squeeze (grip 0.105 = 70%), lift, carry it over the gold chute (gantry_x -0.44, gantry_y -0.27) and open."
+ },
+ "entities": [
+  {
+   "name": "floor",
+   "geoms": [
+    {
+     "type": "plane",
+     "size": [
+      6,
+      6,
+      0.01
+     ],
+     "material": "floor"
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "cabinet",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.67,
+      0.7,
+      0.73
+     ],
+     "pos": [
+      0.115,
+      0,
+      0.365
+     ],
+     "material": "navy"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.23,
+      0.47,
+      0.73
+     ],
+     "pos": [
+      -0.335,
+      0.115,
+      0.365
+     ],
+     "material": "navy"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.23,
+      0.23,
+      0.28
+     ],
+     "pos": [
+      -0.335,
+      -0.235,
+      0.14
+     ],
+     "material": "navy"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.23,
+      0.23,
+      0.02
+     ],
+     "pos": [
+      -0.335,
+      -0.235,
+      0.29
+     ],
+     "material": "trim"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.01,
+      0.23,
+      0.45
+     ],
+     "pos": [
+      -0.445,
+      -0.235,
+      0.525
+     ],
+     "material": "navy"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.23,
+      0.01,
+      0.13
+     ],
+     "pos": [
+      -0.335,
+      -0.345,
+      0.685
+     ],
+     "material": "navy2"
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "playfield",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.64,
+      0.64,
+      0.02
+     ],
+     "pos": [
+      0.1,
+      0,
+      0.74
+     ],
+     "material": "navy2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.2,
+      0.44,
+      0.02
+     ],
+     "pos": [
+      -0.32,
+      0.1,
+      0.74
+     ],
+     "material": "navy2"
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "chute",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.012,
+      0.2,
+      0.1
+     ],
+     "pos": [
+      -0.22,
+      -0.22,
+      0.8
+     ],
+     "material": "glass"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.2,
+      0.012,
+      0.1
+     ],
+     "pos": [
+      -0.32,
+      -0.12,
+      0.8
+     ],
+     "material": "glass"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.014,
+      0.2,
+      0.008
+     ],
+     "pos": [
+      -0.22,
+      -0.22,
+      0.85
+     ],
+     "material": "led_gold",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.2,
+      0.014,
+      0.008
+     ],
+     "pos": [
+      -0.32,
+      -0.12,
+      0.85
+     ],
+     "material": "led_gold",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.21,
+      0.006,
+      0.01
+     ],
+     "pos": [
+      -0.335,
+      -0.352,
+      0.31
+     ],
+     "material": "led_gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "case",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.9,
+      0.01,
+      0.71
+     ],
+     "pos": [
+      0,
+      -0.345,
+      1.105
+     ],
+     "material": "glass"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.9,
+      0.01,
+      0.71
+     ],
+     "pos": [
+      0,
+      0.345,
+      1.105
+     ],
+     "material": "glass_bk"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.01,
+      0.7,
+      0.71
+     ],
+     "pos": [
+      -0.445,
+      0,
+      1.105
+     ],
+     "material": "glass"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.01,
+      0.7,
+      0.71
+     ],
+     "pos": [
+      0.445,
+      0,
+      1.105
+     ],
+     "material": "glass"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.92,
+      0.72,
+      0.1
+     ],
+     "pos": [
+      0,
+      0,
+      1.51
+     ],
+     "material": "navy"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.94,
+      0.05,
+      0.14
+     ],
+     "pos": [
+      0,
+      -0.355,
+      1.53
+     ],
+     "material": "navy2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.84,
+      0.006,
+      0.02
+     ],
+     "pos": [
+      0,
+      -0.382,
+      1.53
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.018,
+      0.018,
+      0.71
+     ],
+     "pos": [
+      -0.44,
+      -0.34,
+      1.105
+     ],
+     "material": "led_cyan",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.018,
+      0.018,
+      0.71
+     ],
+     "pos": [
+      0.44,
+      -0.34,
+      1.105
+     ],
+     "material": "led_pink",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.018,
+      0.018,
+      0.71
+     ],
+     "pos": [
+      -0.44,
+      0.34,
+      1.105
+     ],
+     "material": "led_cyan",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.018,
+      0.018,
+      0.71
+     ],
+     "pos": [
+      0.44,
+      0.34,
+      1.105
+     ],
+     "material": "led_pink",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.9,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      0,
+      0.338,
+      0.756
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "rails",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.03,
+      0.66,
+      0.02
+     ],
+     "pos": [
+      -0.41,
+      0,
+      1.4
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.03,
+      0.66,
+      0.02
+     ],
+     "pos": [
+      0.41,
+      0,
+      1.4
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "claw",
+   "asset": "grablab-claw-mech.asset.json",
+   "controller": {
+    "type": "direct",
+    "config": ""
+   }
+  },
+  {
+   "name": "capsule_01",
+   "transform": {
+    "pos": [
+     -0.1525,
+     -0.2445,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_02",
+   "transform": {
+    "pos": [
+     -0.0233,
+     -0.2622,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_03",
+   "transform": {
+    "pos": [
+     0.1097,
+     -0.2542,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_04",
+   "transform": {
+    "pos": [
+     0.2217,
+     -0.2487,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_05",
+   "transform": {
+    "pos": [
+     0.3544,
+     -0.2539,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_06",
+   "transform": {
+    "pos": [
+     -0.0854,
+     -0.1216,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_07",
+   "transform": {
+    "pos": [
+     0.0399,
+     -0.1314,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_08",
+   "transform": {
+    "pos": [
+     0.1509,
+     -0.1198,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_09",
+   "transform": {
+    "pos": [
+     0.281,
+     -0.1362,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_10",
+   "transform": {
+    "pos": [
+     -0.1294,
+     0.0127,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_11",
+   "transform": {
+    "pos": [
+     -0.0274,
+     0.0053,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_12",
+   "transform": {
+    "pos": [
+     0.1146,
+     0.0097,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_13",
+   "transform": {
+    "pos": [
+     0.2296,
+     0.0069,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_14",
+   "transform": {
+    "pos": [
+     0.3583,
+     0.0152,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_15",
+   "transform": {
+    "pos": [
+     -0.0932,
+     0.1309,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_16",
+   "transform": {
+    "pos": [
+     0.0404,
+     0.1308,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_17",
+   "transform": {
+    "pos": [
+     0.1453,
+     0.1299,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_18",
+   "transform": {
+    "pos": [
+     0.2742,
+     0.1299,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_19",
+   "transform": {
+    "pos": [
+     -0.1343,
+     0.2744,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_20",
+   "transform": {
+    "pos": [
+     -0.029,
+     0.2593,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_21",
+   "transform": {
+    "pos": [
+     0.1055,
+     0.2652,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_22",
+   "transform": {
+    "pos": [
+     0.224,
+     0.2573,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_23",
+   "transform": {
+    "pos": [
+     0.3582,
+     0.2539,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "key_light",
+   "transform": {
+    "pos": [
+     0.6,
+     -1.2,
+     2.2
+    ]
+   },
+   "light": {
+    "type": "spot",
+    "color": "#dfe6ff",
+    "intensity": 6,
+    "dir": [
+     -0.3,
+     0.6,
+     -0.8
+    ],
+    "angle": 0.7,
+    "castShadow": true
+   }
+  },
+  {
+   "name": "inner_glow",
+   "transform": {
+    "pos": [
+     0,
+     0.1,
+     1.36
+    ]
+   },
+   "light": {
+    "type": "point",
+    "color": "#7d84ff",
+    "intensity": 1.6,
+    "range": 1.4
+   }
+  },
+  {
+   "name": "chute_glow",
+   "transform": {
+    "pos": [
+     -0.32,
+     -0.22,
+     0.8
+    ]
+   },
+   "light": {
+    "type": "point",
+    "color": "#ffb24a",
+    "intensity": 0.8,
+    "range": 0.5
+   }
+  }
+ ]
+}

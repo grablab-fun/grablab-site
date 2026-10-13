@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rent the claw, Grablab</title>
+<meta name="description" content="Load your airdrop into capsules and let people grab it live on stream. Provably fair, settled on Solana." />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=20261015g" />
+<link rel="stylesheet" href="pages.css?v=20261015g" />
+<link rel="stylesheet" href="sub.css?v=18" />
+</head>
+<body data-page="rent">
+<!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
+<div class="loader" id="loader" aria-hidden="true">
+  <script>try{if(sessionStorage.getItem("gl_loaded")){document.getElementById("loader").remove();}}catch(e){}</script>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"></header>
+<main>
+  <!-- HERO : your airdrop parachutes into the machine -->
+  <section class="ph">
+    <div class="ph-copy">
+      <span class="eyebrow reveal">For projects · claw as a service</span>
+      <h1 class="reveal d1"><span class="line">Your airdrop,</span><span class="line hl">live on stream.</span></h1>
+      <p class="sub reveal d2">Your holders grab your tokens live.<br>Every drop settles on Solana.</p>
+      <div class="acts reveal d3"><a href="mailto:contact@grablab.fun" class="btn btn-primary big">Book a launch night</a><a href="provably-fair.html" class="btn btn-ghost big">Why it's fair</a></div>
+    </div>
+    <div class="ph-art reveal d2">
+      <div class="drop-scene">
+        <img class="mach" src="assets/claw-grab-poster-alpha.webp?v=2" alt="" />
+        <img class="para" src="assets/sub/para.png" alt="" />
+        <img class="para" src="assets/sub/para.png" alt="" />
+        <img class="para" src="assets/sub/para.png" alt="" />
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT RUNS -->
+  <section class="blk">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">How it runs</span><h2 class="reveal d1">You bring the prizes.<br><span class="hl">We run the night.</span></h2></div>
+      <div class="cards">
+        <div class="card glass glass-hover reveal"><div class="top"><img class="ico" src="assets/sub/vault.png" alt="" /><span class="num">01</span></div><h3>Lock the prizes</h3><p>Tokens go into escrow.<br>Nobody can touch them.</p></div>
+        <div class="card glass glass-hover reveal d1"><div class="top"><img class="ico" src="assets/sub/camera.png" alt="" /><span class="num">02</span></div><h3>Go live</h3><p>Your community plays on stream.<br>Every drop is a clip.</p></div>
+        <div class="card glass glass-hover reveal d2"><div class="top"><img class="ico" src="assets/sub/chart.png" alt="" /><span class="num">03</span></div><h3>Watch the numbers</h3><p>Plays, wallets, prizes paid.<br>One public dashboard.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODES -->
+  <section class="blk" id="modes">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Three modes</span><h2 class="reveal d1">Pick <span class="hl">how it runs.</span></h2></div>
+      <div class="cards">
+        <div class="card glass glass-hover reveal"><div class="top"><img class="ico" src="assets/sub/coinslot.png" alt="" /><span class="num">01</span></div><h3>Play to grab</h3><p>Players pay per play.<br>You earn on every try.</p></div>
+        <div class="card glass glass-hover pick reveal d1"><div class="top"><img class="ico" src="assets/sub/para.png" alt="" /><span class="tag">Recommended</span></div><h3>Airdrop claw</h3><p>Your holders play free.<br>The airdrop becomes a show.</p></div>
+        <div class="card glass glass-hover reveal d2"><div class="top"><img class="ico" src="assets/sub/megaphone.png" alt="" /><span class="num">03</span></div><h3>Community claw</h3><p>A KOL or DAO fills the machine for a week.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIDE THE CAPSULES -->
+  <section class="blk">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Inside the capsules</span><h2 class="reveal d1">Anything <span class="hl">on-chain.</span></h2></div>
+      <div class="shelf three">
+        <div class="prize glass reveal"><img src="assets/sub/token.png" alt="" /><h3>Your token</h3><p>SPL airdrops</p></div>
+        <div class="prize glass reveal d1"><img src="assets/sub/nft.png" alt="" /><h3>NFTs</h3><p>Collectibles and whitelists</p></div>
+        <div class="prize glass reveal d2"><img src="assets/sub/cap.png" alt="" /><h3>Merch</h3><p>Shipped, claimed on-chain</p></div>
+      </div>
+      <div class="sh c" style="margin:clamp(50px,8vh,80px) 0 0"><span class="k reveal">And real stocks</span><h2 class="reveal d1" style="font-size:clamp(30px,3.6vw,60px)">Tokenized stocks, <span class="hl">in a capsule.</span></h2></div>
+      <div class="stocks">
+        <div class="stk glass reveal" data-mint="XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB"><span class="lg" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/tesla.svg" alt="Tesla" /></span><div class="stk-id"><b>TSLAx</b></div><svg class="stk-chart" viewBox="0 0 340 64" preserveAspectRatio="none" aria-hidden="true"><path class="area" d="M0 52L28 47L57 49L85 39L113 41L142 30L170 33L198 22L227 26L255 14L283 17L312 9L340 12L340 64L0 64Z"/><path class="line" d="M0 52L28 47L57 49L85 39L113 41L142 30L170 33L198 22L227 26L255 14L283 17L312 9L340 12"/></svg><div class="stk-px"><b>&nbsp;</b><span>&nbsp;</span></div></div>
+        <div class="stk glass reveal d1" data-mint="Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh"><span class="lg" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/nvidia.svg" alt="NVIDIA" /></span><div class="stk-id"><b>NVDAx</b></div><svg class="stk-chart" viewBox="0 0 340 64" preserveAspectRatio="none" aria-hidden="true"><path class="area" d="M0 56L28 52L57 48L85 49L113 38L142 40L170 30L198 31L227 20L255 22L283 12L312 14L340 6L340 64L0 64Z"/><path class="line" d="M0 56L28 52L57 48L85 49L113 38L142 40L170 30L198 31L227 20L255 22L283 12L312 14L340 6"/></svg><div class="stk-px"><b>&nbsp;</b><span>&nbsp;</span></div></div>
+        <div class="stk glass reveal d2" data-mint="XsbEhLAtcf6HdfpFZ5xEMdqW8nfAvcsP5bdudRLJzJp"><span class="lg" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/apple.svg" alt="Apple" /></span><div class="stk-id"><b>AAPLx</b></div><svg class="stk-chart" viewBox="0 0 340 64" preserveAspectRatio="none" aria-hidden="true"><path class="area" d="M0 44L28 46L57 40L85 42L113 35L142 37L170 30L198 32L227 24L255 26L283 19L312 21L340 15L340 64L0 64Z"/><path class="line" d="M0 44L28 46L57 40L85 42L113 35L142 37L170 30L198 32L227 24L255 26L283 19L312 21L340 15"/></svg><div class="stk-px"><b>&nbsp;</b><span>&nbsp;</span></div></div>
+        <div class="stk glass reveal d3" data-mint="XsCPL9dNWBMvFtTmwcCA5v3xWPSMEBCszbQdiLLq6aN"><span class="lg" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/google.svg" alt="Alphabet" /></span><div class="stk-id"><b>GOOGLx</b></div><svg class="stk-chart" viewBox="0 0 340 64" preserveAspectRatio="none" aria-hidden="true"><path class="area" d="M0 50L28 48L57 46L85 47L113 42L142 39L170 37L198 34L227 30L255 27L283 22L312 18L340 14L340 64L0 64Z"/><path class="line" d="M0 50L28 48L57 46L85 47L113 42L142 39L170 37L198 34L227 30L255 27L283 22L312 18L340 14"/></svg><div class="stk-px"><b>&nbsp;</b><span>&nbsp;</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMATS -->
+  <section class="blk">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Formats</span><h2 class="reveal d1">The machine stays.<br><span class="hl">The tenant changes.</span></h2></div>
+      <div class="fmts">
+        <div class="fm glass glass-hover reveal">
+          <img class="fm-img" src="assets/fmt/launch.jpg?v=2" alt="" />
+          <div class="fm-b"><h3>Launch night</h3><p class="fm-how">Your token launches. Holders grab it live.</p>
+            <dl><dt>For</dt><dd>Founders on machine.fun at TGE</dd><dt>Reach</dt><dd>Your launch becomes a live show, every drop a clip.</dd></dl></div>
+        </div>
+        <div class="fm glass glass-hover reveal d1">
+          <img class="fm-img" src="assets/fmt/battle.jpg?v=2" alt="" />
+          <div class="fm-b"><h3>Claw battles</h3><p class="fm-how">Two communities, one leaderboard.</p>
+            <dl><dt>For</dt><dd>Partner projects, rival memes</dd><dt>Reach</dt><dd>Both audiences watch, both timelines post.</dd></dl></div>
+        </div>
+        <div class="fm glass glass-hover reveal d2">
+          <img class="fm-img" src="assets/fmt/kol.jpg?v=2" alt="" />
+          <div class="fm-b"><h3>KOL claw</h3><p class="fm-how">A creator hosts the machine for a week.</p>
+            <dl><dt>For</dt><dd>Projects buying reach</dd><dt>Reach</dt><dd>The KOL's followers play your airdrop live.</dd></dl></div>
+        </div>
+        <div class="fm glass glass-hover reveal">
+          <img class="fm-img" src="assets/fmt/whale.jpg?v=2" alt="" />
+          <div class="fm-b"><h3>Whale drop</h3><p class="fm-how">One golden capsule, one big prize.</p>
+            <dl><dt>For</dt><dd>Treasuries and big sponsors</dd><dt>Reach</dt><dd>The jackpot moment is the clip everyone shares.</dd></dl></div>
+        </div>
+        <div class="fm glass glass-hover reveal d1">
+          <img class="fm-img" src="assets/fmt/holder.jpg?v=2" alt="" />
+          <div class="fm-b"><h3>Holder drop</h3><p class="fm-how">Only wallets holding your token can play.</p>
+            <dl><dt>For</dt><dd>Projects rewarding real holders</dd><dt>Reach</dt><dd>A reason to buy and hold before the night.</dd></dl></div>
+        </div>
+        <div class="fm glass glass-hover reveal d2">
+          <img class="fm-img" src="assets/fmt/conf.jpg?v=2" alt="" />
+          <div class="fm-b"><h3>Conference units</h3><p class="fm-how">A real machine at your booth.</p>
+            <dl><dt>For</dt><dd>Events like Token2049 and Breakpoint</dd><dt>Reach</dt><dd>The longest queue at the expo, streamed online.</dd></dl></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="callout glass reveal">
+    <h2 class="chrome">Be the first project in the machine.</h2>
+    <a href="mailto:contact@grablab.fun" class="btn btn-primary big">Book a launch night</a>
+  </section>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js?v=20261015g"></script>
+<script src="sub.js?v=6"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Grablab: the claw that can't cheat you</title>
+<meta name="description" content="A real claw machine, played from the browser, where every capsule holds an on-chain prize and every play is proven fair on Solana. Rent the claw, load your airdrop, let people grab it live." />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=20261015g" />
+<link rel="stylesheet" href="pages.css?v=20261015g" />
+</head>
+<body data-page="home">
+<!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
+<div class="loader" id="loader" aria-hidden="true">
+  <script>try{if(sessionStorage.getItem("gl_loaded")){document.getElementById("loader").remove();}}catch(e){}</script>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"></header>
+
+<!-- HERO : pinned scene, scroll drives four chapters -->
+<section class="scene" id="scene">
+  <div class="stage" id="stage" data-ch="0">
+    <div class="sky" aria-hidden="true"></div>
+    <div class="hero-machine">
+      <div class="claw-frame">
+        <video id="clawVideo" muted loop playsinline preload="auto" poster="assets/claw-grab-poster-alpha.webp?v=2">
+          <source src="assets/claw-grab-alpha.webm?v=2" type="video/webm" />
+          <source src="assets/claw-grab.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <span class="fall-capsule" id="fallCapsule" aria-hidden="true"></span>
+    </div>
+    <div class="hud chap" id="hudChap"><span class="on"></span><span></span><span></span><span></span></div>
+    <div class="hud br"><div class="bar"><i id="hudBar"></i></div><span id="hudPct">00</span></div>
+    <div class="copy" id="copy">
+      <span class="eyebrow" id="eyebrow"></span>
+      <h1 id="h1"></h1>
+      <p class="sub" id="sub"></p>
+      <div class="acts" id="acts">
+        <a href="provably-fair.html" class="btn btn-primary big">See how it works</a>
+        <a href="rent.html" class="btn btn-ghost big">Rent the claw</a>
+      </div>
+    </div>
+    <div class="scroll-hint" id="hint">Scroll to begin</div>
+  </div>
+</section>
+
+
+<!-- PROBLEM + CATCH : struck problems left (half the screen), glass tray + verification right, under the hero chute -->
+<section class="problem" id="statement">
+  <div class="problem-row">
+    <div class="problem-text reveal">
+      <span class="kicker">The problem</span>
+      <p class="strike"><span class="t">Claw machines are <em>rigged</em>.</span><img src="assets/prob/rigged.webp" alt="" /></p>
+      <p class="strike"><span class="t">Crypto airdrops are <em>invisible</em>.</span><img src="assets/prob/ghost.webp" alt="" /></p>
+      <p class="fixed">We fixed both.</p>
+    </div>
+    <div class="catch-col" id="catchCol">
+      <div class="catch-stack">
+        <div class="bin" id="bowl"><img class="tray-img" src="assets/prob/tray-empty.webp" alt="" /><div class="bin-fill" id="bowlInner"></div></div>
+        <div class="verify" id="verify">
+          <div class="v-head"><span class="v-k">Verified drops</span><b id="vCount">0</b></div>
+          <div class="v-hash" id="vHash">waiting for a drop</div>
+          <div class="v-steps">
+            <span class="st" id="vc1"><i><img src="assets/sub/v-beam.png" alt="" /></i><small>Beam</small></span>
+            <span class="st" id="vc2"><i><img src="assets/sub/v-camera.png" alt="" /></i><small>Camera</small></span>
+            <span class="st" id="vc3"><i><img src="assets/sub/v-sign.png" alt="" /></i><small>Signature</small></span>
+            <span class="st settle" id="vc4"><i><img src="assets/sub/v-settled.png" alt="" /></i><small>Settled</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSIDE : the dissection video, lower on the page -->
+<section class="section inside-show" id="inside">
+  <div class="section-head center-head">
+    <span class="kicker reveal">Inside the machine</span>
+    <h2 class="reveal d1">See every part that makes it honest.</h2>
+    <p class="lead reveal d2">Every part has a job in the proof.</p>
+  </div>
+  <div class="inside-grid">
+    <div class="inside-video glass reveal">
+      <video id="heroVideo" autoplay muted loop playsinline poster="assets/hero-loop-poster.jpg">
+        <source src="assets/hero-loop.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="inside-steps">
+      <div class="istep glass glass-hover reveal"><div class="istep-ic"><img src="assets/icons/cabinet.png" alt="" /><span class="in">01</span></div><div><h4>A real claw, not a simulation</h4><p>Driven from your browser.</p></div></div>
+      <div class="istep glass glass-hover reveal d1"><div class="istep-ic"><img src="assets/icons/gauge.png" alt="" /><span class="in">02</span></div><div><h4>Grip strength, set on-chain</h4><p>Promised, then measured.</p></div></div>
+      <div class="istep glass glass-hover reveal d2"><div class="istep-ic"><img src="assets/icons/chip.png" alt="" /><span class="in">03</span></div><div><h4>The machine signs every play</h4><p>A key it can't fake.</p></div></div>
+      <div class="istep glass glass-hover reveal d3"><div class="istep-ic"><img src="assets/icons/lens.png" alt="" /><span class="in">04</span></div><div><h4>Camera and sensor, hashed together</h4><p>The drop, proven.</p></div></div>
+      <div class="istep glass glass-hover reveal d4"><div class="istep-ic"><img src="assets/icons/wallet.png" alt="" /><span class="in">05</span></div><div><h4>The prize lands in your wallet</h4><p>Seconds.<br>Or a refund.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEASERS : three audiences, three pages -->
+<section class="section">
+  <div class="section-head">
+    <span class="kicker reveal">Where to go next</span>
+    <h2 class="reveal d1">Three ways in.</h2>
+  </div>
+  <div class="teasers">
+    <a href="provably-fair.html" class="teaser glass glass-hover reveal">
+      <img class="teaser-ic" src="assets/icons/proof.png" alt="" />
+      <span class="tk">Provably fair</span>
+      <h3>How the proof works</h3>
+      <p>Five public proofs per play.</p>
+      <span class="go">Read the proof</span>
+    </a>
+    <a href="rent.html" class="teaser glass glass-hover reveal d1">
+      <img class="teaser-ic" src="assets/icons/claw.png" alt="" />
+      <span class="tk">For projects</span>
+      <h3>Rent the claw</h3>
+      <p>Your airdrop, live on stream.</p>
+      <span class="go">See the model</span>
+    </a>
+    <a href="participate.html" class="teaser glass glass-hover reveal d2">
+      <img class="teaser-ic" src="assets/icons/joystick.png" alt="" />
+      <span class="tk">For players</span>
+      <h3>Participate</h3>
+      <p>Hold, check, grab.</p>
+      <span class="go">How to play</span>
+    </a>
+  </div>
+</section>
+
+<section class="callout glass reveal">
+  <h2 class="chrome">One machine. One stream.<br>One launch night.</h2>
+  <p>Looking for a first tenant.</p>
+  <a href="mailto:contact@grablab.fun" class="btn btn-primary big">Be the first project in the machine</a>
+</section>
+
+<footer id="site-footer"></footer>
+<script src="site.js?v=20261015g"></script>
+<script src="app.js?v=20261015g"></script>
+</body>
+</html>
