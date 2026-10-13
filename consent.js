@@ -43,13 +43,19 @@
 .glc-save{display:none}
 .glc.cfg .glc-save{display:flex}
 .glc.cfg .glc-main{display:none}
-.foot-legal{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
-.foot-legal a,.foot-legal button{font:inherit;color:inherit;opacity:.8;background:none;border:0;padding:0;cursor:pointer;letter-spacing:inherit;text-transform:inherit}
-.foot-legal a:hover,.foot-legal button:hover{opacity:1}
 @media(max-width:520px){.glc{left:12px;right:12px;width:auto;bottom:12px;padding:18px}.glc-row{flex-direction:column}}`;
 
+  /* styles go in at once: the footer "Cookie settings" row needs them even when the banner never shows */
+  const style = document.createElement("style");
+  style.textContent = css + `
+.foot-legal{display:flex;flex-wrap:wrap;align-items:center;gap:8px 0}
+.foot-legal a,.foot-legal button{-webkit-appearance:none;appearance:none;background:transparent;border:0;padding:0;margin:0;cursor:pointer;
+  font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;opacity:.85;transition:opacity .2s,color .2s}
+.foot-legal a:hover,.foot-legal button:hover{opacity:1;color:#fff}
+.foot-legal > *+*::before{content:"·";display:inline-block;margin:0 14px;opacity:.5;pointer-events:none}`;
+  document.head.appendChild(style);
+
   function el(){
-    const s = document.createElement("style"); s.textContent = css; document.head.appendChild(s);
     const d = document.createElement("div");
     d.className = "glc"; d.hidden = true;
     d.setAttribute("role", "dialog"); d.setAttribute("aria-live", "polite"); d.setAttribute("aria-label", "Cookie choices");
