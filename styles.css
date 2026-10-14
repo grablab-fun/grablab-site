@@ -207,7 +207,8 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
 @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
 .wallet-side{position:relative;padding:30px;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--line)}
 /* the original claw artwork, scaled by height so the whole claw (its middle fifth) sits centred in the panel */
-.wallet-side::before{content:"";position:absolute;inset:0;background:url("assets/zone-proof.png") 50% 58%/auto 68% no-repeat;opacity:.85;filter:saturate(.85)}
+.wallet-side::before{content:"";position:absolute;inset:0;background:url("assets/zone-proof.png") 50% 58%/auto 68% no-repeat;opacity:.85;filter:saturate(.85);
+  -webkit-mask-image:linear-gradient(180deg,transparent 21%,#000 38%,#000 66%,transparent 84%);mask-image:linear-gradient(180deg,transparent 21%,#000 38%,#000 66%,transparent 84%)}
 .wallet-side::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,14,27,.92) 0%,rgba(11,14,27,.2) 34%,rgba(11,14,27,.1) 70%,rgba(11,14,27,.85) 100%)}
 .wallet-side>*{position:relative;z-index:1}
 .wallet-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:17px;margin-bottom:18px}
