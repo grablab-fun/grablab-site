@@ -11,3 +11,4 @@ palette.html
 
 .vercel
 .env*
+*.src.png

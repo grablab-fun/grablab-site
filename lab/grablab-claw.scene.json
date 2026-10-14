@@ -168,6 +168,94 @@
    ],
    "metalness": 0.1,
    "roughness": 0.9
+  },
+  "concrete": {
+   "rgba": [
+    0.1,
+    0.11,
+    0.15,
+    1
+   ],
+   "metalness": 0.05,
+   "roughness": 0.95
+  },
+  "wall": {
+   "rgba": [
+    0.06,
+    0.07,
+    0.11,
+    1
+   ],
+   "metalness": 0.12,
+   "roughness": 0.75
+  },
+  "wall_lt": {
+   "rgba": [
+    0.1,
+    0.12,
+    0.18,
+    1
+   ],
+   "metalness": 0.15,
+   "roughness": 0.7
+  },
+  "paint": {
+   "rgba": [
+    0.12,
+    0.18,
+    0.42,
+    1
+   ],
+   "metalness": 0.2,
+   "roughness": 0.6
+  },
+  "cam_body": {
+   "rgba": [
+    0.04,
+    0.05,
+    0.08,
+    1
+   ],
+   "metalness": 0.45,
+   "roughness": 0.4
+  },
+  "lens": {
+   "rgba": [
+    0.08,
+    0.1,
+    0.18,
+    1
+   ],
+   "metalness": 0.75,
+   "roughness": 0.12
+  },
+  "rec": {
+   "rgba": [
+    1,
+    0.2,
+    0.25,
+    1
+   ],
+   "emission": 1.2
+  },
+  "truss": {
+   "rgba": [
+    0.28,
+    0.31,
+    0.4,
+    1
+   ],
+   "metalness": 0.8,
+   "roughness": 0.35
+  },
+  "fixture": {
+   "rgba": [
+    0.9,
+    0.93,
+    1,
+    1
+   ],
+   "emission": 0.9
   }
  },
  "task": {
@@ -180,11 +268,91 @@
     {
      "type": "plane",
      "size": [
-      6,
-      6,
-      0.01
+      10,
+      10,
+      0.05
      ],
-     "material": "floor"
+     "material": "concrete"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.85,
+      0.72,
+      0.003
+     ],
+     "pos": [
+      -0.335,
+      0,
+      0.003
+     ],
+     "material": "paint",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.86,
+      0.01,
+      0.006
+     ],
+     "pos": [
+      -0.335,
+      -0.74,
+      0.006
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.86,
+      0.01,
+      0.006
+     ],
+     "pos": [
+      -0.335,
+      0.74,
+      0.006
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.01,
+      0.74,
+      0.006
+     ],
+     "pos": [
+      -1.195,
+      0,
+      0.006
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.01,
+      0.74,
+      0.006
+     ],
+     "pos": [
+      0.525,
+      0,
+      0.006
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -613,6 +781,599 @@
       1.4
      ],
      "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "hall",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      4.12,
+      0.12,
+      2.8
+     ],
+     "pos": [
+      0,
+      2.2,
+      1.4
+     ],
+     "material": "wall"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.12,
+      3.8,
+      2.8
+     ],
+     "pos": [
+      -2,
+      0.3,
+      1.4
+     ],
+     "material": "wall_lt"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.12,
+      3.8,
+      2.8
+     ],
+     "pos": [
+      2,
+      0.3,
+      1.4
+     ],
+     "material": "wall_lt"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.95,
+      0.05,
+      0.34
+     ],
+     "pos": [
+      0,
+      2.11,
+      2
+     ],
+     "material": "navy2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.9,
+      0.012,
+      0.01
+     ],
+     "pos": [
+      0,
+      2.09,
+      1.82
+     ],
+     "material": "led_cyan",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      3.7,
+      0.02,
+      0.018
+     ],
+     "pos": [
+      0,
+      2.09,
+      1.25
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "truss",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      3.7,
+      0.035,
+      0.035
+     ],
+     "pos": [
+      0,
+      -0.35,
+      3.15
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      3.7,
+      0.035,
+      0.035
+     ],
+     "pos": [
+      0,
+      1.35,
+      3.15
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.035,
+      1.1,
+      0.035
+     ],
+     "pos": [
+      -1.3,
+      0.5,
+      3.15
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.035,
+      1.1,
+      0.035
+     ],
+     "pos": [
+      1.3,
+      0.5,
+      3.15
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.11,
+      0.11,
+      0.05
+     ],
+     "pos": [
+      -1.05,
+      -0.35,
+      3.1
+     ],
+     "material": "fixture",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.11,
+      0.11,
+      0.05
+     ],
+     "pos": [
+      1.05,
+      -0.35,
+      3.1
+     ],
+     "material": "fixture",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.11,
+      0.11,
+      0.05
+     ],
+     "pos": [
+      0,
+      1.35,
+      3.1
+     ],
+     "material": "fixture",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "rig_1",
+   "transform": {
+    "pos": [
+     -1.05,
+     -0.35,
+     3.1
+    ]
+   },
+   "light": {
+    "type": "spot",
+    "color": "#eaf0ff",
+    "intensity": 5,
+    "dir": [
+     0.28,
+     0.22,
+     -0.9
+    ],
+    "angle": 0.8,
+    "castShadow": true
+   }
+  },
+  {
+   "name": "rig_2",
+   "transform": {
+    "pos": [
+     1.05,
+     -0.35,
+     3.1
+    ]
+   },
+   "light": {
+    "type": "spot",
+    "color": "#dfe6ff",
+    "intensity": 4.5,
+    "dir": [
+     -0.28,
+     0.22,
+     -0.9
+    ],
+    "angle": 0.8
+   }
+  },
+  {
+   "name": "back_glow",
+   "transform": {
+    "pos": [
+     0,
+     2.2,
+     2.4
+    ]
+   },
+   "light": {
+    "type": "point",
+    "color": "#7d84ff",
+    "intensity": 2.2,
+    "range": 5
+   }
+  },
+  {
+   "name": "cam_left",
+   "geoms": [
+    {
+     "type": "cylinder",
+     "radius": 0.016,
+     "height": 1.06,
+     "pos": [
+      -1.15,
+      -1.35,
+      0.53
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.12,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      -1.2491,
+      -1.3366,
+      0.012
+     ],
+     "material": "truss",
+     "quat": [
+      0.0673,
+      0,
+      0,
+      0.9977
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.12,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      -1.2148,
+      -1.4261,
+      0.012
+     ],
+     "material": "truss",
+     "quat": [
+      -0.4192,
+      0,
+      0,
+      0.9079
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.12,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      -1.121,
+      -1.4457,
+      0.012
+     ],
+     "material": "truss",
+     "quat": [
+      -0.8032,
+      0,
+      0,
+      0.5957
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.05,
+      0.05,
+      0.04
+     ],
+     "pos": [
+      -1.15,
+      -1.35,
+      1.18
+     ],
+     "material": "cam_body",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.13,
+      0.075,
+      0.08
+     ],
+     "pos": [
+      -1.15,
+      -1.35,
+      1.24
+     ],
+     "material": "cam_body",
+     "quat": [
+      0.9079,
+      0,
+      0,
+      0.4192
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.06,
+      0.045,
+      0.045
+     ],
+     "pos": [
+      -1.0852,
+      -1.2739,
+      1.24
+     ],
+     "material": "lens",
+     "quat": [
+      0.9079,
+      0,
+      0,
+      0.4192
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.009,
+      0.009,
+      0.009
+     ],
+     "pos": [
+      -1.1415,
+      -1.2784,
+      1.29
+     ],
+     "material": "rec",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "cam_right",
+   "geoms": [
+    {
+     "type": "cylinder",
+     "radius": 0.016,
+     "height": 1.06,
+     "pos": [
+      1.15,
+      -1.35,
+      0.53
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.12,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      1.121,
+      -1.4457,
+      0.012
+     ],
+     "material": "truss",
+     "quat": [
+      -0.5957,
+      0,
+      0,
+      0.8032
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.12,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      1.2148,
+      -1.4261,
+      0.012
+     ],
+     "material": "truss",
+     "quat": [
+      -0.9079,
+      0,
+      0,
+      0.4192
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.12,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      1.2491,
+      -1.3366,
+      0.012
+     ],
+     "material": "truss",
+     "quat": [
+      -0.9977,
+      0,
+      0,
+      -0.0673
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.05,
+      0.05,
+      0.04
+     ],
+     "pos": [
+      1.15,
+      -1.35,
+      1.18
+     ],
+     "material": "cam_body",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.13,
+      0.075,
+      0.08
+     ],
+     "pos": [
+      1.15,
+      -1.35,
+      1.24
+     ],
+     "material": "cam_body",
+     "quat": [
+      0.4192,
+      0,
+      0,
+      0.9079
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.06,
+      0.045,
+      0.045
+     ],
+     "pos": [
+      1.0852,
+      -1.2739,
+      1.24
+     ],
+     "material": "lens",
+     "quat": [
+      0.4192,
+      0,
+      0,
+      0.9079
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.009,
+      0.009,
+      0.009
+     ],
+     "pos": [
+      1.0806,
+      -1.3303,
+      1.29
+     ],
+     "material": "rec",
      "contype": 0,
      "conaffinity": 0
     }

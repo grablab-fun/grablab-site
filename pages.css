@@ -52,11 +52,6 @@ body.page-in main,body.page-in .hero{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.scroll-cue .mouse::before,.scroll-cue .lbl{animation:none}}
 
 /* ---- mobile menu ---- */
-.burger{display:none;flex-direction:column;gap:5px;width:40px;height:40px;align-items:center;justify-content:center;border:1px solid var(--line-2);border-radius:10px;background:rgba(255,255,255,.04);cursor:pointer}
-.burger i{display:block;width:17px;height:1.6px;background:var(--ink);transition:.3s}
-.burger.on i:nth-child(1){transform:translateY(6.6px) rotate(45deg)}
-.burger.on i:nth-child(2){opacity:0}
-.burger.on i:nth-child(3){transform:translateY(-6.6px) rotate(-45deg)}
 .mobile-menu{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 8vw;
   background:rgba(6,8,16,.8);backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity .3s}
 .mobile-menu.open{opacity:1;pointer-events:auto}
@@ -115,7 +110,7 @@ body.page-in main,body.page-in .hero{opacity:1;transform:none}
 @media(max-width:900px){
   .nav-links{display:none}
   .lang{display:none}
-  .burger{display:flex}
+
   .feat-grid,.feat-grid.two,.teasers{grid-template-columns:1fr}
   .stepcard{grid-template-columns:1fr;gap:10px;text-align:left}
 }
@@ -953,4 +948,43 @@ body.is-loading{overflow:hidden}
   .inside-show .istep h4{font-size:clamp(15px,2vh,18px);margin-bottom:3px}
   .inside-show .istep p{font-size:13.5px}
   .inside-show .istep-ic img{width:clamp(34px,4.6vh,46px);height:clamp(34px,4.6vh,46px)}
+}
+
+/* ============ PHONE HERO : smaller machine up top, copy fits the same screen ============ */
+@media(max-width:900px){
+  .stage .hero-machine{top:clamp(76px,10vh,96px)!important;height:min(38vh,360px)!important;left:0;right:0;width:auto}
+  .stage .claw-frame{height:100%!important;width:auto;margin:0 auto}
+  .stage .copy{bottom:clamp(54px,8vh,80px);left:20px;right:20px}
+  .stage .copy .eyebrow{font-size:9.5px;letter-spacing:.22em;margin-bottom:10px}
+  .stage .copy h1{font-size:clamp(40px,12.2vw,64px);line-height:.92;margin-bottom:14px}
+  .stage .copy .sub{font-size:10.5px;letter-spacing:.1em;line-height:1.65;margin-bottom:16px;min-height:0}
+  .stage .copy .acts{flex-wrap:wrap}.stage .copy .acts .btn{flex:1;justify-content:center;padding:14px 18px;font-size:14px}
+  .scroll-hint{bottom:18px}
+  .problem{padding-top:60px}
+}
+/* phone hero: copy on top, machine anchored to the bottom of the screen */
+@media(max-width:900px){
+  .stage .copy{top:clamp(108px,15vh,136px);bottom:auto}
+  .stage .hero-machine{top:auto!important;bottom:52px;height:min(50vh,calc(100vh - 430px),460px)!important}
+  .scroll-hint{bottom:18px}
+}
+
+/* Safari / iOS: stacked-alpha claw drawn on a canvas (alpha-video.js), the real video plays hidden underneath */
+.stage .claw-frame video.alpha-src{opacity:0}
+.stage .claw-frame .alpha-cv{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;background:center/contain no-repeat;
+  mask-image:linear-gradient(180deg,transparent 0%,#000 9%,#000 84%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 9%,#000 84%,transparent 100%)}
+
+/* hero eyebrow : Built on machine.fun, with their mark */
+.stage .copy .eyebrow .eb-dot{font-style:normal;opacity:.6;margin:0 .35em}
+.stage .copy .eyebrow .eb-mf{display:inline-flex;align-items:center;gap:.45em;color:var(--ink);pointer-events:auto;transition:opacity .2s;vertical-align:middle}
+.stage .copy .eyebrow .eb-mf img{width:1.9em;height:1.9em;margin:-.5em 0;display:block}
+.stage .copy .eyebrow .eb-mf:hover{opacity:.75}
+
+/* phone hero : story-style chapter bar, 4 segments filled by scroll (--p from app.js) */
+.chap-bar{display:none}
+@media(max-width:900px){
+  .chap-bar{position:absolute;z-index:4;left:20px;right:20px;top:calc(clamp(108px,15vh,136px) - 34px);display:flex;align-items:center;gap:6px;pointer-events:none}
+  .chap-bar .seg{flex:1;height:2px;border-radius:2px;background:rgba(243,244,251,.18);overflow:hidden}
+  .chap-bar .seg i{display:block;height:100%;background:var(--ink);transform-origin:left;transform:scaleX(clamp(0,calc(var(--p,0) * 4 - var(--i)),1))}
+  .chap-bar em{font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:rgba(243,244,251,.6);margin-left:6px;white-space:nowrap}
 }

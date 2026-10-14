@@ -10,8 +10,8 @@
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
 <link rel="stylesheet" href="styles.css?v=20261015h" />
 <link rel="stylesheet" href="pages.css?v=20261015e" />
-<link rel="stylesheet" href="sub.css?v=17" />
-<link rel="stylesheet" href="lab.css?v=2" />
+<link rel="stylesheet" href="sub.css?v=29" />
+<link rel="stylesheet" href="lab.css?v=13" />
 </head>
 <body data-page="lab">
 <div class="loader" id="loader" aria-hidden="true">
@@ -25,19 +25,15 @@
   <section class="ph">
     <div class="ph-copy">
       <span class="eyebrow reveal">Physics lab</span>
-      <h1 class="reveal d1"><span class="line">Real physics.</span><span class="line"><span class="hl">Same claw.</span></span></h1>
+      <h1 class="reveal d1"><span class="line">Real physics,</span><span class="line"><span class="hl">Same claw.</span></span></h1>
       <p class="sub reveal d2">Our machine, rebuilt in MuJoCo.<br>Drive it yourself in SimArena.</p>
       <div class="acts reveal d3"><a href="#lab" class="btn btn-primary big" data-lab-load>Open the lab</a><a href="participate.html#simulate" class="btn btn-ghost big">Quick simulator</a></div>
+      <div class="lab-specs reveal d3"><span>MuJoCo physics</span><span>3-finger claw</span><span>Grip 70%</span><a class="pwr" href="https://codecflow.ai" target="_blank" rel="noopener"><img src="assets/brand/partners/codecflow-dark.svg" alt="" />Powered by CodecFlow</a></div>
     </div>
     <div class="ph-art reveal d2">
-      <div class="lab-machine">
-        <video muted loop autoplay playsinline poster="assets/claw-grab-poster-alpha.webp?v=2">
-          <source src="assets/claw-grab-alpha.webm?v=2" type="video/webm" />
-          <source src="assets/claw-grab.mp4" type="video/mp4" />
-        </video>
-        <span class="lab-tag t1">MuJoCo</span>
-        <span class="lab-tag t2">3-finger claw</span>
-        <span class="lab-tag t3">Grip 70%</span>
+      <div class="lab-machine studio">
+        <img class="lab-mach" src="assets/mach-studio.webp?v=3" alt="The Grablab claw machine with joystick, controls and a camera" />
+        <img class="lab-logo" src="assets/brand/logo-lockup-trans.png?v=1" alt="" aria-hidden="true" />
       </div>
     </div>
   </section>
@@ -48,11 +44,11 @@
       <div class="sh c"><span class="k reveal">Live in your browser</span><h2 class="reveal d1">Drive the <span class="hl">real claw.</span></h2></div>
       <div class="lab-frame glass reveal" id="labFrame">
         <div class="lab-cover" id="labCover">
-          <img src="assets/sim-preview-poster.jpg" alt="" />
+          <img src="assets/fmt/holder.jpg?v=4" alt="" />
           <div class="lab-cta">
             <button class="lab-play" type="button" data-lab-load aria-label="Load the physics lab"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></button>
             <b>Load the lab</b>
-            <small id="labNote">9 MB physics engine · desktop works best</small>
+            <small id="labNote">9 MB physics engine, desktop works best</small>
           </div>
         </div>
       </div>
@@ -75,7 +71,7 @@
         <div class="card glass glass-hover reveal d2"><div class="top"><img class="ico" src="assets/icons/claw.png" alt="" /><span class="lab-slot">lift</span></div><h3>Lower</h3><p>About <code>-0.42</code> to cradle</p></div>
         <div class="card glass glass-hover reveal d3"><div class="top"><img class="ico" src="assets/icons/gauge.png" alt="" /><span class="lab-slot">grip</span></div><h3>Squeeze</h3><p><code>0.105</code> is our 70%</p></div>
       </div>
-      <p class="lab-credit reveal">Physics by MuJoCo · Editor by <a href="https://app.simarena.ai" target="_blank" rel="noopener">SimArena</a> from CodecFlow</p>
+      <p class="lab-credit reveal">Physics by <a class="lc-logo" href="https://mujoco.org" target="_blank" rel="noopener" aria-label="MuJoCo"><img class="mj" src="assets/brand/partners/mujoco-white.svg" alt="MuJoCo" /></a> <i class="sep"></i> Editor by <a class="lc-logo" href="https://app.simarena.ai" target="_blank" rel="noopener"><img src="assets/brand/partners/simarena-white.svg" alt="" />SimArena</a> from <a class="lc-logo" href="https://codecflow.ai" target="_blank" rel="noopener"><img src="assets/brand/partners/codecflow-white.svg" alt="" />CodecFlow</a></p>
     </div>
   </section>
 
@@ -85,9 +81,9 @@
   </section>
 </main>
 <footer id="site-footer"></footer>
-<script src="site.js?v=20261015h"></script>
-<script src="consent.js?v=2"></script>
-<script src="sub.js?v=6"></script>
+<script src="site.js?v=20261016b"></script>
+<script src="consent.js?v=3"></script>
+<script src="sub.js?v=7"></script>
 <script src="lab.js?v=1"></script>
 </body>
 </html>

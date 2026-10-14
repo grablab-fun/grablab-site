@@ -11,3 +11,4 @@ serve.py
 _headers
 .vercel
 .env*
+*.src.png

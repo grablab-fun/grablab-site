@@ -8,10 +8,10 @@
 <link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
 <link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
-<link rel="stylesheet" href="styles.css?v=20261015h" />
-<link rel="stylesheet" href="pages.css?v=20261015g" />
-<link rel="stylesheet" href="sub.css?v=18" />
-<link rel="stylesheet" href="sim.css?v=5" />
+<link rel="stylesheet" href="styles.css?v=20261015m8" />
+<link rel="stylesheet" href="pages.css?v=20261015m6" />
+<link rel="stylesheet" href="sub.css?v=30" />
+<link rel="stylesheet" href="sim.css?v=42" />
 </head>
 <body data-page="participate">
 <!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
@@ -27,19 +27,27 @@
     <div class="ph-copy">
       <span class="eyebrow reveal">For players</span>
       <h1 class="reveal d1"><span class="line">Grab it <span class="hl">live.</span></span></h1>
-      <p class="sub reveal d2">Drive a real claw from your phone.<br>The prize lands in your wallet.</p>
+      <p class="sub reveal d2">Drive a real claw from your browser.<br>The prize lands in your wallet.</p>
       <div class="acts reveal d3"><a href="#simulate" class="btn btn-primary big" data-sim>Simulate a play</a><a href="#check" class="btn btn-ghost big">Check eligibility</a></div>
       <p class="reveal d3" style="margin-top:16px"><a href="lab.html" style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);border-bottom:1px solid rgba(180,186,255,.3);padding-bottom:3px;transition:color .2s">Real physics lab &rarr;</a></p>
     </div>
     <div class="ph-art reveal d2">
-      <div class="phone" data-sim>
-        <div class="scr">
-          <video id="phVid" autoplay muted loop playsinline poster="assets/sim-preview-poster.jpg"><source src="assets/sim-preview.mp4" type="video/mp4" /></video>
-          <span class="notch"></span>
-          <div class="ui top"><span class="chip live">Live</span><span class="chip">1,284 watching</span></div>
-          <div class="ui mid"><span class="chip">Grip 70% · on-chain</span><span class="timer" id="phTimer" data-sync>0:30</span></div>
+      <div class="bwin">
+        <div class="bbar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="nav-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.5 6l-6 6 6 6"/></svg><svg viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></svg></span>
+          <span class="url"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>grablab.fun/play</span>
+        </div>
+        <div class="bview">
+          <video id="phVid" autoplay muted loop playsinline preload="auto" poster="assets/play-live.jpg" aria-label="A player steering the claw live"><source src="assets/play-live.mp4" type="video/mp4" /></video>
+          <div class="bhud tl"><span class="bcatch"><i class="rec" aria-label="Live"></i><span class="bc-k">Catching at</span><img src="assets/proj3d/rover.webp" alt="" /><b>Rover Labs</b></span></div>
+          <div class="bhud tr"><span class="bwatch"><i></i><b class="vn" data-n="1284">1,284</b> watching</span></div>
+          <div class="bhud br"><b class="timer" id="phTimer" data-sync>0:30</b></div>
           <div class="ph-won" id="phWon"><small>You won</small><b>+2,500 $ROVR</b></div>
-          <div class="ui bot"><div class="pad"><span class="stick"><i></i></span><button class="ph-grab" type="button" tabindex="-1">Grab</button></div></div>
+        </div>
+        <div class="bctrl">
+          <div class="bq"><span class="bq-av"><img src="assets/av/a3.webp" alt="" /><img src="assets/av/a5.webp" alt="" /><img src="assets/av/a8.webp" alt="" /></span><span class="bq-t"><b>3 in line</b><small>You're next</small></span></div>
+          <button class="ph-grab" type="button" data-sim aria-label="Simulate a play">Grab</button>
         </div>
       </div>
     </div>
@@ -120,9 +128,9 @@
   </section>
 </main>
 <footer id="site-footer"></footer>
-<script src="site.js?v=20261015h"></script>
-<script src="consent.js?v=2"></script>
-<script src="sub.js?v=6"></script>
-<script src="sim.js?v=4"></script>
+<script src="site.js?v=20261016b"></script>
+<script src="consent.js?v=3"></script>
+<script src="sub.js?v=7"></script>
+<script src="sim.js?v=45"></script>
 </body>
 </html>

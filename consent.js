@@ -52,7 +52,7 @@
 .foot-legal a,.foot-legal button{-webkit-appearance:none;appearance:none;background:transparent;border:0;padding:0;margin:0;cursor:pointer;
   font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;opacity:.85;transition:opacity .2s,color .2s}
 .foot-legal a:hover,.foot-legal button:hover{opacity:1;color:#fff}
-.foot-legal > *+*::before{content:"·";display:inline-block;margin:0 14px;opacity:.5;pointer-events:none}`;
+.foot-legal > *+*::before{content:"";display:inline-block;width:1px;height:10px;margin:0 14px;background:currentColor;opacity:.3;vertical-align:-1px;pointer-events:none}`;
   document.head.appendChild(style);
 
   function el(){

@@ -84,6 +84,20 @@ function navHTML(){
     </nav>
     <div class="nav-right">
       <span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /><img src="assets/wallets/metamask.png" alt="" /><img src="assets/wallets/coinbase.svg" alt="" /></span></button></span>
+      <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false"><span class="bt"><span>Menu</span><span>Close</span></span><svg class="bi" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.33 16V0h1.34v16z"/><path d="M16 8.67H0V7.33h16z"/></svg></button>
+    </div>
+  </div>
+  <div class="mmenu" id="mmenu" hidden>
+    <div class="mm-overlay"></div>
+    <div class="mm-panel">
+      <i class="mm-layer"></i><i class="mm-layer"></i><i class="mm-layer"></i>
+      <nav class="mm-links">
+        <div class="mm-li">${link("index.html","nav.home","home")}</div>
+        <div class="mm-li">${link("provably-fair.html","nav.fair","fair")}</div>
+        <div class="mm-li">${link("rent.html","nav.rent","rent")}</div>
+        <div class="mm-li">${link("participate.html","nav.participate","participate")}</div>
+      </nav>
+      <button class="mm-cta" id="connectBtnM" data-i18n="cta.connect">${t("cta.connect")}</button>
     </div>
   </div>`;
 }
@@ -117,7 +131,7 @@ function footHTML(){
     </div>
   </div>
   <div class="foot-bottom">
-    <span>© 2026 Grablab · Not financial advice</span>
+    <span>© 2026 Grablab. Not financial advice.</span>
     <span class="foot-legal"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><button type="button" data-consent-open>Cookie settings</button></span>
   </div>`;
 }
@@ -303,11 +317,29 @@ if (nav){
 })();
 applyI18n();
 
+/* ---------------- Back closes overlays instead of leaving the site ----------------
+   Opening an overlay (menu, wallet, booking, simulator) adds one history entry; the browser / phone Back
+   gesture then closes it (or steps back inside it). Closing it with its own button removes that entry. */
+window.glBack = (function(){
+  const stack = []; let skip = 0;
+  addEventListener("popstate", () => {
+    if (skip){ skip--; return; }
+    const top = stack.pop(); if (top) top.fn();
+  });
+  return {
+    push(id, fn){ history.pushState({ glo:id }, ""); stack.push({ id, fn }); },
+    drop(id){ const i = stack.map(x => x.id).lastIndexOf(id); if (i < 0) return; stack.splice(i, 1); skip++; history.back(); },
+    has(id){ return stack.some(x => x.id === id); }
+  };
+})();
+
 /* ---------------- glass page transitions ---------------- */
 (function transitions(){
   const wipe = document.getElementById("pageWipe");
   // entrance: clear the wipe after load
   requestAnimationFrame(()=> document.body.classList.add("page-in"));
+  // Back/Forward (incl. restoring from the bfcache): always clear the wipe-out so the page we return to shows correctly
+  window.addEventListener("pageshow", ()=>{ document.body.classList.remove("page-out"); document.body.classList.add("page-in"); });
   // intercept internal links
   document.addEventListener("click", e=>{
     const a = e.target.closest("a");
@@ -370,8 +402,8 @@ function buildWalletList(){
     walletList.appendChild(btn);
   });
 }
-function openWallet(){ if (overlay){ buildWalletList(); overlay.hidden = false; } }
-function closeWallet(){ if (overlay) overlay.hidden = true; }
+function openWallet(){ if (overlay){ buildWalletList(); overlay.hidden = false; if (!glBack.has("wallet")) glBack.push("wallet", () => closeWallet(true)); } }
+function closeWallet(fromBack){ if (overlay) overlay.hidden = true; if (!fromBack) glBack.drop("wallet"); }
 async function chooseWallet(w, detected){
   if (PRIVY_APP_ID){ /* Privy init in production */ }
   if (!detected){ window.open(installUrls[w.id] || "https://phantom.com", "_blank", "noopener"); return; }
@@ -388,7 +420,7 @@ function onConnected(addr){
   const input = document.getElementById("addrInput"); if (input){ input.value = addr; renderResult(addr); document.getElementById("check")?.scrollIntoView({behavior:"smooth",block:"center"}); }
 }
 document.addEventListener("click", e=>{
-  if (e.target.closest("#connectBtn") || e.target.closest("#connectBtn2")) openWallet();
+  if (e.target.closest("#connectBtn") || e.target.closest("#connectBtn2") || e.target.closest("#connectBtnM")){ closeMenu(); openWallet(); }
   if (e.target.id === "walletClose") closeWallet();
   if (e.target.id === "walletOverlay") closeWallet();
 });
@@ -398,8 +430,8 @@ document.addEventListener("keydown", e=>{ if (e.key==="Escape") closeWallet(); }
 (function booking(){
   const ov = document.getElementById("bookingOverlay"); if (!ov) return;
   const form = ov.querySelector("#bookingForm"), done = ov.querySelector("#bookingDone");
-  function open(){ if (form){ form.hidden = false; } if (done){ done.hidden = true; } ov.hidden = false; }
-  function close(){ ov.hidden = true; }
+  function open(){ if (form){ form.hidden = false; } if (done){ done.hidden = true; } ov.hidden = false; if (!glBack.has("book")) glBack.push("book", () => close(true)); }
+  function close(fromBack){ ov.hidden = true; if (!fromBack) glBack.drop("book"); }
   window.__openBooking = open;
   ov.addEventListener("click", e=>{
     if (e.target === ov || e.target.closest("#bookingClose") || e.target.closest("#bookingDoneClose")){ close(); return; }
@@ -448,7 +480,7 @@ function demoTierFor(addr){
 function renderResult(addr){
   const box = document.getElementById("checkResult"); if (!box) return;
   const e = demoTierFor(addr); box.hidden = false;
-  if (e){ box.className="check-result ok"; box.innerHTML = `<span class="tier">Eligible · ${e.tier}</span><div><code>${shorten(addr)}</code> gets <b>${e.note}</b>.<br>Grab your capsule live on launch night.</div>`; }
+  if (e){ box.className="check-result ok"; box.innerHTML = `<span class="tier">Eligible: ${e.tier}</span><div><code>${shorten(addr)}</code> gets <b>${e.note}</b>.<br>Grab your capsule live on launch night.</div>`; }
   else { box.className="check-result no"; box.innerHTML = `<span class="tier">Not on the snapshot yet</span><div><code>${shorten(addr)}</code> isn't on the list for this draw.<br>Be early for the next launch.</div>`; }
 }
 document.addEventListener("click", e=>{
@@ -459,3 +491,15 @@ document.addEventListener("click", e=>{
   }
 });
 document.addEventListener("keydown", e=>{ if (e.key==="Enter" && e.target.id==="addrInput") document.getElementById("checkBtn")?.click(); });
+
+/* ---------------- mobile menu : burger opens a full-screen sheet ---------------- */
+function closeMenu(fromBack){ const m = document.getElementById("mmenu"), b = document.getElementById("burger"); if (!m) return; if (!fromBack) glBack.drop("menu"); document.body.classList.remove("menu-open"); if (b) b.setAttribute("aria-expanded","false"); setTimeout(() => { if (!document.body.classList.contains("menu-open")) m.hidden = true; }, 760); }
+document.addEventListener("click", e => {
+  if (e.target.closest("#burger")){
+    const m = document.getElementById("mmenu"), b = document.getElementById("burger");
+    if (document.body.classList.contains("menu-open")) return closeMenu();
+    m.hidden = false; requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add("menu-open"))); b.setAttribute("aria-expanded","true");
+    if (!glBack.has("menu")) glBack.push("menu", () => closeMenu(true));
+  } else if (e.target.closest(".mm-links a") || e.target.closest(".mm-overlay")) closeMenu();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });

@@ -10,10 +10,10 @@
     const rows = [...el.querySelectorAll(".rrow")];
     const prize = el.dataset.prize || "+100 USDC";
     const vals = [
-      `commit ${b58(4)}…${b58(4)} · 240 capsules`,
-      `70% · locked before play #${play}`,
-      `70.${Math.floor(Math.random()*4)}% · signed on peaqOS`,
-      `beam + camera · frame 0x${rnd(4)}…${rnd(4)}`,
+      `commit ${b58(4)}…${b58(4)}, 240 capsules`,
+      `70%, locked before play #${play}`,
+      `70.${Math.floor(Math.random()*4)}%, signed on peaqOS`,
+      `beam + camera, frame 0x${rnd(4)}…${rnd(4)}`,
       `${prize} → ${b58(4)}…${b58(4)}`
     ];
     el.querySelector(".pn").textContent = "#" + String(play).padStart(6,"0");

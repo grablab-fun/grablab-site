@@ -17,7 +17,17 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
     gold:{rgba:[1,.7,.29,1],metalness:.9,roughness:.25,emission:.35}, violet:{rgba:[.6,.48,1,1],metalness:.8,roughness:.3,emission:.4},
     rare:{rgba:[.23,.48,1,1],metalness:.9,roughness:.2,emission:.6},
     led_blue:{rgba:[.23,.48,1,1],emission:1}, led_cyan:{rgba:[.25,.91,1,1],emission:1}, led_pink:{rgba:[1,.36,.68,1],emission:1}, led_gold:{rgba:[1,.75,.4,1],emission:1},
-    floor:{rgba:[.16,.19,.32,1],metalness:.1,roughness:.9}
+    floor:{rgba:[.16,.19,.32,1],metalness:.1,roughness:.9},
+    /* warehouse / filming bay */
+    concrete:{rgba:[.1,.11,.15,1],metalness:.05,roughness:.95},
+    wall:{rgba:[.06,.07,.11,1],metalness:.12,roughness:.75},
+    wall_lt:{rgba:[.1,.12,.18,1],metalness:.15,roughness:.7},
+    paint:{rgba:[.12,.18,.42,1],metalness:.2,roughness:.6},
+    cam_body:{rgba:[.04,.05,.08,1],metalness:.45,roughness:.4},
+    lens:{rgba:[.08,.1,.18,1],metalness:.75,roughness:.12},
+    rec:{rgba:[1,.2,.25,1],emission:1.2},
+    truss:{rgba:[.28,.31,.4,1],metalness:.8,roughness:.35},
+    fixture:{rgba:[.9,.93,1,1],emission:.9}
   };
   const E = [];
   const box = (size, pos, mat, extra) => Object.assign({type:"box", size:size.map(r4), pos:pos.map(r4), material:mat}, extra);
@@ -28,7 +38,13 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   /* cabinet */
   const W = .9, D = .7, X0 = -.42, X1 = .42, Y0 = -.32, Y1 = .32, PF = .75, TOP = 1.46, HX = -.22, HY = -.12;
   const CW = HX + W/2, CD = HY + D/2, CX = (-W/2 + HX)/2, CY = (-D/2 + HY)/2, H = TOP - PF, CH = .1, RZ = TOP - .06;
-  fixed("floor", [{type:"plane", size:[6,6,.01], material:"floor"}]);
+  fixed("floor", [{type:"plane", size:[10,10,.05], material:"concrete"},
+    ghost(box([.85,.72,.003], [CX, 0, .003], "paint")),
+    ghost(box([.86,.01,.006], [CX, -.74, .006], "led_blue")),
+    ghost(box([.86,.01,.006], [CX, .74, .006], "led_blue")),
+    ghost(box([.01,.74,.006], [CX - .86, 0, .006], "led_blue")),
+    ghost(box([.01,.74,.006], [CX + .86, 0, .006], "led_blue"))
+  ]);
   fixed("cabinet", [
     box([W/2 - HX, D, PF - .02], [(HX + W/2)/2, 0, (PF - .02)/2], "navy"),
     box([CW, D/2 - HY, PF - .02], [CX, (HY + D/2)/2, (PF - .02)/2], "navy"),
@@ -63,6 +79,46 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
     ghost(box([W, .012, .012], [0, D/2 - .012, PF + .006], "led_blue"))
   ]);
   fixed("rails", [ghost(box([.03, D - .04, .02], [X0 + .01, 0, RZ], "chrome")), ghost(box([.03, D - .04, .02], [X1 - .01, 0, RZ], "chrome"))]);
+
+  /* ---------------- warehouse / filming bay around the machine ---------------- */
+  /* a real 3-walled filming bay: back + two sides, meeting at the back corners, sitting flat on the floor (box z-size is the FULL height, so the centre sits at height/2). Front (-y) stays open for the camera view. */
+  const RX = 2.0, RB = 2.2, RF = -1.6, RH = 2.8, t = .12;
+  fixed("hall", [
+    box([2*RX + t, t, RH], [0, RB, RH/2], "wall"),                   // back wall
+    box([t, RB - RF, RH], [-RX, (RB + RF)/2, RH/2], "wall_lt"),       // left wall
+    box([t, RB - RF, RH], [RX, (RB + RF)/2, RH/2], "wall_lt"),        // right wall
+    box([.95, .05, .34], [0, r4(RB - t/2 - .03), 2.0], "navy2"),      // signage panel on the back wall
+    ghost(box([.9, .012, .01], [0, r4(RB - t/2 - .05), 1.82], "led_cyan")),
+    ghost(box([2*RX - .3, .02, .018], [0, r4(RB - t/2 - .05), 1.25], "led_blue"))   // accent strip along the back wall
+  ]);
+  /* overhead truss + light fixtures */
+  fixed("truss", [
+    ghost(box([2*RX - .3, .035, .035], [0, -.35, 3.15], "truss")),
+    ghost(box([2*RX - .3, .035, .035], [0, 1.35, 3.15], "truss")),
+    ghost(box([.035, 1.1, .035], [-1.3, .5, 3.15], "truss")),
+    ghost(box([.035, 1.1, .035], [1.3, .5, 3.15], "truss")),
+    ghost(box([.11, .11, .05], [-1.05, -.35, 3.1], "fixture")),
+    ghost(box([.11, .11, .05], [1.05, -.35, 3.1], "fixture")),
+    ghost(box([.11, .11, .05], [0, 1.35, 3.1], "fixture"))
+  ]);
+  E.push({name:"rig_1", transform:{pos:[-1.05, -.35, 3.1]}, light:{type:"spot", color:"#eaf0ff", intensity:5, dir:[.28,.22,-.9], angle:.8, castShadow:true}});
+  E.push({name:"rig_2", transform:{pos:[1.05, -.35, 3.1]}, light:{type:"spot", color:"#dfe6ff", intensity:4.5, dir:[-.28,.22,-.9], angle:.8}});
+  E.push({name:"back_glow", transform:{pos:[0, 2.2, 2.4]}, light:{type:"point", color:"#7d84ff", intensity:2.2, range:5}});
+  /* camera rigs on tripods, in front of the machine, filming it (ghost: no collision) */
+  function camRig(name, px, py){
+    const z = 1.18, yaw = Math.atan2(-py, -px), Q = q([0,0,1], yaw), c = Math.cos(yaw), s = Math.sin(yaw);
+    const feet = [0,1,2].map(i => { const a = yaw + Math.PI + (i-1)*1.0; return ghost(Object.assign(box([.12,.012,.012], [r4(px + .1*Math.cos(a)), r4(py + .1*Math.sin(a)), .012], "truss"), {quat:q([0,0,1], a)})); });
+    fixed(name, [
+      ghost({type:"cylinder", radius:.016, height:z - .12, pos:[px, py, r4((z - .12)/2)], material:"truss"}),
+      ...feet,
+      ghost(box([.05,.05,.04], [px, py, r4(z)], "cam_body")),
+      ghost(Object.assign(box([.13,.075,.08], [px, py, r4(z + .06)], "cam_body"), {quat:Q})),
+      ghost(Object.assign(box([.06,.045,.045], [r4(px + .1*c), r4(py + .1*s), r4(z + .06)], "lens"), {quat:Q})),
+      ghost(box([.009,.009,.009], [r4(px + .06*c - .04*s), r4(py + .06*s + .04*c), r4(z + .11)], "rec"))
+    ]);
+  }
+  camRig("cam_left", -1.15, -1.35);
+  camRig("cam_right", 1.15, -1.35);
 
   /* motors are overdamped (slow, smooth) like a real claw: a fast yank shakes the capsule loose.
      gantry : x carriage -> y trolley -> lift -> 3 fingers. Packaged as a SimArena ASSET (like the SO-100 arm):

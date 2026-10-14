@@ -26,10 +26,10 @@ window.__sceneP = 0;
   const h1 = document.getElementById("h1"), sub = document.getElementById("sub"), eye = document.getElementById("eyebrow"), acts = document.getElementById("acts");
   if (!scene || !stage || !h1) return;
   const CH = [
-    { eye:"On-chain claw machine · built for machine.fun", h:["Every capsule","is a coin."], sub:"A real claw machine where every capsule holds an on-chain prize.\nPrizes settle on Solana the moment they drop.", acts:false },
-    { eye:"Why it exists", h:["We undo","the rigged","machines."], sub:"Grip strength and inventory are published on-chain before you play.\nThe claw cannot lie.", acts:false },
-    { eye:"How it feels", h:["Play from","your browser."], sub:"Drive the real claw live on stream.\nA beam, a camera and a signature confirm every drop.", acts:false },
-    { eye:"Claw as a service", h:["Rent the claw","for your launch."], sub:"Load your airdrop into capsules and let people grab it live.\nEvery play is proven fair.", acts:true },
+    { eye:"Built on machine.fun", eyeHtml:'Built on <a class="eb-mf" href="https://machine.fun" target="_blank" rel="noopener"><img src="assets/brand/partners/machinefun-white.svg" alt="" />machine.fun</a>', h:["Every capsule","is a coin."], sub:"A real claw machine with on-chain prizes.\nThey settle on Solana the moment they drop.", acts:false },
+    { eye:"Why it exists", h:["We undo","the rigged","machines."], hm:["We undo the","rigged machines."], sub:"Grip and prizes go on-chain before you play.\nThe claw cannot lie.", acts:false },
+    { eye:"How it feels", h:["Play from","your browser."], sub:"Drive the real claw live on stream.\nBeam, camera and signature prove each drop.", acts:false },
+    { eye:"Claw as a service", h:["Rent the claw","for your launch."], sub:"Your drop goes in capsules, grabbed live.\nEvery play is proven fair.", acts:true },
   ];
   /* the progress HUD lives outside the stage so the stage's bottom fade never dims it */
   const hudBr = stage.querySelector(".hud.br"); if (hudBr){ hudBr.classList.add("float"); document.body.appendChild(hudBr); }
@@ -52,10 +52,12 @@ window.__sceneP = 0;
   }
   function play(){
     if (!pending) return; pending = false; clearInterval(idle);
-    const c = CH[cur]; decode(c.h); typeSub(c.sub);
+    const c = CH[cur]; decode(heads(c)); typeSub(c.sub);
     h1.classList.remove("glitch"); void h1.offsetWidth; h1.classList.add("glitch");
   }
   /* shrink the headline until its longest line fits the text column (never over the machine) */
+  /* phones get a shorter line break where a chapter defines one */
+  const heads = c => (innerWidth <= 900 && c.hm) ? c.hm : c.h;
   function fit(lines){
     h1.style.fontSize = "";
     const probe = document.createElement("span"); probe.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;font:inherit";
@@ -92,10 +94,11 @@ window.__sceneP = 0;
   function setChapter(n){
     if (n === cur) return; cur = n;
     const c = CH[n]; stage.dataset.ch = n;
-    eye.textContent = c.eye; fit(c.h.map(l => l.toUpperCase())); acts.classList.toggle("on", c.acts);
+    if (c.eyeHtml) eye.innerHTML = c.eyeHtml; else eye.textContent = c.eye; fit(heads(c).map(l => l.toUpperCase())); acts.classList.toggle("on", c.acts);
     /* park the headline as scrambled glyphs; the decode runs once the chapter is actually on screen */
-    scramble(c.h); sub.textContent = ""; pending = true;
+    scramble(heads(c)); sub.textContent = ""; pending = true;
     [...document.querySelectorAll("#hudChap span")].forEach((s,i) => s.classList.toggle("on", i === n));
+    const cn = document.getElementById("chapNum"); if (cn) cn.textContent = String(n+1).padStart(2,"0") + " / " + String(CH.length).padStart(2,"0");
     const hint = document.getElementById("hint"); if (hint) hint.classList.toggle("gone", n !== 0);
   }
   function onScroll(){
@@ -119,11 +122,11 @@ window.__sceneP = 0;
     if (hudBr){ const sb = scene.getBoundingClientRect().bottom; hudBr.classList.toggle("off", sb < innerHeight * .92); }
   }
   addEventListener("scroll", onScroll, { passive:true });
-  addEventListener("resize", () => { if (cur >= 0) fit(CH[cur].h.map(l => l.toUpperCase())); onScroll(); alignHud(); });
+  addEventListener("resize", () => { if (cur >= 0) fit(heads(CH[cur]).map(l => l.toUpperCase())); onScroll(); alignHud(); });
   onScroll(); setChapter(0); alignHud();
   if (clawVid) clawVid.addEventListener("loadedmetadata", alignHud);
   addEventListener("load", alignHud);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (cur >= 0) fit(CH[cur].h.map(l => l.toUpperCase())); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (cur >= 0) fit(heads(CH[cur]).map(l => l.toUpperCase())); });
   /* replay the current chapter the moment the loader doors open, so the decode is seen */
   addEventListener("gl:open", () => { const n = cur; cur = -1; setTimeout(() => { setChapter(Math.max(0, n)); onScroll(); }, 380); });
   window.__ch = setChapter;

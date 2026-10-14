@@ -13,8 +13,10 @@
   box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px rgba(59,123,255,.12)}
 .lab-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#0b1024}
 .lab-cover{position:absolute;inset:0;display:grid;place-items:center}
-.lab-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(6px) brightness(.45) saturate(1.2);transform:scale(1.06)}
-.lab-cta{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.lab-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.46) saturate(1.1);transform:scale(1.02)}
+.lab-cover::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(60% 55% at 50% 48%,rgba(5,9,24,.42),rgba(5,9,24,.72))}
+.lab-cover::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.34;mix-blend-mode:overlay;background-size:200px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.lab-cta{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
 .lab-play{position:relative;width:104px;height:104px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;background:var(--blue-chrome);
   box-shadow:0 0 50px rgba(59,123,255,.55),inset 0 -8px 18px rgba(7,16,41,.3);transition:transform .25s}
 .lab-play::after{content:"";position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(125,176,255,.55);animation:labRing 2.4s ease-out infinite}
@@ -40,3 +42,34 @@
 @media(max-width:1000px){.lab-ctrl{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.lab-machine{height:56vh}.lab-tag.t1{left:0}.lab-tag.t2{right:0}}
 @media(max-width:620px){.lab-ctrl{grid-template-columns:1fr}.lab-frame{aspect-ratio:3/4}}
+
+/* clean spec strip in the hero copy (replaces the scattered floating tags) */
+.lab-specs{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.lab-specs span{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);padding:8px 13px;border-radius:999px;border:1px solid rgba(180,186,255,.22);background:rgba(5,9,24,.4)}
+.lab-specs .pwr{color:#071029;background:var(--blue-chrome);border-color:transparent;font-weight:600}
+
+/* studio render of the machine + GrabLab logo on the marquee */
+.lab-machine.studio{aspect-ratio:3/4;height:min(78vh,760px);display:block;position:relative;place-items:unset}
+.lab-mach{width:100%;height:100%;object-fit:contain;display:block}
+.lab-logo{position:absolute;top:10.5%;left:50%;transform:translateX(-50%);width:30%;max-width:210px;opacity:.95;pointer-events:none;filter:drop-shadow(0 1px 6px rgba(0,0,0,.55))}
+
+/* logo on the new machine's marquee (transparent render) */
+.lab-machine.studio{height:min(82vh,840px);transform:translateX(5%)}
+@media(max-width:900px){.lab-machine.studio{transform:none;height:min(66vh,580px)}}
+.lab-machine.studio .lab-logo{top:5%;left:45.5%;width:29%;max-width:none;transform:translateX(-50%) rotate(-2.2deg)}
+
+/* hide the size/desktop note under LOAD THE LAB */
+.lab-cta small{display:none}
+
+/* partner logos : Powered by CodecFlow pill + credit line */
+.lab-specs .pwr{display:inline-flex;align-items:center;gap:8px;transition:transform .2s,box-shadow .2s}
+.lab-specs .pwr img{width:14px;height:14px;display:block}
+.lab-specs .pwr:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(59,123,255,.35)}
+.lab-credit{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 9px}
+.lab-credit i{font-style:normal;opacity:.6}
+.lab-credit a.lc-logo{display:inline-flex;align-items:center;gap:7px;color:var(--ink);border-bottom:0;opacity:.85;transition:opacity .2s}
+.lab-credit a.lc-logo:hover{opacity:1}
+.lab-credit a.lc-logo img{height:15px;width:auto;display:block}
+.lab-credit a.lc-logo img.mj{height:17px}
+.lab-specs a.pwr{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:8px 13px;border-radius:999px;color:#071029;background:var(--blue-chrome);border:1px solid transparent;font-weight:600}
+.lab-credit i.sep{display:inline-block;width:1px;height:12px;background:currentColor;opacity:.35}

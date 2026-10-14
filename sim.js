@@ -2,12 +2,30 @@
    Everything here is a demo: no wallet is touched, nothing is signed or sent. Open with #simulate or any [data-sim]. */
 (function(){
   const PROJECTS = [
-    { id:"rover",    name:"Rover Labs",  tk:"$ROVR", c:"#13a3b3", logo:"assets/proj/rover.png",    tags:"Delivery robots", gold:2500,  violet:12000, rare:"Rover Genesis pass", left:148, cap:240, price:0.05, status:"live" },
-    { id:"kinetic",  name:"Kinetic Arm", tk:"$KNTC", c:"#fd730a", logo:"assets/proj/kinetic.png",  tags:"Industrial arms", gold:1800,  violet:9000,  rare:"Kinetic Founder NFT", left:201, cap:300, price:0.04, status:"live" },
-    { id:"orbit",    name:"Orbit Drone", tk:"$ORBT", c:"#6847fd", logo:"assets/proj/orbit.png",    tags:"Drone mapping",   gold:3000,  violet:15000, rare:"Orbit Pilot badge",   left:57,  cap:180, price:0.06, status:"hot" },
-    { id:"lumen",    name:"Lumen Hand",  tk:"$LUMN", c:"#fc5267", logo:"assets/proj/lumen.png",    tags:"Humanoid hands",  gold:1200,  violet:6000,  rare:"Lumen Glove NFT",     left:233, cap:240, price:0.05, status:"live" },
-    { id:"fieldbot", name:"Fieldbot",    tk:"$FLDB", c:"#f7c842", logo:"assets/proj/fieldbot.png", tags:"Agritech DePIN",  gold:5000,  violet:20000, rare:"Fieldbot Seed pass",  left:96,  cap:120, price:0.03, status:"new" },
-    { id:"pallet",   name:"Pallet Bots", tk:"$PLT",  c:"#bff339", logo:"assets/proj/pallet.png",   tags:"Warehouse",       gold:4000,  violet:18000, rare:"Pallet Ops NFT",      left:180, cap:200, price:0.05, status:"live" }
+    { id:"rover",    name:"Rover Labs",  tk:"$ROVR", c:"#13a3b3", logo:"assets/proj3d/rover.webp",    tags:"Delivery robots", gold:2500,  violet:12000, rare:"Rover Genesis pass", left:148, cap:240, price:0.05, status:"live" },
+    { id:"kinetic",  name:"Kinetic Arm", tk:"$KNTC", c:"#fd730a", logo:"assets/proj3d/kinetic.webp",  tags:"Industrial arms", gold:1800,  violet:9000,  rare:"Kinetic Founder NFT", left:201, cap:300, price:0.04, status:"live" },
+    { id:"orbit",    name:"Orbit Drone", tk:"$ORBT", c:"#6847fd", logo:"assets/proj3d/orbit.webp",    tags:"Drone mapping",   gold:3000,  violet:15000, rare:"Orbit Pilot badge",   left:57,  cap:180, price:0.06, status:"hot" },
+    { id:"lumen",    name:"Lumen Hand",  tk:"$LUMN", c:"#fc5267", logo:"assets/proj3d/lumen.webp",    tags:"Humanoid hands",  gold:1200,  violet:6000,  rare:"Lumen Glove NFT",     left:233, cap:240, price:0.05, status:"live" },
+    { id:"fieldbot", name:"Fieldbot",    tk:"$FLDB", c:"#f7c842", logo:"assets/proj3d/fieldbot.webp", tags:"Agritech DePIN",  gold:5000,  violet:20000, rare:"Fieldbot Seed pass",  left:96,  cap:120, price:0.03, status:"new" },
+    { id:"pallet",   name:"Pallet Bots", tk:"$PLT",  c:"#bff339", logo:"assets/proj3d/pallet.webp",   tags:"Warehouse",       gold:4000,  violet:18000, rare:"Pallet Ops NFT",      left:180, cap:200, price:0.05, status:"live" }
+  ];
+  const QICON = {
+    x:'<svg viewBox="0 0 24 24"><path d="M3 3l7.5 9.5L3.5 21H6l5.5-6.3L16 21h5l-7.9-10 7-8h-2.5l-5 5.7L8 3z" fill="currentColor" stroke="none"/></svg>',
+    chat:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 3.5V16H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg>',
+    link:'<svg viewBox="0 0 24 24"><path d="M9 15l6-6"/><path d="M10.5 6.5l1.4-1.4a4 4 0 015.7 5.7L16 12.4"/><path d="M13.5 17.5l-1.4 1.4a4 4 0 01-5.7-5.7L8 11.6"/></svg>',
+    coin:'<svg viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="7" ry="3.3"/><path d="M5 7v6c0 1.8 3.1 3.3 7 3.3s7-1.5 7-3.3V7"/><path d="M5 11.5c0 1.8 3.1 3.3 7 3.3s7-1.5 7-3.3"/></svg>'
+  };
+  const QIMG = { x:"q-follow", chat:"q-community", link:"q-invite", coin:"q-hold" };
+  const QUESTS = [
+    { k:"x",    title:"Follow Grablab on X", desc:"The fastest way to hear when a machine goes live.", reward:"+1 play", cta:"Follow" },
+    { k:"chat", title:"Join the Discord", desc:"Get pinged the moment a drop opens near you.", reward:"+1 play", cta:"Join" },
+    { k:"link", title:"Bring a friend", desc:"They grab their first capsule, you both earn a play.", reward:"+3 plays", cta:"Get link" },
+    { k:"coin", title:"Hold a sponsor token", desc:"Hold $ROVR or $KNTC through the night to qualify.", reward:"+2 plays", cta:"Check" }
+  ];
+  const UPCOMING = [
+    { id:"atlas",  name:"Atlas Rigs",   tk:"$ATLS", c:"#3b7bff", logo:"assets/proj3d/rover.webp", hue:28,   tags:"Heavy robotics", day:-1, h:20, cap:200 },
+    { id:"nimbus", name:"Nimbus Fleet", tk:"$NMBS", c:"#13a3b3", logo:"assets/proj3d/orbit.webp", hue:-75,  tags:"Sky logistics",  day:5,  h:18, cap:180 },
+    { id:"seed",   name:"Seed Harvest", tk:"$SEED", c:"#bff339", logo:"assets/proj3d/fieldbot.webp", hue:38, tags:"Agritech",       day:6,  h:21, cap:140 }
   ];
   const WALLETS = [["Phantom","assets/wallets/phantom.png"],["Solflare","assets/wallets/solflare.png"],["Backpack","assets/wallets/backpack.png"]];
   const STEPS = ["Drop","Pay","Claim","Play","Prize"];
@@ -18,22 +36,144 @@
   const short = a => a.length > 12 ? a.slice(0,4) + "…" + a.slice(-4) : a;
   const $ = (s, r) => (r || document).querySelector(s);
 
+  let lastTx = "";
+  const feeds = [];
   let root, proj = PROJECTS[0], wallet = 0, addr = "", playNo = 428 + Math.floor(Math.random()*40), lastFocus = null;
 
   /* ---------------- markup ---------------- */
-  function capRow(n){ return `<span class="pc-caps">${["","v","","r",""].slice(0,n).map(k => `<i class="cap ${k}"></i>`).join("")}</span>`; }
+  function statusPill(p){
+    if (p.status === "hot") return '<span class="pc-pill hot">Almost gone</span>';
+    if (p.status === "new") return '<span class="pc-pill new">New</span>';
+    return '<span class="pc-pill live">Live</span>';
+  }
+  /* on-stream status: frosted chip, on-air dot only when live */
+  function streamChip(p){
+    if (p.status === "hot") return '<span class="sc">Almost gone</span>';
+    if (p.status === "new") return '<span class="sc">New</span>';
+    return '<span class="sc"><i class="rec"></i>Live</span>';
+  }
+  /* real camera loops (3 clips over 6 machines: second use mirrored and offset) */
+  const FEED = [[6,0,0],[4,0,0],[5,0,0],[1,0,0],[6,1,6],[4,1,5]];
+  function feedVideo(i){
+    const [n, mir, off] = FEED[i % FEED.length];
+    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4" poster="assets/feeds/feed${n}.jpg" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
+  }
+  function capCluster(n){ return `<span class="pc-caps">${["","v","r"].slice(0,n).map(k => `<i class="cap ${k}"></i>`).join("")}</span>`; }
+  /* project socials (demo projects: icons only, real ones link out) */
+  const SOC = {
+    x:'<svg viewBox="0 0 24 24"><path d="M3 3l7.5 9.5L3.5 21H6l5.5-6.3L16 21h5l-7.9-10 7-8h-2.5l-5 5.7L8 3z"/></svg>',
+    tg:'<svg viewBox="0 0 24 24"><path d="M21.5 3.5L2.8 10.7c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.9 3.6c.7.5 1.7.1 1.9-.7l3-15.3c.2-1-.8-1.8-1.7-1.4zM9.6 14.3l-.5 3.4-1.2-3.9 9.5-6.2z"/></svg>',
+    dc:'<svg viewBox="0 0 24 24"><path d="M19.3 5.3A16 16 0 0015.2 4l-.5 1a14.6 14.6 0 00-5.4 0l-.5-1a16 16 0 00-4.1 1.3C2.1 9.2 1.4 13 1.7 16.7a16.3 16.3 0 005 2.5l1.1-1.7a10.6 10.6 0 01-1.7-.8l.4-.3a11.7 11.7 0 0011 0l.4.3c-.5.3-1.1.6-1.7.8l1.1 1.7a16.2 16.2 0 005-2.5c.4-4.3-.7-8.1-3-11.4zM8.7 14.5c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm6.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg>',
+    web:'<svg viewBox="0 0 24 24" class="st"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>'
+  };
+  function socials(p){
+    const items = [["x","X"],["tg","Telegram"],["dc","Discord"],["web","Website"]];
+    return `<span class="pc-soc">${items.map(([k, n]) => `<a href="#" data-soc="${k}" title="${p.name} on ${n}" aria-label="${p.name} on ${n}">${SOC[k]}</a>`).join("")}</span>`;
+  }
+  /* upcoming drops: times are always UTC */
+  const CAL = '<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>';
+  const DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  function startOf(u){
+    const now = new Date(), d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), u.h, 0, 0));
+    if (u.day < 0){ if (d <= now) d.setUTCDate(d.getUTCDate() + 1); }
+    else { let add = (u.day - d.getUTCDay() + 7) % 7; if (add === 0 && d <= now) add = 7; d.setUTCDate(d.getUTCDate() + add); }
+    return d;
+  }
+  const hh = d => String(d.getUTCHours()).padStart(2,"0") + ":00 UTC";
+  function whenLabel(u){
+    const d = startOf(u), now = new Date();
+    const today = d.getUTCDate() === now.getUTCDate() && d - now < 864e5;
+    return (u.day < 0 && today ? "Tonight " : DAYS[d.getUTCDay()] + " ") + hh(d);
+  }
+  function dayWord(u){
+    const d = startOf(u), now = new Date(), day = 864e5;
+    const dd = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()), nd = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+    return dd === nd ? "Tonight" : dd - nd === day ? "Tomorrow" : DAYS[d.getUTCDay()];
+  }
+  const hhmm = u => String(startOf(u).getUTCHours()).padStart(2,"0") + ":00";
+  /* countdown as digit tiles: d h m when more than a day away, else h m s */
+  function clockTiles(t){
+    const sec = Math.max(0, Math.floor((t - Date.now()) / 1000));
+    const d = Math.floor(sec / 86400), h = Math.floor(sec % 86400 / 3600), m = Math.floor(sec % 3600 / 60), s2 = sec % 60;
+    const parts = d ? [[d,"d"],[h,"h"],[m,"m"]] : [[h,"h"],[m,"m"],[s2,"s"]];
+    return parts.map(([v, u]) => `<span class="ut"><b>${String(v).padStart(2,"0")}</b><i>${u}</i></span>`).join("");
+  }
+  function countdown(t){
+    const m = Math.max(0, Math.round((t - Date.now()) / 6e4)), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60), mm = m % 60;
+    return "Starts in " + (d ? `${d}d ${h}h` : h ? `${h}h ${String(mm).padStart(2,"0")}m` : `${mm}m`);
+  }
+  function utcDate(u){ const d = startOf(u); return d.getUTCDate() + " " + d.toLocaleString("en-US", { month:"short", timeZone:"UTC" }); }
+  function calUrl(u){
+    const d = startOf(u), e = new Date(+d + 36e5), f = x => x.toISOString().replace(/[-:]/g, "").replace(/[.][0-9]{3}/, "");
+    const q = new URLSearchParams({ action:"TEMPLATE", text:`${u.name} drop on Grablab`, dates:`${f(d)}/${f(e)}`,
+      details:`${u.name} (${u.tk}) goes live on the Grablab claw. ${u.cap} capsules. Times in UTC.`, location:"https://grablab.fun/participate" });
+    return "https://calendar.google.com/calendar/render?" + q.toString();
+  }
+  const REM_KEY = "gl_reminders";
+  const getRem = () => { try { return JSON.parse(localStorage.getItem(REM_KEY) || "[]"); } catch(e){ return []; } };
+  const setRem = a => { try { localStorage.setItem(REM_KEY, JSON.stringify(a)); } catch(e){} };
   function card(p, i, feat){
-    const pill = p.status === "live" ? '<span class="pill-s live">Live</span>' : p.status === "hot" ? '<span class="pill-s">Almost gone</span>' : '<span class="pill-s">New</span>';
-    return `<button class="pc${feat ? " feat" : ""}" style="--c:${p.c}" data-i="${i}">
-      <div class="pc-cover"><span class="pc-pill">${pill}</span><img class="pc-logo" src="${p.logo}" alt="" />${capRow(feat ? 5 : 3)}</div>
+    const vn = 380 + (p.left * 37) % 1400, watching = `<b class="vn" data-n="${vn}">${fmt(vn)}</b>`;
+    if (feat) return `<div class="pc feat" role="button" tabindex="0" style="--c:${p.c}" data-i="${i}">
+      <div class="pc-cover pc-live">${feedVideo(i)}
+        <div class="pc-ov">${streamChip(p)}</div>
+        <span class="pc-view"><i></i>${watching} watching</span></div>
       <div class="pc-b">
-        ${feat ? '<span class="pc-tag">Featured drop</span>' : ""}
-        <div class="pc-t"><b>${p.name}</b><span>${p.tk}</span></div>
+        <span class="pc-tag">Featured drop</span>
+        <div class="pc-t"><img class="pc-logo" src="${p.logo}" alt="" /><b>${p.name}</b><span>${p.tk}</span></div>
+        <p class="pc-blurb">${p.tags}, renting the claw tonight</p>
         <div class="pc-prize"><span>Top capsule</span><strong>${fmt(p.violet)} ${p.tk}</strong></div>
         <div class="pc-bar"><i style="--f:${(1 - p.left/p.cap).toFixed(2)}"></i></div>
-        <div class="pc-meta"><span>${p.left} / ${p.cap} left</span><span>${p.price} SOL</span></div>
-        <span class="pc-go">Participate</span>
-      </div></button>`;
+        <div class="pc-meta"><span>${p.left} / ${p.cap} left</span><span>${p.price} SOL per play</span></div>
+        <div class="pc-foot"><span class="pc-go">Participate<svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>${socials(p)}</div>
+      </div></div>`;
+    return `<div class="pc" role="button" tabindex="0" style="--c:${p.c}" data-i="${i}">
+      <div class="pc-live sm">${feedVideo(i)}
+        <div class="pc-ov">${streamChip(p)}</div><span class="pc-view"><i></i>${watching}</span></div>
+      <div class="pc-head"><img class="pc-logo" src="${p.logo}" alt="" /><div class="pc-t"><b>${p.name}</b><span>${p.tk}</span></div></div>
+      <div class="pc-b">
+        <div class="pc-prize"><span>Top capsule</span><strong>${fmt(p.violet)} ${p.tk}</strong></div>
+        <div class="pc-bar"><i style="--f:${(1 - p.left/p.cap).toFixed(2)}"></i></div>
+        <div class="pc-meta"><span>${p.left} / ${p.cap} left</span>${socials(p)}</div>
+      </div></div>`;
+  }
+  /* each sponsor brings its own quests: finish them, get plays on its machine */
+  function projQuests(p, i){
+    return [
+      { k:"x", t:`Follow ${p.name} on X`, r:1, cta:"Follow" },
+      i % 2 ? { k:"chat", t:`Join the ${p.name} Discord`, r:1, cta:"Join" } : { k:"chat", t:`Join the ${p.name} Telegram`, r:1, cta:"Join" },
+      i % 3 === 0 ? { k:"link", t:`Share the ${p.name} drop`, r:2, cta:"Share" } : { k:"coin", t:`Hold 500 ${p.tk} for 24h`, r:2, cta:"Check" }
+    ];
+  }
+  function projQuestCard(p, i){
+    const qs = projQuests(p, i), up = qs.reduce((n, q) => n + q.r, 0);
+    return `<div class="pq" style="--c:${p.c}">
+      <div class="pq-h"><img class="pc-logo" src="${p.logo}" alt="" /><div class="pq-n"><b>${p.name}</b><span><em>${p.tk}</em>${p.tags}</span></div><span class="pq-up"><b>+${up}</b><small>plays</small></span></div>
+      <ul class="pq-l">${qs.map(q => `<li><img src="assets/icons/${QIMG[q.k]}.webp" alt="" /><span class="pq-t">${q.t}</span><span class="pq-r">+${q.r}</span><button class="qc-cta" type="button">${q.cta}</button></li>`).join("")}</ul>
+      <div class="pq-p"><span class="pq-bar"><i></i></span><small><b>0</b> / ${qs.length} done</small></div>
+    </div>`;
+  }
+  function questCard(q){
+    return `<div class="qc" style="--c:#7db0ff">
+      <span class="qc-ic"><img src="assets/icons/${QIMG[q.k]}.webp" alt="" /></span>
+      <div class="qc-b"><b>${q.title}</b><p>${q.desc}</p></div>
+      <div class="qc-side"><span class="qc-reward">${q.reward}</span><button class="qc-cta" type="button">${q.cta}</button></div>
+    </div>`;
+  }
+  function upcomingCard(u){
+    return `<div class="uc" style="--c:${u.c}">
+      <div class="uc-head"><img class="pc-logo" src="${u.logo}" alt="" style="filter:hue-rotate(${u.hue || 0}deg) drop-shadow(0 8px 16px rgba(0,0,0,.45))" /><div class="uc-date"><small><span>${dayWord(u)}</span><span>${utcDate(u)}</span></small><b>${hhmm(u)}<em>UTC</em></b></div></div>
+      <div class="pc-b">
+        <div class="pc-t"><b>${u.name}</b><span>${u.tk}</span></div>
+        <p class="uc-tags">${u.tags}</p>
+        <div class="uc-meta"><span>${u.cap} capsules</span><span>${u.tk}</span></div>
+        <div class="uc-clock" data-t="${+startOf(u)}"><span class="uc-k">Opens in</span><span class="uc-tiles">${clockTiles(+startOf(u))}</span></div>
+        <div class="uc-acts">
+          <button class="uc-cta" type="button" data-id="${u.id}">Remind me</button>
+          <button class="uc-cancel" type="button" data-id="${u.id}">Cancel</button>
+          <a class="uc-cal" href="${calUrl(u)}" target="_blank" rel="noopener" title="Add to Google Calendar" aria-label="Add ${u.name} to Google Calendar">${CAL}</a>
+        </div>
+      </div></div>`;
   }
   function build(){
     root = document.createElement("div");
@@ -43,24 +183,83 @@
     <div class="sim-top">
       <div class="sim-brand"><img src="assets/brand/mark-chrome-256.png" alt="" /><b>GRABLAB</b><span>Simulator</span></div>
       <ol class="sim-steps">${STEPS.map((s,i) => `<li><i>${i+1}</i><span>${s}</span></li>`).join("")}</ol>
-      <span class="chip sim-demo">Demo · no real funds</span>
+      <span class="chip sim-demo">No real funds</span>
       <button class="sim-x" type="button" aria-label="Close simulator">&times;</button>
     </div>
     <div class="sim-body">
       <section class="sv" data-v="pick">
-        <div class="sv-head"><span class="k">Sponsored drops</span><h2>Pick your <span class="hl">airdrop.</span></h2></div>
-        <div class="pgrid">${PROJECTS.map((p,i) => card(p, i, i === 0)).join("")}</div>
+<div class="pick-top">
+        <div class="sv-head"><h2>Pick a <span class="hl">drop.</span></h2>
+          <p class="sv-sub">Every capsule holds a real on-chain prize: tokens, an NFT or an allocation.<br>Grab one live for the ticket price, no airdrop needed.</p></div>
+        <div class="sv-tabs" role="tablist">
+          <button class="sv-tab on" type="button" data-tab="live" role="tab">Live drops<em>${PROJECTS.length}</em></button>
+          <button class="sv-tab" type="button" data-tab="quests" role="tab">Earn plays<em>${PROJECTS.length * 3}</em></button>
+          <button class="sv-tab" type="button" data-tab="soon" role="tab">Upcoming<em>${UPCOMING.length}</em></button>
+        </div>
+        </div>
+        <div class="tabpane on" data-pane="live">
+          <div class="pgrid">${PROJECTS.map((p,i) => card(p, i, i === 0)).join("")}</div>
+        </div>
+        <div class="tabpane" data-pane="quests">
+          <div class="qnote"><b>No wallet full of tokens? Grab a play for free.</b><span>Every project brings its own quests. Finish them and get plays on its machine, dropped to your address.</span></div>
+          <div class="pqgrid">${PROJECTS.map(projQuestCard).join("")}</div>
+        </div>
+        <div class="tabpane" data-pane="soon">
+          <div class="qnote"><b>Machines warming up.</b><span>Sponsors locking in capsules now. Set a reminder and be first on the claw.</span></div>
+          <div class="ugrid">${UPCOMING.map(upcomingCard).join("")}</div>
+        </div>
+      </section>
+
+      <section class="sv" data-v="room">
+        <div class="rm-top">
+          <button class="rm-back" type="button" aria-label="All drops"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>All drops</button>
+          <div class="rm-idw"><img class="rm-logo" id="rmLogo" src="" alt="" /><div class="rm-id"><b id="rmName"></b></div><div class="rm-tags"><span class="rm-tag tk" id="rmTk"></span><span class="rm-tag" id="rmCat"></span></div></div>
+          <div class="rm-soc" id="rmSoc"></div>
+        </div>
+        <div class="rm-grid">
+          <div class="rm-main">
+            <div class="rm-stream"><video id="rmVid" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+              <div class="pc-ov"><span class="sc"><i class="rec"></i>Live</span><span class="sc" id="rmCatch"></span></div>
+              <span class="pc-view"><i></i><b class="vn" id="rmWatch" data-n="900">900</b> watching</span>
+              <span class="sc rm-queue" id="rmQueue"></span>
+            </div>
+            <div class="rm-info">
+              <div class="rm-tiers">
+                <div class="rt"><img class="rt-cap" src="assets/caps/gold.webp" alt="" /><div><small>Gold capsule</small><b id="rmGold"></b></div></div>
+                <div class="rt"><img class="rt-cap" src="assets/caps/violet.webp" alt="" /><div><small>Violet capsule</small><b id="rmViolet"></b></div></div>
+                <div class="rt"><img class="rt-cap" src="assets/caps/rare.webp" alt="" /><div><small>Rare capsule</small><b id="rmRare"></b></div></div>
+              </div>
+              <div class="rm-stock"><div class="rs-top"><b id="rmLeftN"></b><small id="rmLeftOf"></small></div><span class="pc-bar"><i id="rmBar"></i></span></div>
+              <button class="rm-buy" id="rmBuy" type="button"><span>Buy a play</span><small id="rmPrice"></small></button>
+            </div>
+          </div>
+          <aside class="rm-chat">
+            <div class="ch-h"><b>Live chat</b><span id="rmChatN"></span></div>
+            <div class="ch-list" id="rmChat" aria-live="polite"></div>
+            <form class="ch-in" id="rmChatForm"><input id="rmChatIn" maxlength="120" placeholder="Say something" autocomplete="off" /><button type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2-6z"/></svg></button></form>
+          </aside>
+        </div>
       </section>
 
       <section class="sv" data-v="pay">
-        <div class="sv-head"><span class="k">One play · 30 seconds</span><h2>Buy a <span class="hl">play.</span></h2></div>
+        <div class="sv-head"><h2>Buy a <span class="hl">play.</span></h2></div>
         <div class="pay">
           <div class="glass pay-sum">
+            <div class="pay-live"><video id="payVid" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+              <div class="pc-ov"><span class="sc"><i class="rec"></i>Live</span><span class="sc" id="payMach"></span></div>
+              <span class="pc-view"><i></i><b class="vn" id="payWatch" data-n="900">900</b> watching</span></div>
             <div class="pay-p"><img id="payLogo" src="" alt="" /><div><b id="payName"></b><small id="payTags"></small></div></div>
+            <div class="pay-prizes">
+              <span class="pp-k">In the machine right now</span>
+              <div class="pp-row">
+                <span class="pp"><img src="assets/caps/gold.webp" alt="" /><b id="ppGold"></b></span>
+                <span class="pp"><img src="assets/caps/violet.webp" alt="" /><b id="ppViolet"></b></span>
+                <span class="pp"><img src="assets/caps/rare.webp" alt="" /><b id="ppRare"></b></span>
+              </div>
+            </div>
             <div class="row"><span>1 play on Machine 01</span><b id="payPrice"></b></div>
             <div class="row"><span>Network fee</span><b>0.000005 SOL</b></div>
             <div class="row"><span>Refund if the machine fails</span><b class="yes">Yes</b></div>
-            <div class="row"><span>Grip, locked on-chain</span><b>70%</b></div>
             <div class="row tot"><span>Total</span><b id="payTot"></b></div>
           </div>
           <div class="glass pay-w">
@@ -75,30 +274,38 @@
 
       <section class="sv" data-v="claim">
         <div class="sv-head c"><span class="k" id="claimK"></span><h2>Where does the <span class="hl">prize land?</span></h2></div>
-        <div class="glass claim">
-          <label for="simAddr">Your Solana address</label>
-          <div class="inrow"><input id="simAddr" type="text" autocomplete="off" spellcheck="false" /><button class="btn btn-ghost" id="simAddrNew" type="button">New demo</button></div>
-          <div class="err" id="simErr"></div>
-          <div class="tick"><i></i><span>Paid · play reserved</span><i></i><span>Prize goes straight to this address</span><i></i><span>Grip 70%, locked before your play</span></div>
-          <button class="btn btn-primary big act" id="claimBtn" type="button">Claim my play</button>
+        <div class="claim-wrap">
+          <div class="ticket">
+            <div class="tk-top"><img id="tkLogo" src="" alt="" /><div><b id="tkName"></b><small>30 seconds on Machine 01</small></div><span class="tk-paid">${CHECK}Paid</span></div>
+            <div class="tk-mid"><div><small>Play</small><b id="tkNo"></b></div><div><small>Price</small><b id="tkPrice"></b></div><div><small>Grip</small><b>70%</b></div></div>
+            <div class="tk-cut"></div>
+            <div class="tk-bot"><small>Receipt</small><code id="tkTx"></code></div>
+          </div>
+          <div class="glass claim">
+            <label for="simAddr">Your Solana address</label>
+            <div class="inrow"><input id="simAddr" type="text" autocomplete="off" spellcheck="false" /><button class="btn btn-ghost" id="simAddrNew" type="button">New demo</button></div>
+            <div class="err" id="simErr"></div>
+            <div class="tick"><i></i><span>Prize goes straight to this address</span><i></i><span>Grip set to 70% before your play</span><i></i><span>Refund if the machine fails</span></div>
+            <button class="btn btn-primary big act" id="claimBtn" type="button">Claim my play</button>
+          </div>
         </div>
       </section>
 
       <section class="sv" data-v="play">
         <div class="stagew" id="stagew">
           <canvas id="simCv"></canvas>
-          <div class="shud tl"><span class="chip live">Live</span><span class="chip" id="hudProj"></span></div>
+          <div class="shud tl"><span class="slive">Live</span><span class="smach" id="hudProj"></span></div>
           <div class="shud tm"><b id="simT">0:30</b><span class="tb"><i id="simTb"></i></span></div>
-          <div class="shud tr"><span class="chip">1,284 watching</span></div>
+          <div class="shud tr"><span class="swatch"><i></i><b class="vn" data-n="1284">1,284</b> watching</span></div>
           <div class="toast" id="simToast"></div>
           <div class="toast hint" id="simHint"></div>
-          <div class="queue" id="simQ"><div><small>Machine 01 · you're up</small><b id="simQn">3</b></div></div>
+          <div class="queue" id="simQ"><div><small>You're up on Machine 01</small><b id="simQn">3</b></div></div>
         </div>
         <div class="ctrl">
           <div class="joy" id="simJoy" aria-label="Joystick"><i class="ar u"></i><i class="ar d"></i><i class="ar l"></i><i class="ar r"></i><span class="knob"></span></div>
           <div class="ctrl-mid">
-            <div class="grip">Grip <span class="gb"><i></i></span> 70% · on-chain</div>
-            <div class="keys"><kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or <kbd>WASD</kbd> to move · <kbd>Space</kbd> to grab</div>
+            <div class="grip">Grip <span class="gb"><i></i></span> 70%</div>
+            <div class="keys"><kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or <kbd>WASD</kbd> to move, <kbd>Space</kbd> to grab</div>
           </div>
           <button class="grabb" id="simGrab" type="button">Grab</button>
         </div>
@@ -123,8 +330,34 @@
     <canvas class="confetti" id="simConf"></canvas>`;
     document.body.appendChild(root);
 
-    root.querySelector(".sim-x").addEventListener("click", close);
-    root.querySelectorAll(".pc").forEach(b => b.addEventListener("click", () => { proj = PROJECTS[+b.dataset.i]; go("pay"); }));
+    root.querySelector(".sim-x").addEventListener("click", () => close());
+    root.querySelectorAll(".pc").forEach(b => {
+      b.addEventListener("click", e => { if (e.target.closest(".pc-soc")) return; proj = PROJECTS[+b.dataset.i]; go("room"); });
+      b.addEventListener("keydown", e => { if (e.target === b && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); b.click(); } });
+    });
+    root.querySelectorAll(".pc-soc a").forEach(a => a.addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); }));
+    root.querySelectorAll(".sv-tab").forEach(t => t.addEventListener("click", () => {
+      root.querySelectorAll(".sv-tab").forEach(x => x.classList.toggle("on", x === t));
+      root.querySelectorAll(".tabpane").forEach(p => p.classList.toggle("on", p.dataset.pane === t.dataset.tab));
+    }));
+    root.querySelectorAll(".qc-cta").forEach(b => b.addEventListener("click", () => {
+      if (b.dataset.done) return;
+      b.dataset.done = "1"; b.classList.add("done"); b.textContent = "Done";
+      const card = b.closest(".pq"); if (!card) return;
+      const all = card.querySelectorAll(".qc-cta").length, done = card.querySelectorAll(".qc-cta.done").length;
+      card.querySelector(".pq-p b").textContent = done;
+      card.querySelector(".pq-bar i").style.width = (done / all * 100) + "%";
+      card.classList.toggle("complete", done === all);
+    }));
+    /* reminders: set, cancel, remembered on this device */
+    const paintRem = () => { const on = getRem(); root.querySelectorAll(".uc").forEach(c => {
+      const id = c.querySelector(".uc-cta").dataset.id, set = on.includes(id);
+      c.classList.toggle("rem", set); c.querySelector(".uc-cta").innerHTML = set ? CHECK + "Reminder set" : "Remind me";
+    }); };
+    root.querySelectorAll(".uc-cta").forEach(b => b.addEventListener("click", () => { const a = getRem(); if (!a.includes(b.dataset.id)){ a.push(b.dataset.id); setRem(a); } paintRem(); }));
+    root.querySelectorAll(".uc-cancel").forEach(b => b.addEventListener("click", () => { setRem(getRem().filter(x => x !== b.dataset.id)); paintRem(); }));
+    paintRem();
+    setInterval(() => { if (root.hidden || view !== "pick") return; root.querySelectorAll(".uc-clock").forEach(c => { c.querySelector(".uc-tiles").innerHTML = clockTiles(+c.dataset.t); }); }, 1000);
     root.querySelectorAll(".wl").forEach(b => b.addEventListener("click", () => {
       wallet = +b.dataset.w;
       root.querySelectorAll(".wl").forEach(x => { x.classList.toggle("on", x === b); x.querySelector("em").textContent = x === b ? "Selected" : "Detected"; });
@@ -136,17 +369,81 @@
     $("#simAddr", root).addEventListener("keydown", e => { if (e.key === "Enter") claim(); });
     $("#winAgain", root).addEventListener("click", () => go("pay"));
     $("#winOther", root).addEventListener("click", () => go("pick"));
+    $(".rm-back", root).addEventListener("click", () => go("pick"));
+    $("#rmBuy", root).addEventListener("click", () => go("pay"));
+    root.addEventListener("click", e => { if (e.target.closest(".rm-soc a")) e.preventDefault(); });
+    $("#rmChatForm", root).addEventListener("submit", e => {
+      e.preventDefault();
+      const i = $("#rmChatIn", root), t = i.value.trim(); if (!t) return;
+      chatAdd({ who:"you", text:t, me:true }); i.value = "";
+      setTimeout(() => chatAdd({ who:pick(CH_NAMES), text:pick(["welcome in", "gl on your play", "go get it", "you're up soon"]) }), 1400 + Math.random()*1200);
+    });
     game.init();
+    /* a live feed per drop card: the same claw game on autopilot, framed without distortion for any card shape */
+    const feedCam = (W, H) => { const k = Math.min(W*0.46, H*0.64); return { k, cx:0, fy:H*0.93, dz:H*0.3 }; };
+    root.querySelectorAll(".pc").forEach(card => {
+      const cvs = card.querySelector(".pc-cv"); if (!cvs) return;
+      const g = makeGame({ auto:true, jitter:3, el: sel => sel === "#simCv" ? cvs : null, cam: feedCam,
+        paused: () => root.hidden || view !== "pick" || !root.querySelector('.tabpane[data-pane="live"].on'),
+        onResult: () => setTimeout(() => g.start(), 1600) });
+      g.init(); feeds.push(g);
+    });
+  }
+
+  /* ---------------- project room : live stream + chat ---------------- */
+  const CH_NAMES = ["clawmaxi","0xmira","solsurfer","gm_kate","tinyfish","drop_hunter","nightowl","pixelpaw","moonbeam","grabfather","lowkey_lena","rekt_raccoon"];
+  const CH_LINES = ["gm from Berlin","that claw is smooth tonight","almost had it last night","who is next in line?","{n} team is cooking","violet one top left, go for it","grip feels right","lfg","watching from my phone, crisp","how many violet ones left?","finished the quests, free plays incoming","camera angle is perfect","next one is mine","anyone got the {r} yet?","this beats any airdrop form"];
+  const pick = a => a[Math.floor(Math.random()*a.length)];
+  const wal = () => b58(4) + "…" + b58(4);
+  let chatT = 0, chatN = 0;
+  const avatarOf = n => n === "you" ? 1 : [...n].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % 9;
+  function chatAdd(m){
+    const list = $("#rmChat", root), el = document.createElement("div");
+    el.className = "ch-m" + (m.ev ? " ev" : "") + (m.me ? " me" : "");
+    el.innerHTML = m.ev ? `<img class="ch-ev" src="assets/caps/${m.cap || "gold"}.webp" alt="" /><span>${m.text}</span>`
+      : `<img class="ch-av" src="assets/av/a${avatarOf(m.who)}.webp" alt="" /><p><b>${m.who}</b><span></span></p>`;
+    if (!m.ev) el.querySelector("p span").textContent = m.text;
+    list.appendChild(el);
+    while (list.children.length > 40) list.firstChild.remove();
+    list.scrollTop = list.scrollHeight;
+  }
+  function chatTick(){
+    if (view !== "room") return;
+    const r = Math.random();
+    if (r < 0.12) chatAdd({ ev:true, cap:"gold", text:`${wal()} grabbed +${fmt(proj.gold)} ${proj.tk}` });
+    else if (r < 0.17) chatAdd({ ev:true, cap:"violet", text:`${wal()} grabbed a violet capsule: +${fmt(proj.violet)} ${proj.tk}` });
+    else if (r < 0.22) chatAdd({ who:pick(CH_NAMES), text:"joined the line" });
+    else chatAdd({ who:pick(CH_NAMES), text:pick(CH_LINES).replace("{n}", proj.name).replace("{r}", proj.rare) });
+    chatT = setTimeout(chatTick, 1500 + Math.random()*2200);
+  }
+  function enterRoom(){
+    const p = proj, pi = PROJECTS.indexOf(p), [fn, mir] = FEED[pi % FEED.length], v = $("#rmVid", root);
+    $("#rmLogo", root).src = p.logo; $("#rmName", root).textContent = p.name; $("#rmTk", root).textContent = p.tk; $("#rmCat", root).textContent = p.tags;
+    $("#rmSoc", root).innerHTML = socials(p);
+    if (!v.src.endsWith(`feed${fn}.mp4`)){ v.src = `assets/feeds/feed${fn}.mp4`; v.poster = `assets/feeds/feed${fn}.jpg`; }
+    v.classList.toggle("mir", !!mir); v.play().catch(() => {});
+    $("#rmCatch", root).textContent = `Catching at ${p.name}`;
+    const w = 380 + (p.left * 37) % 1400, wv = $("#rmWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);
+    $("#rmQueue", root).textContent = `${2 + pi % 4} in line`;
+    $("#rmGold", root).textContent = `${fmt(p.gold)} ${p.tk}`; $("#rmViolet", root).textContent = `${fmt(p.violet)} ${p.tk}`; $("#rmRare", root).textContent = p.rare;
+    $("#rmBar", root).style.width = ((1 - p.left/p.cap) * 100) + "%";
+    $("#rmLeftN", root).textContent = p.left; $("#rmLeftOf", root).textContent = `of ${p.cap} capsules left`;
+    $("#rmPrice", root).textContent = `${p.price} SOL`;
+    $("#rmChatN", root).textContent = `${fmt(Math.round(w * 0.08))} chatting`;
+    if (chatN !== pi + 1){ chatN = pi + 1; $("#rmChat", root).innerHTML = ""; for (let k = 0; k < 7; k++) chatAdd({ who:pick(CH_NAMES), text:pick(CH_LINES).replace("{n}", p.name).replace("{r}", p.rare) }); }
+    clearTimeout(chatT); chatT = setTimeout(chatTick, 1200);
   }
 
   /* ---------------- navigation ---------------- */
   let view = "pick";
   function go(v){
     view = v;
-    const idx = ["pick","pay","claim","play","win"].indexOf(v);
+    const idx = ["pick","pay","claim","play","win"].indexOf(v === "room" ? "pick" : v);
     root.querySelectorAll(".sv").forEach(s => s.classList.toggle("on", s.dataset.v === v));
     root.querySelectorAll(".sim-steps li").forEach((li,i) => { li.classList.toggle("on", i === idx); li.classList.toggle("done", i < idx); });
     $(".sim-body", root).scrollTop = 0;
+    const pv = root.querySelector("#payVid"); if (pv && v !== "pay") pv.pause();
+    if (v === "room") enterRoom(); else { clearTimeout(chatT); const rv = root.querySelector("#rmVid"); if (rv) rv.pause(); }
     if (v === "pay") enterPay();
     if (v === "claim") enterClaim();
     if (v === "play") game.start();
@@ -158,11 +455,29 @@
     root.hidden = false; document.body.classList.add("sim-lock");
     requestAnimationFrame(() => root.classList.add("open"));
     go("pick");
+    if (window.glBack && !glBack.has("sim")) glBack.push("sim", simBack);
+    feeds.forEach(g => { if (!g.isRunning()) g.start(); });
+    root.querySelectorAll(".pc-vid").forEach(v => {
+      if (+v.dataset.off && !v.dataset.set){
+        v.dataset.set = 1;
+        const seek = () => { try { v.currentTime = +v.dataset.off; } catch(e){} };
+        if (v.readyState >= 1) seek(); else v.addEventListener("loadedmetadata", seek, { once:true });
+      }
+      v.play().catch(() => {});
+    });
     setTimeout(() => { const f = root.querySelector(".pc"); if (f) f.focus({ preventScroll:true }); }, 60);
   }
-  function close(){
+  /* Back gesture inside the simulator: pay -> drops, claim -> pay, play / result -> drops, drops -> close */
+  const BACK_TO = { room:"pick", pay:"room", claim:"pay", play:"room", win:"room" };
+  function simBack(){
+    if (!root || root.hidden || !BACK_TO[view]){ close(true); return; }
+    go(BACK_TO[view]);
+    if (window.glBack) glBack.push("sim", simBack);
+  }
+  function close(fromBack){
     if (!root || root.hidden) return;
-    game.stop(); confetti.stop();
+    if (!fromBack && window.glBack) glBack.drop("sim");
+    game.stop(); confetti.stop(); feeds.forEach(g => g.stop()); root.querySelectorAll(".pc-vid").forEach(v => v.pause());
     root.classList.remove("open"); document.body.classList.remove("sim-lock");
     setTimeout(() => { root.hidden = true; }, 350);
     if (location.hash === "#simulate") history.replaceState(null, "", location.pathname + location.search);
@@ -173,9 +488,17 @@
   /* ---------------- 2. pay ---------------- */
   function setPayLabel(){ $("#payBtn", root).innerHTML = `Pay ${proj.price} SOL with ${WALLETS[wallet][0]}`; }
   function enterPay(){
+    const pi = PROJECTS.indexOf(proj), [fn, mir] = FEED[pi % FEED.length], pv = $("#payVid", root);
+    if (!pv.src.endsWith(`feed${fn}.mp4`)){ pv.src = `assets/feeds/feed${fn}.mp4`; pv.poster = `assets/feeds/feed${fn}.jpg`; }
+    pv.classList.toggle("mir", !!mir); pv.play().catch(() => {});
+    $("#payMach", root).textContent = `Catching at ${proj.name}`;
+    const w = 380 + (proj.left * 37) % 1400, wv = $("#payWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);
     $("#payLogo", root).src = proj.logo; $("#payName", root).textContent = proj.name;
-    $("#payTags", root).textContent = proj.tk + " · " + proj.tags;
+    $("#payTags", root).innerHTML = `<em>${proj.tk}</em>${proj.tags}`;
     $("#payPrice", root).textContent = proj.price + " SOL";
+    $("#ppGold", root).textContent = fmt(proj.gold) + " " + proj.tk;
+    $("#ppViolet", root).textContent = fmt(proj.violet) + " " + proj.tk;
+    $("#ppRare", root).textContent = proj.rare;
     $("#payTot", root).textContent = (proj.price + 0.000005).toFixed(6).replace(/0+$/,"") + " SOL";
     const b = $("#payBtn", root); b.disabled = false; setPayLabel();
     $("#payOk", root).classList.remove("on");
@@ -186,8 +509,9 @@
     setTimeout(() => {
       b.innerHTML = `<span class="spin"></span>Confirming`;
       setTimeout(() => {
-        b.innerHTML = "Paid";
-        const ok = $("#payOk", root); ok.querySelector("span").textContent = `Confirmed · tx ${b58(4)}…${b58(4)} · play #${String(playNo).padStart(6,"0")}`; ok.classList.add("on");
+        b.innerHTML = CHECK + "Paid";
+        lastTx = b58(4) + "…" + b58(4);
+        const ok = $("#payOk", root); ok.querySelector("span").textContent = `Confirmed in tx ${lastTx} for play #${String(playNo).padStart(6,"0")}`; ok.classList.add("on");
         setTimeout(() => { if (view === "pay") go("claim"); }, 1100);
       }, 800);
     }, 1100);
@@ -195,7 +519,12 @@
 
   /* ---------------- 3. claim ---------------- */
   function enterClaim(){
-    $("#claimK", root).textContent = `${proj.name} · play #${String(playNo).padStart(6,"0")}`;
+    $("#claimK", root).textContent = "Last step";
+    $("#tkLogo", root).src = proj.logo; $("#tkName", root).textContent = proj.name;
+    $("#tkNo", root).textContent = "#" + String(playNo).padStart(6,"0");
+    $("#tkPrice", root).textContent = proj.price + " SOL";
+    $("#tkTx", root).textContent = "tx " + (lastTx || b58(4) + "…" + b58(4));
+    root.querySelector(".ticket").style.setProperty("--c", proj.c);
     const i = $("#simAddr", root); if (!i.value) i.value = addr || b58(44);
     $("#simErr", root).textContent = "";
     const b = $("#claimBtn", root); b.disabled = false; b.textContent = "Claim my play";
@@ -220,7 +549,7 @@
       const txt = kind === "rare" ? proj.rare : kind === "violet" ? `+${fmt(proj.violet)} ${proj.tk}` : `+${fmt(proj.gold)} ${proj.tk}`;
       $("#winK", root).textContent = kind === "rare" ? "Rare capsule" : "You won";
       P.textContent = txt; P.className = "win-prize" + (kind === "gold" ? " gold" : "");
-      $("#winS", root).textContent = `Sent to ${short(addr)} · tx ${b58(4)}…${b58(4)}`;
+      $("#winS", root).textContent = `Sent to ${short(addr)} in tx ${b58(4)}…${b58(4)}`;
       $("#rc4t", root).textContent = "Paid out"; $("#rc4", root).textContent = short(addr);
       confetti.burst(kind);
     } else {
@@ -235,7 +564,11 @@
   }
 
   /* ================= the machine : pseudo 3D canvas game ================= */
-  const game = (function(){
+  /* the claw game; makeGame() = full simulator, makeGame({auto, el, cam, onResult, onMove, paused}) = self-playing demo */
+  function makeGame(o){
+    o = o || {};
+    const DUMMY = document.createElement("div");
+    const el = s => (o.el ? o.el(s) : $(s, root)) || DUMMY;
     let cv, cx, W = 0, H = 0, dpr = 1, raf = 0, last = 0, running = false;
     let caps = [], parts = [], st, keys = {}, joyV = { x:0, z:0 };
     const R = 0.085, TOP = 0.98, CHUTE = { x0:-1, x1:-0.6, z0:0, z1:0.36, h:0.2 };
@@ -247,6 +580,7 @@
     /* world: x -1..1 (left..right), z 0..1 (front..back), y 0..1 (floor..top) */
     function P(x, y, z){
       const s = 1 - 0.3*z, fy = H*0.88 - z*H*0.33;
+      if (o.cam && camC){ const c = camC, fz = c.fy - z*c.dz; return { x: W/2 + (x - c.cx)*c.k*s, y: fz - y*c.k*s, s, k: c.k*s }; }
       return { x: W/2 + x*W*0.44*s, y: fy - y*H*0.66*s, s, k: W*0.44*s };
     }
 
@@ -270,7 +604,7 @@
 
     function reset(){
       fill(); parts = [];
-      st = { phase:"count", t:PLAY_S, x:0.25, z:0.55, y:TOP, open:0, held:null, slipAt:0, target:0, timeUp:false, ph:0, chuteGlow:0, shake:0 };
+      st = { phase:"count", t:PLAY_S, x:0.25, z:0.55, y:TOP, open:0, held:null, slipAt:0, target:0, timeUp:false, ph:0, chuteGlow:0, shake:0, sw:0, sv:0, px:0.25 };
       api.why = "";
     }
 
@@ -288,7 +622,7 @@
     function drawRoom(){
       const g = cx.createLinearGradient(0,0,0,H); g.addColorStop(0,"#070c22"); g.addColorStop(1,"#03050d");
       cx.fillStyle = g; cx.fillRect(0,0,W,H);
-      const TOPY = 1.18;
+      const TOPY = o.roomTop || 1.18;
       /* back wall */
       const bl = P(-1,0,1), br = P(1,0,1), tr = P(1,TOPY,1), tl = P(-1,TOPY,1);
       const bw = cx.createRadialGradient(W/2, bl.y - H*0.18, 10, W/2, bl.y - H*0.18, W*0.5);
@@ -388,8 +722,10 @@
       line(P(-0.98,1.1,st.z), P(0.98,1.1,st.z), "rgba(210,218,240,.65)", Math.max(2, k*0.012));
       cx.fillStyle = chromeStroke({x:top.x - k*.05, y:top.y}, {x:top.x + k*.05, y:top.y});
       cx.fillRect(top.x - k*0.05, top.y - k*0.02, k*0.1, k*0.04);
-      /* cable */
-      line(top, { x:h.x, y:h.y - k*0.04 }, "rgba(220,226,245,.85)", Math.max(1.2, k*0.005));
+      /* cable, swung by the pendulum (longer cable = bigger swing) */
+      const dx = st.sw * k * (0.12 + (TOP - st.y)*0.35);
+      line(top, { x:h.x + dx, y:h.y - k*0.04 }, "rgba(220,226,245,.85)", Math.max(1.2, k*0.005));
+      cx.save(); cx.translate(dx, 0);
       const L = k*0.2, lw = Math.max(3, k*0.02), hy = h.y + k*0.025;
       /* back prong, then held capsule, then front prongs */
       prong(h.x, hy, 0.0001, L*0.82, st.open*0.3, lw*0.9, true);
@@ -403,6 +739,7 @@
       if (cx.roundRect) cx.roundRect(h.x - k*.055, h.y - k*.065, k*.11, k*.095, k*.022); else cx.rect(h.x - k*.055, h.y - k*.065, k*.11, k*.095);
       cx.fill();
       cx.fillStyle = "rgba(59,123,255,.9)"; cx.beginPath(); cx.arc(h.x, h.y - k*.012, k*.01, 0, Math.PI*2); cx.fill();
+      cx.restore();
     }
     function drawAim(){
       if (!(st.phase === "aim" || st.phase === "carry")) return;
@@ -423,6 +760,16 @@
       });
       cx.globalAlpha = 1;
     }
+    /* front cabinet panel under the glass (stream framing): dark body, LED strip, tiny brand plate */
+    function drawCabinet(){
+      const l = P(-1.2, 0, 0), r = P(1.2, 0, 0), y = Math.min(l.y, r.y);
+      const g = cx.createLinearGradient(0, y, 0, H); g.addColorStop(0, "#111a3f"); g.addColorStop(.25, "#0a1030"); g.addColorStop(1, "#04060f");
+      cx.fillStyle = g; cx.fillRect(0, y, W, H - y);
+      glowLine({ x:0, y }, { x:W, y }, "rgba(125,176,255,.85)", 2);
+      cx.fillStyle = "rgba(125,176,255,.08)"; cx.fillRect(0, y + 2, W, Math.max(6, (H - y)*0.08));
+      cx.font = `600 ${Math.max(9, W*0.032)}px ui-monospace, Menlo, monospace`; cx.textAlign = "center"; cx.textBaseline = "middle";
+      cx.fillStyle = "rgba(180,186,255,.32)"; cx.fillText("G R A B L A B     M A C H I N E  0 1", W/2, y + (H - y)*0.22);
+    }
     function glassFront(){
       const g = cx.createLinearGradient(0,0,W,H);
       g.addColorStop(0,"rgba(255,255,255,.05)"); g.addColorStop(.35,"rgba(255,255,255,0)"); g.addColorStop(.62,"rgba(180,186,255,.05)"); g.addColorStop(.66,"rgba(180,186,255,0)");
@@ -431,7 +778,9 @@
       cx.fillStyle = v; cx.fillRect(0,0,W,H);
     }
 
+    let camC = null;
     function render(dt){
+      if (o.cam) camC = o.cam(W, H, st);
       cx.setTransform(dpr,0,0,dpr,0,0);
       const sh = st.shake > 0 ? (Math.random()-.5)*st.shake*8 : 0;
       cx.translate(sh, 0);
@@ -444,6 +793,7 @@
       }
       if (!clawDrawn){ drawAim(); drawClaw(); }
       drawParts(dt);
+      if (o.cabinet) drawCabinet();
       glassFront();
     }
 
@@ -460,14 +810,14 @@
     }
     function inChute(){ return st.x < CHUTE.x1 - 0.02 && st.z < CHUTE.z1 - 0.02; }
     function toast(t, ms){
-      const el = $("#simToast", root); el.textContent = t; el.classList.add("on");
-      clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("on"), ms || 1300);
+      const node = el("#simToast"); node.textContent = t; node.classList.add("on");
+      clearTimeout(node._t); node._t = setTimeout(() => node.classList.remove("on"), ms || 1300);
     }
-    function hint(t){ const el = $("#simHint", root); if (t){ el.textContent = t; el.classList.add("on"); } else el.classList.remove("on"); }
+    function hint(t){ const node = el("#simHint"); if (t){ node.textContent = t; node.classList.add("on"); } else node.classList.remove("on"); }
     function setTimer(){
-      const s = Math.max(0, Math.ceil(st.t)), b = $("#simT", root);
+      const s = Math.max(0, Math.ceil(st.t)), b = el("#simT");
       b.textContent = "0:" + String(s).padStart(2,"0"); b.classList.toggle("low", s <= 5 && st.t > 0);
-      $("#simTb", root).style.transform = `scaleX(${Math.max(0, st.t/PLAY_S)})`;
+      el("#simTb").style.transform = `scaleX(${Math.max(0, st.t/PLAY_S)})`;
     }
     function burst(x, y, n, cols){
       for (let i = 0; i < n; i++){
@@ -484,7 +834,7 @@
     function lose(why){
       if (st.phase === "end") return;
       st.phase = "end"; api.why = why; grabBtn(false); hint("");
-      setTimeout(() => { if (running) result(false); }, 1500);
+      setTimeout(() => { if (running) (o.onResult || result)(false); }, 1500);
     }
 
     function step(dt){
@@ -501,11 +851,15 @@
             const p = P((CHUTE.x0 + CHUTE.x1)/2, CHUTE.h, (CHUTE.z0 + CHUTE.z1)/2);
             burst(p.x, p.y, 70, ["#ffe3ad","#ffb24a","#ffffff","#7db0ff","#9a7bff"]);
             st.phase = "end"; hint("");
-            setTimeout(() => { if (running) result(true, c.kind); }, 1300);
+            setTimeout(() => { if (running) (o.onResult || result)(true, c.kind); }, 1300);
           }
           if (c.a <= 0) c.state = "gone";
         }
       }
+      /* pendulum: the claw hangs on a cable, so it lags behind the gantry and settles */
+      const vx = (st.x - st.px) / Math.max(dt, 1e-3); st.px = st.x;
+      st.sv += (-vx*0.22 - st.sw)*dt*38 - st.sv*dt*4.5; st.sw += st.sv*dt;
+      st.sw = Math.max(-0.5, Math.min(0.5, st.sw));
       st.chuteGlow = Math.max(st.phase === "carry" ? 0.35 + Math.sin(performance.now()/260)*0.25 : 0, st.chuteGlow - dt*0.8);
       st.shake = Math.max(0, st.shake - dt*2);
 
@@ -541,12 +895,12 @@
         st.ph += dt;
         const n = nearest(st.x, st.z), reach = R*1.25;
         const hold = n.c && n.d < reach;
-        st.open = Math.max(hold ? 0.32 : 0, 1 - st.ph/0.45);
+        st.open = Math.max(hold ? 0.58 : 0, 1 - st.ph/0.45);
         if (st.ph >= 0.55){
           if (hold){
             const p = 0.32 + 0.6*(1 - Math.max(0, n.d)/reach); /* centred = 92%, edge = 32% */
-            st.held = n.c; n.c.state = "held";
-            st.slipAt = Math.random() < p ? 0 : 0.45 + Math.random()*0.4;
+            st.held = n.c; n.c.state = "held"; st.shake = 0.28;
+            st.slipAt = (o.auto || Math.random() < p) ? 0 : 0.45 + Math.random()*0.4;
           } else st.held = null;
           st.phase = "up";
         }
@@ -554,7 +908,7 @@
         st.y = Math.min(TOP, st.y + dt*0.62);
         if (st.held){
           st.held.x = st.x; st.held.z = st.z; st.held.y = st.y - 0.15;
-          if (st.slipAt && st.y > st.slipAt){ st.open = 0.55; dropHeld(); toast("Slipped!", 1200); st.slipAt = 0; }
+          if (st.slipAt && st.y > st.slipAt){ st.open = 0.95; dropHeld(); toast("Slipped!", 1200); st.slipAt = 0; }
         }
         if (st.y >= TOP){
           if (st.held){
@@ -563,7 +917,7 @@
           } else {
             if (st.timeUp || st.t <= 0){ toast("Time's up", 1400); lose(st.open > 0.4 ? "It slipped at the last second" : "Time ran out"); return; }
             st.phase = "aim"; st.open = 0; grabBtn(true);
-            if (!$("#simToast", root).classList.contains("on")) toast("Missed. Again!", 1100);
+            if (!el("#simToast").classList.contains("on")) toast("Missed. Again!", 1100);
           }
         }
       } else if (st.phase === "release"){
@@ -584,29 +938,50 @@
         const top = n.c && n.d < R*1.25 ? n.c.y + R*0.25 : 0.02;
         st.target = top + 0.1;
         grabBtn(false); hint("");
-        const b = $("#simGrab", root); b.classList.add("press"); setTimeout(() => b.classList.remove("press"), 150);
+        const b = el("#simGrab"); b.classList.add("press"); setTimeout(() => b.classList.remove("press"), 150);
       } else if (st.phase === "carry"){
         /* manual drop away from the chute: the capsule falls back on the pile */
         st.open = 1; dropHeld(); toast("Dropped", 1000); st.phase = "aim"; grabBtn(true); hint("");
       }
     }
-    function grabBtn(on, label){ const b = $("#simGrab", root); b.disabled = !on; b.textContent = label || "Grab"; }
+    function grabBtn(on, label){ const b = el("#simGrab"); b.disabled = !on; b.textContent = label || "Grab"; }
 
+    /* autopilot for the demo: pick a capsule on top of the pile, line up, grab, carry it to the chute */
+    let ap = null;
+    function pilot(dt){
+      if (!ap) return;
+      const move = (x, z) => { joyV.x = x; joyV.z = z; if (o.onMove) o.onMove(x, z); };
+      if (ap.wait > 0){ ap.wait -= dt; move(0, 0); if (ap.wait <= 0 && ap.grabNext){ ap.grabNext = false; grab(); } return; }
+      let tx, tz;
+      if (st.phase === "aim"){
+        if (!ap.tgt || ap.tgt.state !== "pile"){
+          const pick = caps.filter(c => c.state === "pile" && c.x > -0.25 && c.x < 0.5 && c.z > 0.3 && c.z < 0.8).sort((a, b) => b.y - a.y);
+          ap.tgt = pick[0] || caps.find(c => c.state === "pile");
+        }
+        tx = ap.tgt.x; tz = ap.tgt.z;
+      } else if (st.phase === "carry"){ tx = (CHUTE.x0 + CHUTE.x1)/2; tz = (CHUTE.z0 + CHUTE.z1)/2; }
+      else { move(0, 0); return; }
+      const dx = tx - st.x, dz = tz - st.z;
+      move(Math.abs(dx) > 0.008 ? Math.max(-1, Math.min(1, dx*4)) : 0, Math.abs(dz) > 0.008 ? Math.max(-1, Math.min(1, dz*4)) : 0);
+      if (st.phase === "aim" && Math.abs(dx) < 0.012 && Math.abs(dz) < 0.012){ ap.wait = 0.4; ap.grabNext = true; }
+    }
     function frame(now){
       const dt = Math.min(0.1, (now - last)/1000 || 0); last = now;
+      if (o.auto) pilot(dt);
       if (st.phase !== "count") step(dt);
       render(dt);
     }
     function loop(now){
       if (!running) return;
-      frame(now);
+      if (o.paused && o.paused()) last = now;
+      else { if (cv.clientWidth && (Math.abs(cv.clientWidth - W) > 1 || Math.abs(cv.clientHeight - H) > 1)) layout(); frame(now); }
       raf = requestAnimationFrame(loop);
     }
     /* watchdog: if rAF is throttled (background pane, power saving) keep the clock and the claw honest */
-    setInterval(() => { if (running && performance.now() - last > 120) frame(performance.now()); }, 100);
+    setInterval(() => { if (running && !(o.paused && o.paused()) && performance.now() - last > 120) frame(performance.now()); }, 100);
 
     function countdown(){
-      const q = $("#simQ", root), n = $("#simQn", root);
+      const q = el("#simQ"), n = el("#simQn");
       q.classList.add("on"); let k = 3;
       const tick = () => {
         if (!running) return;
@@ -619,7 +994,7 @@
 
     /* joystick : drag the knob, or press and hold an edge */
     function joystick(){
-      const j = $("#simJoy", root), kn = j.querySelector(".knob");
+      const j = el("#simJoy"), kn = j.querySelector(".knob");
       let id = null;
       const setFrom = e => {
         const r = j.getBoundingClientRect(), max = r.width*0.32;
@@ -638,9 +1013,10 @@
     const api = {
       why: "",
       init(){
-        cv = $("#simCv", root); cx = cv.getContext("2d");
+        cv = el("#simCv"); cx = cv.getContext("2d");
+        if (o.auto){ addEventListener("resize", () => { if (running) layout(); }); return; }
         joystick();
-        $("#simGrab", root).addEventListener("click", grab);
+        el("#simGrab").addEventListener("click", grab);
         addEventListener("keydown", e => {
           if (!running) return;
           const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
@@ -652,17 +1028,19 @@
         addEventListener("resize", () => { if (running) layout(); });
       },
       start(){
-        $("#hudProj", root).textContent = proj.name;
+        el("#hudProj").textContent = proj.name;
         reset(); setTimer(); grabBtn(false); hint("");
         running = true; layout(); last = performance.now();
         cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
-        countdown();
+        if (o.auto){ st.phase = "aim"; grabBtn(true); ap = { wait:0.9 + (o.jitter ? Math.random()*o.jitter : 0), tgt:null, grabNext:false }; } else countdown();
       },
       stop(){ running = false; cancelAnimationFrame(raf); keys = {}; joyV = { x:0, z:0 }; }
     };
-    window.__sim = { get st(){ return st; }, get caps(){ return caps; }, grab, step: dt => step(dt) };
+    if (!o.auto) window.__sim = { get st(){ return st; }, get caps(){ return caps; }, grab, step: dt => step(dt) };
+    api.isRunning = () => running;
     return api;
-  })();
+  }
+  const game = makeGame();
 
   /* ---------------- confetti ---------------- */
   const confetti = (function(){
@@ -699,25 +1077,64 @@
     };
   })();
 
-  /* ---------------- hero phone : the pre-rendered play, with its UI synced to the clip ---------------- */
+  /* ---------------- hero window : the real game playing itself in the browser mockup ---------------- */
   (function(){
-    const v = document.getElementById("phVid"), tm = document.getElementById("phTimer"), won = document.getElementById("phWon"), gb = document.querySelector(".ph-grab");
-    if (!v || !tm) return;
-    /* clip beats (s): claw steered 0-4, grab 4.1, lift 6.5, carry 7.5-9.5, drop 10.3 */
-    const GRAB = 4.1, DROP = 10.4;
-    let pressed = false;
+    const cvh = document.getElementById("phCv");
+    if (!cvh) return;
+    const won = document.getElementById("phWon"), knob = document.querySelector(".bwin .stick i");
+    const map = { "#simCv": cvh, "#simT": document.getElementById("phTimer"), "#simGrab": document.querySelector(".ph-grab") };
+    const p0 = PROJECTS[0];
+    let visible = false;
+    const hero = makeGame({
+      auto: true,
+      el: s => map[s],
+      paused: () => !visible || document.body.classList.contains("sim-lock"),
+      onMove: (x, z) => { if (knob) knob.style.transform = `translate(${(x*9).toFixed(1)}px,${(-z*9).toFixed(1)}px)`; },
+      onResult: (win, kind) => {
+        if (won){
+          won.querySelector("b").textContent = kind === "rare" ? p0.rare : `+${fmt(kind === "violet" ? p0.violet : p0.gold)} ${p0.tk}`;
+          won.classList.add("on");
+        }
+        setTimeout(() => { if (won) won.classList.remove("on"); hero.start(); }, 2800);
+      }
+    });
+    hero.init();
+    new IntersectionObserver(es => {
+      visible = es[0].isIntersecting;
+      if (visible && !hero.isRunning()) hero.start();
+    }, { threshold: 0.15 }).observe(cvh);
+  })();
+
+  /* ---------------- hero window : real remote-play footage, HUD synced to the clip ---------------- */
+  (function(){
+    const v = document.getElementById("phVid"); if (!v) return;
+    const tm = document.getElementById("phTimer"), gb = document.querySelector(".bwin .ph-grab"), knob = document.querySelector(".bwin .stick i");
+    /* clip beats (s): steering 0 to 4.4, grab pressed ~4.6, claw down and back up empty to the end */
     v.addEventListener("timeupdate", () => {
       const t = v.currentTime;
-      tm.textContent = "0:" + String(Math.max(0, 30 - Math.floor(t*1.6))).padStart(2,"0");
-      if (gb){ const on = t > GRAB && t < GRAB + 0.35; if (on !== pressed){ pressed = on; gb.classList.toggle("press", on); } }
-      if (won) won.classList.toggle("on", t > DROP);
+      if (tm) tm.textContent = "0:" + String(Math.max(0, 30 - Math.floor(t * 1.5))).padStart(2, "0");
+      if (gb) gb.classList.toggle("press", t > 4.45 && t < 4.85);
+      if (knob) knob.classList.toggle("steer", t < 4.4);
     });
   })();
+
+  /* ---------------- live viewer counts : drift a little every couple of seconds ---------------- */
+  setInterval(() => {
+    document.querySelectorAll(".vn").forEach(el => {
+      if (!el.offsetParent) return;                       // not on screen: leave it
+      const base = +(el.dataset.base || (el.dataset.base = el.dataset.n)), n = +el.dataset.n;
+      const step = Math.max(2, Math.round(base * 0.012)), d = Math.round((Math.random() - 0.45) * step * 2);
+      const next = Math.min(Math.round(base * 1.35), Math.max(Math.round(base * 0.75), n + d));
+      if (next === n) return;
+      el.dataset.n = next; el.textContent = fmt(next);
+      el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick");
+    });
+  }, 2200);
 
   /* ---------------- entry points ---------------- */
   document.addEventListener("click", e => {
     const t = e.target.closest("[data-sim], a[href='#simulate']");
-    if (!t) return;
+    if (!t || e.target.closest(".bwin .stick")) return;
     e.preventDefault(); open();
   });
   if (location.hash === "#simulate") addEventListener("load", () => setTimeout(open, 300));
