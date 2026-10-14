@@ -73,3 +73,12 @@
 .lab-credit a.lc-logo img.mj{height:17px}
 .lab-specs a.pwr{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:8px 13px;border-radius:999px;color:#071029;background:var(--blue-chrome);border:1px solid transparent;font-weight:600}
 .lab-credit i.sep{display:inline-block;width:1px;height:12px;background:currentColor;opacity:.35}
+/* credit line sits on a bright sky: give it its own dark glass strip so it reads */
+.lab-credit{width:fit-content;max-width:calc(100% - 32px);margin:30px auto 0;padding:12px 22px;border-radius:999px;color:#b9c0dc;font-size:11px;
+  background:linear-gradient(180deg,rgba(10,13,30,.72),rgba(5,8,20,.62));border:1px solid rgba(180,186,255,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 40px rgba(0,0,0,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.lab-credit a.lc-logo{opacity:1;color:#f3f4fb}
+.lab-credit a.lc-logo img{height:17px}
+.lab-credit a.lc-logo img.mj{height:20px}
+.lab-credit i.sep{height:14px;opacity:.5;margin:0 6px}
+@media(max-width:560px){.lab-credit{border-radius:18px;padding:12px 16px}}
