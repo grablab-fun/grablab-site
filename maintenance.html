@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Grablab, back shortly</title>
+<meta name="robots" content="noindex" />
+<meta name="description" content="Grablab is tuning the claw. Back shortly." />
+<link rel="icon" type="image/png" href="/assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="stylesheet" href="/assets/fonts/fonts.css?v=1" />
+<style>
+  :root{--ink:#f3f4fb;--ink-2:#a7b0cc;--ink-3:#69739a;--bg:#050918;
+    --blue-chrome:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 52%,#d6e4ff 66%,#8fb2ff 100%)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:'Satoshi',system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;overflow:hidden}
+  .sky{position:fixed;inset:0;background:url("/assets/footer-sky.jpg?v=2") center 60%/cover no-repeat}
+  .sky::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,9,24,.92) 0%,rgba(5,9,24,.6) 45%,rgba(5,9,24,.55) 75%,rgba(5,9,24,.75) 100%)}
+  main{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+  .brand{display:flex;align-items:center;gap:12px;margin-bottom:clamp(28px,6vh,56px)}
+  .brand img{width:40px;height:40px}
+  .brand b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:22px;letter-spacing:.08em}
+  .k{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#9cc0ff;margin-bottom:18px}
+  h1{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(52px,11vw,150px);line-height:.92;letter-spacing:.005em;text-shadow:0 2px 30px rgba(5,9,24,.8)}
+  h1 span{display:block;background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 24px rgba(5,9,24,.6))}
+  p{margin-top:26px;max-width:46ch;font-size:clamp(15px,1.8vw,18px);line-height:1.6;color:#d3d8ec}
+  a.mail{display:inline-flex;margin-top:30px;padding:13px 24px;border-radius:999px;font-weight:700;font-size:14.5px;color:#0a0c16;background:var(--ink);text-decoration:none;box-shadow:0 10px 36px rgba(244,243,238,.12);transition:transform .2s}
+  a.mail:hover{transform:translateY(-1px)}
+  .x{margin-top:16px;font-size:13px;color:var(--ink-3)}
+  .x a{color:var(--ink-2)}
+</style>
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+  <main>
+    <div class="brand"><img src="/assets/brand/mark-chrome-256.png" alt="" /><b>GRABLAB</b></div>
+    <span class="k">Maintenance</span>
+    <h1>Tuning<span>the claw.</span></h1>
+    <p>We are polishing the machine and the site. Grablab is back online shortly.</p>
+    <a class="mail" href="mailto:contact@grablab.fun">contact@grablab.fun</a>
+  </main>
+</body>
+</html>
