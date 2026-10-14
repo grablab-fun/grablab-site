@@ -127,7 +127,13 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
     ghost(box([.02, RD - .2, .02], [r4(RX - t/2 - .02), (RB + RF)/2, RH - .16], "led_pink"))
   ]);
   /* lamps hanging from the grid: body, glowing lens, a soft visible light shaft, and a real spot light aimed at the machine */
-  const LAMPS = [[-.75, -.65], [.75, -.65], [0, .45], [-1.2, 1.45], [1.2, 1.45]];
+  /* the two front lamps were removed (they hung in front of the claw and got in the way); their light stays, as
+     invisible spots in the ceiling grid */
+  [[-.75, -.65], [.75, -.65]].forEach(([x, y], i) => {
+    const d = [-x, -y, .75 - RZT], n = Math.hypot(...d);
+    E.push({name:"front_light_" + (i + 1), transform:{pos:[x, y, r4(RZT - .1)]}, light:{type:"spot", color:"#fff2dc", intensity:5, dir:d.map(v => r4(v/n)), angle:.75}});
+  });
+  const LAMPS = [[0, .45], [-1.2, 1.45], [1.2, 1.45]];
   LAMPS.forEach(([x, y], i) => {
     const DROP = 1.25, zl = RZT - DROP;   /* lamps hang on long drops from the high ceiling grid */
     fixed("lamp_" + (i + 1), [
@@ -142,7 +148,7 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
         ghost({type:"cylinder", radius:.24, height:.5, pos:[x, y, r4(zl - 1.12)], material:"beam_3"})])
     ]);
     const d = [-x, -y, .75 - zl], n = Math.hypot(...d);
-    E.push({name:"lamp_light_" + (i + 1), transform:{pos:[x, y, r4(zl - .08)]}, light:{type:"spot", color:"#fff2dc", intensity:i < 3 ? 5 : 3, dir:d.map(v => r4(v/n)), angle:.75, castShadow:i === 2}});
+    E.push({name:"lamp_light_" + (i + 1), transform:{pos:[x, y, r4(zl - .08)]}, light:{type:"spot", color:"#fff2dc", intensity:i < 1 ? 5 : 3, dir:d.map(v => r4(v/n)), angle:.75, castShadow:i === 0}});
   });
   E.push({name:"back_glow", transform:{pos:[0, 2.0, 2.2]}, light:{type:"point", color:"#7d84ff", intensity:2, range:4.5}});
   /* back wall: acoustic panels around the Grablab sign */

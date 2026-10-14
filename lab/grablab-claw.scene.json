@@ -1351,6 +1351,48 @@
    "collider": {}
   },
   {
+   "name": "front_light_1",
+   "transform": {
+    "pos": [
+     -0.75,
+     -0.65,
+     3.43
+    ]
+   },
+   "light": {
+    "type": "spot",
+    "color": "#fff2dc",
+    "intensity": 5,
+    "dir": [
+     0.2541,
+     0.2202,
+     -0.9418
+    ],
+    "angle": 0.75
+   }
+  },
+  {
+   "name": "front_light_2",
+   "transform": {
+    "pos": [
+     0.75,
+     -0.65,
+     3.43
+    ]
+   },
+   "light": {
+    "type": "spot",
+    "color": "#fff2dc",
+    "intensity": 5,
+    "dir": [
+     -0.2541,
+     0.2202,
+     -0.9418
+    ],
+    "angle": 0.75
+   }
+  },
+  {
    "name": "lamp_1",
    "geoms": [
     {
@@ -1358,8 +1400,8 @@
      "radius": 0.008,
      "height": 1.2,
      "pos": [
-      -0.75,
-      -0.65,
+      0,
+      0.45,
       2.93
      ],
      "material": "truss",
@@ -1371,8 +1413,8 @@
      "radius": 0.075,
      "height": 0.12,
      "pos": [
-      -0.75,
-      -0.65,
+      0,
+      0.45,
       2.28
      ],
      "material": "lamp_body",
@@ -1384,8 +1426,8 @@
      "radius": 0.065,
      "height": 0.008,
      "pos": [
-      -0.75,
-      -0.65,
+      0,
+      0.45,
       2.216
      ],
      "material": "lamp_lens",
@@ -1397,8 +1439,8 @@
      "radius": 0.079,
      "height": 0.022,
      "pos": [
-      -0.75,
-      -0.65,
+      0,
+      0.45,
       2.235
      ],
      "material": "lamp_lens",
@@ -1410,37 +1452,11 @@
      "radius": 0.09,
      "height": 0.35,
      "pos": [
-      -0.75,
-      -0.65,
+      0,
+      0.45,
       2.03
      ],
      "material": "beam_1",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.16,
-     "height": 0.45,
-     "pos": [
-      -0.75,
-      -0.65,
-      1.63
-     ],
-     "material": "beam_2",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.24,
-     "height": 0.5,
-     "pos": [
-      -0.75,
-      -0.65,
-      1.16
-     ],
-     "material": "beam_3",
      "contype": 0,
      "conaffinity": 0
     }
@@ -1449,218 +1465,6 @@
   },
   {
    "name": "lamp_light_1",
-   "transform": {
-    "pos": [
-     -0.75,
-     -0.65,
-     2.2
-    ]
-   },
-   "light": {
-    "type": "spot",
-    "color": "#fff2dc",
-    "intensity": 5,
-    "dir": [
-     0.4113,
-     0.3564,
-     -0.839
-    ],
-    "angle": 0.75,
-    "castShadow": false
-   }
-  },
-  {
-   "name": "lamp_2",
-   "geoms": [
-    {
-     "type": "cylinder",
-     "radius": 0.008,
-     "height": 1.2,
-     "pos": [
-      0.75,
-      -0.65,
-      2.93
-     ],
-     "material": "truss",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.075,
-     "height": 0.12,
-     "pos": [
-      0.75,
-      -0.65,
-      2.28
-     ],
-     "material": "lamp_body",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.065,
-     "height": 0.008,
-     "pos": [
-      0.75,
-      -0.65,
-      2.216
-     ],
-     "material": "lamp_lens",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.079,
-     "height": 0.022,
-     "pos": [
-      0.75,
-      -0.65,
-      2.235
-     ],
-     "material": "lamp_lens",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.09,
-     "height": 0.35,
-     "pos": [
-      0.75,
-      -0.65,
-      2.03
-     ],
-     "material": "beam_1",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.16,
-     "height": 0.45,
-     "pos": [
-      0.75,
-      -0.65,
-      1.63
-     ],
-     "material": "beam_2",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.24,
-     "height": 0.5,
-     "pos": [
-      0.75,
-      -0.65,
-      1.16
-     ],
-     "material": "beam_3",
-     "contype": 0,
-     "conaffinity": 0
-    }
-   ],
-   "collider": {}
-  },
-  {
-   "name": "lamp_light_2",
-   "transform": {
-    "pos": [
-     0.75,
-     -0.65,
-     2.2
-    ]
-   },
-   "light": {
-    "type": "spot",
-    "color": "#fff2dc",
-    "intensity": 5,
-    "dir": [
-     -0.4113,
-     0.3564,
-     -0.839
-    ],
-    "angle": 0.75,
-    "castShadow": false
-   }
-  },
-  {
-   "name": "lamp_3",
-   "geoms": [
-    {
-     "type": "cylinder",
-     "radius": 0.008,
-     "height": 1.2,
-     "pos": [
-      0,
-      0.45,
-      2.93
-     ],
-     "material": "truss",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.075,
-     "height": 0.12,
-     "pos": [
-      0,
-      0.45,
-      2.28
-     ],
-     "material": "lamp_body",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.065,
-     "height": 0.008,
-     "pos": [
-      0,
-      0.45,
-      2.216
-     ],
-     "material": "lamp_lens",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.079,
-     "height": 0.022,
-     "pos": [
-      0,
-      0.45,
-      2.235
-     ],
-     "material": "lamp_lens",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.09,
-     "height": 0.35,
-     "pos": [
-      0,
-      0.45,
-      2.03
-     ],
-     "material": "beam_1",
-     "contype": 0,
-     "conaffinity": 0
-    }
-   ],
-   "collider": {}
-  },
-  {
-   "name": "lamp_light_3",
    "transform": {
     "pos": [
      0,
@@ -1682,7 +1486,7 @@
    }
   },
   {
-   "name": "lamp_4",
+   "name": "lamp_2",
    "geoms": [
     {
      "type": "cylinder",
@@ -1779,7 +1583,7 @@
    "collider": {}
   },
   {
-   "name": "lamp_light_4",
+   "name": "lamp_light_2",
    "transform": {
     "pos": [
      -1.2,
@@ -1801,7 +1605,7 @@
    }
   },
   {
-   "name": "lamp_5",
+   "name": "lamp_3",
    "geoms": [
     {
      "type": "cylinder",
@@ -1898,7 +1702,7 @@
    "collider": {}
   },
   {
-   "name": "lamp_light_5",
+   "name": "lamp_light_3",
    "transform": {
     "pos": [
      1.2,
