@@ -298,7 +298,7 @@
       <section class="sv" data-v="play">
         <div class="stagew" id="stagew">
           <canvas id="simCv"></canvas>
-          <div class="shud tl"><span class="slive">Live</span><span class="smach" id="hudProj"></span></div>
+          <div class="shud tl"><div class="bcast"><span class="slive">Live</span><i class="bdiv"></i><img class="bimg" id="hudLogo" src="" alt="" /><span class="smach" id="hudProj"></span></div></div>
           <div class="shud tm"><b id="simT">0:30</b><span class="tb"><i id="simTb"></i></span></div>
           <div class="shud tr"><span class="swatch"><i></i><b class="vn" data-n="1284">1,284</b> watching</span></div>
           <div class="toast" id="simToast"></div>
@@ -308,8 +308,16 @@
         <div class="ctrl">
           <div class="joy" id="simJoy" aria-label="Joystick"><img class="jbase" src="assets/play/joy-base.webp" alt="" draggable="false" /><span class="knob"><img src="assets/play/joy-stick.webp" alt="" draggable="false" /></span></div>
           <div class="ctrl-mid">
-            <div class="grip">Grip <span class="gb"><i></i></span> 70%</div>
-            <div class="keys"><kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or <kbd>WASD</kbd> to move, <kbd>Space</kbd> to grab</div>
+            <div class="gauge" aria-label="Grip 70%">
+              <svg viewBox="0 0 140 78"><defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#1f4fd1"/><stop offset=".55" stop-color="#7db0ff"/><stop offset="1" stop-color="#e8f0ff"/></linearGradient></defs>
+                ${Array.from({length:21}, (_, i) => { const a = Math.PI*(1 - i/20), r1 = i % 5 ? 60 : 57, r2 = 64; return `<line x1="${(70 + Math.cos(a)*r1).toFixed(1)}" y1="${(72 - Math.sin(a)*r1).toFixed(1)}" x2="${(70 + Math.cos(a)*r2).toFixed(1)}" y2="${(72 - Math.sin(a)*r2).toFixed(1)}" class="${i <= 14 ? "on" : ""}"/>`; }).join("")}
+                <path class="trk" d="M18 72 A52 52 0 0 1 122 72" pathLength="100"/><path class="val" d="M18 72 A52 52 0 0 1 122 72" pathLength="100"/></svg>
+              <b>70<em>%</em></b><small>Grip</small>
+            </div>
+            <div class="keys">
+              <span class="kg"><span class="kpad"><kbd data-k="ArrowUp">&uarr;</kbd><kbd data-k="ArrowLeft">&larr;</kbd><kbd data-k="ArrowDown">&darr;</kbd><kbd data-k="ArrowRight">&rarr;</kbd></span><small>Move</small></span>
+              <span class="kg"><kbd class="wide" data-k=" ">Space</kbd><small>Grab</small></span>
+            </div>
           </div>
           <button class="grabb" id="simGrab" type="button"><img src="assets/play/btn.webp" alt="" draggable="false" /><span>Grab</span></button>
         </div>
@@ -1100,6 +1108,8 @@
       j.addEventListener("pointerup", end); j.addEventListener("pointercancel", end);
     }
 
+    const WASD = { w:"ArrowUp", a:"ArrowLeft", s:"ArrowDown", d:"ArrowRight" };
+    function keyCap(k, on){ const c = root && root.querySelector(`.keys kbd[data-k="${WASD[k] || k}"]`); if (c) c.classList.toggle("on", on); }
     const api = {
       why: "",
       init(){
@@ -1111,14 +1121,15 @@
           if (!running) return;
           const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
           if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","w","a","s","d"].includes(k)){ keys[k] = true; e.preventDefault(); }
+          keyCap(k, true);
           if (k === " " || k === "Enter"){ e.preventDefault(); if (!e.repeat) grab(); }
         });
-        addEventListener("keyup", e => { const k = e.key.length === 1 ? e.key.toLowerCase() : e.key; keys[k] = false; });
+        addEventListener("keyup", e => { const k = e.key.length === 1 ? e.key.toLowerCase() : e.key; keys[k] = false; keyCap(k, false); });
         addEventListener("blur", () => { keys = {}; });
         addEventListener("resize", () => { if (running) layout(); });
       },
       start(){
-        el("#hudProj").textContent = proj.name;
+        el("#hudProj").textContent = proj.name; el("#hudLogo").src = proj.logo;
         reset(); setTimer(); grabBtn(false); hint("");
         running = true; layout(); last = performance.now();
         cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);

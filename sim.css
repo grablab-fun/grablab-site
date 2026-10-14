@@ -268,10 +268,18 @@ body.sim-lock{overflow:hidden}
 .stagew canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .shud{position:absolute;z-index:3;display:flex;gap:8px;align-items:center;pointer-events:none}
 .shud.tl{top:14px;left:14px}.shud.tr{top:14px;right:14px}
-.slive{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#fff;padding:6px 11px;border-radius:999px;background:linear-gradient(90deg,#ff4d6d,#ff7a59);box-shadow:0 6px 18px rgba(255,77,109,.35)}
-.slive::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;margin-right:7px;vertical-align:1px;animation:blink 1.5s ease-in-out infinite}
-.smach{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);padding:6px 11px;border-radius:999px;background:rgba(5,9,24,.55);border:1px solid rgba(180,186,255,.22);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.swatch{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);padding:6px 11px;border-radius:999px;background:rgba(5,9,24,.5);border:1px solid rgba(180,186,255,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+/* broadcast tag: one dark glass strip, recording dot, project logo + name */
+.bcast{display:flex;align-items:center;gap:10px;padding:6px 14px 6px 12px;border-radius:12px;background:linear-gradient(180deg,rgba(14,16,28,.72),rgba(6,8,16,.62));
+  border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 30px rgba(0,0,0,.35);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2)}
+.slive{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#fff}
+.slive::before{content:"";width:7px;height:7px;border-radius:50%;background:#ff3b5c;box-shadow:0 0 0 3px rgba(255,59,92,.18),0 0 10px #ff3b5c;animation:blink 1.5s ease-in-out infinite}
+.bdiv{width:1px;height:16px;background:rgba(255,255,255,.16)}
+.bimg{width:20px;height:20px;border-radius:6px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.bimg[src=""]{display:none}
+.smach{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#f3f4fb}
+.swatch{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#c9cfe6;padding:8px 13px;border-radius:12px;
+  background:linear-gradient(180deg,rgba(14,16,28,.72),rgba(6,8,16,.62));border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 30px rgba(0,0,0,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.swatch b{color:#fff;font-weight:600}
 .swatch i{width:5px;height:5px;border-radius:50%;background:#7db0ff;box-shadow:0 0 8px #7db0ff}
 .shud.tm{right:18px;bottom:14px;flex-direction:column;align-items:flex-end;gap:6px}
 .shud.tm b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(34px,4.4vw,52px);line-height:1;text-shadow:0 2px 18px rgba(0,0,0,.7);transition:color .3s}
@@ -296,12 +304,27 @@ body.sim-lock{overflow:hidden}
   transform:perspective(320px) rotateX(calc(var(--jy,0) * 22deg)) rotateZ(calc(var(--jx,0) * 20deg));transition:transform .14s cubic-bezier(.3,1.4,.5,1)}
 .joy.drag{cursor:grabbing}
 .joy.drag .knob{transition:transform .04s linear}
-.ctrl-mid{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
-.ctrl-mid .keys{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.ctrl-mid kbd{font-family:var(--mono);font-size:10px;padding:3px 7px;border-radius:6px;border:1px solid rgba(180,186,255,.3);color:var(--ink-2);background:rgba(5,9,24,.5)}
-.grip{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
-.grip .gb{width:120px;height:5px;border-radius:999px;background:rgba(180,186,255,.15);overflow:hidden}
-.grip .gb i{display:block;width:70%;height:100%;background:var(--blue-bar)}
+.ctrl-mid{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+/* centre of the control deck: an analog grip gauge and real keycaps */
+.gauge{position:relative;width:150px;height:92px;text-align:center}
+.gauge svg{width:150px;height:84px;display:block;overflow:visible}
+.gauge line{stroke:rgba(180,186,255,.22);stroke-width:1.4;stroke-linecap:round}
+.gauge line.on{stroke:rgba(156,192,255,.75)}
+.gauge .trk{fill:none;stroke:rgba(180,186,255,.1);stroke-width:7;stroke-linecap:round}
+.gauge .val{fill:none;stroke:url(#gg);stroke-width:7;stroke-linecap:round;stroke-dasharray:70 100;filter:drop-shadow(0 0 8px rgba(59,123,255,.6))}
+.gauge b{position:absolute;left:0;right:0;top:36px;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:30px;line-height:1;color:#f3f4fb}
+.gauge b em{font-style:normal;font-size:15px;color:#9cc0ff;margin-left:2px}
+.gauge small{position:absolute;left:0;right:0;top:70px;font-family:var(--mono);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-3)}
+.ctrl-mid .keys{display:flex;align-items:flex-end;gap:26px}
+.kg{display:flex;flex-direction:column;align-items:center;gap:7px}
+.kg small{font-family:var(--mono);font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-3)}
+.kpad{display:grid;grid-template-columns:repeat(3,26px);grid-template-rows:repeat(2,26px);gap:4px}
+.kpad kbd:nth-child(1){grid-area:1/2}.kpad kbd:nth-child(2){grid-area:2/1}.kpad kbd:nth-child(3){grid-area:2/2}.kpad kbd:nth-child(4){grid-area:2/3}
+.keys kbd{display:grid;place-items:center;height:26px;min-width:26px;padding:0 8px;border-radius:7px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:#dfe6ff;
+  background:linear-gradient(180deg,#232a44,#141a30);border:1px solid rgba(180,186,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 3px 0 #070a16,0 5px 10px rgba(0,0,0,.4);
+  transition:transform .08s,box-shadow .08s,background .15s,color .15s}
+.keys kbd.wide{min-width:96px;text-transform:uppercase;letter-spacing:.18em;font-size:9.5px}
+.keys kbd.on{transform:translateY(2px);color:#fff;background:linear-gradient(180deg,#3b6fe0,#1f4fd1);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 1px 0 #070a16,0 0 14px rgba(59,123,255,.6)}
 /* real arcade push button with the label engraved on the lit dome */
 .grabb{position:relative;width:190px;height:168px;border:0;padding:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;filter:drop-shadow(0 16px 22px rgba(0,0,0,.55))}
 .grabb img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .12s,filter .2s;pointer-events:none}
@@ -413,7 +436,7 @@ body.sim-lock{overflow:hidden}
   .stagew{aspect-ratio:16/11;max-height:none}
   .ctrl{gap:12px}
   .ctrl-mid .keys{display:none}
-  .ctrl{grid-template-columns:auto 1fr auto}.ctrl-mid{min-width:0}.grip{flex-direction:column;gap:6px}.grip .gb{width:64px}
+  .ctrl{grid-template-columns:auto 1fr auto}.ctrl-mid{min-width:0}.gauge{transform:scale(.72);margin:-14px -20px}
   .grabb{width:140px;height:124px}.grabb span{font-size:21px}.joy{width:116px;height:162px}.joy img,.joy .knob{width:116px}
 }
 
