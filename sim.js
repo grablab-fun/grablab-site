@@ -142,7 +142,7 @@
     return [
       { k:"x", t:`Follow ${p.name} on X`, r:1, cta:"Follow" },
       i % 2 ? { k:"chat", t:`Join the ${p.name} Discord`, r:1, cta:"Join" } : { k:"chat", t:`Join the ${p.name} Telegram`, r:1, cta:"Join" },
-      i % 3 === 0 ? { k:"link", t:`Share the ${p.name} drop`, r:2, cta:"Share" } : { k:"coin", t:`Hold 500 ${p.tk} for 24h`, r:2, cta:"Check" }
+      i % 3 === 0 ? { k:"link", t:`Share the ${p.name} drop`, r:2, cta:"Share" } : { k:"coin", t:`Hold 500 ${p.tk}`, r:2, cta:"Check" }
     ];
   }
   function projQuestCard(p, i){
