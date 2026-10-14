@@ -12,3 +12,4 @@ _headers
 .vercel
 .env*
 *.src.png
+assets/play/_*

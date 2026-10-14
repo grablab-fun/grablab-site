@@ -266,7 +266,11 @@
             <small>Pay with</small>
             ${WALLETS.map((w,i) => `<button class="wl${i===0?" on":""}" type="button" data-w="${i}"><img src="${w[1]}" alt="" />${w[0]}<em>${i===0?"Selected":"Detected"}</em></button>`).join("")}
             <button class="btn btn-primary big act" id="payBtn" type="button"></button>
-            <div class="okline" id="payOk">${CHECK}<span></span></div>
+            <div class="okline" id="payOk">
+              <span class="ok-ring"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"/><path d="M14 22.5l5.5 5.5L30 17"/></svg></span>
+              <span class="ok-t"><b>Payment confirmed</b><small>Settled in 0.4 s</small></span>
+              <span class="ok-m"><small>Play</small><b id="okNo"></b><small>Tx</small><code id="okTx"></code></span>
+            </div>
             <p class="fine">Simulated. Your wallet is never opened.</p>
           </div>
         </div>
@@ -302,12 +306,12 @@
           <div class="queue" id="simQ"><div><small>You're up on Machine 01</small><b id="simQn">3</b></div></div>
         </div>
         <div class="ctrl">
-          <div class="joy" id="simJoy" aria-label="Joystick"><i class="ar u"></i><i class="ar d"></i><i class="ar l"></i><i class="ar r"></i><span class="knob"></span></div>
+          <div class="joy" id="simJoy" aria-label="Joystick"><img class="jbase" src="assets/play/joy-base.webp" alt="" draggable="false" /><span class="knob"><img src="assets/play/joy-stick.webp" alt="" draggable="false" /></span></div>
           <div class="ctrl-mid">
             <div class="grip">Grip <span class="gb"><i></i></span> 70%</div>
             <div class="keys"><kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or <kbd>WASD</kbd> to move, <kbd>Space</kbd> to grab</div>
           </div>
-          <button class="grabb" id="simGrab" type="button">Grab</button>
+          <button class="grabb" id="simGrab" type="button"><img src="assets/play/btn.webp" alt="" draggable="false" /><span>Grab</span></button>
         </div>
       </section>
 
@@ -500,7 +504,7 @@
     $("#ppViolet", root).textContent = fmt(proj.violet) + " " + proj.tk;
     $("#ppRare", root).textContent = proj.rare;
     $("#payTot", root).textContent = (proj.price + 0.000005).toFixed(6).replace(/0+$/,"") + " SOL";
-    const b = $("#payBtn", root); b.disabled = false; setPayLabel();
+    const b = $("#payBtn", root); b.disabled = false; b.classList.remove("paid"); setPayLabel();
     $("#payOk", root).classList.remove("on");
   }
   function pay(){
@@ -511,7 +515,7 @@
       setTimeout(() => {
         b.innerHTML = CHECK + "Paid";
         lastTx = b58(4) + "…" + b58(4);
-        const ok = $("#payOk", root); ok.querySelector("span").textContent = `Confirmed in tx ${lastTx} for play #${String(playNo).padStart(6,"0")}`; ok.classList.add("on");
+        const ok = $("#payOk", root); $("#okNo", root).textContent = "#" + String(playNo).padStart(6,"0"); $("#okTx", root).textContent = lastTx; ok.classList.add("on"); b.classList.add("paid");
         setTimeout(() => { if (view === "pay") go("claim"); }, 1100);
       }, 800);
     }, 1100);
@@ -571,14 +575,26 @@
     const el = s => (o.el ? o.el(s) : $(s, root)) || DUMMY;
     let cv, cx, W = 0, H = 0, dpr = 1, raf = 0, last = 0, running = false;
     let caps = [], parts = [], st, keys = {}, joyV = { x:0, z:0 };
-    const R = 0.085, TOP = 0.98, CHUTE = { x0:-1, x1:-0.6, z0:0, z1:0.36, h:0.2 };
+    const R = 0.085, TOP = 0.98;
+    /* PHOTO MODE (full simulator): the machine is a real photo of the cabinet (assets/play/plate.webp) and only the claw,
+       the grabbed capsule and shadows are drawn over it. The chute is the acrylic box front-left in that photo. */
+    const PH = !o.auto && !o.cam ? photoKit() : null;
+    const CHUTE = PH ? { x0:-1, x1:-0.56, z0:0.1, z1:0.48, h:0.2 } : { x0:-1, x1:-0.6, z0:0, z1:0.36, h:0.2 };
+    let joyEl = null;
+    function tilt(ux, uy){
+      if (!joyEl) joyEl = el("#simJoy");
+      const k = joyEl.querySelector(".knob"); if (!k) return;
+      k.style.setProperty("--jx", ux.toFixed(3)); k.style.setProperty("--jy", uy.toFixed(3));
+    }
 
     function layout(){
       const r = cv.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio || 1);
       W = r.width; H = r.height; cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+      if (PH) PH.fit(W, H);
     }
     /* world: x -1..1 (left..right), z 0..1 (front..back), y 0..1 (floor..top) */
     function P(x, y, z){
+      if (PH){ const g = PH.G(x, z), r = PH.r(z); return { x:g.x, y:g.y - (y - R)*8.5*r, s:1, k:r/R }; }
       const s = 1 - 0.3*z, fy = H*0.88 - z*H*0.33;
       if (o.cam && camC){ const c = camC, fz = c.fy - z*c.dz; return { x: W/2 + (x - c.cx)*c.k*s, y: fz - y*c.k*s, s, k: c.k*s }; }
       return { x: W/2 + x*W*0.44*s, y: fy - y*H*0.66*s, s, k: W*0.44*s };
@@ -586,6 +602,15 @@
 
     function fill(){
       caps = [];
+      if (PH){   /* the photo pile is dense: every spot has a capsule under it */
+        const kinds = () => { const r = Math.random(); return r < 0.1 ? "rare" : r < 0.38 ? "violet" : "gold"; };
+        for (let z = 0.08; z < 0.97; z += 0.1) for (let x = -0.92; x < 0.95; x += 0.11){
+          const cx = x + (Math.round(z*10) % 2 ? 0.055 : 0) + (Math.random()-.5)*0.02;
+          if (cx < CHUTE.x1 + 0.02 && z < CHUTE.z1 + 0.02) continue;
+          caps.push({ x:cx, z, y:R, kind:kinds(), vy:0, rest:R, state:"pile", a:1 });
+        }
+        return;
+      }
       const kinds = () => { const r = Math.random(); return r < 0.1 ? "rare" : r < 0.38 ? "violet" : "gold"; };
       for (let row = 0; row < 5; row++){
         for (let col = 0; col < 9; col++){
@@ -778,12 +803,77 @@
       cx.fillStyle = v; cx.fillRect(0,0,W,H);
     }
 
+    /* ---------- photo mode drawing ---------- */
+    function capSprite(x, y, r, a){
+      if (!PH.cap.complete) return;
+      cx.save(); cx.globalAlpha = a == null ? 1 : a;
+      cx.drawImage(PH.cap, x - r, y - r, r*2, r*2); cx.restore();
+    }
+    function drawPhoto(dt){
+      const pl = PH.plate;
+      cx.fillStyle = "#0b0a08"; cx.fillRect(0, 0, W, H);
+      if (pl.complete && pl.naturalWidth) cx.drawImage(pl, PH.ox, PH.oy, PH.dw, PH.dh);
+      /* gaps left where capsules were lifted out, dropped capsules lying on top */
+      for (const c of caps){
+        if (c.state === "held" && !c.hole) c.hole = { x:c.x, z:c.z };
+        if (c.hole){
+          const g = PH.G(c.hole.x, c.hole.z), r = PH.r(c.hole.z);
+          const hg = cx.createRadialGradient(g.x, g.y, 0, g.x, g.y, r*1.1);
+          hg.addColorStop(0, "rgba(20,12,4,.62)"); hg.addColorStop(.7, "rgba(20,12,4,.35)"); hg.addColorStop(1, "rgba(20,12,4,0)");
+          cx.fillStyle = hg; cx.beginPath(); cx.ellipse(g.x, g.y, r*1.1, r*.8, 0, 0, Math.PI*2); cx.fill();
+        }
+      }
+      for (const c of caps){
+        if (c.state === "fall") c.moved = true;
+        if ((c.state === "pile" && c.moved) || c.state === "fall"){ const p = P(c.x, c.y, c.z); capSprite(p.x, p.y, PH.r(c.z)); }
+      }
+      /* the claw hangs on a cable from the gantry above the frame and swings like a pendulum */
+      const r = PH.r(st.z), ch = r*2*4.1, g = PH.G(st.x, st.z);
+      const hubY = g.y - ch*0.93 - (st.y - 0.2)*8.5*r, piv = -H*0.15, ang = -st.sw*0.32;
+      /* soft shadow on the capsules, darker the lower the claw */
+      const lowness = Math.max(0, Math.min(1, 1 - (st.y - 0.2)/0.8));
+      const sg = cx.createRadialGradient(g.x, g.y, 0, g.x, g.y, r*2.2);
+      sg.addColorStop(0, `rgba(10,6,2,${.18 + lowness*.4})`); sg.addColorStop(1, "rgba(10,6,2,0)");
+      cx.fillStyle = sg; cx.beginPath(); cx.ellipse(g.x, g.y, r*2.2, r*.9, 0, 0, Math.PI*2); cx.fill();
+      cx.save(); cx.translate(g.x, piv); cx.rotate(ang);
+      const L = hubY - piv;
+      const cg = cx.createLinearGradient(-2, 0, 2, 0); cg.addColorStop(0, "#5b5e66"); cg.addColorStop(.5, "#e9ecf2"); cg.addColorStop(1, "#6b6e76");
+      cx.fillStyle = cg; cx.fillRect(-Math.max(1.2, r*.05), 0, Math.max(2.4, r*.1), L + 4);
+      /* held capsule sits inside the closed fingers, behind them */
+      const vis = st.held ? 0 : st.open, a = Math.max(0, Math.min(1, (vis - 0.3)/0.35));
+      if (st.held) capSprite(0, L + ch*0.79, r*1.12);
+      const draw = (im, ax, al) => { if (al <= 0.01 || !im.complete || !im.naturalWidth) return; const w = ch*im.naturalWidth/im.naturalHeight; cx.globalAlpha = al; cx.drawImage(im, -w*ax, L, w, ch); };
+      cx.filter = "saturate(.85) sepia(.12) brightness(.96)";
+      draw(PH.shut, .515, 1 - a); draw(PH.open, .49, a);
+      cx.filter = "none"; cx.globalAlpha = 1;
+      cx.restore();
+      /* capsule going into the chute */
+      for (const c of caps) if (c.state === "chute" && c.a > 0){ const p = P(c.x, c.y, c.z); capSprite(p.x, p.y, PH.r(c.z), c.a); }
+      /* warm glow in the chute while carrying, flash on a win */
+      const b = PH.box, bx = PH.ox + b[0]*PH.dw, by = PH.oy + b[1]*PH.dh, bw = (b[2]-b[0])*PH.dw, bh = (b[3]-b[1])*PH.dh;
+      if (st.chuteGlow > 0.01){
+        const gl = cx.createRadialGradient(bx + bw/2, by + bh/2, 0, bx + bw/2, by + bh/2, bw*.7);
+        gl.addColorStop(0, `rgba(255,190,90,${st.chuteGlow*.35})`); gl.addColorStop(1, "rgba(255,190,90,0)");
+        cx.fillStyle = gl; cx.fillRect(bx - bw*.3, by - bh, bw*1.6, bh*3);
+      }
+      if (st.phase === "carry"){
+        const t = performance.now()/400, ax = bx + bw/2, ay = by - 26 + Math.sin(t)*5, s = 9;
+        cx.fillStyle = "rgba(255,214,140,.95)"; cx.shadowColor = "rgba(255,178,74,.9)"; cx.shadowBlur = 14;
+        cx.beginPath(); cx.moveTo(ax - s, ay - s); cx.lineTo(ax + s, ay - s); cx.lineTo(ax, ay + s*0.6); cx.closePath(); cx.fill(); cx.shadowBlur = 0;
+      }
+      drawParts(dt);
+      /* camera feel: vignette */
+      const v = cx.createRadialGradient(W/2, H*.45, H*.35, W/2, H/2, W*.72); v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,.42)");
+      cx.fillStyle = v; cx.fillRect(0, 0, W, H);
+    }
+
     let camC = null;
     function render(dt){
       if (o.cam) camC = o.cam(W, H, st);
       cx.setTransform(dpr,0,0,dpr,0,0);
       const sh = st.shake > 0 ? (Math.random()-.5)*st.shake*8 : 0;
       cx.translate(sh, 0);
+      if (PH){ drawPhoto(dt); return; }
       drawRoom(); drawChute();
       const list = caps.filter(c => c !== st.held && c.state !== "gone").sort((a,b) => b.z - a.z || a.y - b.y);
       let clawDrawn = false;
@@ -879,6 +969,7 @@
         let mx = joyV.x, mz = joyV.z;
         if (keys.ArrowLeft || keys.a) mx = -1; if (keys.ArrowRight || keys.d) mx = 1;
         if (keys.ArrowUp || keys.w) mz = 1; if (keys.ArrowDown || keys.s) mz = -1;
+        if (PH && !(joyEl && joyEl.classList.contains("drag"))) tilt(mx, -mz);
         st.x = Math.max(-0.9, Math.min(0.9, st.x + mx*dt*0.85));
         st.z = Math.max(0.06, Math.min(0.94, st.z + mz*dt*0.62));
         if (st.held){ st.held.x = st.x; st.held.z = st.z; st.held.y = st.y - 0.15; }
@@ -944,7 +1035,7 @@
         st.open = 1; dropHeld(); toast("Dropped", 1000); st.phase = "aim"; grabBtn(true); hint("");
       }
     }
-    function grabBtn(on, label){ const b = el("#simGrab"); b.disabled = !on; b.textContent = label || "Grab"; }
+    function grabBtn(on, label){ const b = el("#simGrab"); b.disabled = !on; (b.querySelector("span") || b).textContent = label || "Grab"; }
 
     /* autopilot for the demo: pick a capsule on top of the pile, line up, grab, carry it to the chute */
     let ap = null;
@@ -994,19 +1085,18 @@
 
     /* joystick : drag the knob, or press and hold an edge */
     function joystick(){
-      const j = el("#simJoy"), kn = j.querySelector(".knob");
+      const j = el("#simJoy");
       let id = null;
       const setFrom = e => {
         const r = j.getBoundingClientRect(), max = r.width*0.32;
         let dx = e.clientX - (r.left + r.width/2), dy = e.clientY - (r.top + r.height/2);
         const l = Math.hypot(dx, dy); if (l > max){ dx *= max/l; dy *= max/l; }
-        kn.style.transform = `translate(${dx}px,${dy}px)`;
-        const ux = dx/max, uy = dy/max;
+        const ux = dx/max, uy = dy/max; tilt(ux, uy);
         joyV.x = Math.abs(ux) > 0.18 ? ux : 0; joyV.z = Math.abs(uy) > 0.18 ? -uy : 0;
       };
       j.addEventListener("pointerdown", e => { id = e.pointerId; j.setPointerCapture(id); j.classList.add("drag"); setFrom(e); e.preventDefault(); });
       j.addEventListener("pointermove", e => { if (e.pointerId === id) setFrom(e); });
-      const end = e => { if (e.pointerId !== id) return; id = null; j.classList.remove("drag"); kn.style.transform = ""; joyV.x = joyV.z = 0; };
+      const end = e => { if (e.pointerId !== id) return; id = null; j.classList.remove("drag"); tilt(0, 0); joyV.x = joyV.z = 0; };
       j.addEventListener("pointerup", end); j.addEventListener("pointercancel", end);
     }
 
@@ -1039,6 +1129,24 @@
     if (!o.auto) window.__sim = { get st(){ return st; }, get caps(){ return caps; }, grab, step: dt => step(dt) };
     api.isRunning = () => running;
     return api;
+  }
+  /* real-photo assets for the full simulator + the mapping from game space to that photo */
+  function photoKit(){
+    const img = f => { const i = new Image(); i.decoding = "async"; i.src = "assets/play/" + f; return i; };
+    const K = { plate:img("plate.webp"), open:img("claw-open.webp"), shut:img("claw-closed.webp"), cap:img("cap.webp"),
+      ox:0, oy:0, dw:1, dh:1,
+      /* pile surface in plate coords (0..1): front edge runs off the bottom, back edge under the gantry */
+      FL:[.05, 1.02], FR:[.97, 1.02], BL:[.23, .02], BR:[.73, .05],
+      box:[.09, .54, .31, .62]   /* opening of the acrylic chute */
+    };
+    const PW = 1920, PHh = 1086;
+    K.fit = (W, H) => { const s = Math.max(W/PW, H/PHh); K.dw = PW*s; K.dh = PHh*s; K.ox = (W - K.dw)*0.12; K.oy = (H - K.dh)*0.35; };
+    K.G = (x, z) => {
+      const u = (x + 1)/2, L = [K.FL[0] + (K.BL[0]-K.FL[0])*z, K.FL[1] + (K.BL[1]-K.FL[1])*z], R = [K.FR[0] + (K.BR[0]-K.FR[0])*z, K.FR[1] + (K.BR[1]-K.FR[1])*z];
+      return { x: K.ox + (L[0] + (R[0]-L[0])*u)*K.dw, y: K.oy + (L[1] + (R[1]-L[1])*u)*K.dh };
+    };
+    K.r = z => (0.029 + (0.012 - 0.029)*z) * K.dw;
+    return K;
   }
   const game = makeGame();
 
