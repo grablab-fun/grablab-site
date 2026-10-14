@@ -280,10 +280,10 @@
         <div class="sv-head c"><span class="k" id="claimK"></span><h2>Where does the <span class="hl">prize land?</span></h2></div>
         <div class="claim-wrap">
           <div class="ticket">
-            <div class="tk-top"><img id="tkLogo" src="" alt="" /><div><b id="tkName"></b><small>30 seconds on Machine 01</small></div><span class="tk-paid">${CHECK}Paid</span></div>
+            <div class="tk-top"><img id="tkLogo" src="" alt="" /><div><b id="tkName"></b><small>30 seconds on Machine 01</small></div></div>
             <div class="tk-mid"><div><small>Play</small><b id="tkNo"></b></div><div><small>Price</small><b id="tkPrice"></b></div><div><small>Grip</small><b>70%</b></div></div>
             <div class="tk-cut"></div>
-            <div class="tk-bot"><small>Receipt</small><code id="tkTx"></code></div>
+            <div class="tk-bot"><div><small>Receipt</small><code id="tkTx"></code></div><span class="tk-paid"><span class="ok-ring"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"/><path d="M14 22.5l5.5 5.5L30 17"/></svg></span><span class="tp-t"><b>Paid</b><small>Confirmed</small></span></span></div>
           </div>
           <div class="glass claim">
             <label for="simAddr">Your Solana address</label>
