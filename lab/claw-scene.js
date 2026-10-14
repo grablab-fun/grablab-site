@@ -27,7 +27,22 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
     lens:{rgba:[.08,.1,.18,1],metalness:.75,roughness:.12},
     rec:{rgba:[1,.2,.25,1],emission:1.2},
     truss:{rgba:[.28,.31,.4,1],metalness:.8,roughness:.35},
-    fixture:{rgba:[.9,.93,1,1],emission:.9}
+    fixture:{rgba:[.9,.93,1,1],emission:.9},
+    /* one closed room, lit lamps, control panel */
+    pillar:{rgba:[.08,.1,.17,1],metalness:.3,roughness:.6},
+    acoustic:{rgba:[.09,.13,.3,1],metalness:.05,roughness:.95},
+    glass_room:{rgba:[.75,.82,1,.07],metalness:.1,roughness:.05},
+    lamp_body:{rgba:[.05,.06,.09,1],metalness:.6,roughness:.35},
+    lamp_lens:{rgba:[1,.97,.88,1],emission:2},
+    beam_1:{rgba:[1,.95,.82,.09],emission:.6},
+    beam_2:{rgba:[1,.95,.82,.05],emission:.4},
+    beam_3:{rgba:[1,.95,.82,.03],emission:.3},
+    wood:{rgba:[.22,.16,.12,1],metalness:.05,roughness:.8},
+    screen:{rgba:[.2,.45,1,1],emission:1.1},
+    rubber:{rgba:[.03,.03,.04,1],metalness:0,roughness:.9},
+    ball_red:{rgba:[.95,.13,.2,1],metalness:.2,roughness:.25},
+    btn_red:{rgba:[1,.2,.25,1],metalness:.2,roughness:.3,emission:.7},
+    btn_blue:{rgba:[.3,.55,1,1],metalness:.2,roughness:.3,emission:.7}
   };
   const E = [];
   const box = (size, pos, mat, extra) => Object.assign({type:"box", size:size.map(r4), pos:pos.map(r4), material:mat}, extra);
@@ -80,45 +95,118 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   ]);
   fixed("rails", [ghost(box([.03, D - .04, .02], [X0 + .01, 0, RZ], "chrome")), ghost(box([.03, D - .04, .02], [X1 - .01, 0, RZ], "chrome"))]);
 
-  /* ---------------- warehouse / filming bay around the machine ---------------- */
-  /* a real 3-walled filming bay: back + two sides, meeting at the back corners, sitting flat on the floor (box z-size is the FULL height, so the centre sits at height/2). Front (-y) stays open for the camera view. */
-  const RX = 2.0, RB = 2.2, RF = -1.6, RH = 2.8, t = .12;
-  fixed("hall", [
-    box([2*RX + t, t, RH], [0, RB, RH/2], "wall"),                   // back wall
-    box([t, RB - RF, RH], [-RX, (RB + RF)/2, RH/2], "wall_lt"),       // left wall
-    box([t, RB - RF, RH], [RX, (RB + RF)/2, RH/2], "wall_lt"),        // right wall
-    box([.95, .05, .34], [0, r4(RB - t/2 - .03), 2.0], "navy2"),      // signage panel on the back wall
-    ghost(box([.9, .012, .01], [0, r4(RB - t/2 - .05), 1.82], "led_cyan")),
-    ghost(box([2*RX - .3, .02, .018], [0, r4(RB - t/2 - .05), 1.25], "led_blue"))   // accent strip along the back wall
+  /* ---------------- one closed room around the machine ---------------- */
+  /* Four walls that overlap at the corners (side walls run the full depth, back and front run the full width),
+     corner pillars, a skirting board and a ring beam on top tie them into ONE room. The front wall is glass so
+     the default SimArena camera still sees in; there is no ceiling slab, only a beam grid that carries the lamps. */
+  const RX = 2.0, RB = 2.2, RF = -1.6, RH = 2.8, t = .12, RD = RB - RF, RZT = RH - .07;
+  fixed("room", [
+    box([2*RX + t, t, RH], [0, RB, RH/2], "wall"),                               // back wall, full width
+    box([t, RD + t, RH], [-RX, (RB + RF)/2, RH/2], "wall_lt"),                   // left wall, full depth, overlaps both corners
+    box([t, RD + t, RH], [RX, (RB + RF)/2, RH/2], "wall_lt"),                    // right wall
+    box([2*RX + t, .02, RH - .14], [0, RF, (RH - .14)/2 + .07], "glass_room"),   // front wall: glass between the frame rails
+    ...[[-RX, RB], [RX, RB], [-RX, RF], [RX, RF]].map(([x, y]) => box([.2, .2, RH], [x, y, RH/2], "pillar")),   // corner pillars
+    box([2*RX, .03, .1], [0, r4(RB - t/2 - .015), .05], "pillar"),               // skirting boards
+    box([.03, RD, .1], [r4(-RX + t/2 + .015), (RB + RF)/2, .05], "pillar"),
+    box([.03, RD, .1], [r4(RX - t/2 - .015), (RB + RF)/2, .05], "pillar"),
+    box([2*RX + .2, .1, .07], [0, RF, .035], "pillar"),                           // front frame: sill + header
+    box([2*RX + .2, .1, .07], [0, RF, RH - .035], "pillar")
   ]);
-  /* overhead truss + light fixtures */
-  fixed("truss", [
-    ghost(box([2*RX - .3, .035, .035], [0, -.35, 3.15], "truss")),
-    ghost(box([2*RX - .3, .035, .035], [0, 1.35, 3.15], "truss")),
-    ghost(box([.035, 1.1, .035], [-1.3, .5, 3.15], "truss")),
-    ghost(box([.035, 1.1, .035], [1.3, .5, 3.15], "truss")),
-    ghost(box([.11, .11, .05], [-1.05, -.35, 3.1], "fixture")),
-    ghost(box([.11, .11, .05], [1.05, -.35, 3.1], "fixture")),
-    ghost(box([.11, .11, .05], [0, 1.35, 3.1], "fixture"))
+  /* ring beam + cross beams: the ceiling grid every lamp hangs from */
+  fixed("ceiling", [
+    ghost(box([2*RX + .2, .14, .1], [0, RB, RZT], "truss")),
+    ghost(box([2*RX + .2, .14, .1], [0, RF, RZT], "truss")),
+    ghost(box([.14, RD + .2, .1], [-RX, (RB + RF)/2, RZT], "truss")),
+    ghost(box([.14, RD + .2, .1], [RX, (RB + RF)/2, RZT], "truss")),
+    ...[-.65, .45, 1.45].map(y => ghost(box([2*RX, .07, .07], [0, y, RZT], "truss"))),
+    ghost(box([.07, RD, .07], [0, (RB + RF)/2, RZT], "truss")),
+    ghost(box([2*RX - .2, .02, .02], [0, r4(RB - t/2 - .02), RH - .16], "led_blue")),   // cove LEDs along the top of the walls
+    ghost(box([.02, RD - .2, .02], [r4(-RX + t/2 + .02), (RB + RF)/2, RH - .16], "led_cyan")),
+    ghost(box([.02, RD - .2, .02], [r4(RX - t/2 - .02), (RB + RF)/2, RH - .16], "led_pink"))
   ]);
-  E.push({name:"rig_1", transform:{pos:[-1.05, -.35, 3.1]}, light:{type:"spot", color:"#eaf0ff", intensity:5, dir:[.28,.22,-.9], angle:.8, castShadow:true}});
-  E.push({name:"rig_2", transform:{pos:[1.05, -.35, 3.1]}, light:{type:"spot", color:"#dfe6ff", intensity:4.5, dir:[-.28,.22,-.9], angle:.8}});
-  E.push({name:"back_glow", transform:{pos:[0, 2.2, 2.4]}, light:{type:"point", color:"#7d84ff", intensity:2.2, range:5}});
-  /* camera rigs on tripods, in front of the machine, filming it (ghost: no collision) */
+  /* lamps hanging from the grid: body, glowing lens, a soft visible light shaft, and a real spot light aimed at the machine */
+  const LAMPS = [[-.75, -.65], [.75, -.65], [0, .45], [-1.2, 1.45], [1.2, 1.45]];
+  LAMPS.forEach(([x, y], i) => {
+    const zl = RZT - .45;
+    fixed("lamp_" + (i + 1), [
+      ghost({type:"cylinder", radius:.008, height:.4, pos:[x, y, r4(RZT - .22)], material:"truss"}),
+      ghost({type:"cylinder", radius:.075, height:.12, pos:[x, y, r4(zl)], material:"lamp_body"}),
+      ghost({type:"cylinder", radius:.065, height:.008, pos:[x, y, r4(zl - .064)], material:"lamp_lens"}),
+      ghost({type:"cylinder", radius:.079, height:.022, pos:[x, y, r4(zl - .045)], material:"lamp_lens"}),   // glowing rim, so a lamp reads as "on" from any angle
+      ghost({type:"cylinder", radius:.09, height:.35, pos:[x, y, r4(zl - .25)], material:"beam_1"}),
+      /* the soft shaft stops above the machine roof, otherwise it shows up inside the glass case */
+      ...(Math.abs(x) < .7 && Math.abs(y) < .6 ? [] : [
+        ghost({type:"cylinder", radius:.16, height:.45, pos:[x, y, r4(zl - .65)], material:"beam_2"}),
+        ghost({type:"cylinder", radius:.24, height:.5, pos:[x, y, r4(zl - 1.12)], material:"beam_3"})])
+    ]);
+    const d = [-x, -y, .75 - zl], n = Math.hypot(...d);
+    E.push({name:"lamp_light_" + (i + 1), transform:{pos:[x, y, r4(zl - .08)]}, light:{type:"spot", color:"#fff2dc", intensity:i < 3 ? 5 : 3, dir:d.map(v => r4(v/n)), angle:.75, castShadow:i === 2}});
+  });
+  E.push({name:"back_glow", transform:{pos:[0, 2.0, 2.2]}, light:{type:"point", color:"#7d84ff", intensity:2, range:4.5}});
+  /* back wall: acoustic panels around the Grablab sign */
+  const ACC = [];
+  for (let c = 0; c < 6; c++) for (let r = 0; r < 2; r++){
+    const x = -1.62 + c*.65, z = .75 + r*.72;
+    if (Math.abs(x) < .5 && r === 1) continue;
+    ACC.push(box([.58, .05, .64], [r4(x), r4(RB - t/2 - .025), r4(z)], "acoustic"));
+  }
+  fixed("back_wall_detail", [...ACC,
+    box([.95, .05, .34], [0, r4(RB - t/2 - .03), 2.05], "navy2"),
+    ghost(box([.9, .012, .012], [0, r4(RB - t/2 - .06), 1.87], "led_cyan")),
+    ghost(box([.9, .012, .012], [0, r4(RB - t/2 - .06), 2.23], "led_cyan")),
+    ghost(box([.5, .01, .05], [0, r4(RB - t/2 - .06), 2.05], "led_gold"))
+  ]);
+  /* left wall: capsule shelving */
+  const SX = -RX + t/2 + .2, SH = [];
+  [.35, .85, 1.35, 1.85].forEach(z => SH.push(box([.36, 1.3, .03], [r4(SX), .9, z], "wood")));
+  [.28, 1.52].forEach(y => SH.push(box([.36, .04, 1.9], [r4(SX), y, .95], "pillar")));
+  [.85, 1.35].forEach((z, k) => { for (let j = 0; j < 5; j++) SH.push(box([.22, .2, .16], [r4(SX), r4(.42 + j*.24), r4(z + .095)], k ? (j % 2 ? "violet" : "gold") : "navy2")); });
+  for (let j = 0; j < 9; j++) SH.push({type:"sphere", radius:.038, pos:[r4(SX + (j % 2 ? .07 : -.07)), r4(.36 + j*.13), r4(1.85 + .053)], material:"shell"});
+  fixed("shelf", SH);
+  /* right side: the operator desk, where the stream is run from */
+  const DX = 1.45, DY = .95;
+  fixed("desk", [
+    box([.6, 1.1, .035], [DX, DY, .74], "wood"),
+    ...[[-.27, -.5], [.27, -.5], [-.27, .5], [.27, .5]].map(([dx, dy]) => box([.04, .04, .72], [r4(DX + dx), r4(DY + dy), .36], "pillar")),
+    box([.06, .5, .32], [r4(DX + .18), DY, .95], "lamp_body"),
+    ghost(box([.012, .46, .28], [r4(DX + .145), DY, .95], "screen")),
+    box([.18, .42, .015], [r4(DX - .05), DY, .765], "lamp_body"),
+    {type:"cylinder", radius:.2, height:.05, pos:[r4(DX - .55), DY, .5], material:"lamp_body"},
+    {type:"cylinder", radius:.025, height:.48, pos:[r4(DX - .55), DY, .24], material:"truss"}
+  ]);
+  /* one camera on a tripod, off to the side at a filming angle so it never hides the control panel (ghost: no collision) */
   function camRig(name, px, py){
-    const z = 1.18, yaw = Math.atan2(-py, -px), Q = q([0,0,1], yaw), c = Math.cos(yaw), s = Math.sin(yaw);
-    const feet = [0,1,2].map(i => { const a = yaw + Math.PI + (i-1)*1.0; return ghost(Object.assign(box([.12,.012,.012], [r4(px + .1*Math.cos(a)), r4(py + .1*Math.sin(a)), .012], "truss"), {quat:q([0,0,1], a)})); });
+    const z = 1.25, yaw = Math.atan2(-py, -px), Q = q([0,0,1], yaw), c = Math.cos(yaw), s = Math.sin(yaw);
+    const feet = [0,1,2].map(i => { const a = yaw + Math.PI + (i-1)*1.0; return ghost(Object.assign(box([.16,.014,.014], [r4(px + .13*Math.cos(a)), r4(py + .13*Math.sin(a)), .014], "truss"), {quat:q([0,0,1], a)})); });
     fixed(name, [
-      ghost({type:"cylinder", radius:.016, height:z - .12, pos:[px, py, r4((z - .12)/2)], material:"truss"}),
+      ghost({type:"cylinder", radius:.018, height:z - .12, pos:[px, py, r4((z - .12)/2)], material:"truss"}),
       ...feet,
-      ghost(box([.05,.05,.04], [px, py, r4(z)], "cam_body")),
-      ghost(Object.assign(box([.13,.075,.08], [px, py, r4(z + .06)], "cam_body"), {quat:Q})),
-      ghost(Object.assign(box([.06,.045,.045], [r4(px + .1*c), r4(py + .1*s), r4(z + .06)], "lens"), {quat:Q})),
-      ghost(box([.009,.009,.009], [r4(px + .06*c - .04*s), r4(py + .06*s + .04*c), r4(z + .11)], "rec"))
+      ghost(box([.06,.06,.05], [px, py, r4(z)], "cam_body")),
+      ghost(Object.assign(box([.16,.09,.1], [px, py, r4(z + .075)], "cam_body"), {quat:Q})),
+      ghost(Object.assign(box([.08,.055,.055], [r4(px + .12*c), r4(py + .12*s), r4(z + .075)], "lens"), {quat:Q})),
+      ghost(box([.012,.012,.012], [r4(px + .07*c - .05*s), r4(py + .07*s + .05*c), r4(z + .135)], "rec"))
     ]);
   }
-  camRig("cam_left", -1.15, -1.35);
-  camRig("cam_right", 1.15, -1.35);
+  camRig("camera", .95, -1.15);
+
+  /* control panel on the front of the cabinet, in front of the capsules: joystick, GRAB, START and the coin slot */
+  const CPX = .12, CPY = -D/2 - .085, CPZ = .7, TILT_CP = .2;
+  fixed("controls", [
+    Object.assign(box([.62, .17, .05], [CPX, CPY, CPZ], "navy2"), {quat:q([1,0,0], TILT_CP)}),
+    Object.assign(ghost(box([.62, .006, .012], [CPX, r4(CPY - .086), r4(CPZ - .02)], "led_blue")), {quat:q([1,0,0], TILT_CP)}),
+    box([.62, .02, .22], [CPX, r4(-D/2 - .01), .56], "navy"),
+    ghost({type:"cylinder", radius:.035, height:.008, pos:[r4(CPX - .14), r4(CPY - .01), r4(CPZ + .03)], material:"chrome"}),
+    ghost({type:"cylinder", radius:.022, height:.01, pos:[r4(CPX - .14), r4(CPY - .01), r4(CPZ + .037)], material:"rubber"}),
+    ghost({type:"cylinder", radius:.008, height:.09, pos:[r4(CPX - .14), r4(CPY - .01), r4(CPZ + .082)], material:"chrome_dk"}),
+    ghost({type:"sphere", radius:.028, pos:[r4(CPX - .14), r4(CPY - .01), r4(CPZ + .14)], material:"ball_red"}),
+    ghost({type:"cylinder", radius:.04, height:.012, pos:[r4(CPX + .1), r4(CPY - .005), r4(CPZ + .03)], material:"chrome"}),
+    ghost({type:"cylinder", radius:.032, height:.026, pos:[r4(CPX + .1), r4(CPY - .005), r4(CPZ + .048)], material:"btn_red"}),
+    ghost({type:"cylinder", radius:.017, height:.008, pos:[r4(CPX + .22), r4(CPY + .01), r4(CPZ + .03)], material:"chrome"}),
+    ghost({type:"cylinder", radius:.013, height:.016, pos:[r4(CPX + .22), r4(CPY + .01), r4(CPZ + .04)], material:"btn_blue"}),
+    ghost(box([.07, .006, .1], [r4(CPX + .16), r4(-D/2 - .021), .52], "chrome")),
+    ghost(box([.006, .008, .05], [r4(CPX + .16), r4(-D/2 - .025), .53], "rubber")),
+    ghost(box([.05, .007, .01], [r4(CPX + .16), r4(-D/2 - .025), .485], "btn_red"))
+  ]);
 
   /* motors are overdamped (slow, smooth) like a real claw: a fast yank shakes the capsule loose.
      gantry : x carriage -> y trolley -> lift -> 3 fingers. Packaged as a SimArena ASSET (like the SO-100 arm):
@@ -159,10 +247,14 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
 
   /* capsules : glass shell + coin */
   const R = .038, spots = [];
-  /* one loose layer, ~12 cm apart, so an open claw can reach the floor between neighbours */
-  for (let row = 0; row < 5; row++) for (let col = 0; col < 5; col++){
-    const x = HX + .08 + col*.122 + (row % 2 ? .05 : 0) + (rnd() - .5)*.025, y = Y0 + .065 + row*.13 + (rnd() - .5)*.025;
-    if (x <= X1 - .045) spots.push([x, y, PF + R + .002]);
+  /* a full bottom layer about 10 cm apart, plus a second layer resting in the gaps: about 40 capsules */
+  for (let row = 0; row < 6; row++) for (let col = 0; col < 6; col++){
+    const x = HX + .07 + col*.105 + (row % 2 ? .05 : 0) + (rnd() - .5)*.02, y = Y0 + .055 + row*.105 + (rnd() - .5)*.02;
+    if (x <= X1 - .045 && y <= Y1 - .045) spots.push([x, y, PF + R + .002]);
+  }
+  for (let k = 0; k < 10; k++){
+    const x = HX + .14 + rnd()*(X1 - .1 - HX - .14), y = Y0 + .1 + rnd()*(Y1 - .1 - Y0 - .1);
+    spots.push([x, y, PF + R*2.7 + k*.004]);
   }
   spots.forEach(([x, y, z], i) => {
     const r = rnd(), kind = r < .1 ? "rare" : r < .38 ? "violet" : "gold";

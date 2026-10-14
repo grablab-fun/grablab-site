@@ -256,6 +256,143 @@
     1
    ],
    "emission": 0.9
+  },
+  "pillar": {
+   "rgba": [
+    0.08,
+    0.1,
+    0.17,
+    1
+   ],
+   "metalness": 0.3,
+   "roughness": 0.6
+  },
+  "acoustic": {
+   "rgba": [
+    0.09,
+    0.13,
+    0.3,
+    1
+   ],
+   "metalness": 0.05,
+   "roughness": 0.95
+  },
+  "glass_room": {
+   "rgba": [
+    0.75,
+    0.82,
+    1,
+    0.07
+   ],
+   "metalness": 0.1,
+   "roughness": 0.05
+  },
+  "lamp_body": {
+   "rgba": [
+    0.05,
+    0.06,
+    0.09,
+    1
+   ],
+   "metalness": 0.6,
+   "roughness": 0.35
+  },
+  "lamp_lens": {
+   "rgba": [
+    1,
+    0.97,
+    0.88,
+    1
+   ],
+   "emission": 2
+  },
+  "beam_1": {
+   "rgba": [
+    1,
+    0.95,
+    0.82,
+    0.09
+   ],
+   "emission": 0.6
+  },
+  "beam_2": {
+   "rgba": [
+    1,
+    0.95,
+    0.82,
+    0.05
+   ],
+   "emission": 0.4
+  },
+  "beam_3": {
+   "rgba": [
+    1,
+    0.95,
+    0.82,
+    0.03
+   ],
+   "emission": 0.3
+  },
+  "wood": {
+   "rgba": [
+    0.22,
+    0.16,
+    0.12,
+    1
+   ],
+   "metalness": 0.05,
+   "roughness": 0.8
+  },
+  "screen": {
+   "rgba": [
+    0.2,
+    0.45,
+    1,
+    1
+   ],
+   "emission": 1.1
+  },
+  "rubber": {
+   "rgba": [
+    0.03,
+    0.03,
+    0.04,
+    1
+   ],
+   "metalness": 0,
+   "roughness": 0.9
+  },
+  "ball_red": {
+   "rgba": [
+    0.95,
+    0.13,
+    0.2,
+    1
+   ],
+   "metalness": 0.2,
+   "roughness": 0.25
+  },
+  "btn_red": {
+   "rgba": [
+    1,
+    0.2,
+    0.25,
+    1
+   ],
+   "metalness": 0.2,
+   "roughness": 0.3,
+   "emission": 0.7
+  },
+  "btn_blue": {
+   "rgba": [
+    0.3,
+    0.55,
+    1,
+    1
+   ],
+   "metalness": 0.2,
+   "roughness": 0.3,
+   "emission": 0.7
   }
  },
  "task": {
@@ -788,7 +925,7 @@
    "collider": {}
   },
   {
-   "name": "hall",
+   "name": "room",
    "geoms": [
     {
      "type": "box",
@@ -808,7 +945,7 @@
      "type": "box",
      "size": [
       0.12,
-      3.8,
+      3.92,
       2.8
      ],
      "pos": [
@@ -822,7 +959,7 @@
      "type": "box",
      "size": [
       0.12,
-      3.8,
+      3.92,
       2.8
      ],
      "pos": [
@@ -835,28 +972,304 @@
     {
      "type": "box",
      "size": [
-      0.95,
-      0.05,
-      0.34
+      4.12,
+      0.02,
+      2.66
      ],
      "pos": [
       0,
-      2.11,
-      2
+      -1.6,
+      1.4
      ],
-     "material": "navy2"
+     "material": "glass_room"
     },
     {
      "type": "box",
      "size": [
-      0.9,
-      0.012,
-      0.01
+      0.2,
+      0.2,
+      2.8
+     ],
+     "pos": [
+      -2,
+      2.2,
+      1.4
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.2,
+      0.2,
+      2.8
+     ],
+     "pos": [
+      2,
+      2.2,
+      1.4
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.2,
+      0.2,
+      2.8
+     ],
+     "pos": [
+      -2,
+      -1.6,
+      1.4
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.2,
+      0.2,
+      2.8
+     ],
+     "pos": [
+      2,
+      -1.6,
+      1.4
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      4,
+      0.03,
+      0.1
      ],
      "pos": [
       0,
-      2.09,
-      1.82
+      2.125,
+      0.05
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.03,
+      3.8,
+      0.1
+     ],
+     "pos": [
+      -1.925,
+      0.3,
+      0.05
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.03,
+      3.8,
+      0.1
+     ],
+     "pos": [
+      1.925,
+      0.3,
+      0.05
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      4.2,
+      0.1,
+      0.07
+     ],
+     "pos": [
+      0,
+      -1.6,
+      0.035
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      4.2,
+      0.1,
+      0.07
+     ],
+     "pos": [
+      0,
+      -1.6,
+      2.765
+     ],
+     "material": "pillar"
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "ceiling",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      4.2,
+      0.14,
+      0.1
+     ],
+     "pos": [
+      0,
+      2.2,
+      2.73
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      4.2,
+      0.14,
+      0.1
+     ],
+     "pos": [
+      0,
+      -1.6,
+      2.73
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.14,
+      4,
+      0.1
+     ],
+     "pos": [
+      -2,
+      0.3,
+      2.73
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.14,
+      4,
+      0.1
+     ],
+     "pos": [
+      2,
+      0.3,
+      2.73
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      4,
+      0.07,
+      0.07
+     ],
+     "pos": [
+      0,
+      -0.65,
+      2.73
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      4,
+      0.07,
+      0.07
+     ],
+     "pos": [
+      0,
+      0.45,
+      2.73
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      4,
+      0.07,
+      0.07
+     ],
+     "pos": [
+      0,
+      1.45,
+      2.73
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.07,
+      3.8,
+      0.07
+     ],
+     "pos": [
+      0,
+      0.3,
+      2.73
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      3.8,
+      0.02,
+      0.02
+     ],
+     "pos": [
+      0,
+      2.12,
+      2.64
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.02,
+      3.6,
+      0.02
+     ],
+     "pos": [
+      -1.92,
+      0.3,
+      2.64
      ],
      "material": "led_cyan",
      "contype": 0,
@@ -865,16 +1278,16 @@
     {
      "type": "box",
      "size": [
-      3.7,
       0.02,
-      0.018
+      3.6,
+      0.02
      ],
      "pos": [
-      0,
-      2.09,
-      1.25
+      1.92,
+      0.3,
+      2.64
      ],
-     "material": "led_blue",
+     "material": "led_pink",
      "contype": 0,
      "conaffinity": 0
     }
@@ -882,117 +1295,96 @@
    "collider": {}
   },
   {
-   "name": "truss",
+   "name": "lamp_1",
    "geoms": [
     {
-     "type": "box",
-     "size": [
-      3.7,
-      0.035,
-      0.035
-     ],
+     "type": "cylinder",
+     "radius": 0.008,
+     "height": 0.4,
      "pos": [
-      0,
-      -0.35,
-      3.15
+      -0.75,
+      -0.65,
+      2.51
      ],
      "material": "truss",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      3.7,
-      0.035,
-      0.035
-     ],
+     "type": "cylinder",
+     "radius": 0.075,
+     "height": 0.12,
      "pos": [
-      0,
-      1.35,
-      3.15
+      -0.75,
+      -0.65,
+      2.28
      ],
-     "material": "truss",
+     "material": "lamp_body",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.035,
-      1.1,
-      0.035
-     ],
+     "type": "cylinder",
+     "radius": 0.065,
+     "height": 0.008,
      "pos": [
-      -1.3,
-      0.5,
-      3.15
+      -0.75,
+      -0.65,
+      2.216
      ],
-     "material": "truss",
+     "material": "lamp_lens",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.035,
-      1.1,
-      0.035
-     ],
+     "type": "cylinder",
+     "radius": 0.079,
+     "height": 0.022,
      "pos": [
-      1.3,
-      0.5,
-      3.15
+      -0.75,
+      -0.65,
+      2.235
      ],
-     "material": "truss",
+     "material": "lamp_lens",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.11,
-      0.11,
-      0.05
-     ],
+     "type": "cylinder",
+     "radius": 0.09,
+     "height": 0.35,
      "pos": [
-      -1.05,
-      -0.35,
-      3.1
+      -0.75,
+      -0.65,
+      2.03
      ],
-     "material": "fixture",
+     "material": "beam_1",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.11,
-      0.11,
-      0.05
-     ],
+     "type": "cylinder",
+     "radius": 0.16,
+     "height": 0.45,
      "pos": [
-      1.05,
-      -0.35,
-      3.1
+      -0.75,
+      -0.65,
+      1.63
      ],
-     "material": "fixture",
+     "material": "beam_2",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.11,
-      0.11,
-      0.05
-     ],
+     "type": "cylinder",
+     "radius": 0.24,
+     "height": 0.5,
      "pos": [
-      0,
-      1.35,
-      3.1
+      -0.75,
+      -0.65,
+      1.16
      ],
-     "material": "fixture",
+     "material": "beam_3",
      "contype": 0,
      "conaffinity": 0
     }
@@ -1000,46 +1392,475 @@
    "collider": {}
   },
   {
-   "name": "rig_1",
+   "name": "lamp_light_1",
    "transform": {
     "pos": [
-     -1.05,
-     -0.35,
-     3.1
+     -0.75,
+     -0.65,
+     2.2
     ]
    },
    "light": {
     "type": "spot",
-    "color": "#eaf0ff",
+    "color": "#fff2dc",
     "intensity": 5,
     "dir": [
-     0.28,
-     0.22,
-     -0.9
+     0.4113,
+     0.3564,
+     -0.839
     ],
-    "angle": 0.8,
+    "angle": 0.75,
+    "castShadow": false
+   }
+  },
+  {
+   "name": "lamp_2",
+   "geoms": [
+    {
+     "type": "cylinder",
+     "radius": 0.008,
+     "height": 0.4,
+     "pos": [
+      0.75,
+      -0.65,
+      2.51
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.075,
+     "height": 0.12,
+     "pos": [
+      0.75,
+      -0.65,
+      2.28
+     ],
+     "material": "lamp_body",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.065,
+     "height": 0.008,
+     "pos": [
+      0.75,
+      -0.65,
+      2.216
+     ],
+     "material": "lamp_lens",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.079,
+     "height": 0.022,
+     "pos": [
+      0.75,
+      -0.65,
+      2.235
+     ],
+     "material": "lamp_lens",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.09,
+     "height": 0.35,
+     "pos": [
+      0.75,
+      -0.65,
+      2.03
+     ],
+     "material": "beam_1",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.16,
+     "height": 0.45,
+     "pos": [
+      0.75,
+      -0.65,
+      1.63
+     ],
+     "material": "beam_2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.24,
+     "height": 0.5,
+     "pos": [
+      0.75,
+      -0.65,
+      1.16
+     ],
+     "material": "beam_3",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "lamp_light_2",
+   "transform": {
+    "pos": [
+     0.75,
+     -0.65,
+     2.2
+    ]
+   },
+   "light": {
+    "type": "spot",
+    "color": "#fff2dc",
+    "intensity": 5,
+    "dir": [
+     -0.4113,
+     0.3564,
+     -0.839
+    ],
+    "angle": 0.75,
+    "castShadow": false
+   }
+  },
+  {
+   "name": "lamp_3",
+   "geoms": [
+    {
+     "type": "cylinder",
+     "radius": 0.008,
+     "height": 0.4,
+     "pos": [
+      0,
+      0.45,
+      2.51
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.075,
+     "height": 0.12,
+     "pos": [
+      0,
+      0.45,
+      2.28
+     ],
+     "material": "lamp_body",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.065,
+     "height": 0.008,
+     "pos": [
+      0,
+      0.45,
+      2.216
+     ],
+     "material": "lamp_lens",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.079,
+     "height": 0.022,
+     "pos": [
+      0,
+      0.45,
+      2.235
+     ],
+     "material": "lamp_lens",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.09,
+     "height": 0.35,
+     "pos": [
+      0,
+      0.45,
+      2.03
+     ],
+     "material": "beam_1",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "lamp_light_3",
+   "transform": {
+    "pos": [
+     0,
+     0.45,
+     2.2
+    ]
+   },
+   "light": {
+    "type": "spot",
+    "color": "#fff2dc",
+    "intensity": 5,
+    "dir": [
+     0,
+     -0.2822,
+     -0.9594
+    ],
+    "angle": 0.75,
     "castShadow": true
    }
   },
   {
-   "name": "rig_2",
+   "name": "lamp_4",
+   "geoms": [
+    {
+     "type": "cylinder",
+     "radius": 0.008,
+     "height": 0.4,
+     "pos": [
+      -1.2,
+      1.45,
+      2.51
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.075,
+     "height": 0.12,
+     "pos": [
+      -1.2,
+      1.45,
+      2.28
+     ],
+     "material": "lamp_body",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.065,
+     "height": 0.008,
+     "pos": [
+      -1.2,
+      1.45,
+      2.216
+     ],
+     "material": "lamp_lens",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.079,
+     "height": 0.022,
+     "pos": [
+      -1.2,
+      1.45,
+      2.235
+     ],
+     "material": "lamp_lens",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.09,
+     "height": 0.35,
+     "pos": [
+      -1.2,
+      1.45,
+      2.03
+     ],
+     "material": "beam_1",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.16,
+     "height": 0.45,
+     "pos": [
+      -1.2,
+      1.45,
+      1.63
+     ],
+     "material": "beam_2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.24,
+     "height": 0.5,
+     "pos": [
+      -1.2,
+      1.45,
+      1.16
+     ],
+     "material": "beam_3",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "lamp_light_4",
    "transform": {
     "pos": [
-     1.05,
-     -0.35,
-     3.1
+     -1.2,
+     1.45,
+     2.2
     ]
    },
    "light": {
     "type": "spot",
-    "color": "#dfe6ff",
-    "intensity": 4.5,
+    "color": "#fff2dc",
+    "intensity": 3,
     "dir": [
-     -0.28,
-     0.22,
-     -0.9
+     0.4947,
+     -0.5978,
+     -0.6308
     ],
-    "angle": 0.8
+    "angle": 0.75,
+    "castShadow": false
+   }
+  },
+  {
+   "name": "lamp_5",
+   "geoms": [
+    {
+     "type": "cylinder",
+     "radius": 0.008,
+     "height": 0.4,
+     "pos": [
+      1.2,
+      1.45,
+      2.51
+     ],
+     "material": "truss",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.075,
+     "height": 0.12,
+     "pos": [
+      1.2,
+      1.45,
+      2.28
+     ],
+     "material": "lamp_body",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.065,
+     "height": 0.008,
+     "pos": [
+      1.2,
+      1.45,
+      2.216
+     ],
+     "material": "lamp_lens",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.079,
+     "height": 0.022,
+     "pos": [
+      1.2,
+      1.45,
+      2.235
+     ],
+     "material": "lamp_lens",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.09,
+     "height": 0.35,
+     "pos": [
+      1.2,
+      1.45,
+      2.03
+     ],
+     "material": "beam_1",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.16,
+     "height": 0.45,
+     "pos": [
+      1.2,
+      1.45,
+      1.63
+     ],
+     "material": "beam_2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.24,
+     "height": 0.5,
+     "pos": [
+      1.2,
+      1.45,
+      1.16
+     ],
+     "material": "beam_3",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "lamp_light_5",
+   "transform": {
+    "pos": [
+     1.2,
+     1.45,
+     2.2
+    ]
+   },
+   "light": {
+    "type": "spot",
+    "color": "#fff2dc",
+    "intensity": 3,
+    "dir": [
+     -0.4947,
+     -0.5978,
+     -0.6308
+    ],
+    "angle": 0.75,
+    "castShadow": false
    }
   },
   {
@@ -1047,28 +1868,698 @@
    "transform": {
     "pos": [
      0,
-     2.2,
-     2.4
+     2,
+     2.2
     ]
    },
    "light": {
     "type": "point",
     "color": "#7d84ff",
-    "intensity": 2.2,
-    "range": 5
+    "intensity": 2,
+    "range": 4.5
    }
   },
   {
-   "name": "cam_left",
+   "name": "back_wall_detail",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      -1.62,
+      2.115,
+      0.75
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      -1.62,
+      2.115,
+      1.47
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      -0.97,
+      2.115,
+      0.75
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      -0.97,
+      2.115,
+      1.47
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      -0.32,
+      2.115,
+      0.75
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      0.33,
+      2.115,
+      0.75
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      0.98,
+      2.115,
+      0.75
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      0.98,
+      2.115,
+      1.47
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      1.63,
+      2.115,
+      0.75
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.58,
+      0.05,
+      0.64
+     ],
+     "pos": [
+      1.63,
+      2.115,
+      1.47
+     ],
+     "material": "acoustic"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.95,
+      0.05,
+      0.34
+     ],
+     "pos": [
+      0,
+      2.11,
+      2.05
+     ],
+     "material": "navy2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.9,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      0,
+      2.08,
+      1.87
+     ],
+     "material": "led_cyan",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.9,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      0,
+      2.08,
+      2.23
+     ],
+     "material": "led_cyan",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.5,
+      0.01,
+      0.05
+     ],
+     "pos": [
+      0,
+      2.08,
+      2.05
+     ],
+     "material": "led_gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "shelf",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.36,
+      1.3,
+      0.03
+     ],
+     "pos": [
+      -1.74,
+      0.9,
+      0.35
+     ],
+     "material": "wood"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.36,
+      1.3,
+      0.03
+     ],
+     "pos": [
+      -1.74,
+      0.9,
+      0.85
+     ],
+     "material": "wood"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.36,
+      1.3,
+      0.03
+     ],
+     "pos": [
+      -1.74,
+      0.9,
+      1.35
+     ],
+     "material": "wood"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.36,
+      1.3,
+      0.03
+     ],
+     "pos": [
+      -1.74,
+      0.9,
+      1.85
+     ],
+     "material": "wood"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.36,
+      0.04,
+      1.9
+     ],
+     "pos": [
+      -1.74,
+      0.28,
+      0.95
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.36,
+      0.04,
+      1.9
+     ],
+     "pos": [
+      -1.74,
+      1.52,
+      0.95
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      0.42,
+      0.945
+     ],
+     "material": "navy2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      0.66,
+      0.945
+     ],
+     "material": "navy2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      0.9,
+      0.945
+     ],
+     "material": "navy2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      1.14,
+      0.945
+     ],
+     "material": "navy2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      1.38,
+      0.945
+     ],
+     "material": "navy2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      0.42,
+      1.445
+     ],
+     "material": "gold"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      0.66,
+      1.445
+     ],
+     "material": "violet"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      0.9,
+      1.445
+     ],
+     "material": "gold"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      1.14,
+      1.445
+     ],
+     "material": "violet"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.22,
+      0.2,
+      0.16
+     ],
+     "pos": [
+      -1.74,
+      1.38,
+      1.445
+     ],
+     "material": "gold"
+    },
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "pos": [
+      -1.81,
+      0.36,
+      1.903
+     ],
+     "material": "shell"
+    },
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "pos": [
+      -1.67,
+      0.49,
+      1.903
+     ],
+     "material": "shell"
+    },
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "pos": [
+      -1.81,
+      0.62,
+      1.903
+     ],
+     "material": "shell"
+    },
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "pos": [
+      -1.67,
+      0.75,
+      1.903
+     ],
+     "material": "shell"
+    },
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "pos": [
+      -1.81,
+      0.88,
+      1.903
+     ],
+     "material": "shell"
+    },
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "pos": [
+      -1.67,
+      1.01,
+      1.903
+     ],
+     "material": "shell"
+    },
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "pos": [
+      -1.81,
+      1.14,
+      1.903
+     ],
+     "material": "shell"
+    },
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "pos": [
+      -1.67,
+      1.27,
+      1.903
+     ],
+     "material": "shell"
+    },
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "pos": [
+      -1.81,
+      1.4,
+      1.903
+     ],
+     "material": "shell"
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "desk",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.6,
+      1.1,
+      0.035
+     ],
+     "pos": [
+      1.45,
+      0.95,
+      0.74
+     ],
+     "material": "wood"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.04,
+      0.04,
+      0.72
+     ],
+     "pos": [
+      1.18,
+      0.45,
+      0.36
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.04,
+      0.04,
+      0.72
+     ],
+     "pos": [
+      1.72,
+      0.45,
+      0.36
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.04,
+      0.04,
+      0.72
+     ],
+     "pos": [
+      1.18,
+      1.45,
+      0.36
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.04,
+      0.04,
+      0.72
+     ],
+     "pos": [
+      1.72,
+      1.45,
+      0.36
+     ],
+     "material": "pillar"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.06,
+      0.5,
+      0.32
+     ],
+     "pos": [
+      1.63,
+      0.95,
+      0.95
+     ],
+     "material": "lamp_body"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.012,
+      0.46,
+      0.28
+     ],
+     "pos": [
+      1.595,
+      0.95,
+      0.95
+     ],
+     "material": "screen",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.18,
+      0.42,
+      0.015
+     ],
+     "pos": [
+      1.4,
+      0.95,
+      0.765
+     ],
+     "material": "lamp_body"
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.2,
+     "height": 0.05,
+     "pos": [
+      0.9,
+      0.95,
+      0.5
+     ],
+     "material": "lamp_body"
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.025,
+     "height": 0.48,
+     "pos": [
+      0.9,
+      0.95,
+      0.24
+     ],
+     "material": "truss"
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "camera",
    "geoms": [
     {
      "type": "cylinder",
-     "radius": 0.016,
-     "height": 1.06,
+     "radius": 0.018,
+     "height": 1.13,
      "pos": [
+      0.95,
       -1.15,
-      -1.35,
-      0.53
+      0.565
      ],
      "material": "truss",
      "contype": 0,
@@ -1077,21 +2568,21 @@
     {
      "type": "box",
      "size": [
-      0.12,
-      0.012,
-      0.012
+      0.16,
+      0.014,
+      0.014
      ],
      "pos": [
-      -1.2491,
-      -1.3366,
-      0.012
+      0.9104,
+      -1.2738,
+      0.014
      ],
      "material": "truss",
      "quat": [
-      0.0673,
+      -0.5896,
       0,
       0,
-      0.9977
+      0.8077
      ],
      "contype": 0,
      "conaffinity": 0
@@ -1099,21 +2590,21 @@
     {
      "type": "box",
      "size": [
-      0.12,
-      0.012,
-      0.012
+      0.16,
+      0.014,
+      0.014
      ],
      "pos": [
-      -1.2148,
-      -1.4261,
-      0.012
+      1.0328,
+      -1.2502,
+      0.014
      ],
      "material": "truss",
      "quat": [
-      -0.4192,
+      -0.9047,
       0,
       0,
-      0.9079
+      0.4261
      ],
      "contype": 0,
      "conaffinity": 0
@@ -1121,59 +2612,21 @@
     {
      "type": "box",
      "size": [
-      0.12,
-      0.012,
-      0.012
+      0.16,
+      0.014,
+      0.014
      ],
      "pos": [
-      -1.121,
-      -1.4457,
-      0.012
+      1.0791,
+      -1.1345,
+      0.014
      ],
      "material": "truss",
      "quat": [
-      -0.8032,
+      -0.9982,
       0,
       0,
-      0.5957
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.05,
-      0.05,
-      0.04
-     ],
-     "pos": [
-      -1.15,
-      -1.35,
-      1.18
-     ],
-     "material": "cam_body",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.13,
-      0.075,
-      0.08
-     ],
-     "pos": [
-      -1.15,
-      -1.35,
-      1.24
-     ],
-     "material": "cam_body",
-     "quat": [
-      0.9079,
-      0,
-      0,
-      0.4192
+      -0.0598
      ],
      "contype": 0,
      "conaffinity": 0
@@ -1182,20 +2635,36 @@
      "type": "box",
      "size": [
       0.06,
-      0.045,
-      0.045
+      0.06,
+      0.05
      ],
      "pos": [
-      -1.0852,
-      -1.2739,
-      1.24
+      0.95,
+      -1.15,
+      1.25
      ],
-     "material": "lens",
+     "material": "cam_body",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.16,
+      0.09,
+      0.1
+     ],
+     "pos": [
+      0.95,
+      -1.15,
+      1.325
+     ],
+     "material": "cam_body",
      "quat": [
-      0.9079,
+      0.4261,
       0,
       0,
-      0.4192
+      0.9047
      ],
      "contype": 0,
      "conaffinity": 0
@@ -1203,14 +2672,36 @@
     {
      "type": "box",
      "size": [
-      0.009,
-      0.009,
-      0.009
+      0.08,
+      0.055,
+      0.055
      ],
      "pos": [
-      -1.1415,
-      -1.2784,
-      1.29
+      0.8736,
+      -1.0575,
+      1.325
+     ],
+     "material": "lens",
+     "quat": [
+      0.4261,
+      0,
+      0,
+      0.9047
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.012,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      0.8669,
+      -1.1279,
+      1.385
      ],
      "material": "rec",
      "contype": 0,
@@ -1220,84 +2711,196 @@
    "collider": {}
   },
   {
-   "name": "cam_right",
+   "name": "controls",
    "geoms": [
     {
-     "type": "cylinder",
-     "radius": 0.016,
-     "height": 1.06,
+     "type": "box",
+     "size": [
+      0.62,
+      0.17,
+      0.05
+     ],
      "pos": [
-      1.15,
-      -1.35,
+      0.12,
+      -0.435,
+      0.7
+     ],
+     "material": "navy2",
+     "quat": [
+      0.995,
+      0.0998,
+      0,
+      0
+     ]
+    },
+    {
+     "type": "box",
+     "size": [
+      0.62,
+      0.006,
+      0.012
+     ],
+     "pos": [
+      0.12,
+      -0.521,
+      0.68
+     ],
+     "material": "led_blue",
+     "contype": 0,
+     "conaffinity": 0,
+     "quat": [
+      0.995,
+      0.0998,
+      0,
+      0
+     ]
+    },
+    {
+     "type": "box",
+     "size": [
+      0.62,
+      0.02,
+      0.22
+     ],
+     "pos": [
+      0.12,
+      -0.36,
+      0.56
+     ],
+     "material": "navy"
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.035,
+     "height": 0.008,
+     "pos": [
+      -0.02,
+      -0.445,
+      0.73
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.022,
+     "height": 0.01,
+     "pos": [
+      -0.02,
+      -0.445,
+      0.737
+     ],
+     "material": "rubber",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.008,
+     "height": 0.09,
+     "pos": [
+      -0.02,
+      -0.445,
+      0.782
+     ],
+     "material": "chrome_dk",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "sphere",
+     "radius": 0.028,
+     "pos": [
+      -0.02,
+      -0.445,
+      0.84
+     ],
+     "material": "ball_red",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.04,
+     "height": 0.012,
+     "pos": [
+      0.22,
+      -0.44,
+      0.73
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.032,
+     "height": 0.026,
+     "pos": [
+      0.22,
+      -0.44,
+      0.748
+     ],
+     "material": "btn_red",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.017,
+     "height": 0.008,
+     "pos": [
+      0.34,
+      -0.425,
+      0.73
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.013,
+     "height": 0.016,
+     "pos": [
+      0.34,
+      -0.425,
+      0.74
+     ],
+     "material": "btn_blue",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.07,
+      0.006,
+      0.1
+     ],
+     "pos": [
+      0.28,
+      -0.371,
+      0.52
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.006,
+      0.008,
+      0.05
+     ],
+     "pos": [
+      0.28,
+      -0.375,
       0.53
      ],
-     "material": "truss",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.12,
-      0.012,
-      0.012
-     ],
-     "pos": [
-      1.121,
-      -1.4457,
-      0.012
-     ],
-     "material": "truss",
-     "quat": [
-      -0.5957,
-      0,
-      0,
-      0.8032
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.12,
-      0.012,
-      0.012
-     ],
-     "pos": [
-      1.2148,
-      -1.4261,
-      0.012
-     ],
-     "material": "truss",
-     "quat": [
-      -0.9079,
-      0,
-      0,
-      0.4192
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.12,
-      0.012,
-      0.012
-     ],
-     "pos": [
-      1.2491,
-      -1.3366,
-      0.012
-     ],
-     "material": "truss",
-     "quat": [
-      -0.9977,
-      0,
-      0,
-      -0.0673
-     ],
+     "material": "rubber",
      "contype": 0,
      "conaffinity": 0
     },
@@ -1305,75 +2908,15 @@
      "type": "box",
      "size": [
       0.05,
-      0.05,
-      0.04
+      0.007,
+      0.01
      ],
      "pos": [
-      1.15,
-      -1.35,
-      1.18
+      0.28,
+      -0.375,
+      0.485
      ],
-     "material": "cam_body",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.13,
-      0.075,
-      0.08
-     ],
-     "pos": [
-      1.15,
-      -1.35,
-      1.24
-     ],
-     "material": "cam_body",
-     "quat": [
-      0.4192,
-      0,
-      0,
-      0.9079
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.06,
-      0.045,
-      0.045
-     ],
-     "pos": [
-      1.0852,
-      -1.2739,
-      1.24
-     ],
-     "material": "lens",
-     "quat": [
-      0.4192,
-      0,
-      0,
-      0.9079
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.009,
-      0.009,
-      0.009
-     ],
-     "pos": [
-      1.0806,
-      -1.3303,
-      1.29
-     ],
-     "material": "rec",
+     "material": "btn_red",
      "contype": 0,
      "conaffinity": 0
     }
@@ -1392,90 +2935,8 @@
    "name": "capsule_01",
    "transform": {
     "pos": [
-     -0.1525,
-     -0.2445,
-     0.79
-    ]
-   },
-   "physics": {
-    "type": "rigid",
-    "motion": "dynamic",
-    "mass": 0.03
-   },
-   "joint": {
-    "type": "free"
-   },
-   "geoms": [
-    {
-     "type": "sphere",
-     "radius": 0.038,
-     "material": "shell",
-     "friction": 1.3
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.0209,
-     "height": 0.008,
-     "quat": [
-      0.7071,
-      0.7071,
-      0,
-      0
-     ],
-     "material": "violet",
-     "contype": 0,
-     "conaffinity": 0
-    }
-   ],
-   "collider": {}
-  },
-  {
-   "name": "capsule_02",
-   "transform": {
-    "pos": [
-     -0.0233,
-     -0.2622,
-     0.79
-    ]
-   },
-   "physics": {
-    "type": "rigid",
-    "motion": "dynamic",
-    "mass": 0.03
-   },
-   "joint": {
-    "type": "free"
-   },
-   "geoms": [
-    {
-     "type": "sphere",
-     "radius": 0.038,
-     "material": "shell",
-     "friction": 1.3
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.0209,
-     "height": 0.008,
-     "quat": [
-      0.7071,
-      0.7071,
-      0,
-      0
-     ],
-     "material": "violet",
-     "contype": 0,
-     "conaffinity": 0
-    }
-   ],
-   "collider": {}
-  },
-  {
-   "name": "capsule_03",
-   "transform": {
-    "pos": [
-     0.1097,
-     -0.2542,
+     -0.16,
+     -0.2566,
      0.79
     ]
    },
@@ -1512,11 +2973,93 @@
    "collider": {}
   },
   {
+   "name": "capsule_02",
+   "transform": {
+    "pos": [
+     -0.0492,
+     -0.2708,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_03",
+   "transform": {
+    "pos": [
+     0.0646,
+     -0.2643,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
    "name": "capsule_04",
    "transform": {
     "pos": [
-     0.2217,
-     -0.2487,
+     0.1616,
+     -0.26,
      0.79
     ]
    },
@@ -1556,8 +3099,8 @@
    "name": "capsule_05",
    "transform": {
     "pos": [
-     0.3544,
-     -0.2539,
+     0.2751,
+     -0.2641,
      0.79
     ]
    },
@@ -1597,8 +3140,8 @@
    "name": "capsule_06",
    "transform": {
     "pos": [
-     -0.0854,
-     -0.1216,
+     -0.0937,
+     -0.1652,
      0.79
     ]
    },
@@ -1627,7 +3170,7 @@
       0,
       0
      ],
-     "material": "violet",
+     "material": "gold",
      "contype": 0,
      "conaffinity": 0
     }
@@ -1638,8 +3181,8 @@
    "name": "capsule_07",
    "transform": {
     "pos": [
-     0.0399,
-     -0.1314,
+     0.0025,
+     -0.1558,
      0.79
     ]
    },
@@ -1679,8 +3222,8 @@
    "name": "capsule_08",
    "transform": {
     "pos": [
-     0.1509,
-     -0.1198,
+     0.114,
+     -0.1689,
      0.79
     ]
    },
@@ -1709,7 +3252,7 @@
       0,
       0
      ],
-     "material": "violet",
+     "material": "gold",
      "contype": 0,
      "conaffinity": 0
     }
@@ -1720,8 +3263,8 @@
    "name": "capsule_09",
    "transform": {
     "pos": [
-     0.281,
-     -0.1362,
+     0.2187,
+     -0.1606,
      0.79
     ]
    },
@@ -1750,7 +3293,7 @@
       0,
       0
      ],
-     "material": "violet",
+     "material": "gold",
      "contype": 0,
      "conaffinity": 0
     }
@@ -1761,8 +3304,8 @@
    "name": "capsule_10",
    "transform": {
     "pos": [
-     -0.1294,
-     0.0127,
+     0.3284,
+     -0.1539,
      0.79
     ]
    },
@@ -1791,7 +3334,7 @@
       0,
       0
      ],
-     "material": "gold",
+     "material": "violet",
      "contype": 0,
      "conaffinity": 0
     }
@@ -1802,8 +3345,8 @@
    "name": "capsule_11",
    "transform": {
     "pos": [
-     -0.0274,
-     0.0053,
+     -0.1415,
+     -0.0512,
      0.79
     ]
    },
@@ -1832,7 +3375,7 @@
       0,
       0
      ],
-     "material": "violet",
+     "material": "rare",
      "contype": 0,
      "conaffinity": 0
     }
@@ -1843,90 +3386,8 @@
    "name": "capsule_12",
    "transform": {
     "pos": [
-     0.1146,
-     0.0097,
-     0.79
-    ]
-   },
-   "physics": {
-    "type": "rigid",
-    "motion": "dynamic",
-    "mass": 0.03
-   },
-   "joint": {
-    "type": "free"
-   },
-   "geoms": [
-    {
-     "type": "sphere",
-     "radius": 0.038,
-     "material": "shell",
-     "friction": 1.3
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.0209,
-     "height": 0.008,
-     "quat": [
-      0.7071,
-      0.7071,
-      0,
-      0
-     ],
-     "material": "gold",
-     "contype": 0,
-     "conaffinity": 0
-    }
-   ],
-   "collider": {}
-  },
-  {
-   "name": "capsule_13",
-   "transform": {
-    "pos": [
-     0.2296,
-     0.0069,
-     0.79
-    ]
-   },
-   "physics": {
-    "type": "rigid",
-    "motion": "dynamic",
-    "mass": 0.03
-   },
-   "joint": {
-    "type": "free"
-   },
-   "geoms": [
-    {
-     "type": "sphere",
-     "radius": 0.038,
-     "material": "shell",
-     "friction": 1.3
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.0209,
-     "height": 0.008,
-     "quat": [
-      0.7071,
-      0.7071,
-      0,
-      0
-     ],
-     "material": "gold",
-     "contype": 0,
-     "conaffinity": 0
-    }
-   ],
-   "collider": {}
-  },
-  {
-   "name": "capsule_14",
-   "transform": {
-    "pos": [
-     0.3583,
-     0.0152,
+     -0.0421,
+     -0.0535,
      0.79
     ]
    },
@@ -1963,11 +3424,93 @@
    "collider": {}
   },
   {
+   "name": "capsule_13",
+   "transform": {
+    "pos": [
+     0.0682,
+     -0.0468,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "rare",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_14",
+   "transform": {
+    "pos": [
+     0.1624,
+     -0.0583,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "rare",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
    "name": "capsule_15",
    "transform": {
     "pos": [
-     -0.0932,
-     0.1309,
+     0.2767,
+     -0.0584,
      0.79
     ]
    },
@@ -2007,8 +3550,8 @@
    "name": "capsule_16",
    "transform": {
     "pos": [
-     0.0404,
-     0.1308,
+     0.3681,
+     -0.059,
      0.79
     ]
    },
@@ -2037,7 +3580,7 @@
       0,
       0
      ],
-     "material": "gold",
+     "material": "violet",
      "contype": 0,
      "conaffinity": 0
     }
@@ -2048,8 +3591,8 @@
    "name": "capsule_17",
    "transform": {
     "pos": [
-     0.1453,
-     0.1299,
+     -0.1014,
+     0.0459,
      0.79
     ]
    },
@@ -2089,8 +3632,8 @@
    "name": "capsule_18",
    "transform": {
     "pos": [
-     0.2742,
-     0.1299,
+     0.0137,
+     0.0511,
      0.79
     ]
    },
@@ -2130,8 +3673,8 @@
    "name": "capsule_19",
    "transform": {
     "pos": [
-     -0.1343,
-     0.2744,
+     0.1146,
+     0.0576,
      0.79
     ]
    },
@@ -2171,8 +3714,8 @@
    "name": "capsule_20",
    "transform": {
     "pos": [
-     -0.029,
-     0.2593,
+     0.2062,
+     0.0455,
      0.79
     ]
    },
@@ -2201,7 +3744,7 @@
       0,
       0
      ],
-     "material": "gold",
+     "material": "violet",
      "contype": 0,
      "conaffinity": 0
     }
@@ -2212,8 +3755,8 @@
    "name": "capsule_21",
    "transform": {
     "pos": [
-     0.1055,
-     0.2652,
+     0.3212,
+     0.0502,
      0.79
     ]
    },
@@ -2253,8 +3796,90 @@
    "name": "capsule_22",
    "transform": {
     "pos": [
-     0.224,
-     0.2573,
+     -0.1418,
+     0.1461,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_23",
+   "transform": {
+    "pos": [
+     -0.0477,
+     0.1519,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_24",
+   "transform": {
+    "pos": [
+     0.0633,
+     0.1635,
      0.79
     ]
    },
@@ -2291,12 +3916,709 @@
    "collider": {}
   },
   {
-   "name": "capsule_23",
+   "name": "capsule_25",
    "transform": {
     "pos": [
-     0.3582,
-     0.2539,
+     0.1653,
+     0.1483,
      0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_26",
+   "transform": {
+    "pos": [
+     0.2681,
+     0.1507,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_27",
+   "transform": {
+    "pos": [
+     0.3723,
+     0.1535,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "rare",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_28",
+   "transform": {
+    "pos": [
+     -0.1033,
+     0.2606,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_29",
+   "transform": {
+    "pos": [
+     0.0073,
+     0.2547,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_30",
+   "transform": {
+    "pos": [
+     0.1181,
+     0.2592,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_31",
+   "transform": {
+    "pos": [
+     0.2223,
+     0.2627,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "rare",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_32",
+   "transform": {
+    "pos": [
+     0.3227,
+     0.2603,
+     0.79
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_33",
+   "transform": {
+    "pos": [
+     0.2958,
+     -0.0454,
+     0.8526
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_34",
+   "transform": {
+    "pos": [
+     0.2033,
+     -0.1095,
+     0.8566
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_35",
+   "transform": {
+    "pos": [
+     0.1547,
+     -0.0657,
+     0.8606
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_36",
+   "transform": {
+    "pos": [
+     0.0522,
+     -0.0478,
+     0.8646
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_37",
+   "transform": {
+    "pos": [
+     0.2379,
+     0.1661,
+     0.8686
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_38",
+   "transform": {
+    "pos": [
+     -0.0356,
+     0.1404,
+     0.8726
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_39",
+   "transform": {
+    "pos": [
+     -0.0489,
+     -0.041,
+     0.8766
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "violet",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_40",
+   "transform": {
+    "pos": [
+     -0.0186,
+     -0.1857,
+     0.8806
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "gold",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_41",
+   "transform": {
+    "pos": [
+     0.3185,
+     -0.1232,
+     0.8846
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.03
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
+    {
+     "type": "sphere",
+     "radius": 0.038,
+     "material": "shell",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0209,
+     "height": 0.008,
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "material": "rare",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_42",
+   "transform": {
+    "pos": [
+     0.1729,
+     -0.1565,
+     0.8886
     ]
    },
    "physics": {
