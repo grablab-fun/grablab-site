@@ -41,17 +41,6 @@
   let root, proj = PROJECTS[0], wallet = 0, addr = "", playNo = 428 + Math.floor(Math.random()*40), lastFocus = null;
 
   /* ---------------- markup ---------------- */
-  function statusPill(p){
-    if (p.status === "hot") return '<span class="pc-pill hot">Almost gone</span>';
-    if (p.status === "new") return '<span class="pc-pill new">New</span>';
-    return '<span class="pc-pill live">Live</span>';
-  }
-  /* on-stream status: frosted chip, on-air dot only when live */
-  function streamChip(p){
-    if (p.status === "hot") return '<span class="sc">Almost gone</span>';
-    if (p.status === "new") return '<span class="sc">New</span>';
-    return '<span class="sc"><i class="rec"></i>Live</span>';
-  }
   /* real camera loops (3 clips over 6 machines: second use mirrored and offset) */
   const FEED = [[6,0,0],[4,0,0],[5,0,0],[1,0,0],[6,1,6],[4,1,5]];
   function feedVideo(i){
@@ -116,7 +105,6 @@
     const vn = 380 + (p.left * 37) % 1400, watching = `<b class="vn" data-n="${vn}">${fmt(vn)}</b>`;
     if (feat) return `<div class="pc feat" role="button" tabindex="0" style="--c:${p.c}" data-i="${i}">
       <div class="pc-cover pc-live">${feedVideo(i)}
-        <div class="pc-ov">${streamChip(p)}</div>
         <span class="pc-view"><i></i>${watching} watching</span></div>
       <div class="pc-b">
         <span class="pc-tag">Featured drop</span>
@@ -129,7 +117,7 @@
       </div></div>`;
     return `<div class="pc" role="button" tabindex="0" style="--c:${p.c}" data-i="${i}">
       <div class="pc-live sm">${feedVideo(i)}
-        <div class="pc-ov">${streamChip(p)}</div><span class="pc-view"><i></i>${watching}</span></div>
+        <span class="pc-view"><i></i>${watching}</span></div>
       <div class="pc-head"><img class="pc-logo" src="${p.logo}" alt="" /><div class="pc-t"><b>${p.name}</b><span>${p.tk}</span></div></div>
       <div class="pc-b">
         <div class="pc-prize"><span>Top capsule</span><strong>${fmt(p.violet)} ${p.tk}</strong></div>
