@@ -396,7 +396,7 @@
   }
  },
  "task": {
-  "instruction": "Drive the claw over a capsule, lower it to about -0.42, squeeze (grip 0.105 = 70%), lift, carry it over the gold chute (gantry_x -0.44, gantry_y -0.27) and open."
+  "instruction": "Press Run and click the claw. Arrow keys move it; lift -0.42 lowers it, grip 0.105 (70%) squeezes, lift 0 raises it. Carry the capsule to the gold chute (front left) with the arrows and open the grip."
  },
  "entities": [
   {
@@ -932,12 +932,12 @@
      "size": [
       4.12,
       0.12,
-      2.8
+      3.6
      ],
      "pos": [
       0,
       2.2,
-      1.4
+      1.8
      ],
      "material": "wall"
     },
@@ -946,12 +946,12 @@
      "size": [
       0.12,
       3.92,
-      2.8
+      3.6
      ],
      "pos": [
       -2,
       0.3,
-      1.4
+      1.8
      ],
      "material": "wall_lt"
     },
@@ -960,12 +960,12 @@
      "size": [
       0.02,
       3.8,
-      2.66
+      3.46
      ],
      "pos": [
       2,
       0.3,
-      1.4
+      1.8
      ],
      "material": "glass_room"
     },
@@ -974,12 +974,12 @@
      "size": [
       0.1,
       0.1,
-      2.8
+      3.6
      ],
      "pos": [
       2,
       -0.65,
-      1.4
+      1.8
      ],
      "material": "pillar"
     },
@@ -988,12 +988,12 @@
      "size": [
       0.1,
       0.1,
-      2.8
+      3.6
      ],
      "pos": [
       2,
       0.3,
-      1.4
+      1.8
      ],
      "material": "pillar"
     },
@@ -1002,12 +1002,12 @@
      "size": [
       0.1,
       0.1,
-      2.8
+      3.6
      ],
      "pos": [
       2,
       1.25,
-      1.4
+      1.8
      ],
      "material": "pillar"
     },
@@ -1035,7 +1035,7 @@
      "pos": [
       2,
       0.3,
-      2.765
+      3.565
      ],
      "material": "pillar"
     },
@@ -1044,12 +1044,12 @@
      "size": [
       4.12,
       0.02,
-      2.66
+      3.46
      ],
      "pos": [
       0,
       -1.6,
-      1.4
+      1.8
      ],
      "material": "glass_room"
     },
@@ -1058,12 +1058,12 @@
      "size": [
       0.2,
       0.2,
-      2.8
+      3.6
      ],
      "pos": [
       -2,
       2.2,
-      1.4
+      1.8
      ],
      "material": "pillar"
     },
@@ -1072,12 +1072,12 @@
      "size": [
       0.2,
       0.2,
-      2.8
+      3.6
      ],
      "pos": [
       2,
       2.2,
-      1.4
+      1.8
      ],
      "material": "pillar"
     },
@@ -1086,12 +1086,12 @@
      "size": [
       0.2,
       0.2,
-      2.8
+      3.6
      ],
      "pos": [
       -2,
       -1.6,
-      1.4
+      1.8
      ],
      "material": "pillar"
     },
@@ -1100,12 +1100,12 @@
      "size": [
       0.2,
       0.2,
-      2.8
+      3.6
      ],
      "pos": [
       2,
       -1.6,
-      1.4
+      1.8
      ],
      "material": "pillar"
     },
@@ -1161,7 +1161,7 @@
      "pos": [
       0,
       -1.6,
-      2.765
+      3.565
      ],
      "material": "pillar"
     }
@@ -1181,7 +1181,7 @@
      "pos": [
       0,
       2.2,
-      2.73
+      3.53
      ],
      "material": "truss",
      "contype": 0,
@@ -1197,7 +1197,7 @@
      "pos": [
       0,
       -1.6,
-      2.73
+      3.53
      ],
      "material": "truss",
      "contype": 0,
@@ -1213,7 +1213,7 @@
      "pos": [
       -2,
       0.3,
-      2.73
+      3.53
      ],
      "material": "truss",
      "contype": 0,
@@ -1229,7 +1229,7 @@
      "pos": [
       2,
       0.3,
-      2.73
+      3.53
      ],
      "material": "truss",
      "contype": 0,
@@ -1245,7 +1245,7 @@
      "pos": [
       0,
       -0.65,
-      2.73
+      3.53
      ],
      "material": "truss",
      "contype": 0,
@@ -1261,7 +1261,7 @@
      "pos": [
       0,
       0.45,
-      2.73
+      3.53
      ],
      "material": "truss",
      "contype": 0,
@@ -1277,7 +1277,7 @@
      "pos": [
       0,
       1.45,
-      2.73
+      3.53
      ],
      "material": "truss",
      "contype": 0,
@@ -1293,7 +1293,7 @@
      "pos": [
       0,
       0.3,
-      2.73
+      3.53
      ],
      "material": "truss",
      "contype": 0,
@@ -1309,7 +1309,7 @@
      "pos": [
       0,
       2.12,
-      2.64
+      3.44
      ],
      "material": "led_blue",
      "contype": 0,
@@ -1325,7 +1325,7 @@
      "pos": [
       -1.92,
       0.3,
-      2.64
+      3.44
      ],
      "material": "led_cyan",
      "contype": 0,
@@ -1341,7 +1341,7 @@
      "pos": [
       1.92,
       0.3,
-      2.64
+      3.44
      ],
      "material": "led_pink",
      "contype": 0,
@@ -1356,11 +1356,11 @@
     {
      "type": "cylinder",
      "radius": 0.008,
-     "height": 0.4,
+     "height": 1.2,
      "pos": [
       -0.75,
       -0.65,
-      2.51
+      2.93
      ],
      "material": "truss",
      "contype": 0,
@@ -1475,11 +1475,11 @@
     {
      "type": "cylinder",
      "radius": 0.008,
-     "height": 0.4,
+     "height": 1.2,
      "pos": [
       0.75,
       -0.65,
-      2.51
+      2.93
      ],
      "material": "truss",
      "contype": 0,
@@ -1594,11 +1594,11 @@
     {
      "type": "cylinder",
      "radius": 0.008,
-     "height": 0.4,
+     "height": 1.2,
      "pos": [
       0,
       0.45,
-      2.51
+      2.93
      ],
      "material": "truss",
      "contype": 0,
@@ -1687,11 +1687,11 @@
     {
      "type": "cylinder",
      "radius": 0.008,
-     "height": 0.4,
+     "height": 1.2,
      "pos": [
       -1.2,
       1.45,
-      2.51
+      2.93
      ],
      "material": "truss",
      "contype": 0,
@@ -1806,11 +1806,11 @@
     {
      "type": "cylinder",
      "radius": 0.008,
-     "height": 0.4,
+     "height": 1.2,
      "pos": [
       1.2,
       1.45,
-      2.51
+      2.93
      ],
      "material": "truss",
      "contype": 0,

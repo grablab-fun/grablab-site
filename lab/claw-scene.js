@@ -2,7 +2,7 @@
    node claw-scene.js        -> writes grablab-claw.scene.json + grablab-claw-mech.asset.json next to this file (keep them together)
    in a browser               -> window.buildClawScene() returns the scene object
    Units: metres, z up, the machine's front faces -y.
-   Motors (sliders in SimArena, select any part of the claw): claw/gantry_x, claw/gantry_y, claw/lift (position) and claw/grip (force on the 3 coupled fingers, 0.7 = our on-chain grip). */
+   Controls (press Run, click the claw): arrow keys move it (claw/move_y, claw/move_x are velocity motors), sliders claw/lift (position) and claw/grip (force on the 3 coupled fingers, 0.7 = our on-chain grip). */
 function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   let seed = 7; const rnd = () => (seed = (seed*16807) % 2147483647) / 2147483647;
   const r4 = v => Math.round(v*1e4)/1e4;
@@ -99,7 +99,7 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   /* Four walls joined at the corners by pillars, a skirting board and a ring beam on top: ONE room. The front and
      right walls are glass with mullions, so SimArena's default camera (looking in from the front-right) sees the
      machine; there is no ceiling slab, only a beam grid that carries the lamps. */
-  const RX = 2.0, RB = 2.2, RF = -1.6, RH = 2.8, t = .12, RD = RB - RF, RZT = RH - .07;
+  const RX = 2.0, RB = 2.2, RF = -1.6, RH = 3.6, t = .12, RD = RB - RF, RZT = RH - .07;
   fixed("room", [
     box([2*RX + t, t, RH], [0, RB, RH/2], "wall"),                               // back wall, full width
     box([t, RD + t, RH], [-RX, (RB + RF)/2, RH/2], "wall_lt"),                   // left wall, full depth, overlaps both corners
@@ -129,9 +129,9 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   /* lamps hanging from the grid: body, glowing lens, a soft visible light shaft, and a real spot light aimed at the machine */
   const LAMPS = [[-.75, -.65], [.75, -.65], [0, .45], [-1.2, 1.45], [1.2, 1.45]];
   LAMPS.forEach(([x, y], i) => {
-    const zl = RZT - .45;
+    const DROP = 1.25, zl = RZT - DROP;   /* lamps hang on long drops from the high ceiling grid */
     fixed("lamp_" + (i + 1), [
-      ghost({type:"cylinder", radius:.008, height:.4, pos:[x, y, r4(RZT - .22)], material:"truss"}),
+      ghost({type:"cylinder", radius:.008, height:DROP - .05, pos:[x, y, r4(RZT - (DROP - .05)/2)], material:"truss"}),
       ghost({type:"cylinder", radius:.075, height:.12, pos:[x, y, r4(zl)], material:"lamp_body"}),
       ghost({type:"cylinder", radius:.065, height:.008, pos:[x, y, r4(zl - .064)], material:"lamp_lens"}),
       ghost({type:"cylinder", radius:.079, height:.022, pos:[x, y, r4(zl - .045)], material:"lamp_lens"}),   // glowing rim, so a lamp reads as "on" from any angle
@@ -210,28 +210,32 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
     ghost(box([.05, .007, .01], [r4(CPX + .16), r4(-D/2 - .025), .485], "btn_red"))
   ]);
 
-  /* motors are overdamped (slow, smooth) like a real claw: a fast yank shakes the capsule loose.
-     gantry : x carriage -> y trolley -> lift -> 3 fingers. Packaged as a SimArena ASSET (like the SO-100 arm):
-     the editor re-expands assets when the sim starts, which keeps the grip coupling, and names every motor "claw/..."
-     so selecting any part of the claw shows sliders: claw/gantry_x, claw/gantry_y, claw/lift, claw/grip */
+  /* The motor ORDER matters in SimArena: its arrow keys write [up/down, 0, left/right] into the first three motors of the
+     selected robot (made for walking robots), and its sliders share that same command buffer. So:
+       0 move_y : velocity, arrow up = back, arrow down = front, stops when released
+       1 lift   : position, the arrows set it to 0, so the claw rises while it travels (like a real machine)
+       2 move_x : velocity, joint axis points to -x so arrow left = left
+       3 grip   : force on the 3 coupled fingers, never touched by the arrows
+     The tree follows that order: Y bridge -> lift -> X trolley -> fingers. Space can't be bound: SimArena only listens to arrows. */
+  const vel = (lo, hi) => ({mode:"velocity", damping:60, forceLimit:80, ctrlrange:[lo, hi]});
   const M = [];
-  M.push({name:"gantry_x", transform:{pos:[.12, 0, r4(RZ)]}, physics:{type:"rigid", motion:"dynamic", mass:.6},
-    joint:{type:"slide", axis:[1,0,0], range:[-.5,.26], damping:4, drive:drive(150,70,80,-.5,.26)},
-    geoms:[ghost(box([.035, D - .06, .025], [0,0,0], "chrome"))], collider:{}});
-  M.push({name:"gantry_y", relation:{parent:"gantry_x"}, transform:{pos:[0,.05,-.035]}, physics:{type:"rigid", motion:"dynamic", mass:.4},
-    joint:{type:"slide", axis:[0,1,0], range:[-.3,.22], damping:4, drive:drive(150,70,80,-.3,.22)},
-    geoms:[ghost(box([.09,.08,.045],[0,0,0],"navy2")), ghost(box([.092,.01,.01],[0,-.041,0],"led_blue"))], collider:{}});
-  M.push({name:"lift", relation:{parent:"gantry_y"}, transform:{pos:[0,0,-.07]}, gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.3},
-    joint:{type:"slide", axis:[0,0,1], range:[-.5,0], damping:10, drive:drive(150,90,120,-.5,0)},
+  M.push({name:"move_y", transform:{pos:[0, .05, r4(RZ)]}, physics:{type:"rigid", motion:"dynamic", mass:.6},
+    joint:{type:"slide", axis:[0,1,0], range:[-.3,.22], damping:4, drive:vel(-.12,.12)},
+    geoms:[ghost(box([W - .06, .035, .025], [0,0,0], "chrome"))], collider:{}});
+  M.push({name:"lift", relation:{parent:"move_y"}, transform:{pos:[0,0,-.035]}, gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.1},
+    joint:{type:"slide", axis:[0,0,1], range:[-.5,0], damping:10, drive:drive(150,90,120,-.5,0)}, geoms:[], collider:{}});
+  M.push({name:"move_x", relation:{parent:"lift"}, transform:{pos:[.12,0,-.07]}, gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.3},
+    joint:{type:"slide", axis:[-1,0,0], range:[-.26,.5], damping:4, drive:vel(-.12,.12)},
     geoms:[{type:"cylinder", radius:.032, height:.05, pos:[0,0,0], material:"chrome"},
-           ghost({type:"cylinder", radius:.006, height:.09, pos:[0,0,.07], material:"chrome_dk"}),
+           ghost({type:"cylinder", radius:.004, height:.3, pos:[0,0,.17], material:"chrome_dk"}),
+           ghost(box([.09,.08,.04], [0,0,.06], "navy2")),
            ghost({type:"cylinder", radius:.034, height:.006, pos:[0,0,-.012], material:"led_blue"})], collider:{}});
   const fingers = [];
   const UP = .09, TILT = .5, TIP = -1, TL = .05;   /* profile from a 2D sweep: opens to ~5.5 cm, tip meets the capsule 3 cm below its centre */
   for (let k = 0; k < 3; k++){
     const a = k*2*Math.PI/3, name = "finger_" + (k+1); fingers.push(name);
     /* local +x points away from the hub; hinge about local y, +angle swings the tip inward (closes) */
-    M.push({name, relation:{parent:"lift"}, transform:{pos:[r4(.024*Math.cos(a)), r4(.024*Math.sin(a)), -.025], quat:q([0,0,1], a)},
+    M.push({name, relation:{parent:"move_x"}, transform:{pos:[r4(.024*Math.cos(a)), r4(.024*Math.sin(a)), -.025], quat:q([0,0,1], a)},
       gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.02},
       joint:{type:"hinge", axis:[0,1,0], range:[-.3,.7], damping:.02, armature:.0005},
       geoms:[
@@ -270,7 +274,7 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   E.push({name:"inner_glow", transform:{pos:[0,.1,r4(TOP - .1)]}, light:{type:"point", color:"#7d84ff", intensity:1.6, range:1.4}});
   E.push({name:"chute_glow", transform:{pos:[r4((X0 + HX)/2), r4((Y0 + HY)/2), r4(PF + .05)]}, light:{type:"point", color:"#ffb24a", intensity:.8, range:.5}});
 
-  const task = { instruction:"Drive the claw over a capsule, lower it to about -0.42, squeeze (grip 0.105 = 70%), lift, carry it over the gold chute (gantry_x -0.44, gantry_y -0.27) and open." };
+  const task = { instruction:"Press Run and click the claw. Arrow keys move it; lift -0.42 lowers it, grip 0.105 (70%) squeezes, lift 0 raises it. Carry the capsule to the gold chute (front left) with the arrows and open the grip." };
   return { scene:{ _format:"simarena/scene@1.0", name:"Grablab claw machine", sim:{timestep:.002, gravity:[0,0,-9.81]}, material, task, entities:E }, asset };
 }
 if (typeof module !== "undefined" && require.main === module){
