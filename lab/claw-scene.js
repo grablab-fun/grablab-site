@@ -213,9 +213,12 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   /* The motor ORDER matters in SimArena: its arrow keys write [up/down, 0, left/right] into the first three motors of the
      selected robot (made for walking robots), and its sliders share that same command buffer. So:
        0 move_y : velocity, arrow up = back, arrow down = front, stops when released
-       1 lift   : position, the arrows set it to 0, so the claw rises while it travels (like a real machine)
+       1 lift   : velocity too (slider left = down, right = up); it stops at the grab depth (-0.42) and at the top
        2 move_x : velocity, joint axis points to -x so arrow left = left
-       3 grip   : force on the 3 coupled fingers, never touched by the arrows
+       3 grip   : force on the 3 coupled fingers; springs keep the claw CLOSED (that spring force is our 70% grip),
+                  slider left opens it, back to the centre closes it on the capsule. Never touched by the arrows.
+     Why velocity + springs: when one slider moves, SimArena resends the other sliders' values and often sends 0
+     for them. With this design a stray 0 means "stop" for motion and "stay closed" for the claw, never "jump".
      The tree follows that order: Y bridge -> lift -> X trolley -> fingers. Space can't be bound: SimArena only listens to arrows. */
   const vel = (lo, hi) => ({mode:"velocity", damping:60, forceLimit:80, ctrlrange:[lo, hi]});
   const M = [];
@@ -223,7 +226,7 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
     joint:{type:"slide", axis:[0,1,0], range:[-.3,.22], damping:4, drive:vel(-.12,.12)},
     geoms:[ghost(box([W - .06, .035, .025], [0,0,0], "chrome"))], collider:{}});
   M.push({name:"lift", relation:{parent:"move_y"}, transform:{pos:[0,0,-.035]}, gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.1},
-    joint:{type:"slide", axis:[0,0,1], range:[-.5,0], damping:10, drive:drive(150,90,120,-.5,0)}, geoms:[], collider:{}});
+    joint:{type:"slide", axis:[0,0,1], range:[-.42,0], damping:10, drive:{mode:"velocity", damping:120, forceLimit:80, ctrlrange:[-.1,.1]}}, geoms:[], collider:{}});
   M.push({name:"move_x", relation:{parent:"lift"}, transform:{pos:[.12,0,-.07]}, gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.3},
     joint:{type:"slide", axis:[-1,0,0], range:[-.26,.5], damping:4, drive:vel(-.12,.12)},
     geoms:[{type:"cylinder", radius:.032, height:.05, pos:[0,0,0], material:"chrome"},
@@ -231,13 +234,15 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
            ghost(box([.09,.08,.04], [0,0,.06], "navy2")),
            ghost({type:"cylinder", radius:.034, height:.006, pos:[0,0,-.012], material:"led_blue"})], collider:{}});
   const fingers = [];
-  const UP = .09, TILT = .5, TIP = -1, TL = .05;   /* profile from a 2D sweep: opens to ~5.5 cm, tip meets the capsule 3 cm below its centre */
+  /* profile from a 2D sweep: opens to ~5.5 cm, tip meets the capsule 3 cm below its centre. The geometry is built
+     0.6 rad more closed (OFF) so the hinge spring, which pulls towards angle 0, keeps the claw shut */
+  const UP = .09, OFF = .6, TILT = .5 - OFF, TIP = -1 - OFF, TL = .05, SPRING = .14;
   for (let k = 0; k < 3; k++){
     const a = k*2*Math.PI/3, name = "finger_" + (k+1); fingers.push(name);
     /* local +x points away from the hub; hinge about local y, +angle swings the tip inward (closes) */
     M.push({name, relation:{parent:"move_x"}, transform:{pos:[r4(.024*Math.cos(a)), r4(.024*Math.sin(a)), -.025], quat:q([0,0,1], a)},
       gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.02},
-      joint:{type:"hinge", axis:[0,1,0], range:[-.3,.7], damping:.02, armature:.0005},
+      joint:{type:"hinge", axis:[0,1,0], range:[r4(-.3 - OFF), r4(.7 - OFF)], damping:.02, stiffness:SPRING, armature:.0005},
       geoms:[
         {type:"capsule", radius:.0065, height:UP, pos:[r4(Math.sin(TILT)*UP/2), 0, r4(-Math.cos(TILT)*UP/2)], quat:q([0,1,0], TILT), material:"chrome", friction:1.4},
         {type:"capsule", radius:.0065, height:TL, pos:[r4(Math.sin(TILT)*UP + Math.sin(TIP)*TL/2), 0, r4(-Math.cos(TILT)*UP - Math.cos(TIP)*TL/2)], quat:q([0,1,0], TIP), material:"chrome", friction:1.6}
@@ -246,9 +251,9 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   const pick = (...k) => Object.fromEntries(k.map(n => [n, material[n]]));
   const asset = { _format:"simarena/asset@1.0", name:"grablab_claw", entities:M,
     material: pick("chrome", "chrome_dk", "navy2", "led_blue"),
-    /* force (N·m) on the 3 coupled fingers: negative opens, positive squeezes; 0.105 = 70% of full grip, the value we lock on-chain.
+    /* force (N·m) on the 3 coupled fingers: negative opens against the springs, positive adds squeeze.
        no "gain": SimArena writes it as an attribute MuJoCo rejects, and gain 1 is what we want anyway */
-    coupling: { grip:{ type:"fixed_tendon", joints:fingers.map(j => ({joint:j, coefficient:1})), drive:{forceLimit:.15, ctrlrange:[-.15,.15]} } } };
+    coupling: { grip:{ type:"fixed_tendon", joints:fingers.map(j => ({joint:j, coefficient:1})), drive:{forceLimit:.4, ctrlrange:[-.4,.15]} } } };
   E.push({name:"claw", asset:assetUrl, controller:{type:"direct", config:""}});
 
   /* capsules : glass shell + coin */
@@ -274,7 +279,7 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   E.push({name:"inner_glow", transform:{pos:[0,.1,r4(TOP - .1)]}, light:{type:"point", color:"#7d84ff", intensity:1.6, range:1.4}});
   E.push({name:"chute_glow", transform:{pos:[r4((X0 + HX)/2), r4((Y0 + HY)/2), r4(PF + .05)]}, light:{type:"point", color:"#ffb24a", intensity:.8, range:.5}});
 
-  const task = { instruction:"Press Run and click the claw. Arrow keys move it; lift -0.42 lowers it, grip 0.105 (70%) squeezes, lift 0 raises it. Carry the capsule to the gold chute (front left) with the arrows and open the grip." };
+  const task = { instruction:"Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the claw. Grip left opens it, lift left lowers it, grip back to the centre closes it (70% spring grip), lift right raises it. Carry the capsule to the gold chute (front left) with the arrows and open the grip." };
   return { scene:{ _format:"simarena/scene@1.0", name:"Grablab claw machine", sim:{timestep:.002, gravity:[0,0,-9.81]}, material, task, entities:E }, asset };
 }
 if (typeof module !== "undefined" && require.main === module){

@@ -396,7 +396,7 @@
   }
  },
  "task": {
-  "instruction": "Press Run and click the claw. Arrow keys move it; lift -0.42 lowers it, grip 0.105 (70%) squeezes, lift 0 raises it. Carry the capsule to the gold chute (front left) with the arrows and open the grip."
+  "instruction": "Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the claw. Grip left opens it, lift left lowers it, grip back to the centre closes it (70% spring grip), lift right raises it. Carry the capsule to the gold chute (front left) with the arrows and open the grip."
  },
  "entities": [
   {
