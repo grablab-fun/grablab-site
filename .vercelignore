@@ -13,3 +13,4 @@ _headers
 .env*
 *.src.png
 assets/play/_*
+wallet-src/

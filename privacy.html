@@ -21,7 +21,7 @@
 <link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
 <link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
-<link rel="stylesheet" href="styles.css?v=20261015h" />
+<link rel="stylesheet" href="styles.css?v=20261015i" />
 <link rel="stylesheet" href="pages.css?v=20261015e" />
 <link rel="stylesheet" href="sub.css?v=29" />
 <link rel="stylesheet" href="legal.css?v=1" />
@@ -63,7 +63,8 @@
             <tbody>
               <tr><td>Technical logs</td><td>IP address, browser type, page and time, recorded by our host when you load a page. Used to deliver the site and keep it secure.</td><td>Legitimate interest (Art. 6(1)(f))</td><td>Short term, as set by the host (see section 3)</td></tr>
               <tr><td>Emails you send us</td><td>Your address, name if you give it, and the message. The "Book a launch night" form only opens your own email app with a draft, nothing is sent until you send it.</td><td>Steps before a contract (Art. 6(1)(b)) or legitimate interest</td><td>As long as needed to reply and follow up, at most 24 months after our last exchange</td></tr>
-              <tr><td>Wallet address</td><td>When you connect a wallet or paste an address to check eligibility. The check runs in your browser and the address is not sent to our servers.</td><td>Your request (Art. 6(1)(b))</td><td>Not stored by us</td></tr>
+              <tr><td>Wallet address</td><td>When you connect a wallet or paste an address to check eligibility. The check runs in your browser and the address is not sent to our servers. Connecting goes through Privy (see section 3), which keeps your linked wallet so you stay signed in.</td><td>Your request (Art. 6(1)(b))</td><td>Not stored by us. Privy keeps it while your account exists</td></tr>
+              <tr><td>Email sign in</td><td>Only if you choose "Continue with email": Privy sends you a code and creates a wallet for you. We see the email and the wallet address in our Privy dashboard.</td><td>Your request (Art. 6(1)(b))</td><td>Until you ask us to delete your account</td></tr>
               <tr><td>Browser storage</td><td>Your cookie choice and a flag that you saw the intro. Details in the <a href="cookies.html">Cookie policy</a>.</td><td>Strictly necessary</td><td>See Cookie policy</td></tr>
               <tr><td>Simulator inputs</td><td>The demo address and choices in the simulator stay in your browser tab.</td><td>Not processed by us</td><td>Until you close the tab</td></tr>
             </tbody>
@@ -78,6 +79,8 @@
             <li><strong>Namecheap</strong> hosts our email (Private Email), so it processes the emails you send us.</li>
             <li><strong>jsDelivr</strong> serves some token logos and <strong>Jupiter</strong> (lite-api.jup.ag) serves live token prices on the Rent page. Your browser contacts them directly, so they receive your IP address.</li>
             <li><strong>SimArena</strong> (app.simarena.ai, by CodecFlow) runs the physics lab. It loads only if you allow embedded content, and then it receives your IP address and may store data in your browser.</li>
+            <li><strong>Privy</strong> (privy.io, Privy Inc.) runs wallet connection and email sign in for us as our processor. It loads only when you open the wallet window or have connected before.</li>
+            <li><strong>WalletConnect</strong> (Reown) relays the connection if you pick WalletConnect to link a phone wallet.</li>
             <li><strong>Your wallet provider</strong> (for example Phantom, Solflare, Backpack, MetaMask) handles the connection under its own policy.</li>
             <li>Links to <strong>X</strong>, machine.fun and peaq take you to sites with their own policies.</li>
           </ul>
@@ -116,7 +119,7 @@
   </div>
 </main>
 <footer id="site-footer"></footer>
-<script src="site.js?v=20261016b"></script>
+<script src="site.js?v=20261016c"></script>
 <script src="consent.js?v=3"></script>
 <script src="legal.js?v=1"></script>
 </body>

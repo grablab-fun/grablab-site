@@ -12,3 +12,6 @@ palette.html
 .vercel
 .env*
 *.src.png
+
+# wallet island build deps
+wallet-src/node_modules/

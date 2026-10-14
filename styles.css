@@ -378,3 +378,10 @@ body.menu-open .mm-links a{translate:0 0;rotate:0deg}
 body.menu-open .mm-cta{opacity:1;transform:none}
 body:not(.menu-open) .mm-links a{transition-delay:0s!important}
 @media(prefers-reduced-motion:reduce){.mm-layer,.mm-links a,.mm-cta,.burger .bt span,.burger .bi{transition:none!important}}
+/* wallet modal: email login + connected row (Privy) */
+.wallet-item .wi-ic.wi-mail{display:grid;place-items:center;background:linear-gradient(180deg,#232a44,#141a30);border:1px solid rgba(180,186,255,.2)}
+.wallet-item .wi-ic.wi-mail svg{width:20px;height:20px;fill:none;stroke:#b4baff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wallet-item .wi-ic.wi-dot{display:grid;place-items:center;background:rgba(59,123,255,.14);border:1px solid rgba(125,176,255,.35)}
+.wallet-item .wi-ic.wi-dot::after{content:"";width:10px;height:10px;border-radius:50%;background:#5ce1a0;box-shadow:0 0 10px #5ce1a0}
+.wallet-item.wallet-out .wi-name{font-family:var(--mono);font-size:13px}
+.wallet-item.wallet-out .wi-meta{color:#ff8aa0}

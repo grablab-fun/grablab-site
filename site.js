@@ -377,9 +377,18 @@ window.glBack = (function(){
 
 /* ============================================================
    WALLET (SAFE : read-only, no approve/permit, nothing sent out)
-   Production = Privy (dashboard.privy.io), PRIVY_APP_ID below.
+   Our modal picks the wallet; Privy (EVM + Solana, built from wallet-src/ into assets/privy/) does the
+   connection. It is loaded only when the modal is used, or on load when this browser connected before.
    ============================================================ */
-const PRIVY_APP_ID = "";
+let privy = null, privyAddr = null;
+function loadPrivy(){
+  if (!privy) privy = import("./assets/privy/wallet.js").then(() => {
+    window.GLPrivy.onChange(a => { privyAddr = a; try { a ? localStorage.setItem("gl_wallet", "1") : localStorage.removeItem("gl_wallet"); } catch (e) {} onConnected(a); });
+    return window.GLPrivy;
+  }).catch(() => { privy = null; return null; });
+  return privy;
+}
+try { if (localStorage.getItem("gl_wallet")) (window.requestIdleCallback || setTimeout)(loadPrivy); } catch (e) {}
 const WALLETS = [
   { id:"phantom",  name:"Phantom",  icon:"assets/wallets/phantom.png",  chain:"solana", detect:()=>window.solana?.isPhantom },
   { id:"solflare", name:"Solflare", icon:"assets/wallets/solflare.png", chain:"solana", detect:()=>window.solflare?.isSolflare || window.solflare },
@@ -393,6 +402,13 @@ const overlay = document.getElementById("walletOverlay");
 const walletList = document.getElementById("walletList");
 function buildWalletList(){
   if (!walletList) return; walletList.innerHTML = "";
+  if (privyAddr){
+    const out = document.createElement("button");
+    out.className = "wallet-item wallet-out";
+    out.innerHTML = `<span class="wi-ic wi-dot"></span><span class="wi-name">${shorten(privyAddr)}</span><span class="wi-meta">Disconnect</span>`;
+    out.addEventListener("click", async () => { const p = await loadPrivy(); if (p) p.logout(); closeWallet(); });
+    walletList.appendChild(out);
+  }
   WALLETS.forEach(w=>{
     const detected = (()=>{ try { return !!w.detect(); } catch(e){ return false; } })();
     const btn = document.createElement("button");
@@ -401,11 +417,17 @@ function buildWalletList(){
     btn.addEventListener("click", ()=> chooseWallet(w, detected));
     walletList.appendChild(btn);
   });
+  const mail = document.createElement("button");
+  mail.className = "wallet-item";
+  mail.innerHTML = `<span class="wi-ic wi-mail"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg></span><span class="wi-name">Continue with email</span><span class="wi-meta">No wallet needed</span>`;
+  mail.addEventListener("click", async () => { const p = await loadPrivy(); if (!p) return; closeWallet(); p.email(); });
+  walletList.appendChild(mail);
 }
-function openWallet(){ if (overlay){ buildWalletList(); overlay.hidden = false; if (!glBack.has("wallet")) glBack.push("wallet", () => closeWallet(true)); } }
+function openWallet(){ loadPrivy(); if (overlay){ buildWalletList(); overlay.hidden = false; if (!glBack.has("wallet")) glBack.push("wallet", () => closeWallet(true)); } }
 function closeWallet(fromBack){ if (overlay) overlay.hidden = true; if (!fromBack) glBack.drop("wallet"); }
 async function chooseWallet(w, detected){
-  if (PRIVY_APP_ID){ /* Privy init in production */ }
+  const p = await loadPrivy();
+  if (p){ closeWallet(); p.connect(w.id); return; }   /* Privy handles extension, mobile deep link and QR */
   if (!detected){ window.open(installUrls[w.id] || "https://phantom.com", "_blank", "noopener"); return; }
   let addr = null;
   try {
@@ -416,7 +438,8 @@ async function chooseWallet(w, detected){
 }
 function shorten(a){ return a && a.length>12 ? a.slice(0,6)+"…"+a.slice(-4) : a; }
 function onConnected(addr){
-  document.querySelectorAll("#connectBtn, #connectBtn2").forEach(b=> (b.querySelector(".f") || b).textContent = shorten(addr));
+  document.querySelectorAll("#connectBtn, #connectBtn2").forEach(b=> (b.querySelector(".f") || b).textContent = addr ? shorten(addr) : t("cta.connect"));
+  if (!addr) return;
   const input = document.getElementById("addrInput"); if (input){ input.value = addr; renderResult(addr); document.getElementById("check")?.scrollIntoView({behavior:"smooth",block:"center"}); }
 }
 document.addEventListener("click", e=>{
