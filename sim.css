@@ -804,3 +804,14 @@ body.sim-lock{overflow:hidden}
   .sim-steps li.on{padding:6px 12px 6px 7px}
   .sim-steps li.on span{display:inline}
 }
+/* chains: prize chain on drop cards, pay-on picker */
+.chn{display:inline-grid;place-items:center;width:15px;height:15px;margin-left:6px;vertical-align:-3px}
+.chn svg{width:15px;height:15px;display:block}
+.pc-chain{display:inline-flex;align-items:center;gap:6px;margin-left:10px;padding:4px 10px 4px 6px;border-radius:999px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#c9cfe6;
+  background:rgba(5,9,24,.5);border:1px solid rgba(180,186,255,.18)}
+.pc-chain .chn{margin:0}
+.chs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}
+.ch{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;padding:11px 12px;border-radius:14px;border:1px solid rgba(180,186,255,.16);background:rgba(5,9,24,.45);font-weight:700;font-size:14px;transition:border-color .2s,background .2s}
+.ch svg{width:20px;height:20px}
+.ch:hover{border-color:rgba(180,186,255,.32)}
+.ch.on{border-color:#7db0ff;background:rgba(59,123,255,.12);box-shadow:0 0 0 1px rgba(125,176,255,.4) inset}

@@ -9,7 +9,9 @@ import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
 const APP_ID = "cmv8hys5c009y0fk19wk9xl0m";
 const WC_PROJECT = "e0d66ac468a740af5b8fdecbc14874fa";   /* Reown (WalletConnect) project, public */
 /* our wallet ids -> Privy wallet list entries */
-const IDS = { phantom:"phantom", solflare:"solflare", backpack:"backpack", metamask:"metamask", coinbase:"coinbase_wallet", walletconnect:"wallet_connect" };
+const IDS = { phantom:"phantom", solflare:"solflare", backpack:"backpack", metamask:"metamask", coinbase:"coinbase_wallet", walletconnect:"wallet_connect_qr" };
+/* one chain per pick so multi-chain wallets connect straight away instead of asking for a network */
+const CHAIN = { phantom:"solana-only", solflare:"solana-only", backpack:"solana-only", metamask:"ethereum-only", coinbase:"ethereum-only", walletconnect:"ethereum-and-solana" };
 
 const listeners = new Set();
 let current = null;
@@ -29,7 +31,7 @@ function Bridge(){
   const { connectWallet } = useConnectWallet({ onSuccess: ({ wallet }) => emit(wallet.address) });
 
   useEffect(() => {
-    api.connect = id => connectWallet({ walletList:[IDS[id] || id], preSelectedWalletId: IDS[id] || id, walletChainType:"ethereum-and-solana" });
+    api.connect = id => connectWallet({ walletList:[IDS[id] || id], preSelectedWalletId: IDS[id] || id, walletChainType: CHAIN[id] || "ethereum-and-solana" });
     api.email = () => login({ loginMethods:["email"] });
     api.logout = () => { emit(null); return logout(); };
   }, [connectWallet, login, logout]);

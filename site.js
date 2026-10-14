@@ -142,7 +142,7 @@ function walletHTML(){
     <div class="wallet-side">
       <div class="wallet-logo"><img src="assets/brand/mark-chrome-256.png?v=20261013b" alt="" /><b>Grablab</b></div>
       <p data-i18n="wallet.side">${t("wallet.side")}</p>
-      <span class="wallet-secured" data-i18n="wallet.secured">${t("wallet.secured")}</span>
+      <a class="wallet-secured" href="https://privy.io" target="_blank" rel="noopener"><img src="assets/brand/partners/privy-protected.svg" alt="Protected by Privy" /></a>
     </div>
     <div class="wallet-main">
       <div class="wallet-head">
@@ -413,7 +413,7 @@ function buildWalletList(){
     const detected = (()=>{ try { return !!w.detect(); } catch(e){ return false; } })();
     const btn = document.createElement("button");
     btn.className = "wallet-item";
-    btn.innerHTML = `<span class="wi-ic"><img src="${w.icon}" alt="" /></span><span class="wi-name">${w.name}</span><span class="wi-meta ${detected?"detected":""}">${detected?"Detected":"Install ↗"}</span>`;
+    btn.innerHTML = `<span class="wi-ic"><img src="${w.icon}" alt="" /></span><span class="wi-name">${w.name}</span><span class="wi-meta ${detected?"detected":""}">${detected?"Detected":w.id==="walletconnect"?"Scan QR":"Install ↗"}</span>`;
     btn.addEventListener("click", ()=> chooseWallet(w, detected));
     walletList.appendChild(btn);
   });

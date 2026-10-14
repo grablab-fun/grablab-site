@@ -385,3 +385,39 @@ body:not(.menu-open) .mm-links a{transition-delay:0s!important}
 .wallet-item .wi-ic.wi-dot::after{content:"";width:10px;height:10px;border-radius:50%;background:#5ce1a0;box-shadow:0 0 10px #5ce1a0}
 .wallet-item.wallet-out .wi-name{font-family:var(--mono);font-size:13px}
 .wallet-item.wallet-out .wi-meta{color:#ff8aa0}
+.wallet-secured{display:block;width:fit-content;opacity:.85;transition:opacity .2s}
+.wallet-secured:hover{opacity:1}
+.wallet-secured img{display:block;height:13px;width:auto}
+
+/* Privy's own modal, skinned to match the site: navy glass, periwinkle accent, Anton title, Satoshi body */
+:root{
+  --privy-color-background:#0b0e1b !important;
+  --privy-color-background-2:#121733 !important;
+  --privy-color-background-3:#1a2146 !important;
+  --privy-color-background-hover:#161c3d !important;
+  --privy-color-background-clicked:#1d2550 !important;
+  --privy-color-foreground:#f3f4fb !important;
+  --privy-color-foreground-2:#a7b0cc !important;
+  --privy-color-foreground-3:#69739a !important;
+  --privy-color-foreground-4:#4b5478 !important;
+  --privy-color-foreground-accent:#071029 !important;
+  --privy-color-accent:#7d84ff !important;
+  --privy-color-accent-light:#b4baff !important;
+  --privy-color-accent-hover:#9aa0ff !important;
+  --privy-color-accent-dark:#5b63e6 !important;
+  --privy-color-border-default:rgba(180,186,255,.16) !important;
+  --privy-color-border-hover:rgba(180,186,255,.32) !important;
+  --privy-color-border-interactive:rgba(180,186,255,.22) !important;
+  --privy-color-border-interactive-hover:rgba(125,176,255,.55) !important;
+  --privy-color-border-focus:#7db0ff !important;
+  --privy-border-radius-sm:10px !important;
+  --privy-border-radius-md:14px !important;
+  --privy-border-radius-mdlg:16px !important;
+  --privy-border-radius-lg:26px !important;
+  --privy-shadow-modal:0 50px 140px rgba(0,0,0,.75),0 0 60px rgba(59,123,255,.12) !important;
+}
+#privy-dialog-backdrop{background:rgba(4,5,12,.74)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#privy-modal-content{font-family:var(--font)!important;border:1px solid rgba(180,186,255,.2);
+  background:linear-gradient(180deg,rgba(18,23,51,.96),rgba(11,14,27,.98))!important}
+#privy-modal-content h3,#privy-dialog-title{font-family:var(--display)!important;font-weight:400!important;letter-spacing:.04em;text-transform:uppercase}
+#privy-modal-content button{font-family:var(--font)}

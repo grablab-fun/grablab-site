@@ -2,12 +2,12 @@
    Everything here is a demo: no wallet is touched, nothing is signed or sent. Open with #simulate or any [data-sim]. */
 (function(){
   const PROJECTS = [
-    { id:"rover",    name:"Rover Labs",  tk:"$ROVR", c:"#13a3b3", logo:"assets/proj3d/rover.webp",    tags:"Delivery robots", gold:2500,  violet:12000, rare:"Rover Genesis pass", left:148, cap:240, price:0.05, status:"live" },
-    { id:"kinetic",  name:"Kinetic Arm", tk:"$KNTC", c:"#fd730a", logo:"assets/proj3d/kinetic.webp",  tags:"Industrial arms", gold:1800,  violet:9000,  rare:"Kinetic Founder NFT", left:201, cap:300, price:0.04, status:"live" },
-    { id:"orbit",    name:"Orbit Drone", tk:"$ORBT", c:"#6847fd", logo:"assets/proj3d/orbit.webp",    tags:"Drone mapping",   gold:3000,  violet:15000, rare:"Orbit Pilot badge",   left:57,  cap:180, price:0.06, status:"hot" },
-    { id:"lumen",    name:"Lumen Hand",  tk:"$LUMN", c:"#fc5267", logo:"assets/proj3d/lumen.webp",    tags:"Humanoid hands",  gold:1200,  violet:6000,  rare:"Lumen Glove NFT",     left:233, cap:240, price:0.05, status:"live" },
-    { id:"fieldbot", name:"Fieldbot",    tk:"$FLDB", c:"#f7c842", logo:"assets/proj3d/fieldbot.webp", tags:"Agritech DePIN",  gold:5000,  violet:20000, rare:"Fieldbot Seed pass",  left:96,  cap:120, price:0.03, status:"new" },
-    { id:"pallet",   name:"Pallet Bots", tk:"$PLT",  c:"#bff339", logo:"assets/proj3d/pallet.webp",   tags:"Warehouse",       gold:4000,  violet:18000, rare:"Pallet Ops NFT",      left:180, cap:200, price:0.05, status:"live" }
+    { id:"rover",    name:"Rover Labs",  tk:"$ROVR", c:"#13a3b3", logo:"assets/proj3d/rover.webp",    tags:"Delivery robots", gold:2500,  violet:12000, rare:"Rover Genesis pass", left:148, cap:240, price:5, chain:"solana", status:"live" },
+    { id:"kinetic",  name:"Kinetic Arm", tk:"$KNTC", c:"#fd730a", logo:"assets/proj3d/kinetic.webp",  tags:"Industrial arms", gold:1800,  violet:9000,  rare:"Kinetic Founder NFT", left:201, cap:300, price:4, chain:"base", status:"live" },
+    { id:"orbit",    name:"Orbit Drone", tk:"$ORBT", c:"#6847fd", logo:"assets/proj3d/orbit.webp",    tags:"Drone mapping",   gold:3000,  violet:15000, rare:"Orbit Pilot badge",   left:57,  cap:180, price:6, chain:"solana", status:"hot" },
+    { id:"lumen",    name:"Lumen Hand",  tk:"$LUMN", c:"#fc5267", logo:"assets/proj3d/lumen.webp",    tags:"Humanoid hands",  gold:1200,  violet:6000,  rare:"Lumen Glove NFT",     left:233, cap:240, price:5, chain:"base", status:"live" },
+    { id:"fieldbot", name:"Fieldbot",    tk:"$FLDB", c:"#f7c842", logo:"assets/proj3d/fieldbot.webp", tags:"Agritech DePIN",  gold:5000,  violet:20000, rare:"Fieldbot Seed pass",  left:96,  cap:120, price:3, chain:"solana", status:"new" },
+    { id:"pallet",   name:"Pallet Bots", tk:"$PLT",  c:"#bff339", logo:"assets/proj3d/pallet.webp",   tags:"Warehouse",       gold:4000,  violet:18000, rare:"Pallet Ops NFT",      left:180, cap:200, price:5, chain:"base", status:"live" }
   ];
   const QICON = {
     x:'<svg viewBox="0 0 24 24"><path d="M3 3l7.5 9.5L3.5 21H6l5.5-6.3L16 21h5l-7.9-10 7-8h-2.5l-5 5.7L8 3z" fill="currentColor" stroke="none"/></svg>',
@@ -27,7 +27,14 @@
     { id:"nimbus", name:"Nimbus Fleet", tk:"$NMBS", c:"#13a3b3", logo:"assets/proj3d/orbit.webp", hue:-75,  tags:"Sky logistics",  day:5,  h:18, cap:180 },
     { id:"seed",   name:"Seed Harvest", tk:"$SEED", c:"#bff339", logo:"assets/proj3d/fieldbot.webp", hue:38, tags:"Agritech",       day:6,  h:21, cap:140 }
   ];
-  const WALLETS = [["Phantom","assets/wallets/phantom.png"],["Solflare","assets/wallets/solflare.png"],["Backpack","assets/wallets/backpack.png"]];
+  const WALLETS = [["Phantom","assets/wallets/phantom.png"],["MetaMask","assets/wallets/metamask.png"],["Coinbase","assets/wallets/coinbase.svg"]];
+  /* plays are paid in USDC on Solana or Base; each project's prizes live on its own chain */
+  const CHAINS = {
+    solana: { name:"Solana", fee:"SOL", svg:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#10132a"/><path fill="#14f195" d="M7.6 7h10l-1.7 1.8H5.9z"/><path fill="#5fb8f0" d="M16.3 11.1H6.3L4.6 12.9h10z" transform="translate(1.6 0)"/><path fill="#9945ff" d="M7.6 15.2h10l-1.7 1.8H5.9z"/></svg>' },
+    base: { name:"Base", fee:"ETH", svg:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#0052ff"/><path fill="#fff" d="M11.97 19.2a7.2 7.2 0 1 0-7.16-7.95h9.5v1.5h-9.5a7.2 7.2 0 0 0 7.16 6.45z"/></svg>' }
+  };
+  const chainTag = c => `<i class="chn" title="Prizes on ${CHAINS[c].name}">${CHAINS[c].svg}</i>`;
+  let payChain = "solana";
   const STEPS = ["Drop","Pay","Claim","Play","Prize"];
   const PLAY_S = 30;
   const CHECK = '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
@@ -108,17 +115,17 @@
         <span class="pc-view"><i></i>${watching} watching</span></div>
       <div class="pc-b">
         <span class="pc-tag">Featured drop</span>
-        <div class="pc-t"><img class="pc-logo" src="${p.logo}" alt="" /><b>${p.name}</b><span>${p.tk}</span></div>
+        <div class="pc-t"><img class="pc-logo" src="${p.logo}" alt="" /><b>${p.name}</b><span>${p.tk}</span><span class="pc-chain">${chainTag(p.chain)}On ${CHAINS[p.chain].name}</span></div>
         <p class="pc-blurb">${p.tags}, renting the claw tonight</p>
         <div class="pc-prize"><span>Top capsule</span><strong>${fmt(p.violet)} ${p.tk}</strong></div>
         <div class="pc-bar"><i style="--f:${(1 - p.left/p.cap).toFixed(2)}"></i></div>
-        <div class="pc-meta"><span>${p.left} / ${p.cap} left</span><span>${p.price} SOL per play</span></div>
+        <div class="pc-meta"><span>${p.left} / ${p.cap} left</span><span>${p.price} USDC per play</span></div>
         <div class="pc-foot"><span class="pc-go">Participate<svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>${socials(p)}</div>
       </div></div>`;
     return `<div class="pc" role="button" tabindex="0" style="--c:${p.c}" data-i="${i}">
       <div class="pc-live sm">${feedVideo(i)}
         <span class="pc-view"><i></i>${watching}</span></div>
-      <div class="pc-head"><img class="pc-logo" src="${p.logo}" alt="" /><div class="pc-t"><b>${p.name}</b><span>${p.tk}</span></div></div>
+      <div class="pc-head"><img class="pc-logo" src="${p.logo}" alt="" /><div class="pc-t"><b>${p.name}</b><span>${p.tk}${chainTag(p.chain)}</span></div></div>
       <div class="pc-b">
         <div class="pc-prize"><span>Top capsule</span><strong>${fmt(p.violet)} ${p.tk}</strong></div>
         <div class="pc-bar"><i style="--f:${(1 - p.left/p.cap).toFixed(2)}"></i></div>
@@ -246,11 +253,13 @@
               </div>
             </div>
             <div class="row"><span>1 play on Machine 01</span><b id="payPrice"></b></div>
-            <div class="row"><span>Network fee</span><b>0.000005 SOL</b></div>
+            <div class="row"><span>Network fee</span><b id="payFee"></b></div>
             <div class="row"><span>Refund if the machine fails</span><b class="yes">Yes</b></div>
             <div class="row tot"><span>Total</span><b id="payTot"></b></div>
           </div>
           <div class="glass pay-w">
+            <small>Pay on</small>
+            <div class="chs">${Object.keys(CHAINS).map(k => `<button class="ch${k === "solana" ? " on" : ""}" type="button" data-c="${k}">${CHAINS[k].svg}${CHAINS[k].name}</button>`).join("")}</div>
             <small>Pay with</small>
             ${WALLETS.map((w,i) => `<button class="wl${i===0?" on":""}" type="button" data-w="${i}"><img src="${w[1]}" alt="" />${w[0]}<em>${i===0?"Selected":"Detected"}</em></button>`).join("")}
             <button class="btn btn-primary big act" id="payBtn" type="button"></button>
@@ -274,7 +283,7 @@
             <div class="tk-bot"><div><small>Receipt</small><code id="tkTx"></code></div><span class="tk-paid"><span class="ok-ring"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"/><path d="M14 22.5l5.5 5.5L30 17"/></svg></span><span class="tp-t"><b>Paid</b><small>Confirmed</small></span></span></div>
           </div>
           <div class="glass claim">
-            <label for="simAddr">Your Solana address</label>
+            <label for="simAddr" id="simAddrL">Your Solana address</label>
             <div class="inrow"><input id="simAddr" type="text" autocomplete="off" spellcheck="false" /><button class="btn btn-ghost" id="simAddrNew" type="button">New demo</button></div>
             <div class="err" id="simErr"></div>
             <div class="tick"><i></i><span>Prize goes straight to this address</span><i></i><span>Grip set to 70% before your play</span><i></i><span>Refund if the machine fails</span></div>
@@ -363,8 +372,9 @@
       root.querySelectorAll(".wl").forEach(x => { x.classList.toggle("on", x === b); x.querySelector("em").textContent = x === b ? "Selected" : "Detected"; });
       setPayLabel();
     }));
+    root.querySelectorAll(".ch").forEach(b => b.addEventListener("click", () => { payChain = b.dataset.c; root.querySelectorAll(".ch").forEach(x => x.classList.toggle("on", x === b)); setPayLabel(); }));
     $("#payBtn", root).addEventListener("click", pay);
-    $("#simAddrNew", root).addEventListener("click", () => { $("#simAddr", root).value = b58(44); $("#simErr", root).textContent = ""; });
+    $("#simAddrNew", root).addEventListener("click", () => { $("#simAddr", root).value = demoAddr(proj.chain); $("#simErr", root).textContent = ""; });
     $("#claimBtn", root).addEventListener("click", claim);
     $("#simAddr", root).addEventListener("keydown", e => { if (e.key === "Enter") claim(); });
     $("#winAgain", root).addEventListener("click", () => go("pay"));
@@ -428,7 +438,7 @@
     $("#rmGold", root).textContent = `${fmt(p.gold)} ${p.tk}`; $("#rmViolet", root).textContent = `${fmt(p.violet)} ${p.tk}`; $("#rmRare", root).textContent = p.rare;
     $("#rmBar", root).style.width = ((1 - p.left/p.cap) * 100) + "%";
     $("#rmLeftN", root).textContent = p.left; $("#rmLeftOf", root).textContent = `of ${p.cap} capsules left`;
-    $("#rmPrice", root).textContent = `${p.price} SOL`;
+    $("#rmPrice", root).textContent = `${p.price} USDC`;
     $("#rmChatN", root).textContent = `${fmt(Math.round(w * 0.08))} chatting`;
     if (chatN !== pi + 1){ chatN = pi + 1; $("#rmChat", root).innerHTML = ""; for (let k = 0; k < 7; k++) chatAdd({ who:pick(CH_NAMES), text:pick(CH_LINES).replace("{n}", p.name).replace("{r}", p.rare) }); }
     clearTimeout(chatT); chatT = setTimeout(chatTick, 1200);
@@ -486,7 +496,11 @@
   addEventListener("keydown", e => { if (e.key === "Escape" && root && !root.hidden) close(); });
 
   /* ---------------- 2. pay ---------------- */
-  function setPayLabel(){ $("#payBtn", root).innerHTML = `Pay ${proj.price} SOL with ${WALLETS[wallet][0]}`; }
+  function setPayLabel(){
+    $("#payBtn", root).innerHTML = `Pay ${proj.price} USDC with ${WALLETS[wallet][0]}`;
+    const f = $("#payFee", root); if (f) f.textContent = `under $0.01 in ${CHAINS[payChain].fee}`;
+  }
+  function demoAddr(c){ return c === "base" ? "0x" + Array.from({length:40}, () => "0123456789abcdef"[Math.random()*16|0]).join("") : b58(44); }
   function enterPay(){
     const pi = PROJECTS.indexOf(proj), [fn, mir] = FEED[pi % FEED.length], pv = $("#payVid", root);
     if (!pv.src.endsWith(`feed${fn}.mp4`)){ pv.src = `assets/feeds/feed${fn}.mp4`; pv.poster = `assets/feeds/feed${fn}.jpg`; }
@@ -495,11 +509,11 @@
     const w = 380 + (proj.left * 37) % 1400, wv = $("#payWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);
     $("#payLogo", root).src = proj.logo; $("#payName", root).textContent = proj.name;
     $("#payTags", root).innerHTML = `<em>${proj.tk}</em>${proj.tags}`;
-    $("#payPrice", root).textContent = proj.price + " SOL";
+    $("#payPrice", root).textContent = proj.price + " USDC";
     $("#ppGold", root).textContent = fmt(proj.gold) + " " + proj.tk;
     $("#ppViolet", root).textContent = fmt(proj.violet) + " " + proj.tk;
     $("#ppRare", root).textContent = proj.rare;
-    $("#payTot", root).textContent = (proj.price + 0.000005).toFixed(6).replace(/0+$/,"") + " SOL";
+    $("#payTot", root).textContent = proj.price + " USDC";
     const b = $("#payBtn", root); b.disabled = false; b.classList.remove("paid"); setPayLabel();
     $("#payOk", root).classList.remove("on");
   }
@@ -522,16 +536,19 @@
     $("#claimK", root).textContent = "Last step";
     $("#tkLogo", root).src = proj.logo; $("#tkName", root).textContent = proj.name;
     $("#tkNo", root).textContent = "#" + String(playNo).padStart(6,"0");
-    $("#tkPrice", root).textContent = proj.price + " SOL";
+    $("#tkPrice", root).textContent = proj.price + " USDC";
     $("#tkTx", root).textContent = "tx " + (lastTx || b58(4) + "…" + b58(4));
     root.querySelector(".ticket").style.setProperty("--c", proj.c);
-    const i = $("#simAddr", root); if (!i.value) i.value = addr || b58(44);
+    $("#simAddrL", root).textContent = `Your ${CHAINS[proj.chain].name} address`;
+    const i = $("#simAddr", root), fits = v => proj.chain === "base" ? /^0x/.test(v) : !/^0x/.test(v);
+    if (!i.value || !fits(i.value)) i.value = addr && fits(addr) ? addr : demoAddr(proj.chain);
     $("#simErr", root).textContent = "";
     const b = $("#claimBtn", root); b.disabled = false; b.textContent = "Claim my play";
   }
   function claim(){
     const v = ($("#simAddr", root).value || "").trim();
     if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(v) && !/^0x[0-9a-fA-F]{40}$/.test(v)){ $("#simErr", root).textContent = "That doesn't look like a wallet address."; return; }
+    if ((proj.chain === "base") !== /^0x/.test(v)){ $("#simErr", root).textContent = `${proj.name} prizes land on ${CHAINS[proj.chain].name}. Paste a ${proj.chain === "base" ? "0x" : "Solana"} address.`; return; }
     addr = v;
     const b = $("#claimBtn", root); b.disabled = true; b.innerHTML = '<span class="spin"></span>Claiming';
     setTimeout(() => go("play"), 900);
