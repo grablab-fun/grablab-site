@@ -439,3 +439,18 @@ body:not(.menu-open) .mm-links a{transition-delay:0s!important}
 .wallet-mail button:hover svg{transform:translateX(3px)}
 .wallet-mail button:active{transform:scale(.97)}
 .wallet-mail-k{margin:8px 2px 0;font-size:12.5px;color:var(--ink-3)}
+/* short laptop screens: the wallet window always fits; rows tighten, and if it is still too tall it scrolls inside */
+.wallet-sheet{max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px)}
+.wallet-main{overflow-y:auto;overscroll-behavior:contain}
+@media (max-height:780px){
+  .wallet-main{padding:20px 22px}
+  .wallet-head{margin-bottom:12px}
+  .wallet-list{gap:6px}
+  .wallet-item{padding:8px 12px}
+  .wallet-item .wi-ic{width:32px;height:32px;border-radius:9px}
+  .wallet-or{margin:8px 2px 2px}
+  .wallet-mail{height:54px}
+  .wallet-mail .wm-ic{width:32px;height:32px}
+  .wallet-mail button{height:40px}
+  .wallet-mail-k{margin-top:6px}
+}

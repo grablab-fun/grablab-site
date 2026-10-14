@@ -82,3 +82,5 @@
 .lab-credit a.lc-logo img.mj{height:20px}
 .lab-credit i.sep{height:14px;opacity:.5;margin:0 6px}
 @media(max-width:560px){.lab-credit{border-radius:18px;padding:12px 16px}}
+/* laptop heights: the lab window never grows taller than the screen (keeps 16:9, centred) */
+@media (min-width:621px){ .lab-frame{width:min(100%,calc((100vh - 110px) * 16 / 9));margin-left:auto;margin-right:auto} }
