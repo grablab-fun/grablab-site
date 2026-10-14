@@ -32,7 +32,7 @@ function Bridge(){
 
   useEffect(() => {
     api.connect = id => connectWallet({ walletList:[IDS[id] || id], preSelectedWalletId: IDS[id] || id, walletChainType: CHAIN[id] || "ethereum-and-solana" });
-    api.email = () => login({ loginMethods:["email"] });
+    api.email = email => login(email ? { loginMethods:["email"], prefill:{ type:"email", value:email } } : { loginMethods:["email"] });
     api.logout = () => { emit(null); return logout(); };
   }, [connectWallet, login, logout]);
 

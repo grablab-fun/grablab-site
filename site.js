@@ -150,7 +150,6 @@ function walletHTML(){
         <button class="wallet-close" id="walletClose" aria-label="Close">×</button>
       </div>
       <div class="wallet-list" id="walletList"></div>
-      <p class="wallet-foot"><span data-i18n="wallet.new">${t("wallet.new")}</span> <a href="https://phantom.com" target="_blank" rel="noopener" data-i18n="wallet.get">${t("wallet.get")}</a></p>
     </div>`;
 }
 
@@ -417,11 +416,20 @@ function buildWalletList(){
     btn.addEventListener("click", ()=> chooseWallet(w, detected));
     walletList.appendChild(btn);
   });
-  const mail = document.createElement("button");
-  mail.className = "wallet-item";
-  mail.innerHTML = `<span class="wi-ic wi-mail"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg></span><span class="wi-name">Continue with email</span><span class="wi-meta">No wallet needed</span>`;
-  mail.addEventListener("click", async () => { const p = await loadPrivy(); if (!p) return; closeWallet(); p.email(); });
-  walletList.appendChild(mail);
+  /* email sign in, set apart from the wallets: Privy sends a code and makes a wallet for you */
+  const or = document.createElement("div"); or.className = "wallet-or"; or.innerHTML = "<span>or sign in with email</span>";
+  const mail = document.createElement("form");
+  mail.className = "wallet-mail"; mail.noValidate = true;
+  mail.innerHTML = `<span class="wm-ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg></span><input type="email" name="email" placeholder="your@email.com" autocomplete="email" aria-label="Email" /><button type="submit" aria-label="Continue with email">Continue<svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>`;
+  mail.addEventListener("submit", async e => {
+    e.preventDefault();
+    const v = mail.email.value.trim();
+    if (v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ mail.classList.add("bad"); mail.email.focus(); return; }
+    mail.classList.remove("bad");
+    const p = await loadPrivy(); if (!p) return; closeWallet(); p.email(v);
+  });
+  const hint = document.createElement("p"); hint.className = "wallet-mail-k"; hint.innerHTML = "No wallet yet? We create one for you, on Solana and EVM.";
+  walletList.append(or, mail, hint);
 }
 function openWallet(){ loadPrivy(); if (overlay){ buildWalletList(); overlay.hidden = false; if (!glBack.has("wallet")) glBack.push("wallet", () => closeWallet(true)); } }
 function closeWallet(fromBack){ if (overlay) overlay.hidden = true; if (!fromBack) glBack.drop("wallet"); }
