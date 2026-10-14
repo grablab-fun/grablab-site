@@ -636,7 +636,7 @@ body.sim-lock{overflow:hidden}
 .sv[data-v="pick"]{padding-top:clamp(14px,2.4vh,28px);padding-bottom:20px}
 .sv[data-v="pick"] .sv-head h2{font-size:clamp(30px,3.6vw,54px)}
 .sv[data-v="pick"] .sv-sub{margin-top:8px;font-size:13.5px}
-.pc.feat{min-height:0;height:clamp(220px,33vh,360px)}
+.pc.feat{height:auto;min-height:clamp(220px,33vh,360px)}   /* grows with its content, never clips it */
 .pc.feat .pc-b{padding:clamp(16px,2.4vh,26px) 32px;gap:clamp(6px,1.1vh,12px)}
 .pc.feat .pc-t b{font-size:clamp(30px,3.2vw,50px)}
 .pc.feat .pc-t .pc-logo{width:clamp(40px,5vh,52px);height:clamp(40px,5vh,52px)}
@@ -815,3 +815,9 @@ body.sim-lock{overflow:hidden}
 .ch svg{width:20px;height:20px}
 .ch:hover{border-color:rgba(180,186,255,.32)}
 .ch.on{border-color:#7db0ff;background:rgba(59,123,255,.12);box-shadow:0 0 0 1px rgba(125,176,255,.4) inset}
+/* short laptop screens: tighter featured card so the pick view still nearly fits one screen */
+@media (min-width:761px) and (max-height:720px){
+  .pc.feat .pc-b{padding:16px 26px;gap:8px}
+  .pc.feat .pc-t b{font-size:clamp(26px,2.8vw,38px)}
+  .pc.feat .pc-prize strong{font-size:22px}
+}
