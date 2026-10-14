@@ -738,3 +738,13 @@ body.sim-lock{overflow:hidden}
 .ch-m p{margin:0;min-width:0}
 .ch-av{width:24px;height:24px;border-radius:50%;flex:none;object-fit:cover;border:1px solid rgba(255,255,255,.14);margin-top:-1px}
 .ch-ev{width:20px;height:20px;flex:none;object-fit:contain}
+
+/* phone top bar: logo, current step only, close */
+@media(max-width:700px){
+  .sim-top{gap:10px}
+  .sim-brand span{display:none}
+  .sim-steps{margin:0 auto}
+  .sim-steps li:not(.on){display:none}
+  .sim-steps li.on{padding:6px 12px 6px 7px}
+  .sim-steps li.on span{display:inline}
+}
