@@ -96,19 +96,21 @@ function buildClawScene(assetUrl = "grablab-claw-mech.asset.json"){
   fixed("rails", [ghost(box([.03, D - .04, .02], [X0 + .01, 0, RZ], "chrome")), ghost(box([.03, D - .04, .02], [X1 - .01, 0, RZ], "chrome"))]);
 
   /* ---------------- one closed room around the machine ---------------- */
-  /* Four walls that overlap at the corners (side walls run the full depth, back and front run the full width),
-     corner pillars, a skirting board and a ring beam on top tie them into ONE room. The front wall is glass so
-     the default SimArena camera still sees in; there is no ceiling slab, only a beam grid that carries the lamps. */
+  /* Four walls joined at the corners by pillars, a skirting board and a ring beam on top: ONE room. The front and
+     right walls are glass with mullions, so SimArena's default camera (looking in from the front-right) sees the
+     machine; there is no ceiling slab, only a beam grid that carries the lamps. */
   const RX = 2.0, RB = 2.2, RF = -1.6, RH = 2.8, t = .12, RD = RB - RF, RZT = RH - .07;
   fixed("room", [
     box([2*RX + t, t, RH], [0, RB, RH/2], "wall"),                               // back wall, full width
     box([t, RD + t, RH], [-RX, (RB + RF)/2, RH/2], "wall_lt"),                   // left wall, full depth, overlaps both corners
-    box([t, RD + t, RH], [RX, (RB + RF)/2, RH/2], "wall_lt"),                    // right wall
+    box([.02, RD, RH - .14], [RX, (RB + RF)/2, (RH - .14)/2 + .07], "glass_room"),   // right wall: glass, so SimArena's default camera (front-right) sees in
+    ...[-.65, .3, 1.25].map(y => box([.1, .1, RH], [RX, y, RH/2], "pillar")),            // its mullions
+    box([.1, RD + .2, .07], [RX, (RB + RF)/2, .035], "pillar"),
+    box([.1, RD + .2, .07], [RX, (RB + RF)/2, RH - .035], "pillar"),
     box([2*RX + t, .02, RH - .14], [0, RF, (RH - .14)/2 + .07], "glass_room"),   // front wall: glass between the frame rails
     ...[[-RX, RB], [RX, RB], [-RX, RF], [RX, RF]].map(([x, y]) => box([.2, .2, RH], [x, y, RH/2], "pillar")),   // corner pillars
     box([2*RX, .03, .1], [0, r4(RB - t/2 - .015), .05], "pillar"),               // skirting boards
     box([.03, RD, .1], [r4(-RX + t/2 + .015), (RB + RF)/2, .05], "pillar"),
-    box([.03, RD, .1], [r4(RX - t/2 - .015), (RB + RF)/2, .05], "pillar"),
     box([2*RX + .2, .1, .07], [0, RF, .035], "pillar"),                           // front frame: sill + header
     box([2*RX + .2, .1, .07], [0, RF, RH - .035], "pillar")
   ]);
