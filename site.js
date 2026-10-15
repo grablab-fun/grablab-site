@@ -440,8 +440,33 @@ function buildWalletList(){
   const hint = document.createElement("p"); hint.className = "wallet-mail-k"; hint.innerHTML = "No wallet yet? We create one for you, on Solana and EVM.";
   walletList.append(or, mail, hint);
 }
-function openWallet(){ loadPrivy(); if (overlay){ buildWalletList(); overlay.hidden = false; if (!glBack.has("wallet")) glBack.push("wallet", () => closeWallet(true)); } }
-function closeWallet(fromBack){ if (overlay) overlay.hidden = true; if (!fromBack) glBack.drop("wallet"); }
+/* open: the backdrop grows as a circle out of the clicked button, the window morphs out of the button,
+   then the wallet rows flip in one by one; close plays it backwards */
+function openWallet(src){
+  loadPrivy(); if (!overlay) return;
+  buildWalletList();
+  const r = src && src.getBoundingClientRect ? src.getBoundingClientRect() : null;
+  const cx = r ? r.left + r.width / 2 : innerWidth / 2, cy = r ? r.top + r.height / 2 : innerHeight / 2;
+  overlay.style.setProperty("--ox", cx + "px"); overlay.style.setProperty("--oy", cy + "px");
+  clearTimeout(overlay._t); overlay.classList.remove("in"); overlay.hidden = false;
+  const sheet = overlay.querySelector(".wallet-sheet");
+  if (sheet){
+    sheet.style.transform = "none"; const to = sheet.getBoundingClientRect(); sheet.style.transform = "";
+    sheet.style.setProperty("--from", r && r.width
+      ? `translate(${cx - (to.left + to.width / 2)}px,${cy - (to.top + to.height / 2)}px) scale(${r.width / to.width},${r.height / to.height})`
+      : "scale(.2)");
+    sheet.getBoundingClientRect();
+  }
+  requestAnimationFrame(() => overlay.classList.add("in"));
+  if (!glBack.has("wallet")) glBack.push("wallet", () => closeWallet(true));
+}
+function closeWallet(fromBack){
+  if (overlay && !overlay.hidden){
+    overlay.classList.remove("in"); clearTimeout(overlay._t);
+    overlay._t = setTimeout(() => { if (!overlay.classList.contains("in")) overlay.hidden = true; }, 560);
+  }
+  if (!fromBack) glBack.drop("wallet");
+}
 async function chooseWallet(w, detected){
   const p = await loadPrivy();
   if (p){ closeWallet(); p.connect(w.id); return; }   /* Privy handles extension, mobile deep link and QR */
@@ -460,7 +485,8 @@ function onConnected(addr){
   const input = document.getElementById("addrInput"); if (input){ input.value = addr; renderResult(addr); document.getElementById("check")?.scrollIntoView({behavior:"smooth",block:"center"}); }
 }
 document.addEventListener("click", e=>{
-  if (e.target.closest("#connectBtn") || e.target.closest("#connectBtn2") || e.target.closest("#connectBtnM")){ closeMenu(); openWallet(); }
+  const cb = e.target.closest("#connectBtn, #connectBtn2, #connectBtnM");
+  if (cb){ closeMenu(); openWallet(cb); }
   if (e.target.id === "walletClose") closeWallet();
   if (e.target.id === "walletOverlay") closeWallet();
 });
