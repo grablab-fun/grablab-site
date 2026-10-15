@@ -103,7 +103,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
 .scrolly{position:relative;max-width:1340px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,80px);align-items:start}
 .scrolly-sticky{position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center}
 #machineCanvas{width:100%;height:auto;max-height:86vh;border-radius:20px}
-.scrolly-fallback{position:absolute;inset:0;margin:auto;width:100%;height:82vh;border-radius:20px;background:url("assets/zone-proof.png") center/cover no-repeat;opacity:.9}
+.scrolly-fallback{position:absolute;inset:0;margin:auto;width:100%;height:82vh;border-radius:20px;background:url("assets/zone-proof.webp") center/cover no-repeat;opacity:.9}
 .scrolly-tag{position:absolute;top:12vh;left:0;font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--ink-3)}
 .scrolly-steps{display:flex;flex-direction:column}
 .sstep{min-height:100svh;display:flex;flex-direction:column;justify-content:center;opacity:.22;transition:opacity .4s}
@@ -126,7 +126,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
 
 /* ============ PROOF ============ */
 .proof{position:relative;padding:clamp(120px,18vw,240px) clamp(16px,4vw,48px);text-align:center;overflow:hidden}
-.proof-bg{position:absolute;inset:0;background:url("assets/zone-proof.png") center/cover no-repeat}
+.proof-bg{position:absolute;inset:0;background:url("assets/zone-proof.webp") center/cover no-repeat}
 .proof-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--bg) 0%,rgba(7,9,18,.35) 45%,rgba(7,9,18,.7) 80%,var(--bg) 100%)}
 .proof-inner{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto}
 .proof .lead{margin:0 auto 44px}
@@ -207,7 +207,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
 @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
 .wallet-side{position:relative;padding:30px;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--line)}
 /* the original claw artwork, scaled by height so the whole claw (its middle fifth) sits centred in the panel */
-.wallet-side::before{content:"";position:absolute;inset:0;background:url("assets/zone-proof.png") 50% 58%/auto 68% no-repeat;opacity:.85;filter:saturate(.85);
+.wallet-side::before{content:"";position:absolute;inset:0;background:url("assets/zone-proof.webp") 50% 58%/auto 68% no-repeat;opacity:.85;filter:saturate(.85);
   -webkit-mask-image:linear-gradient(180deg,transparent 21%,#000 38%,#000 66%,transparent 84%);mask-image:linear-gradient(180deg,transparent 21%,#000 38%,#000 66%,transparent 84%)}
 .wallet-side::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,14,27,.92) 0%,rgba(11,14,27,.2) 34%,rgba(11,14,27,.1) 70%,rgba(11,14,27,.85) 100%)}
 .wallet-side>*{position:relative;z-index:1}

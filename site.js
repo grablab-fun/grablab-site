@@ -388,6 +388,15 @@ function loadPrivy(){
   return privy;
 }
 try { if (localStorage.getItem("gl_wallet")) (window.requestIdleCallback || setTimeout)(loadPrivy); } catch (e) {}
+/* speed: fetch the Privy bundle in the background once the page is idle (download only, nothing runs),
+   then start it for real as soon as the pointer or focus heads for a Connect button */
+addEventListener("load", () => setTimeout(() => (window.requestIdleCallback || setTimeout)(() => {
+  if (privy || document.querySelector('link[href$="privy/wallet.js"]')) return;
+  const l = document.createElement("link"); l.rel = "modulepreload"; l.href = "assets/privy/wallet.js"; document.head.appendChild(l);
+}), 2500));
+["pointerover", "focusin", "touchstart"].forEach(ev => document.addEventListener(ev, e => {
+  if (!privy && e.target.closest && e.target.closest("#connectBtn, #connectBtn2, #connectBtnM")) loadPrivy();
+}, { passive:true }));
 const WALLETS = [
   { id:"phantom",  name:"Phantom",  icon:"assets/wallets/phantom.png",  chain:"solana", detect:()=>window.solana?.isPhantom },
   { id:"solflare", name:"Solflare", icon:"assets/wallets/solflare.png", chain:"solana", detect:()=>window.solflare?.isSolflare || window.solflare },
