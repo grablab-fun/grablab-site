@@ -477,7 +477,3 @@ body:not(.menu-open) .mm-links a{transition-delay:0s!important}
 .wallet-overlay.in .wallet-list > :not(.wallet-item){transition-delay:.55s}
 .wallet-side::before{transform:scale(1.12);transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
 .wallet-overlay.in .wallet-side::before{transform:none}
-@media (prefers-reduced-motion:reduce){
-  .wallet-overlay,.wallet-sheet,.wallet-overlay .wallet-item,.wallet-side::before{transition:none!important}
-  .wallet-overlay{clip-path:none}
-}
