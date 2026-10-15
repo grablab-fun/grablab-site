@@ -453,7 +453,7 @@ function openWallet(src){
   if (sheet){
     sheet.style.transform = "none"; const to = sheet.getBoundingClientRect(); sheet.style.transform = "";
     sheet.style.setProperty("--from", r && r.width
-      ? `translate(${cx - (to.left + to.width / 2)}px,${cy - (to.top + to.height / 2)}px) scale(${r.width / to.width},${r.height / to.height})`
+      ? `translate(${cx - (to.left + to.width / 2)}px,${cy - (to.top + to.height / 2)}px) scale(${Math.max(.12, r.width / to.width)})`
       : "scale(.2)");
     sheet.getBoundingClientRect();
   }

@@ -456,9 +456,12 @@ body:not(.menu-open) .mm-links a{transition-delay:0s!important}
 }
 
 /* ---- wallet modal entrance: circle reveal from the button, sheet morphs out of it, rows flip in ---- */
-.wallet-overlay{animation:none;clip-path:circle(0 at var(--ox,50%) var(--oy,50%));transition:clip-path .55s cubic-bezier(.7,0,.3,1)}
-.wallet-overlay.in{clip-path:circle(150% at var(--ox,50%) var(--oy,50%))}
-.wallet-sheet{animation:none;transition:transform .55s cubic-bezier(.7,0,.3,1),opacity .35s ease}
+/* the circle lives on a plain dark layer (no blur under it), so the reveal stays smooth */
+.wallet-overlay{animation:none;background:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.wallet-overlay::before{content:"";position:absolute;inset:0;background:rgba(4,5,12,.86);
+  clip-path:circle(0 at var(--ox,50%) var(--oy,50%));transition:clip-path .55s cubic-bezier(.7,0,.3,1)}
+.wallet-overlay.in::before{clip-path:circle(150% at var(--ox,50%) var(--oy,50%))}
+.wallet-sheet{position:relative;animation:none;will-change:transform,opacity;backface-visibility:hidden;transition:transform .55s cubic-bezier(.7,0,.3,1),opacity .35s ease}
 .wallet-overlay:not(.in) .wallet-sheet{transform:var(--from,scale(.2));opacity:0}
 .wallet-overlay.in .wallet-sheet{transform:none;opacity:1}
 .wallet-list{perspective:900px}
