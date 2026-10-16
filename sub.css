@@ -420,11 +420,11 @@
 .bcatch{border-radius:12px;padding:6px 13px 6px 11px;background:linear-gradient(180deg,rgba(14,16,28,.78),rgba(6,8,16,.68));border-color:rgba(255,255,255,.1)}
 .bcatch .bc-k{color:#c9cfe6}
 
-/* rent hero: physics render of the claw, feathered into the page sky (no hard frame) */
-.sim-scene{position:relative;height:min(84vh,780px);aspect-ratio:1000/1080;max-width:100%}
-.sim-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-  -webkit-mask-image:radial-gradient(ellipse 44% 47% at 54% 44%,#000 55%,rgba(0,0,0,.55) 75%,transparent 100%);
-          mask-image:radial-gradient(ellipse 44% 47% at 54% 44%,#000 55%,rgba(0,0,0,.55) 75%,transparent 100%);
-  filter:saturate(1.08) contrast(1.04);mix-blend-mode:lighten}
+/* rent hero: physics render of the claw with a transparent background; only the cut cabinet top and base fade out */
+.sim-scene{position:relative;height:min(84vh,780px);aspect-ratio:820/886;max-width:100%}
+.sim-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:center/contain no-repeat;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%);
+          mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%);
+  filter:saturate(1.08) contrast(1.04)}
 .sim-scene{isolation:auto}
 @media(max-width:900px){.sim-scene{height:min(56vh,520px);margin:0 auto}}
