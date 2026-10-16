@@ -428,3 +428,9 @@
   filter:saturate(1.08) contrast(1.04)}
 .sim-scene{isolation:auto}
 @media(max-width:900px){.sim-scene{height:min(56vh,520px);margin:0 auto}}
+/* the render's background is not fully clear (a faint floor haze), so fade its left and right edges too: no visible frame */
+.sim-vid{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 16%,#000 88%,transparent 100%);
+  -webkit-mask-composite:source-in;
+          mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 16%,#000 88%,transparent 100%);
+          mask-composite:intersect}
