@@ -103,7 +103,7 @@ window.__sceneP = 0;
   }
   function onScroll(){
     const r = scene.getBoundingClientRect();
-    const p = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)));
+    const p = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight) || 0));  /* NaN when the scene is exactly one viewport tall */
     window.__sceneP = p;
     const pct = document.getElementById("hudPct"), bar = document.getElementById("hudBar");
     if (pct) pct.textContent = String(Math.round(p*100)).padStart(2,"0");
