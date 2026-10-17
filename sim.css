@@ -882,3 +882,10 @@ body.sim-lock{overflow:hidden}
 .swap-link em img{width:16px;height:16px;border-radius:50%;display:block}
 .swap-link.sm{border:0;background:none;box-shadow:none;padding:6px 8px}
 .swap-link.sm em{padding-left:8px}
+
+/* swap window: same film grain as the rest of the site (it opens above the page grain layer) */
+.swp-sheet{position:relative;isolation:isolate}
+.swp-sheet::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;opacity:.14;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.swp{background:rgba(4,5,12,.78) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.14'/%3E%3C/svg%3E")}
+.swp-chain img[src$=".svg"],.swp-tok img[src$=".svg"]{background:none}
