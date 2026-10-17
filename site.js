@@ -83,7 +83,7 @@ function navHTML(){
       ${link("participate.html","nav.participate","participate")}
     </nav>
     <div class="nav-right">
-      <span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /><img src="assets/wallets/metamask.png" alt="" /><img src="assets/wallets/coinbase.svg" alt="" /></span></button></span>
+      <span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /></span></button></span>
       <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false"><span class="bt"><span>Menu</span><span>Close</span></span><svg class="bi" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.33 16V0h1.34v16z"/><path d="M16 8.67H0V7.33h16z"/></svg></button>
     </div>
   </div>
@@ -401,8 +401,6 @@ const WALLETS = [
   { id:"phantom",  name:"Phantom",  icon:"assets/wallets/phantom.png",  chain:"solana", detect:()=>window.solana?.isPhantom },
   { id:"solflare", name:"Solflare", icon:"assets/wallets/solflare.png", chain:"solana", detect:()=>window.solflare?.isSolflare || window.solflare },
   { id:"backpack", name:"Backpack", icon:"assets/wallets/backpack.png", chain:"solana", detect:()=>window.backpack?.isBackpack },
-  { id:"metamask", name:"MetaMask", icon:"assets/wallets/metamask.png", chain:"evm",    detect:()=>window.ethereum?.isMetaMask },
-  { id:"coinbase", name:"Coinbase Wallet", icon:"assets/wallets/coinbase.svg", chain:"evm", detect:()=>window.ethereum?.isCoinbaseWallet },
   { id:"walletconnect", name:"WalletConnect", icon:"assets/wallets/walletconnect.png", chain:"multi", detect:()=>false },
 ];
 const installUrls = { phantom:"https://phantom.com", solflare:"https://solflare.com", backpack:"https://backpack.app", metamask:"https://metamask.io", coinbase:"https://www.coinbase.com/wallet", walletconnect:"https://walletconnect.network" };
@@ -437,7 +435,7 @@ function buildWalletList(){
     mail.classList.remove("bad");
     const p = await loadPrivy(); if (!p) return; closeWallet(); p.email(v);
   });
-  const hint = document.createElement("p"); hint.className = "wallet-mail-k"; hint.innerHTML = "No wallet yet? We create one for you, on Solana and EVM.";
+  const hint = document.createElement("p"); hint.className = "wallet-mail-k"; hint.innerHTML = "No wallet yet? We create one for you, on Solana.";
   walletList.append(or, mail, hint);
 }
 /* open: the backdrop grows as a circle out of the clicked button, the window morphs out of the button,
@@ -474,7 +472,6 @@ async function chooseWallet(w, detected){
   let addr = null;
   try {
     if (w.chain === "solana"){ const prov = w.id==="solflare"?window.solflare:w.id==="backpack"?window.backpack:window.solana; const r = await prov.connect(); addr = (r?.publicKey||prov.publicKey)?.toString(); }
-    else if (w.chain === "evm"){ const a = await window.ethereum.request({ method:"eth_requestAccounts" }); addr = a?.[0]; }
   } catch(e){ return; }
   if (!addr) return; closeWallet(); onConnected(addr);
 }
@@ -552,7 +549,7 @@ function renderResult(addr){
 document.addEventListener("click", e=>{
   if (e.target.id === "checkBtn"){
     const v = (document.getElementById("addrInput")?.value||"").trim(); const box = document.getElementById("checkResult");
-    if (v.length<8){ if (box){ box.hidden=false; box.className="check-result no"; box.innerHTML=`<span class="tier">Invalid address</span><div>Paste a valid Solana or EVM address.</div>`; } return; }
+    if (v.length<8){ if (box){ box.hidden=false; box.className="check-result no"; box.innerHTML=`<span class="tier">Invalid address</span><div>Paste a valid Solana address.</div>`; } return; }
     renderResult(v);
   }
 });

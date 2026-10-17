@@ -3,11 +3,11 @@
 (function(){
   const PROJECTS = [
     { id:"rover",    name:"Rover Labs",  tk:"$ROVR", c:"#13a3b3", logo:"assets/proj3d/rover.webp",    tags:"Delivery robots", gold:2500,  violet:12000, rare:"Rover Genesis pass", left:148, cap:240, price:5, chain:"solana", status:"live" },
-    { id:"kinetic",  name:"Kinetic Arm", tk:"$KNTC", c:"#fd730a", logo:"assets/proj3d/kinetic.webp",  tags:"Industrial arms", gold:1800,  violet:9000,  rare:"Kinetic Founder NFT", left:201, cap:300, price:4, chain:"base", status:"live" },
+    { id:"kinetic",  name:"Kinetic Arm", tk:"$KNTC", c:"#fd730a", logo:"assets/proj3d/kinetic.webp",  tags:"Industrial arms", gold:1800,  violet:9000,  rare:"Kinetic Founder NFT", left:201, cap:300, price:4, chain:"solana", status:"live" },
     { id:"orbit",    name:"Orbit Drone", tk:"$ORBT", c:"#6847fd", logo:"assets/proj3d/orbit.webp",    tags:"Drone mapping",   gold:3000,  violet:15000, rare:"Orbit Pilot badge",   left:57,  cap:180, price:6, chain:"solana", status:"hot" },
-    { id:"lumen",    name:"Lumen Hand",  tk:"$LUMN", c:"#fc5267", logo:"assets/proj3d/lumen.webp",    tags:"Humanoid hands",  gold:1200,  violet:6000,  rare:"Lumen Glove NFT",     left:233, cap:240, price:5, chain:"base", status:"live" },
+    { id:"lumen",    name:"Lumen Hand",  tk:"$LUMN", c:"#fc5267", logo:"assets/proj3d/lumen.webp",    tags:"Humanoid hands",  gold:1200,  violet:6000,  rare:"Lumen Glove NFT",     left:233, cap:240, price:5, chain:"solana", status:"live" },
     { id:"fieldbot", name:"Fieldbot",    tk:"$FLDB", c:"#f7c842", logo:"assets/proj3d/fieldbot.webp", tags:"Agritech DePIN",  gold:5000,  violet:20000, rare:"Fieldbot Seed pass",  left:96,  cap:120, price:3, chain:"solana", status:"new" },
-    { id:"pallet",   name:"Pallet Bots", tk:"$PLT",  c:"#bff339", logo:"assets/proj3d/pallet.webp",   tags:"Warehouse",       gold:4000,  violet:18000, rare:"Pallet Ops NFT",      left:180, cap:200, price:5, chain:"base", status:"live" }
+    { id:"pallet",   name:"Pallet Bots", tk:"$PLT",  c:"#bff339", logo:"assets/proj3d/pallet.webp",   tags:"Warehouse",       gold:4000,  violet:18000, rare:"Pallet Ops NFT",      left:180, cap:200, price:5, chain:"solana", status:"live" }
   ];
   const QICON = {
     x:'<svg viewBox="0 0 24 24"><path d="M3 3l7.5 9.5L3.5 21H6l5.5-6.3L16 21h5l-7.9-10 7-8h-2.5l-5 5.7L8 3z" fill="currentColor" stroke="none"/></svg>',
@@ -27,11 +27,10 @@
     { id:"nimbus", name:"Nimbus Fleet", tk:"$NMBS", c:"#13a3b3", logo:"assets/proj3d/orbit.webp", hue:-75,  tags:"Sky logistics",  day:5,  h:18, cap:180 },
     { id:"seed",   name:"Seed Harvest", tk:"$SEED", c:"#bff339", logo:"assets/proj3d/fieldbot.webp", hue:38, tags:"Agritech",       day:6,  h:21, cap:140 }
   ];
-  const WALLETS = [["Phantom","assets/wallets/phantom.png"],["MetaMask","assets/wallets/metamask.png"],["Coinbase","assets/wallets/coinbase.svg"]];
-  /* plays are paid in USDC on Solana or Base; each project's prizes live on its own chain */
+  const WALLETS = [["Phantom","assets/wallets/phantom.png"],["Solflare","assets/wallets/solflare.png"],["Backpack","assets/wallets/backpack.png"]];
+  /* Grablab is Solana only: plays are paid in USDC on Solana and every prize lands on Solana */
   const CHAINS = {
-    solana: { name:"Solana", fee:"SOL", svg:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#10132a"/><path fill="#14f195" d="M7.6 7h10l-1.7 1.8H5.9z"/><path fill="#5fb8f0" d="M16.3 11.1H6.3L4.6 12.9h10z" transform="translate(1.6 0)"/><path fill="#9945ff" d="M7.6 15.2h10l-1.7 1.8H5.9z"/></svg>' },
-    base: { name:"Base", fee:"ETH", svg:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#0052ff"/><path fill="#fff" d="M11.97 19.2a7.2 7.2 0 1 0-7.16-7.95h9.5v1.5h-9.5a7.2 7.2 0 0 0 7.16 6.45z"/></svg>' }
+    solana: { name:"Solana", fee:"SOL", svg:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#10132a"/><path fill="#14f195" d="M7.6 7h10l-1.7 1.8H5.9z"/><path fill="#5fb8f0" d="M16.3 11.1H6.3L4.6 12.9h10z" transform="translate(1.6 0)"/><path fill="#9945ff" d="M7.6 15.2h10l-1.7 1.8H5.9z"/></svg>' }
   };
   const chainTag = c => `<i class="chn" title="Prizes on ${CHAINS[c].name}">${CHAINS[c].svg}</i>`;
   let payChain = "solana";
@@ -225,7 +224,8 @@
                 <div class="rt"><img class="rt-cap" src="assets/caps/rare.webp" alt="" /><div><small>Rare capsule</small><b id="rmRare"></b></div></div>
               </div>
               <div class="rm-stock"><div class="rs-top"><b id="rmLeftN"></b><small id="rmLeftOf"></small></div><span class="pc-bar"><i id="rmBar"></i></span></div>
-              <button class="rm-buy" id="rmBuy" type="button"><span>Buy a play</span><small id="rmPrice"></small></button>
+              <div class="rm-buyw"><button class="rm-buy" id="rmBuy" type="button"><span>Buy a play</span><small id="rmPrice"></small></button>
+              <button class="swap-link sm" type="button" data-swap><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>Need USDC? <b>Swap</b></span></button></div>
             </div>
           </div>
           <aside class="rm-chat">
@@ -258,8 +258,6 @@
             <div class="row tot"><span>Total</span><b id="payTot"></b></div>
           </div>
           <div class="glass pay-w">
-            <small>Pay on</small>
-            <div class="chs">${Object.keys(CHAINS).map(k => `<button class="ch${k === "solana" ? " on" : ""}" type="button" data-c="${k}">${CHAINS[k].svg}${CHAINS[k].name}</button>`).join("")}</div>
             <small>Pay with</small>
             ${WALLETS.map((w,i) => `<button class="wl${i===0?" on":""}" type="button" data-w="${i}"><img src="${w[1]}" alt="" />${w[0]}<em>${i===0?"Selected":"Detected"}</em></button>`).join("")}
             <button class="btn btn-primary big act" id="payBtn" type="button"></button>
@@ -269,6 +267,7 @@
               <span class="ok-m"><small>Play</small><b id="okNo"></b><small>Tx</small><code id="okTx"></code></span>
             </div>
             <p class="fine">Simulated. Your wallet is never opened.</p>
+            <button class="swap-link" type="button" data-swap><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>Need USDC? <b>Swap SOL to USDC</b></span><em>via Jupiter</em></button>
           </div>
         </div>
       </section>
@@ -1254,6 +1253,40 @@
       el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick");
     });
   }, 2200);
+
+  /* ---------------- swapper : real SOL to USDC swap through Jupiter's official widget, loaded on first use.
+     USDC is locked as the output and the play price is pre-filled; the user signs in their own wallet. ---------------- */
+  const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", SOL_MINT = "So11111111111111111111111111111111111111112";
+  let jupLoad = null;
+  function loadJupiter(){
+    if (!jupLoad) jupLoad = new Promise((res, rej) => {
+      const sc = document.createElement("script"); sc.src = "https://plugin.jup.ag/plugin-v1.js"; sc.async = true;
+      sc.onload = () => res(window.Jupiter); sc.onerror = () => { jupLoad = null; rej(new Error("Jupiter failed to load")); };
+      document.head.appendChild(sc);
+    });
+    return jupLoad;
+  }
+  /* the widget reads initialAmount as SOL in lamports, so convert the play price (USDC) at the live SOL price, plus 2% buffer */
+  async function solFor(usdc){
+    try {
+      const j = await (await fetch(`https://lite-api.jup.ag/price/v3?ids=${SOL_MINT}`)).json();
+      const px = j && j[SOL_MINT] && j[SOL_MINT].usdPrice;
+      return px ? String(Math.ceil(usdc / px * 1.02 * 1e9)) : undefined;
+    } catch (e) { return undefined; }
+  }
+  async function openSwap(amount){
+    try {
+      const [J, lamports] = await Promise.all([loadJupiter(), solFor(amount || 5)]);
+      if (document.getElementById("jupiter-plugin-instance")) { try { J.close(); } catch (e) {} }
+      const formProps = { swapMode: "ExactIn", initialInputMint: SOL_MINT, initialOutputMint: USDC_MINT, fixedMint: USDC_MINT };
+      if (lamports) formProps.initialAmount = lamports;
+      J.init({ displayMode: "modal", formProps, branding: { name: "Grablab", logoUri: location.origin + "/assets/brand/mark-chrome-256.png" } });
+    } catch (e) { alert("The swap could not load. Try again in a moment, or swap on jup.ag."); }
+  }
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-swap]"); if (!b) return;
+    e.preventDefault(); e.stopPropagation(); openSwap(proj && proj.price);
+  });
 
   /* ---------------- entry points ---------------- */
   document.addEventListener("click", e => {

@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Grablab: the claw that can't cheat you</title>
-<meta name="description" content="A real claw machine, played from the browser, where every capsule holds an on-chain prize and every play is proven fair on-chain, on Solana and Base. Rent the claw, load your airdrop, let people grab it live." />
+<meta name="description" content="A real claw machine, played from the browser, where every capsule holds an on-chain prize and every play is proven fair on Solana. Rent the claw, load your airdrop, let people grab it live." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Grablab" />
 <meta property="og:title" content="Grablab: the claw that can't cheat you" />
-<meta property="og:description" content="A real claw machine, played from the browser, where every capsule holds an on-chain prize and every play is proven fair on-chain, on Solana and Base. Rent the claw, load your airdrop, let people grab it live." />
+<meta property="og:description" content="A real claw machine, played from the browser, where every capsule holds an on-chain prize and every play is proven fair on Solana. Rent the claw, load your airdrop, let people grab it live." />
 <meta property="og:url" content="https://grablab.fun/" />
 <meta property="og:image" content="https://grablab.fun/assets/og-share.jpg?v=3" />
 <meta property="og:image:width" content="1200" />
@@ -16,13 +16,13 @@
 <meta property="og:image:alt" content="Grablab, the claw that can't cheat you: a real claw machine played from the browser" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Grablab: the claw that can't cheat you" />
-<meta name="twitter:description" content="A real claw machine, played from the browser, where every capsule holds an on-chain prize and every play is proven fair on-chain, on Solana and Base. Rent the claw, load your airdrop, let people grab it live." />
+<meta name="twitter:description" content="A real claw machine, played from the browser, where every capsule holds an on-chain prize and every play is proven fair on Solana. Rent the claw, load your airdrop, let people grab it live." />
 <meta name="twitter:image" content="https://grablab.fun/assets/og-share.jpg?v=3" />
 <link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
 <link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
 <link rel="stylesheet" href="styles.css?v=20261016p4" />
-<link rel="stylesheet" href="pages.css?v=20261015n4" />
+<link rel="stylesheet" href="pages.css?v=20261017a" />
 </head>
 <body data-page="home">
 <!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
@@ -99,9 +99,7 @@
   </div>
   <div class="inside-grid">
     <div class="inside-video glass reveal">
-      <video id="heroVideo" autoplay muted loop playsinline poster="assets/hero-loop-poster.jpg">
-        <source src="assets/hero-loop.mp4" type="video/mp4" />
-      </video>
+      <video id="heroVideo" class="av" data-webm="assets/inside-explode-alpha.webm?v=2" data-stacked="assets/inside-explode-stacked.mp4?v=2" poster="assets/inside-explode-poster.webp?v=2" autoplay muted loop playsinline preload="auto"></video>
     </div>
     <div class="inside-steps">
       <div class="istep glass glass-hover reveal"><div class="istep-ic"><img src="assets/icons/cabinet.png" alt="" /><span class="in">01</span></div><div><h4>A real claw, not a simulation</h4><p>Driven from your browser.</p></div></div>
@@ -151,9 +149,10 @@
 </section>
 
 <footer id="site-footer"></footer>
-<script src="site.js?v=20261016p4"></script>
+<script src="site.js?v=20261017s1"></script>
 <script src="consent.js?v=3"></script>
 <script src="alpha-video.js?v=1"></script>
+<script src="alpha-any.js?v=2"></script>
 <script src="app.js?v=20261016a"></script>
 </body>
 </html>

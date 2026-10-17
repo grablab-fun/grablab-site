@@ -181,7 +181,7 @@ body.page-in main,body.page-in .hero{opacity:1;transform:none}
 .inside-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(24px,4vw,56px);align-items:start}
 .inside-video{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/5;position:sticky;top:100px;
   box-shadow:0 40px 110px rgba(0,0,0,.6),0 0 70px rgba(154,123,255,.12),inset 0 1px 0 rgba(255,255,255,.14)}
-.inside-video video{width:100%;height:100%;object-fit:cover;display:block}
+.inside-video video,.inside-video .av-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
 .inside-video::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 60% at 50% 40%,transparent,rgba(7,9,18,.35))}
 .inside-steps{display:flex;flex-direction:column;gap:14px}
 .istep{display:grid;grid-template-columns:54px 1fr;gap:18px;align-items:start;padding:22px 24px}
@@ -532,7 +532,7 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 /* inside: video frame and steps column share the exact same height (aligned edges) */
 .inside-grid{align-items:stretch}
 .inside-video{position:relative;top:auto;aspect-ratio:auto;height:100%}
-.inside-video video{height:100%}
+.inside-video video,.inside-video .av-cv{height:100%}
 .inside-steps{justify-content:space-between}
 @media(max-width:900px){.inside-video{aspect-ratio:4/5;height:auto}}
 

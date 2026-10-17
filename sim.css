@@ -821,3 +821,16 @@ body.sim-lock{overflow:hidden}
   .pc.feat .pc-t b{font-size:clamp(26px,2.8vw,38px)}
   .pc.feat .pc-prize strong{font-size:22px}
 }
+
+/* swapper links (Jupiter) */
+.swap-link{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:4px;padding:11px 14px;border-radius:14px;
+  font-family:var(--font);font-size:13px;color:var(--ink-2);border:1px dashed rgba(180,186,255,.25);background:rgba(5,9,24,.3);transition:border-color .2s,color .2s,background .2s}
+.swap-link:hover{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.04)}
+.swap-link b{color:var(--ink);font-weight:700}
+.swap-link em{font-style:normal;font-size:11px;color:var(--ink-3);margin-left:2px}
+.swap-link svg{width:16px;height:16px;flex:none;fill:none;stroke:#9cc0ff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.rm-buyw{display:flex;flex-direction:column;align-items:stretch;gap:2px;margin:10px 12px}
+.rm-buyw .rm-buy{margin:0}
+.swap-link.sm{padding:6px 10px;font-size:12px;border:0;background:none;margin:0}
+/* Jupiter's modal sits above the simulator overlay */
+#jupiter-plugin-instance{position:relative;z-index:100000}
