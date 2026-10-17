@@ -491,7 +491,6 @@ body:not(.menu-open) .mm-links a{transition-delay:0s!important}
   .callout{max-width:calc(var(--maxw) * 1.15)}
   /* viewport units inside a zoomed block get zoomed too: divide them back */
   .problem-row{grid-template-columns:1fr calc(min(40vw,72vh) / var(--bigz))!important}
-  .problem-row .catch-stack{left:50%!important}
   .section:not(.inside-show){max-width:calc(var(--maxw) * var(--bigz))}
   /* hero art on subpages: lift the px caps so the visual keeps pace with the bigger copy */
   .ph{grid-template-columns:minmax(0,1fr) minmax(0,min(46vw,1300px))!important}

@@ -158,12 +158,12 @@ window.__sceneP = 0;
     const a = cap.animate([{ transform:"translate(0,0) rotate(0deg)" },
       { transform:`translate(${ex-sx}px,${ey-sy}px) rotate(${(Math.random()>.5?1:-1)*220}deg)` }],
       { duration:dur, easing:"cubic-bezier(.35,0,.85,.45)", fill:"forwards" });
-    a.onfinish = () => { cap.style.opacity = "0"; a.cancel(); land(slot, lx, ly); };
+    a.onfinish = () => { cap.style.opacity = "0"; a.cancel(); land(slot, fx, fy); };
   }
-  function land(slot, x, y){
+  function land(slot, fx, fy){   /* fractions of the tray, so page zoom on big screens never shifts the landing */
     const prev = bowl.querySelector(`.mini-cap[data-slot="${slot}"]`); if (prev) prev.remove();
     const m = document.createElement("span"); m.className = "mini-cap" + (cap.dataset.v ? " v" : ""); m.dataset.slot = slot;
-    m.style.left = (x / bowl.clientWidth * 100) + "%"; m.style.top = (y / bowl.clientHeight * 100) + "%"; m.style.setProperty("--cs", (CS*100) + "%");
+    m.style.left = (fx * 100) + "%"; m.style.top = (fy * 100) + "%"; m.style.setProperty("--cs", (CS*100) + "%");
     bowl.appendChild(m);
     count++;
     const c = document.getElementById("vCount"); if (c) c.textContent = count;
@@ -198,8 +198,9 @@ window.__sceneP = 0;
     if (innerWidth <= 900){ stack.style.left = ""; return; }
     stack.style.left = "0px";
     const f = frame.getBoundingClientRect(), c = col.getBoundingClientRect();
-    const want = f.left + f.width * 0.52 - c.left, half = stack.offsetWidth / 2, maxC = innerWidth - 24 - half - c.left;
-    stack.style.left = Math.min(want, maxC) + "px";
+    const z = col.offsetWidth ? c.width / col.offsetWidth : 1;   /* big screens zoom this block: convert screen px back to its CSS px */
+    const want = f.left + f.width * 0.52 - c.left, half = stack.offsetWidth * z / 2, maxC = innerWidth - 24 - half - c.left;
+    stack.style.left = Math.min(want, maxC) / z + "px";
   }
   addEventListener("resize", place); addEventListener("load", place); place();
 })();
