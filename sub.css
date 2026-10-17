@@ -420,17 +420,9 @@
 .bcatch{border-radius:12px;padding:6px 13px 6px 11px;background:linear-gradient(180deg,rgba(14,16,28,.78),rgba(6,8,16,.68));border-color:rgba(255,255,255,.1)}
 .bcatch .bc-k{color:#c9cfe6}
 
-/* rent hero: physics render of the claw with a transparent background; only the cut cabinet top and base fade out */
+/* rent hero: Rev B machine render with a transparent background, shown whole */
 .sim-scene{position:relative;height:min(72vh,640px);aspect-ratio:1400/1080;max-width:100%}
 .sim-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:center/contain no-repeat;
-  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%);
-          mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%);
-  filter:saturate(1.08) contrast(1.04)}
+  filter:saturate(1.06) contrast(1.03)}
 .sim-scene{isolation:auto}
 @media(max-width:900px){.sim-scene{height:auto;width:100%;margin:0 auto}}
-/* the render's background is not fully clear (a faint floor haze), so fade its left and right edges too: no visible frame */
-.sim-vid{
-  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 16%,#000 88%,transparent 100%);
-  -webkit-mask-composite:source-in;
-          mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 16%,#000 88%,transparent 100%);
-          mask-composite:intersect}
