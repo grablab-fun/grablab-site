@@ -834,3 +834,51 @@ body.sim-lock{overflow:hidden}
 .swap-link.sm{padding:6px 10px;font-size:12px;border:0;background:none;margin:0}
 /* Jupiter's modal sits above the simulator overlay */
 #jupiter-plugin-instance{position:relative;z-index:100000}
+/* Jupiter swap widget themed to the site: navy panels, periwinkle primary, gold warnings (RGB triplets, Jupiter's format) */
+:root{
+  --jupiter-plugin-primary:190, 198, 255;
+  --jupiter-plugin-background:9, 12, 26;
+  --jupiter-plugin-primaryText:243, 244, 251;
+  --jupiter-plugin-warning:255, 178, 74;
+  --jupiter-plugin-interactive:30, 38, 72;
+  --jupiter-plugin-module:17, 23, 48;
+}
+
+/* ============ swap picker : chain first, then coin ============ */
+.swp{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(4,5,12,.78);animation:fade .2s}
+.swp[hidden]{display:none}
+.swp-sheet{width:100%;max-width:480px;max-height:calc(100vh - 40px);overflow:auto;border-radius:24px;background:#0b0e1b;border:1px solid rgba(180,186,255,.18);box-shadow:0 50px 140px rgba(0,0,0,.75);animation:pop .3s cubic-bezier(.3,1.2,.5,1)}
+.swp-h{display:flex;align-items:flex-start;gap:12px;padding:20px 20px 14px;border-bottom:1px solid rgba(180,186,255,.1)}
+.swp-h > div{flex:1;min-width:0}
+.swp-t{display:block;font-family:var(--display);font-weight:600;font-size:22px;text-transform:uppercase;letter-spacing:.01em;line-height:1.1}
+.swp-s{display:block;margin-top:5px;font-size:13px;color:var(--ink-2)}
+.swp-back,.swp-x{all:unset;cursor:pointer;flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2);border:1px solid rgba(180,186,255,.18);font-size:18px;line-height:1}
+.swp-back:hover,.swp-x:hover{color:var(--ink);border-color:rgba(255,255,255,.35)}
+.swp-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.swp-body{padding:16px 20px 20px}
+.swp-chains{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.swp-chain,.swp-tok{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));border:1px solid rgba(180,186,255,.14);transition:border-color .2s,background .2s,transform .2s}
+.swp-chain:hover,.swp-tok:hover{border-color:rgba(255,255,255,.32);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03));transform:translateY(-1px)}
+.swp-chain img,.swp-tok img{width:34px;height:34px;border-radius:50%;flex:none;object-fit:cover;background:#fff}
+.swp-chain span,.swp-tok span{display:flex;flex-direction:column;min-width:0}
+.swp-chain b,.swp-tok b{font-family:var(--font);font-weight:700;font-size:15px;color:var(--ink)}
+.swp-chain small,.swp-tok small{font-size:12px;color:var(--ink-3)}
+.swp-chain.top{grid-column:1/-1;padding:16px;border-color:rgba(180,186,255,.32);background:linear-gradient(120deg,rgba(125,132,255,.16),rgba(255,255,255,.02))}
+.swp-chain.top img{width:42px;height:42px}
+.swp-chain em{margin-left:auto;font-style:normal;font-size:11.5px;font-weight:700;color:#0a0c16;background:var(--ink);padding:5px 10px;border-radius:999px}
+.swp-tokens{display:flex;flex-direction:column;gap:8px}
+.swp-tok svg{margin-left:auto;width:16px;height:16px;fill:none;stroke:var(--ink-3);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.swp-any{width:34px;height:34px;border-radius:50%;flex:none;display:grid!important;place-items:center;font-size:20px;color:var(--ink-2);border:1px dashed rgba(180,186,255,.35)}
+.swp-db{min-height:560px;display:grid;place-items:center;border-radius:16px;overflow:hidden}
+.swp-db iframe{width:100%!important;border:0}
+.swp-load,.swp-err{font-size:13px;color:var(--ink-2)}
+@media(max-width:480px){.swp{padding:10px}.swp-chains{grid-template-columns:1fr}}
+/* swap link: glass pill like the site's secondary buttons, "via Jupiter" with its mark */
+.swap-link{border:1px solid rgba(255,255,255,.12);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);padding:11px 18px;margin-top:8px}
+.swap-link:hover{border-color:rgba(255,255,255,.28);background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.04))}
+.swap-link em{display:inline-flex;align-items:center;gap:6px;margin-left:6px;padding-left:10px;border-left:1px solid rgba(255,255,255,.12);font-size:11.5px;color:var(--ink-3)}
+.swap-link em img{width:16px;height:16px;border-radius:50%;display:block}
+.swap-link.sm{border:0;background:none;box-shadow:none;padding:6px 8px}
+.swap-link.sm em{padding-left:8px}

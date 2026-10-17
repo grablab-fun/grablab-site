@@ -225,7 +225,7 @@
               </div>
               <div class="rm-stock"><div class="rs-top"><b id="rmLeftN"></b><small id="rmLeftOf"></small></div><span class="pc-bar"><i id="rmBar"></i></span></div>
               <div class="rm-buyw"><button class="rm-buy" id="rmBuy" type="button"><span>Buy a play</span><small id="rmPrice"></small></button>
-              <button class="swap-link sm" type="button" data-swap><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>Need USDC? <b>Swap</b></span></button></div>
+              <button class="swap-link sm" type="button" data-swap><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>Need USDC? <b>Swap</b></span><em>via <img src="assets/chains/jup.png" alt="" />Jupiter</em></button></div>
             </div>
           </div>
           <aside class="rm-chat">
@@ -267,7 +267,7 @@
               <span class="ok-m"><small>Play</small><b id="okNo"></b><small>Tx</small><code id="okTx"></code></span>
             </div>
             <p class="fine">Simulated. Your wallet is never opened.</p>
-            <button class="swap-link" type="button" data-swap><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>Need USDC? <b>Swap SOL to USDC</b></span><em>via Jupiter</em></button>
+            <button class="swap-link" type="button" data-swap><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>Need USDC? <b>Swap to USDC</b></span><em>via <img src="assets/chains/jup.png" alt="" />Jupiter</em></button>
           </div>
         </div>
       </section>
@@ -1274,18 +1274,126 @@
       return px ? String(Math.ceil(usdc / px * 1.02 * 1e9)) : undefined;
     } catch (e) { return undefined; }
   }
-  async function openSwap(amount){
+  /* Jupiter (Solana): the widget reads initialAmount in the input token's smallest unit */
+  async function openJupiter(inputMint, amountRaw){
     try {
-      const [J, lamports] = await Promise.all([loadJupiter(), solFor(amount || 5)]);
+      const J = await loadJupiter();
       if (document.getElementById("jupiter-plugin-instance")) { try { J.close(); } catch (e) {} }
-      const formProps = { swapMode: "ExactIn", initialInputMint: SOL_MINT, initialOutputMint: USDC_MINT, fixedMint: USDC_MINT };
-      if (lamports) formProps.initialAmount = lamports;
+      const formProps = { swapMode: "ExactIn", initialInputMint: inputMint, initialOutputMint: USDC_MINT, fixedMint: USDC_MINT };
+      if (amountRaw) formProps.initialAmount = amountRaw;
       J.init({ displayMode: "modal", formProps, branding: { name: "Grablab", logoUri: location.origin + "/assets/brand/mark-chrome-256.png" } });
     } catch (e) { alert("The swap could not load. Try again in a moment, or swap on jup.ag."); }
   }
+
+  /* ---------------- swap picker : chain first, then coin, biggest first; everything arrives as USDC on Solana ---------------- */
+  const NATIVE = "0x0000000000000000000000000000000000000000", DB_SOLANA = 7565164;
+  const LG = n => `assets/chains/${n}`;
+  const SW_CHAINS = [
+    { id:"solana", name:"Solana", logo:LG("solana.jpg"), note:"Fastest, lowest fees", tokens:[
+      { sym:"SOL", name:"Solana", logo:LG("solana.jpg"), mint:SOL_MINT, dec:9, px:true },
+      { sym:"USDT", name:"Tether", logo:LG("usdt.svg"), mint:"Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", dec:6, usd:true },
+      { sym:"JUP", name:"Jupiter", logo:LG("jup.png"), mint:"JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN" },
+      { sym:"BONK", name:"Bonk", logo:LG("bonk.png"), mint:"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263" } ] },
+    { id:1, name:"Ethereum", logo:LG("ethereum.jpg"), tokens:[
+      { sym:"ETH", name:"Ether", logo:LG("ethereum.jpg"), addr:NATIVE },
+      { sym:"USDC", name:"USD Coin", logo:LG("usdc.png"), addr:"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48" },
+      { sym:"USDT", name:"Tether", logo:LG("usdt.svg"), addr:"0xdAC17F958D2ee523a2206206994597C13D831ec7" } ] },
+    { id:8453, name:"Base", logo:LG("base.jpg"), tokens:[
+      { sym:"ETH", name:"Ether", logo:LG("ethereum.jpg"), addr:NATIVE },
+      { sym:"USDC", name:"USD Coin", logo:LG("usdc.png"), addr:"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913" } ] },
+    { id:56, name:"BNB Chain", logo:LG("binance.jpg"), tokens:[
+      { sym:"BNB", name:"BNB", logo:LG("binance.jpg"), addr:NATIVE },
+      { sym:"USDT", name:"Tether", logo:LG("usdt.svg"), addr:"0x55d398326f99059fF775485246999027B3197955" },
+      { sym:"USDC", name:"USD Coin", logo:LG("usdc.png"), addr:"0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d" } ] },
+    { id:42161, name:"Arbitrum", logo:LG("arbitrum.jpg"), tokens:[
+      { sym:"ETH", name:"Ether", logo:LG("ethereum.jpg"), addr:NATIVE },
+      { sym:"USDC", name:"USD Coin", logo:LG("usdc.png"), addr:"0xaf88d065e77c8cC2239327C5EDb3A432268e5831" },
+      { sym:"USDT", name:"Tether", logo:LG("usdt.svg"), addr:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9" } ] },
+    { id:137, name:"Polygon", logo:LG("polygon.jpg"), tokens:[
+      { sym:"POL", name:"Polygon", logo:LG("polygon.jpg"), addr:NATIVE },
+      { sym:"USDC", name:"USD Coin", logo:LG("usdc.png"), addr:"0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359" },
+      { sym:"USDT", name:"Tether", logo:LG("usdt.svg"), addr:"0xc2132D05D31c914a87C6611C10748AEb04B58e8F" } ] },
+    { id:10, name:"Optimism", logo:LG("optimism.jpg"), tokens:[
+      { sym:"ETH", name:"Ether", logo:LG("ethereum.jpg"), addr:NATIVE },
+      { sym:"USDC", name:"USD Coin", logo:LG("usdc.png"), addr:"0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85" } ] },
+    { id:43114, name:"Avalanche", logo:LG("avalanche.jpg"), tokens:[
+      { sym:"AVAX", name:"Avalanche", logo:LG("avalanche.jpg"), addr:NATIVE },
+      { sym:"USDC", name:"USD Coin", logo:LG("usdc.png"), addr:"0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E" } ] }
+  ];
+  /* deBridge widget colours, matched to the site */
+  const DB_STYLES = btoa(JSON.stringify({ appBackground:"#0b0e1b", appAccentBg:"#121a36", chartBg:"#0b0e1b", primary:"#b4baff", secondary:"#1e2648",
+    badge:"#7d84ff", borderColor:"#262e55", borderRadius:16, fontColor:"#f3f4fb", fontColorAccent:"#9cc0ff", fontFamily:"Inter" }));
+  let swEl = null, dbLoad = null;
+  function loadDeBridge(){
+    if (!dbLoad) dbLoad = new Promise((res, rej) => {
+      const sc = document.createElement("script"); sc.src = "https://app.debridge.com/assets/scripts/widget.js"; sc.async = true;
+      sc.onload = () => res(window.deBridge); sc.onerror = () => { dbLoad = null; rej(new Error("deBridge failed to load")); };
+      document.head.appendChild(sc);
+    });
+    return dbLoad;
+  }
+  function swapUI(){
+    if (swEl) return swEl;
+    swEl = document.createElement("div");
+    swEl.className = "swp"; swEl.hidden = true;
+    swEl.innerHTML = `<div class="swp-sheet" role="dialog" aria-modal="true" aria-label="Get USDC to play">
+      <div class="swp-h"><button class="swp-back" type="button" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div><b class="swp-t">Get USDC to play</b><span class="swp-s">Pick where your money is. It arrives as USDC on Solana.</span></div>
+        <button class="swp-x" type="button" aria-label="Close">×</button></div>
+      <div class="swp-body"></div></div>`;
+    document.body.appendChild(swEl);
+    swEl.addEventListener("click", e => { if (e.target === swEl || e.target.closest(".swp-x")) closeSwapUI(); });
+    swEl.querySelector(".swp-back").addEventListener("click", () => chainStep());
+    addEventListener("keydown", e => { if (e.key === "Escape" && swEl && !swEl.hidden) closeSwapUI(); });
+    return swEl;
+  }
+  function closeSwapUI(){ if (swEl){ swEl.hidden = true; swEl.querySelector(".swp-body").innerHTML = ""; } }
+  function setHead(title, sub, back){
+    swEl.querySelector(".swp-t").textContent = title; swEl.querySelector(".swp-s").textContent = sub;
+    swEl.querySelector(".swp-back").style.display = back ? "" : "none";
+  }
+  function chainStep(){
+    setHead("Get USDC to play", "Pick where your money is. It arrives as USDC on Solana.", false);
+    swEl.querySelector(".swp-body").innerHTML = `<div class="swp-chains">${SW_CHAINS.map((c, i) => `
+      <button class="swp-chain${c.note ? " top" : ""}" type="button" data-c="${i}"><img src="${c.logo}" alt="" /><span><b>${c.name}</b>${c.note ? `<small>${c.note}</small>` : ""}</span>${c.note ? `<em>Recommended</em>` : ""}</button>`).join("")}</div>`;
+    swEl.querySelectorAll(".swp-chain").forEach(b => b.addEventListener("click", () => tokenStep(SW_CHAINS[+b.dataset.c])));
+  }
+  function tokenStep(c){
+    setHead(`Pay from ${c.name}`, "Pick the coin you hold.", true);
+    swEl.querySelector(".swp-body").innerHTML = `<div class="swp-tokens">${c.tokens.map((t, i) => `
+      <button class="swp-tok" type="button" data-t="${i}"><img src="${t.logo}" alt="" /><span><b>${t.sym}</b><small>${t.name}</small></span><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>`).join("")}
+      <button class="swp-tok other" type="button" data-t="-1"><span class="swp-any">+</span><span><b>Another coin</b><small>Search any token on ${c.name}</small></span><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>`;
+    swEl.querySelectorAll(".swp-tok").forEach(b => b.addEventListener("click", () => pickToken(c, +b.dataset.t < 0 ? null : c.tokens[+b.dataset.t])));
+  }
+  async function pickToken(c, t){
+    const usdc = (proj && proj.price) || 5;
+    if (c.id === "solana"){
+      let raw;
+      if (t && t.px) raw = await solFor(usdc);
+      else if (t && t.usd) raw = String(Math.ceil(usdc * 1.02 * 10 ** t.dec));
+      closeSwapUI(); openJupiter(t ? t.mint : SOL_MINT, raw); return;
+    }
+    setHead(`${t ? t.sym : "Any coin"} on ${c.name} to USDC on Solana`, "Bridged and swapped by deBridge. You sign in your own wallet.", true);
+    const body = swEl.querySelector(".swp-body");
+    body.innerHTML = `<div class="swp-db" id="glDebridge"><span class="swp-load">Loading the bridge…</span></div>`;
+    try {
+      const DB = await loadDeBridge();
+      const box = body.querySelector("#glDebridge");
+      box.innerHTML = "";
+      const cfg = { v:"1", element:"glDebridge", mode:"deswap", title:"Grablab", theme:"dark", styles:DB_STYLES, lang:"en",
+        width: Math.round(box.clientWidth) || 420, height: 560,
+        inputChain: c.id, outputChain: DB_SOLANA, outputCurrency: USDC_MINT };
+      if (t) cfg.inputCurrency = t.addr;
+      if (t && /^USD/.test(t.sym)) cfg.amount = (usdc * 1.02).toFixed(2);   /* stablecoins: roughly 1:1, plus 2% for fees */
+      await DB.widget(cfg);
+    } catch (e) {
+      body.innerHTML = `<p class="swp-err">The bridge could not load. Try again in a moment, or use app.debridge.com.</p>`;
+    }
+  }
+  function openSwapUI(){ swapUI(); chainStep(); swEl.hidden = false; }
   document.addEventListener("click", e => {
     const b = e.target.closest("[data-swap]"); if (!b) return;
-    e.preventDefault(); e.stopPropagation(); openSwap(proj && proj.price);
+    e.preventDefault(); e.stopPropagation(); openSwapUI();
   });
 
   /* ---------------- entry points ---------------- */
