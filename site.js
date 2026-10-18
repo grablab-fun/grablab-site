@@ -83,7 +83,7 @@ function navHTML(){
       ${link("participate.html","nav.participate","participate")}
     </nav>
     <div class="nav-right">
-      <span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /></span></button></span>
+      <span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /><img src="assets/wallets/metamask.png" alt="" /><img src="assets/wallets/okx.png" alt="" /></span></button></span>
       <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false"><span class="bt"><span>Menu</span><span>Close</span></span><svg class="bi" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.33 16V0h1.34v16z"/><path d="M16 8.67H0V7.33h16z"/></svg></button>
     </div>
   </div>
@@ -401,9 +401,14 @@ const WALLETS = [
   { id:"phantom",  name:"Phantom",  icon:"assets/wallets/phantom.png",  chain:"solana", detect:()=>window.solana?.isPhantom },
   { id:"solflare", name:"Solflare", icon:"assets/wallets/solflare.png", chain:"solana", detect:()=>window.solflare?.isSolflare || window.solflare },
   { id:"backpack", name:"Backpack", icon:"assets/wallets/backpack.png", chain:"solana", detect:()=>window.backpack?.isBackpack },
+  /* multi-chain wallets, connected on their Solana account only */
+  { id:"metamask", name:"MetaMask", icon:"assets/wallets/metamask.png", chain:"solana", detect:()=>window.ethereum?.isMetaMask },
+  { id:"coinbase", name:"Coinbase Wallet", icon:"assets/wallets/coinbase.svg", chain:"solana", detect:()=>window.coinbaseSolana || window.ethereum?.isCoinbaseWallet },
+  { id:"okx", name:"OKX Wallet", icon:"assets/wallets/okx.png", chain:"solana", detect:()=>window.okxwallet?.solana || window.okxwallet },
+  { id:"trust", name:"Trust Wallet", icon:"assets/wallets/trust.png", chain:"solana", detect:()=>window.trustwallet?.solana || window.trustWallet || window.ethereum?.isTrust },
   { id:"walletconnect", name:"WalletConnect", icon:"assets/wallets/walletconnect.png", chain:"multi", detect:()=>false },
 ];
-const installUrls = { phantom:"https://phantom.com", solflare:"https://solflare.com", backpack:"https://backpack.app", metamask:"https://metamask.io", coinbase:"https://www.coinbase.com/wallet", walletconnect:"https://walletconnect.network" };
+const installUrls = { phantom:"https://phantom.com", solflare:"https://solflare.com", backpack:"https://backpack.app", metamask:"https://metamask.io", coinbase:"https://www.coinbase.com/wallet", okx:"https://www.okx.com/web3", trust:"https://trustwallet.com", walletconnect:"https://walletconnect.network" };
 const overlay = document.getElementById("walletOverlay");
 const walletList = document.getElementById("walletList");
 function buildWalletList(){

@@ -487,7 +487,8 @@ body:not(.menu-open) .mm-links a{transition-delay:0s!important}
   :root{--bigz:1.3}
   .nav,.foot-grid,.foot-bottom,
   .problem-row,.section:not(.inside-show) > *,.inside-show .section-head,.inside-steps,.callout,
-  .ph-copy,.blk-in,.stage .copy{zoom:var(--bigz)}
+  .ph-copy,.blk-in{zoom:var(--bigz)}
+  /* home hero copy already scales with the screen (vw/vh), so it stays out of the zoom */
   .callout{max-width:calc(var(--maxw) * 1.15)}
   /* viewport units inside a zoomed block get zoomed too: divide them back */
   .problem-row{grid-template-columns:1fr calc(min(40vw,72vh) / var(--bigz))!important}
