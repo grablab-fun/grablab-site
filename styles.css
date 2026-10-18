@@ -480,24 +480,3 @@ body:not(.menu-open) .mm-links a{transition-delay:0s!important}
 .wallet-overlay.in .wallet-list > :not(.wallet-item){transition-delay:.55s}
 .wallet-side::before{transform:scale(1.12);transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
 .wallet-overlay.in .wallet-side::before{transform:none}
-
-/* ============ big screens (2K / 4K): scale the content blocks up so the page doesn't look tiny and empty.
-   Only blocks sized in px get zoomed; full-height scenes (vh based) keep their own sizing. ============ */
-@media(min-width:2000px){
-  :root{--bigz:1.3}
-  .nav,.foot-grid,.foot-bottom,
-  .problem-row,.section:not(.inside-show) > *,.inside-show .section-head,.inside-steps,.callout,
-  .ph-copy,.blk-in{zoom:var(--bigz)}
-  /* home hero copy already scales with the screen (vw/vh), so it stays out of the zoom */
-  .callout{max-width:calc(var(--maxw) * 1.15)}
-  /* viewport units inside a zoomed block get zoomed too: divide them back */
-  .problem-row{grid-template-columns:1fr calc(min(40vw,72vh) / var(--bigz))!important}
-  .section:not(.inside-show){max-width:calc(var(--maxw) * var(--bigz))}
-  /* hero art on subpages: lift the px caps so the visual keeps pace with the bigger copy */
-  .ph{grid-template-columns:minmax(0,1fr) minmax(0,min(46vw,1300px))!important}
-  .sim-scene{height:min(80vh,1150px)!important}
-  .bwin{width:min(100%,1150px)!important}
-  .lab-machine.studio{height:min(84vh,1250px)!important}
-}
-@media(min-width:2400px){:root{--bigz:1.5}}
-@media(min-width:3200px){:root{--bigz:1.9}}
