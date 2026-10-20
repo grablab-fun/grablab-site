@@ -988,3 +988,9 @@ body.is-loading{overflow:hidden}
   .chap-bar .seg i{display:block;height:100%;background:var(--ink);transform-origin:left;transform:scaleX(clamp(0,calc(var(--p,0) * 4 - var(--i)),1))}
   .chap-bar em{font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:rgba(243,244,251,.6);margin-left:6px;white-space:nowrap}
 }
+/* hero eyebrow : partners (machine.fun, peaq, CodecFlow), thin separators instead of dots */
+.stage .copy .eyebrow{display:flex;flex-wrap:wrap;align-items:center;row-gap:8px}
+.stage .copy .eyebrow .eb-sep{display:inline-block;width:1px;height:12px;margin:0 14px;background:currentColor;opacity:.35}
+.stage .copy .eyebrow .eb-mf{margin-left:.5em}
+.stage .copy .eyebrow .eb-mf img.eb-wm{width:auto;height:1.15em;margin:0}
+.stage .copy .eyebrow .eb-mf img.eb-cf{width:1.3em;height:1.3em;margin:0}

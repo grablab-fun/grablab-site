@@ -1232,12 +1232,12 @@
   (function(){
     const v = document.getElementById("phVid"); if (!v) return;
     const tm = document.getElementById("phTimer"), gb = document.querySelector(".bwin .ph-grab"), knob = document.querySelector(".bwin .stick i");
-    /* clip beats (s): steering 0 to 4.4, grab pressed ~4.6, claw down and back up empty to the end */
+    /* clip beats (s): steering 0 to 2.4, grab pressed ~2.6, claw grabs a capsule and drops it in the chute */
     v.addEventListener("timeupdate", () => {
       const t = v.currentTime;
       if (tm) tm.textContent = "0:" + String(Math.max(0, 30 - Math.floor(t * 1.5))).padStart(2, "0");
-      if (gb) gb.classList.toggle("press", t > 4.45 && t < 4.85);
-      if (knob) knob.classList.toggle("steer", t < 4.4);
+      if (gb) gb.classList.toggle("press", t > 2.45 && t < 2.85);
+      if (knob) knob.classList.toggle("steer", t < 2.4);
     });
   })();
 
