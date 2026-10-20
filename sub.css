@@ -426,3 +426,13 @@
   filter:saturate(1.06) contrast(1.03)}
 .sim-scene{isolation:auto}
 @media(max-width:900px){.sim-scene{height:auto;width:100%;margin:0 auto}}
+
+/* participate hero : Powered by CodecFlow x SimArena */
+.lab-pwr{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:22px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.lab-pwr a{display:inline-flex;align-items:center;gap:8px;color:var(--ink);font-family:var(--font);font-size:17px;font-weight:600;letter-spacing:0;text-transform:none;transition:opacity .2s}
+.lab-pwr a:hover{opacity:.75}
+.lab-pwr a em{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400}
+.lab-pwr .cf-ic{width:24px;height:24px;border-radius:5px;background:#fff;display:grid;place-items:center;flex:none}
+.lab-pwr .cf-ic img{width:16px;height:16px;display:block}
+.lab-pwr .sa-ic{width:20px;height:20px;display:block}
+.lab-pwr i{font-style:normal;color:var(--ink-3);font-size:12px}
