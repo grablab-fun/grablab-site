@@ -1009,3 +1009,21 @@ body.is-loading{overflow:hidden}
   .bk-chip b{white-space:nowrap}
   .bk-chips-s .bk-chip{padding:10px 8px}
 }
+/* booking on phones: the whole form fits one screen, no scrolling inside the sheet */
+@media(max-width:560px){
+  .booking-overlay{padding:10px}
+  .booking-sheet{max-height:calc(100dvh - 20px);padding:20px 18px 18px;border-radius:20px}
+  .booking-close{top:12px;right:12px;width:30px;height:30px;font-size:18px}
+  .booking-logo{font-size:17px}
+  .booking-logo img{width:22px;height:22px}
+  .booking-head p{font-size:12.5px;line-height:1.45;margin:8px 0 14px}
+  .bk-grid{grid-template-columns:1fr 1fr;gap:10px 8px;margin-bottom:12px}
+  .bk-field{gap:5px}
+  .bk-field>span,.bk-lbl{font-size:9.5px;letter-spacing:.12em}
+  .bk-lbl{margin-bottom:6px}
+  .bk-field input,.bk-field textarea{padding:10px 12px;font-size:16px;border-radius:10px}
+  .bk-field textarea{height:80px;resize:none;line-height:1.4}
+  .bk-choice{margin-bottom:12px}
+  .bk-chip{padding:8px 10px}
+  .bk-submit{margin-top:14px}
+}

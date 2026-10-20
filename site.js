@@ -320,14 +320,17 @@ applyI18n();
    Opening an overlay (menu, wallet, booking, simulator) adds one history entry; the browser / phone Back
    gesture then closes it (or steps back inside it). Closing it with its own button removes that entry. */
 window.glBack = (function(){
-  const stack = []; let skip = 0;
+  const stack = []; let skip = 0, held = [];
   addEventListener("popstate", () => {
-    if (skip){ skip--; return; }
+    if (skip){ skip--; if (!skip){ held.forEach(id => history.pushState({ glo:id }, "")); held = []; } return; }
     const top = stack.pop(); if (top) top.fn();
   });
   return {
-    push(id, fn){ history.pushState({ glo:id }, ""); stack.push({ id, fn }); },
-    drop(id){ const i = stack.map(x => x.id).lastIndexOf(id); if (i < 0) return; stack.splice(i, 1); skip++; history.back(); },
+    /* a back() from drop() is async: pushing before it lands lets it eat the new entry, so hold the push until it does */
+    push(id, fn){ stack.push({ id, fn }); if (skip) held.push(id); else history.pushState({ glo:id }, ""); },
+    drop(id){ const i = stack.map(x => x.id).lastIndexOf(id); if (i < 0) return; stack.splice(i, 1);
+      const h = held.lastIndexOf(id); if (h >= 0){ held.splice(h, 1); return; }   /* its entry was never pushed */
+      skip++; history.back(); },
     has(id){ return stack.some(x => x.id === id); }
   };
 })();
@@ -500,8 +503,8 @@ document.addEventListener("keydown", e=>{ if (e.key==="Escape") closeWallet(); }
 (function booking(){
   const ov = document.getElementById("bookingOverlay"); if (!ov) return;
   const form = ov.querySelector("#bookingForm"), done = ov.querySelector("#bookingDone");
-  function open(){ if (form){ form.hidden = false; } if (done){ done.hidden = true; } ov.hidden = false; if (!glBack.has("book")) glBack.push("book", () => close(true)); }
-  function close(fromBack){ ov.hidden = true; if (!fromBack) glBack.drop("book"); }
+  function open(){ if (form){ form.hidden = false; } if (done){ done.hidden = true; } ov.hidden = false; document.documentElement.classList.add("wl-open"); if (!glBack.has("book")) glBack.push("book", () => close(true)); }
+  function close(fromBack){ ov.hidden = true; document.documentElement.classList.remove("wl-open"); if (!fromBack) glBack.drop("book"); }
   window.__openBooking = open;
   ov.addEventListener("click", e=>{
     if (e.target === ov || e.target.closest("#bookingClose") || e.target.closest("#bookingDoneClose")){ close(); return; }
