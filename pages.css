@@ -1001,3 +1001,11 @@ body.is-loading{overflow:hidden}
   .stage .copy .eyebrow .eb-mf{margin-left:.45em;gap:.35em}
   .stage .copy .eyebrow .eb-mf img{width:1.6em;height:1.6em}
 }
+/* booking chips: the small line never wraps; on phones chips size to their text */
+.bk-chip small{white-space:nowrap}
+@media(max-width:560px){
+  .bk-chips:not(.bk-chips-s) .bk-chip{flex:1 1 auto;padding:10px 11px}
+  .bk-chip small{font-size:8.5px;letter-spacing:.04em}
+  .bk-chip b{white-space:nowrap}
+  .bk-chips-s .bk-chip{padding:10px 8px}
+}

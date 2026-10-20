@@ -183,7 +183,7 @@ function bookingHTML(){
           <button type="button" class="bk-chip" data-val="Flexible"><b>Flexible</b></button>
         </div>
       </div>
-      <label class="bk-field"><span>What are you dropping?</span><textarea name="details" rows="3" placeholder="Token, NFTs, allocations. Pool size, chain, anything we should know."></textarea></label>
+      <label class="bk-field"><span>What are you dropping?</span><textarea name="details" rows="3" placeholder="Token, NFTs, allocations.&#10;Pool size, chain, anything we should know."></textarea></label>
       <button type="submit" class="btn btn-primary big bk-submit">Send inquiry</button>
     </form>
     <div class="booking-done" id="bookingDone" hidden>
