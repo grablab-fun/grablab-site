@@ -996,10 +996,8 @@ body.is-loading{overflow:hidden}
 .stage .copy .eyebrow .eb-mf img.eb-cf{width:1.3em;height:1.3em;margin:0}
 .stage .copy .eyebrow .eb-g{display:inline-flex;align-items:center;white-space:nowrap}
 @media(max-width:600px){
-  .stage .copy .eyebrow{letter-spacing:.12em;row-gap:10px}
-  .stage .copy .eyebrow .eb-sep{margin:0 8px;height:10px}
-  .stage .copy .eyebrow .eb-mf{margin-left:.4em;gap:.35em}
+  .stage .copy .eyebrow{flex-wrap:nowrap;white-space:nowrap;font-size:min(8px,2.15vw);letter-spacing:.06em}
+  .stage .copy .eyebrow .eb-sep{margin:0 7px;height:9px}
+  .stage .copy .eyebrow .eb-mf{margin-left:.45em;gap:.35em}
   .stage .copy .eyebrow .eb-mf img{width:1.6em;height:1.6em}
-  .stage .copy .eyebrow .eb-sep:last-of-type{display:none}
-  .stage .copy .eyebrow .eb-g:last-child{flex-basis:100%}
 }

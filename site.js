@@ -452,6 +452,7 @@ function openWallet(src){
   const cx = r ? r.left + r.width / 2 : innerWidth / 2, cy = r ? r.top + r.height / 2 : innerHeight / 2;
   overlay.style.setProperty("--ox", cx + "px"); overlay.style.setProperty("--oy", cy + "px");
   clearTimeout(overlay._t); overlay.classList.remove("in"); overlay.hidden = false;
+  document.documentElement.classList.add("wl-open");
   const sheet = overlay.querySelector(".wallet-sheet");
   if (sheet){
     sheet.style.transform = "none"; const to = sheet.getBoundingClientRect(); sheet.style.transform = "";
@@ -466,6 +467,7 @@ function openWallet(src){
 function closeWallet(fromBack){
   if (overlay && !overlay.hidden){
     overlay.classList.remove("in"); clearTimeout(overlay._t);
+    document.documentElement.classList.remove("wl-open");
     overlay._t = setTimeout(() => { if (!overlay.classList.contains("in")) overlay.hidden = true; }, 560);
   }
   if (!fromBack) glBack.drop("wallet");

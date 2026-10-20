@@ -480,3 +480,20 @@ body:not(.menu-open) .mm-links a{transition-delay:0s!important}
 .wallet-overlay.in .wallet-list > :not(.wallet-item){transition-delay:.55s}
 .wallet-side::before{transform:scale(1.12);transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
 .wallet-overlay.in .wallet-side::before{transform:none}
+
+/* the sheet is one grid row: let it shrink so the list scrolls inside instead of being cut at the bottom; page behind never scrolls */
+.wallet-sheet{grid-template-rows:minmax(0,1fr)}
+html.wl-open,html.wl-open body{overflow:hidden;overscroll-behavior:none}
+@media(max-width:900px){
+  .wallet-overlay{padding:12px;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+  .wallet-sheet{max-height:calc(100dvh - 24px);border-radius:22px}
+  .wallet-main{padding:18px 16px}
+  .wallet-head{margin-bottom:12px}
+  .wallet-list{gap:6px}
+  .wallet-item{padding:8px 12px}
+  .wallet-item .wi-ic{width:32px;height:32px;border-radius:9px}
+  .wallet-or{margin:8px 2px 2px}
+  .wallet-mail{height:54px}
+  .wallet-mail .wm-ic{width:32px;height:32px}
+  .wallet-mail button{height:40px}
+}
