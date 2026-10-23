@@ -37,7 +37,8 @@
 .glc.cfg .glc-cats{display:block}
 .glc.cfg .glc-more{display:none}
 .glc.cfg .glc-links{margin-top:12px}
-.glc.glc-r{left:auto;right:clamp(12px,2vw,24px)}
+.glc.glc-c .glc-top{display:none}
+.glc.glc-c{padding-top:16px}
 .glc-cat{display:grid;grid-template-columns:1fr 40px;gap:4px 18px;align-items:center;padding:11px 0}
 .glc-cat+.glc-cat{border-top:1px solid rgba(180,186,255,.1)}
 .glc-cat b{font-size:13px;line-height:1.2}
@@ -97,14 +98,13 @@
     box.classList.toggle("cfg", !!cfg);
     box.hidden = false; place(); requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add("on")));
   }
-  /* never cover the hero headline: if the bottom-left spot would overlap it, sit bottom-right instead */
+  /* never cover the hero headline: stays bottom-left, and drops its title row when space above it runs short */
   function place(){
     if (!box || box.hidden) return;
-    const h = document.querySelector(".stage .copy h1"); box.classList.remove("glc-r");
+    const h = document.querySelector(".stage .copy h1"); box.classList.remove("glc-c");
     if (!h || innerWidth <= 520) return;
-    const sub = document.querySelector(".stage .copy .sub"), hr = h.getBoundingClientRect(), br = box.getBoundingClientRect();
-    const bottom = Math.max(hr.bottom, sub ? sub.getBoundingClientRect().bottom : 0);
-    if (br.top < bottom + 10 && br.left < hr.right) box.classList.add("glc-r");
+    const hr = h.getBoundingClientRect(), br = box.getBoundingClientRect();
+    if (br.top < hr.bottom + 10 && br.left < hr.right) box.classList.add("glc-c");
   }
   addEventListener("resize", place);
   function hide(){ if (!box) return; box.classList.remove("on"); setTimeout(() => { box.hidden = true; }, 400); }
