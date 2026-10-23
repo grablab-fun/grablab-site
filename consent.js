@@ -20,8 +20,9 @@
 .glc-top img{width:40px;height:40px;flex:none;display:block}
 .glc-top b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:24px;letter-spacing:.03em;text-transform:uppercase;line-height:.95;display:block}
 .glc-k{display:block;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:#9cc0ff;margin-bottom:5px;line-height:1}
-.glc p{font-size:13.5px;line-height:1.6;color:#a7b0cc;margin:0 0 18px;text-wrap:pretty}
-.glc p a{color:#f3f4fb;border-bottom:1px solid rgba(180,186,255,.4)}
+.glc p{font-size:13px;line-height:1.6;color:#a7b0cc;margin:0 0 18px;text-wrap:pretty}
+.glc p span{display:block}
+.glc p a{display:inline-block;margin-top:6px;color:#f3f4fb;border-bottom:1px solid rgba(180,186,255,.4)}
 .glc-row{display:flex;gap:10px}
 .glc-btn{flex:1;display:flex;align-items:center;justify-content:center;height:46px;font:700 14px/1 'Satoshi',system-ui,sans-serif;padding:0 16px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:transform .15s,box-shadow .2s}
 .glc-btn:active{transform:translateY(1px)}
@@ -63,7 +64,7 @@
     d.setAttribute("role", "dialog"); d.setAttribute("aria-live", "polite"); d.setAttribute("aria-label", "Cookie choices");
     d.innerHTML = `
       <div class="glc-top"><img src="assets/brand/mark-chrome-256.png" alt="" /><div><span class="glc-k">Cookies</span><b>Your call.</b></div></div>
-      <p>No ads, no trackers. We only store what the site needs. Embeds like the physics lab load only if you allow them. <a href="cookies.html">Cookie policy</a></p>
+      <p><span>No ads, no trackers. We only store what the site needs.</span><span>Embeds like the physics lab load only if you allow them.</span><a href="cookies.html">Cookie policy</a></p>
       <div class="glc-cats">
         <div class="glc-cat"><b>Essential</b><button class="glc-sw" type="button" role="switch" aria-checked="true" disabled aria-label="Essential, always on"></button><small>Remembers this choice and that you saw the intro. Always on.</small></div>
         <div class="glc-cat"><b>Embedded content</b><button class="glc-sw" type="button" role="switch" aria-checked="false" data-cat="embeds" aria-label="Embedded content"></button><small>The physics lab runs on SimArena (app.simarena.ai), which may store data in your browser.</small></div>
