@@ -1027,3 +1027,22 @@ body.is-loading{overflow:hidden}
   .bk-chip{padding:8px 10px}
   .bk-submit{margin-top:14px}
 }
+/* hero scroll cue: glass pill, mouse with a rolling wheel, text, chevrons falling down */
+.scroll-hint{display:flex;align-items:center;gap:14px;padding:12px 22px 12px 14px;border-radius:999px;white-space:nowrap;bottom:34px;
+  font-size:12.5px;font-weight:500;letter-spacing:.24em;color:#f3f4fb;
+  background:rgba(12,16,34,.5);border:1px solid rgba(180,186,255,.34);
+  -webkit-backdrop-filter:blur(12px) saturate(1.2);backdrop-filter:blur(12px) saturate(1.2);
+  box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 12px 34px rgba(3,5,14,.45);
+  animation:shBob 2.6s ease-in-out infinite;transition:opacity .4s,transform .4s}
+.scroll-hint.gone{animation:none;opacity:0;transform:translate(-50%,10px)}
+@keyframes shBob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-5px)}}
+.scroll-hint .sh-mouse{position:relative;width:20px;height:31px;border-radius:9px;border:1.5px solid rgba(243,244,251,.75);flex:none}
+.scroll-hint .sh-mouse i{position:absolute;left:50%;top:5px;width:3px;height:6px;margin-left:-1.5px;border-radius:3px;background:#8fb2ff;box-shadow:0 0 10px #3b7bff;animation:shWheel 1.6s cubic-bezier(.3,.7,.3,1) infinite}
+@keyframes shWheel{0%{opacity:0;transform:translateY(-2px)}25%{opacity:1}70%{opacity:1;transform:translateY(8px)}100%{opacity:0;transform:translateY(10px)}}
+.scroll-hint .sh-arr{display:flex;flex-direction:column;align-items:center;margin-left:-2px}
+.scroll-hint .sh-arr i{display:block;width:8px;height:8px;border-right:1.5px solid #8fb2ff;border-bottom:1.5px solid #8fb2ff;transform:rotate(45deg);margin-top:-2px;animation:shArr 1.6s ease-in-out infinite}
+.scroll-hint .sh-arr i+i{animation-delay:.2s}
+@keyframes shArr{0%,100%{opacity:.15}50%{opacity:1}}
+.scroll-hint:hover{border-color:rgba(180,186,255,.45)}
+@media(max-width:900px){.scroll-hint{bottom:16px;font-size:10px;letter-spacing:.2em;padding:8px 14px 8px 10px;gap:10px}.scroll-hint .sh-mouse{width:15px;height:23px}}
+@media(prefers-reduced-motion:reduce){.scroll-hint,.scroll-hint .sh-mouse i,.scroll-hint .sh-arr i{animation:none}}
