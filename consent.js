@@ -11,31 +11,32 @@
 
   const css = `
 .glc{position:fixed;z-index:9500;left:clamp(12px,2vw,24px);bottom:clamp(12px,2vw,24px);width:min(440px,calc(100vw - 24px));color:#f3f4fb;font-family:'Satoshi',system-ui,sans-serif;
-  background:linear-gradient(160deg,rgba(14,22,62,.92),rgba(5,9,24,.94));border:1px solid rgba(180,186,255,.22);border-radius:22px;padding:22px 22px 18px;
+  background:linear-gradient(160deg,rgba(14,22,62,.92),rgba(5,9,24,.94));border:1px solid rgba(180,186,255,.22);border-radius:22px;padding:22px 22px 16px;
   box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 50px rgba(59,123,255,.14);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   transform:translateY(24px);opacity:0;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s}
 .glc.on{transform:none;opacity:1}
 .glc[hidden]{display:none}
-.glc-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.glc-top img{width:30px;height:30px}
-.glc-top b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:24px;letter-spacing:.03em;text-transform:uppercase;line-height:1}
-.glc-k{display:block;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:#9cc0ff;margin-bottom:3px}
-.glc p{font-size:14px;line-height:1.55;color:#a7b0cc;margin:0 0 16px}
+.glc-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.glc-top img{width:40px;height:40px;flex:none;display:block}
+.glc-top b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:24px;letter-spacing:.03em;text-transform:uppercase;line-height:.95;display:block}
+.glc-k{display:block;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:#9cc0ff;margin-bottom:5px;line-height:1}
+.glc p{font-size:13.5px;line-height:1.6;color:#a7b0cc;margin:0 0 18px;text-wrap:pretty}
 .glc p a{color:#f3f4fb;border-bottom:1px solid rgba(180,186,255,.4)}
 .glc-row{display:flex;gap:10px}
-.glc-btn{flex:1;font:700 14px/1 'Satoshi',system-ui,sans-serif;padding:13px 16px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:transform .15s,box-shadow .2s}
+.glc-btn{flex:1;display:flex;align-items:center;justify-content:center;height:46px;font:700 14px/1 'Satoshi',system-ui,sans-serif;padding:0 16px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:transform .15s,box-shadow .2s}
 .glc-btn:active{transform:translateY(1px)}
 .glc-acc{color:#071029;background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);box-shadow:0 0 22px rgba(59,123,255,.35)}
 .glc-rej{color:#0a0c16;background:#f3f4fb}
-.glc-more{display:block;margin:12px auto 0;background:none;border:0;color:#a7b0cc;font:500 12px/1 ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;padding:4px}
+.glc-more{display:block;margin:14px auto 0;background:none;border:0;color:#a7b0cc;font:500 12px/1 ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;padding:4px}
 .glc-more:hover{color:#f3f4fb}
-.glc-cats{display:none;margin:0 0 16px;border-top:1px solid rgba(180,186,255,.14)}
+.glc-cats{display:none;margin:0 0 18px;border-top:1px solid rgba(180,186,255,.14);border-bottom:1px solid rgba(180,186,255,.14)}
 .glc.cfg .glc-cats{display:block}
 .glc.cfg .glc-more{display:none}
-.glc-cat{display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:center;padding:13px 0;border-bottom:1px solid rgba(180,186,255,.1)}
-.glc-cat b{font-size:14.5px}
-.glc-cat small{grid-column:1;font-size:12.5px;line-height:1.45;color:#a7b0cc}
-.glc-sw{grid-row:1/3;grid-column:2;position:relative;width:46px;height:26px;border-radius:999px;border:1px solid rgba(180,186,255,.3);background:rgba(5,9,24,.6);cursor:pointer;transition:background .2s}
+.glc-cat{display:grid;grid-template-columns:1fr 46px;gap:5px 20px;align-items:center;padding:14px 0}
+.glc-cat+.glc-cat{border-top:1px solid rgba(180,186,255,.1)}
+.glc-cat b{font-size:14.5px;line-height:1.2}
+.glc-cat small{grid-column:1;font-size:12.5px;line-height:1.45;color:#a7b0cc;text-wrap:pretty}
+.glc-sw{grid-row:1/3;grid-column:2;align-self:center;position:relative;width:46px;height:26px;border-radius:999px;border:1px solid rgba(180,186,255,.3);background:rgba(5,9,24,.6);cursor:pointer;transition:background .2s}
 .glc-sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#a7b0cc;transition:transform .2s,background .2s}
 .glc-sw[aria-checked="true"]{background:rgba(59,123,255,.35);border-color:#7db0ff}
 .glc-sw[aria-checked="true"]::after{transform:translateX(20px);background:#fff}
@@ -43,6 +44,7 @@
 .glc-save{display:none}
 .glc.cfg .glc-save{display:flex}
 .glc.cfg .glc-main{display:none}
+.glc.cfg{padding-bottom:22px}
 @media(max-width:520px){.glc{left:12px;right:12px;width:auto;bottom:12px;padding:18px}.glc-row{flex-direction:column}}`;
 
   /* styles go in at once: the footer "Cookie settings" row needs them even when the banner never shows */

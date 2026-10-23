@@ -1027,12 +1027,17 @@ body.is-loading{overflow:hidden}
   .bk-chip{padding:8px 10px}
   .bk-submit{margin-top:14px}
 }
-/* hero scroll cue: plain text over a thin line with a light running down it */
-.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:12px;bottom:22px;white-space:nowrap;
-  font-size:11px;letter-spacing:.32em;color:rgba(243,244,251,.85);text-shadow:0 1px 12px rgba(5,9,24,.8);animation:none;transition:opacity .4s}
-.scroll-hint .sh-lbl{padding-left:.32em}
-.scroll-hint .sh-line{position:relative;width:1px;height:46px;overflow:hidden;background:linear-gradient(180deg,rgba(243,244,251,.35),rgba(243,244,251,0))}
-.scroll-hint .sh-line i{position:absolute;left:-1px;top:0;width:3px;height:16px;border-radius:2px;background:linear-gradient(180deg,rgba(143,178,255,0),#d6e4ff);box-shadow:0 0 8px #3b7bff;animation:shRun 1.9s cubic-bezier(.6,0,.3,1) infinite}
-@keyframes shRun{0%{transform:translateY(-18px);opacity:0}20%{opacity:1}100%{transform:translateY(48px);opacity:0}}
-@media(max-width:900px){.scroll-hint{bottom:12px;font-size:10px;gap:9px}.scroll-hint .sh-line{height:34px}}
-@media(prefers-reduced-motion:reduce){.scroll-hint .sh-line i{animation:none}}
+/* hero scroll cue: the letters rise in a wave and catch a blue glint, two soft chevrons drift down underneath */
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:10px;bottom:24px;white-space:nowrap;
+  font-size:11px;letter-spacing:.32em;color:rgba(243,244,251,.8);text-shadow:0 1px 12px rgba(5,9,24,.8);animation:none;transition:opacity .4s}
+.scroll-hint .sh-lbl{display:flex;padding-left:.32em}
+.scroll-hint .sh-lbl i{font-style:normal;display:inline-block;animation:shWave 2.8s cubic-bezier(.45,0,.25,1) infinite;animation-delay:calc(var(--i) * 70ms)}
+@keyframes shWave{0%,55%,100%{transform:none;color:rgba(243,244,251,.8);text-shadow:0 1px 12px rgba(5,9,24,.8)}
+  18%{transform:translateY(-4px);color:#fff;text-shadow:0 0 14px rgba(143,178,255,.9),0 1px 12px rgba(5,9,24,.8)}
+  32%{transform:translateY(0);color:#d6e4ff}}
+.scroll-hint .sh-chev{position:relative;width:14px;height:20px}
+.scroll-hint .sh-chev b{position:absolute;left:2px;top:0;width:9px;height:9px;border-right:1.5px solid rgba(214,228,255,.9);border-bottom:1.5px solid rgba(214,228,255,.9);border-radius:0 0 2px 0;
+  transform:rotate(45deg);filter:drop-shadow(0 0 6px rgba(59,123,255,.8));animation:shChev 2.8s cubic-bezier(.45,0,.25,1) infinite;opacity:0}
+.scroll-hint .sh-chev b+b{animation-delay:.25s}
+@keyframes shChev{0%{opacity:0;transform:translateY(-6px) rotate(45deg)}35%{opacity:1}70%{opacity:0;transform:translateY(9px) rotate(45deg)}100%{opacity:0;transform:translateY(9px) rotate(45deg)}}
+@media(max-width:900px){.scroll-hint{bottom:14px;font-size:10px;gap:8px}}
