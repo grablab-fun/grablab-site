@@ -25,6 +25,10 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
     plastic:{rgba:[.03,.03,.035,1],metalness:.1,roughness:.55},
     plastic2:{rgba:[.06,.06,.07,1],metalness:.1,roughness:.6},
     mdf:{rgba:[.02,.02,.022,1],metalness:0,roughness:.85},
+    tray:{rgba:[.09,.095,.105,1],metalness:.25,roughness:.55}, base:{rgba:[.075,.08,.09,1],metalness:.35,roughness:.45},
+    chrome:{rgba:[.86,.88,.92,1],metalness:1,roughness:.12}, carriage:{rgba:[.32,.33,.36,1],metalness:.6,roughness:.35},
+    yellow:{rgba:[.95,.72,.05,1],metalness:.1,roughness:.3}, logo:{rgba:[1,1,1,1],emission:1.6}, hole:{rgba:[.005,.005,.008,1],metalness:0,roughness:1},
+    cap_gold:{rgba:[.95,.7,.32,1],metalness:.85,roughness:.22}, cap_violet:{rgba:[.74,.68,.95,1],metalness:.6,roughness:.18}, seam:{rgba:[.12,.12,.15,1],metalness:.5,roughness:.4},
     belt:{rgba:[.015,.015,.015,1],metalness:0,roughness:.85},
     blue:{rgba:[.23,.48,1,1],metalness:1,roughness:.14},                // blue chrome accent (coil cable, collar, LED walls, handle)
     line:{rgba:[.92,.92,.9,1],metalness:0,roughness:.55},               // Dyneema
@@ -76,40 +80,47 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
       FR.push(ghost(B(g, c.map((v, n) => v + o[n]), "slot")));
     }
   }
-  [[-.49,-.49],[.49,-.49],[.49,.49],[-.49,.49]].forEach(([x, y]) => bar("z", 1, [x, y, .5]));
-  [[.01, "bot"], [.99, "top"], [.122, "floor"]].forEach(([z]) => {
+  [[-.49,-.49],[.49,-.49],[.49,.49],[-.49,.49]].forEach(([x, y]) => { bar("z", 1, [x, y, .5]); FR.push(ghost(cyl(.017, .012, [x, y, .006], "plastic"))); });
+  [[.01, "bot"], [.99, "top"], [.192, "floor"]].forEach(([z]) => {
     bar("x", .96, [0, -.49, z]); bar("x", .96, [0, .49, z]); bar("y", .96, [-.49, 0, z]); bar("y", .96, [.49, 0, z]);
   });
-  bar("x", .96, [0, .1, .122]);
+  bar("x", .96, [0, .1, .192]);
   [[-.47,-.47],[.47,-.47],[.47,.47],[-.47,.47]].forEach(([x, y]) => [.03, .97].forEach(z => FR.push(ghost(Bh(.02, .02, .02, x, y, z, "plastic2")))));
   fixed("frame", FR);
 
   /* ---------------- floor: black MDF raised to 150 mm with the 160 x 160 chute opening front right ---------------- */
-  const FZ = .15, FT = .018, CH = [.30, .46, -.47, -.31];
+  const FZ = .22, FT = .018, CH = [.30, .46, -.47, -.31], RIM = .045;
+  /* the prize tray: dark grey floor with a raised rim all round, the chute is a dark slot in its front right corner */
   fixed("floor_mdf", [
-    BB(-.48, CH[3], FZ - FT, .48, .48, FZ, "mdf"),
-    BB(-.48, -.48, FZ - FT, CH[0], CH[3], FZ, "mdf"),
-    BB(CH[1], -.48, FZ - FT, .48, CH[3], FZ, "mdf"),
-    BB(CH[0], -.48, FZ - FT, CH[1], CH[2], FZ, "mdf")
+    BB(-.48, CH[3], FZ - FT, .48, .48, FZ, "tray"),
+    BB(-.48, -.48, FZ - FT, CH[0], CH[3], FZ, "tray"),
+    BB(CH[1], -.48, FZ - FT, .48, CH[3], FZ, "tray"),
+    BB(CH[0], -.48, FZ - FT, CH[1], CH[2], FZ, "tray"),
+    BB(-.48, -.48, FZ, .48, -.468, FZ + RIM, "tray"), BB(-.48, .468, FZ, .48, .48, FZ + RIM, "tray"),
+    BB(-.48, -.468, FZ, -.468, .468, FZ + RIM, "tray"), BB(.468, -.468, FZ, .48, .468, FZ + RIM, "tray"),
+    ghost(BB(-.482, -.482, FZ + RIM, .482, -.466, FZ + RIM + .004, "base")), ghost(BB(-.482, .466, FZ + RIM, .482, .482, FZ + RIM + .004, "base")),
+    ghost(BB(-.482, -.466, FZ + RIM, -.466, .466, FZ + RIM + .004, "base")), ghost(BB(.466, -.466, FZ + RIM, .482, .466, FZ + RIM + .004, "base"))
   ]);
 
-  /* ---------------- control box 1000 x 200 x 112 across the front base, smoked front panel ---------------- */
-  const BX0 = -.48, BX1 = .48, BY0 = -.48, BY1 = -.28, BZ0 = .02, BZ1 = FZ - FT, QZ = (BZ0 + BZ1)/2;
+  /* ---------------- base box across the whole footprint, under the tray: front panel with E-stop, QR, GRABLAB, hatch ---------------- */
+  const BX0 = -.48, BX1 = .48, BY0 = -.48, BY1 = .48, BZ0 = .02, BZ1 = FZ - FT, QZ = (BZ0 + BZ1)/2 + .005;
   const CB = [
-    BB(BX0, BY0, BZ0, BX1, BY1, BZ0 + .003, "plastic2"), BB(BX0, BY1 - .003, BZ0, BX1, BY1, BZ1, "plastic2"),
-    BB(BX0, BY0, BZ0, BX0 + .003, BY1, BZ1, "plastic2"), BB(BX1 - .003, BY0, BZ0, BX1, BY1, BZ1, "plastic2"),
-    BB(BX0, BY0, BZ0, BX1, BY0 + .004, BZ1, "panel"),
-    /* QR plate in the middle (the machine is QR only: scan, play in the browser), E-stop at the right, drawer face */
-    ghost(BB(-.04, BY0 - .003, QZ - .04, .04, BY0, QZ + .04, "plastic2")),
-    ghost(BB(-.031, BY0 - .0034, QZ - .031, .031, BY0 - .003, QZ + .031, "qr_w")),
-    ghost(cyl(.015, .012, [.42, BY0 - .005, QZ], "plastic", {quat:QX90})),
-    ghost(cyl(.02, .012, [.42, BY0 - .015, QZ], "red", {quat:QX90})),
-    ghost(BB(.12, BY0 - .004, BZ0 + .01, .28, BY0, BZ1 - .012, "plastic")),
-    ghost(Bh(.06, .008, .006, .2, BY0 - .009, .085, "blue")),
-    ghost(BB(.12, BY0 + .004, BZ0 + .004, .28, BY1 - .01, .09, "plastic2"))      // prize drawer body
+    BB(BX0, BY0, BZ0, BX1, BY1, BZ0 + .004, "base"),
+    BB(BX0, BY0, BZ0, BX1, BY0 + .006, BZ1, "base"), BB(BX0, BY1 - .006, BZ0, BX1, BY1, BZ1, "base"),
+    BB(BX0, BY0, BZ0, BX0 + .006, BY1, BZ1, "base"), BB(BX1 - .006, BY0, BZ0, BX1, BY1, BZ1, "base"),
+    ghost(BB(BX0 - .002, BY0 - .002, BZ1 - .006, BX1 + .002, BY0, BZ1, "plastic2")),            // top edge trim under the tray
+    /* E-stop: red mushroom on a yellow collar, left end of the panel */
+    ghost(cyl(.026, .006, [-.415, BY0 - .003, QZ], "yellow", {quat:QX90})), ghost(cyl(.016, .012, [-.415, BY0 - .011, QZ], "plastic", {quat:QX90})),
+    ghost(cyl(.021, .012, [-.415, BY0 - .021, QZ], "red", {quat:QX90})),
+    /* QR plate: scan it, play in the browser (the machine has no joystick) */
+    ghost(BB(-.36, BY0 - .003, QZ - .036, -.288, BY0, QZ + .036, "plastic2")),
+    ghost(BB(-.353, BY0 - .0034, QZ - .029, -.295, BY0 - .003, QZ + .029, "qr_w")),
+    /* service hatch with a vent grille, right end */
+    ghost(BB(.26, BY0 - .004, BZ0 + .02, .42, BY0, BZ0 + .075, "plastic2")), ghost(Bh(.05, .006, .005, .34, BY0 - .007, BZ0 + .062, "chrome"))
   ];
+  for (let i = 0; i < 10; i++) CB.push(ghost(Bh(.005, .002, .05, .275 + i*.0145, BY0 - .0045, BZ0 + .13, "hole")));
   /* QR: 21 x 21 modules, three finder squares, seeded data cells */
-  const n = 21, mod = .054/n, G = [...Array(n)].map(() => Array(n).fill(0));
+  const n = 21, mod = .05/n, G = [...Array(n)].map(() => Array(n).fill(0));
   const finder = (r0, c0) => { for (let r = 0; r < 7; r++) for (let c = 0; c < 7; c++){ const ring = Math.max(Math.abs(r-3), Math.abs(c-3)); G[r0+r][c0+c] = ring === 3 || ring <= 1 ? 1 : 0; } };
   finder(0, 0); finder(0, n - 7); finder(n - 7, 0);
   for (let i = 8; i < n - 8; i++) G[6][i] = G[i][6] = 1 - (i % 2);
@@ -118,67 +129,50 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
     G[r][c] = rnd() < .45 ? 1 : 0;
   }
   for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (G[r][c])
-    CB.push(ghost(Bh(mod, .0005, mod, -.027 + (c + .5)*mod, BY0 - .0037, QZ + .027 - (r + .5)*mod, "qr_k")));
-  fixed("control_box", CB);
-  /* electronics inside the box, same layout as render 04 (Blender x,y -> X = x - .5, Y = y - .5) */
-  const EL = [];
-  const board = (x, y, z, sx, sy, sz, m, chips = []) => { EL.push(ghost(Bh(sx, sy, sz, x, y, z + sz/2, m))); chips.forEach(([cx, cy, csx, csy, csz]) => EL.push(ghost(Bh(csx, csy, csz, x + cx, y + cy, z + sz + csz/2, "chip")))); };
-  board(-.38, -.38, BZ0 + .012, .085, .056, .0016, "pcb", [[0, .004, .016, .016, .0025], [.028, 0, .014, .012, .003]]);   // Raspberry Pi 5
-  EL.push(ghost(Bh(.048, .04, .012, -.385, -.376, BZ0 + .026, "psu")));                                                    // active cooler
-  board(-.38, -.38, BZ0 + .032, .065, .056, .0016, "pcb_red", [[-.01, 0, .008, .008, .002]]);                               // OPTIGA Trust M shield
-  board(-.21, -.38, BZ0 + .012, .1, .07, .0016, "pcb", [0,1,2,3].map(i => [-.025 + .018*i, .012, .014, .014, .004]));     // SKR Mini E3 V3
-  for (let i = 0; i < 4; i++) EL.push(ghost(Bh(.011, .011, .009, -.235 + .018*i, -.368, BZ0 + .0226, "psu")));
-  EL.push(ghost(Bh(.129, .097, .03, -.01, -.38, BZ0 + .018, "psu")));                                                      // Mean Well LRS-100-12
-  for (let i = 0; i < 9; i++) EL.push(ghost(Bh(.004, .08, .001, -.06 + i*.011, -.38, BZ0 + .0335, "chip")));
-  board(-.29, -.31, BZ0 + .012, .045, .04, .0016, "pcb_blue", [[0, 0, .012, .012, .012]]);                                 // BTS7960
-  board(-.23, -.31, BZ0 + .012, .03, .02, .0016, "pcb_blue", [[0, 0, .008, .008, .006]]);                                  // buck converter
-  for (let i = 0; i < 5; i++) EL.push(ghost(Bh(.012, .02, .018, -.1 + i*.014, -.305, BZ0 + .012, "plastic2")));            // WAGO 221
-  EL.push(ghost(Bh(.004, .004, .004, -.33, -.4, BZ0 + .03, "led_red")));                                                   // power LED
-  fixed("electronics", EL);
+    CB.push(ghost(Bh(mod, .0005, mod, -.349 + (c + .5)*mod, BY0 - .0037, QZ + .025 - (r + .5)*mod, "qr_k")));
+  /* GRABLAB wordmark, glowing white, drawn from strokes on a 4 x 6 grid per letter */
+  const GLY = {
+    G:[[0,5,4,6],[0,0,1,6],[0,0,4,1],[3,0,4,3],[2,2,4,3]], R:[[0,0,1,6],[0,5,4,6],[3,3,4,6],[0,2.6,4,3.6],[2.6,0,3.6,2.6]],
+    A:[[0,0,1,6],[3,0,4,6],[0,5,4,6],[0,2.6,4,3.6]], B:[[0,0,1,6],[0,5,3.3,6],[0,0,3.3,1],[0,2.6,3.3,3.6],[3,.6,4,2.8],[3,3.3,4,5.4]],
+    L:[[0,0,1,6],[0,0,4,1]] };
+  const U = .0075, LW = 4*U, GAP = .45*4*U, WORD = "GRABLAB", W0 = -.02 - (WORD.length*LW + (WORD.length - 1)*GAP)/2, LZ = QZ - 3*U;
+  [...WORD].forEach((ch, i) => GLY[ch].forEach(([x0, y0, x1, y1]) =>
+    CB.push(ghost(BB(W0 + i*(LW + GAP) + x0*U, BY0 - .0035, LZ + y0*U, W0 + i*(LW + GAP) + x1*U, BY0 - .0005, LZ + y1*U, "logo")))));
+  fixed("base_box", CB);
 
-  /* ---------------- chute: acrylic collar, funnel 160 -> 90, square tube, ramp, NFC cradle, servo flap ---------------- */
-  const [cx0, cx1, cy0, cy1] = CH, LIP = FZ + .04, t = .003, ix0 = .335, ix1 = .425, iy0 = -.435, iy1 = -.345, zf0 = FZ - FT, zf1 = .095;
+  /* ---------------- chute: dark slot in the tray, funnel 160 -> 90 inside the base, ramp, NFC cradle, servo flap ---------------- */
+  const [cx0, cx1, cy0, cy1] = CH, t = .003, ix0 = .335, ix1 = .425, iy0 = -.435, iy1 = -.345, zf0 = FZ - FT, zf1 = zf0 - .037, ZS = .09;
   const CHU = [
-    BB(cx0, cy0, zf0, cx1, cy0 + t, LIP, "acrylic"), BB(cx0, cy1 - t, zf0, cx1, cy1, LIP, "acrylic"),
-    BB(cx0, cy0, zf0, cx0 + t, cy1, LIP, "acrylic"), BB(cx1 - t, cy0, zf0, cx1, cy1, LIP, "acrylic")
+    BB(cx0, cy0, zf0 - .02, cx1, cy0 + t, FZ, "hole"), BB(cx0, cy1 - t, zf0 - .02, cx1, cy1, FZ, "hole"),
+    BB(cx0, cy0, zf0 - .02, cx0 + t, cy1, FZ, "hole"), BB(cx1 - t, cy0, zf0 - .02, cx1, cy1, FZ, "hole")
   ];
-  /* funnel: four slanted acrylic plates from the 160 collar down to the 90 tube */
+  /* funnel: four slanted plates from the 160 collar down to the 90 opening */
   const fun = (a, b, c, d) => {   // a,b: top edge ends; c,d: bottom edge ends (same side)
     const mid = [0,1,2].map(k => (a[k] + b[k] + c[k] + d[k])/4), u = [0,1,2].map(k => b[k] - a[k]), w = [0,1,2].map(k => (c[k] + d[k])/2 - (a[k] + b[k])/2);
     const L = Math.hypot(...w), Wd = (Math.hypot(...u) + Math.hypot(c[0]-d[0], c[1]-d[1], c[2]-d[2]))/2;
-    /* plate local x along the edge, local z along the slope */
     const qa = qz(w), ex = [0,1,2].map(k => u[k]/Math.hypot(...u));
-    /* rotate about the slope so local x matches the edge direction */
     const rx = [1 - 2*(qa[2]**2 + qa[3]**2), 2*(qa[1]*qa[2] + qa[0]*qa[3]), 2*(qa[1]*qa[3] - qa[0]*qa[2])];
     const ang = Math.atan2([0,1,2].reduce((s, k) => s + w[k]/L*( [rx[1]*ex[2]-rx[2]*ex[1], rx[2]*ex[0]-rx[0]*ex[2], rx[0]*ex[1]-rx[1]*ex[0]][k] ), 0), rx.reduce((s, v, k) => s + v*ex[k], 0));
-    return Object.assign(B([Wd/2, .0015, L/2], mid, "acrylic"), {quat:qmul(qa, q([0,0,1], ang))});
+    return Object.assign(B([Wd/2, .0015, L/2], mid, "hole"), {quat:qmul(qa, q([0,0,1], ang))});
   };
-  CHU.push(fun([cx0, cy0, zf0], [cx1, cy0, zf0], [ix0, iy0, zf1], [ix1, iy0, zf1]));
-  CHU.push(fun([cx1, cy1, zf0], [cx0, cy1, zf0], [ix1, iy1, zf1], [ix0, iy1, zf1]));
-  CHU.push(fun([cx0, cy1, zf0], [cx0, cy0, zf0], [ix0, iy1, zf1], [ix0, iy0, zf1]));
-  CHU.push(fun([cx1, cy0, zf0], [cx1, cy1, zf0], [ix1, iy0, zf1], [ix1, iy1, zf1]));
-  /* a short 90 mm throat under the funnel (the 60 mm capsule needs the room below it to roll out) */
-  const zt0 = .088;
-  CHU.push(BB(ix0, iy0, zt0, ix1, iy0 + t, zf1, "acrylic"), BB(ix0, iy1 - t, zt0, ix1, iy1, zf1, "acrylic"),
-           BB(ix0, iy0, zt0, ix0 + t, iy1, zf1, "acrylic"), BB(ix1 - t, iy0, zt0, ix1, iy1, zf1, "acrylic"));
-  /* ramp from the tube exit down toward the cradle at the back, then the cradle cup over the PN532 */
-  CHU.push(Object.assign(Bh(.09, .08, .004, .38, -.392, .025, "plastic"), {quat:q([1,0,0], -.09)}));
+  const zt = zf0 - .02;
+  CHU.push(fun([cx0, cy0, zt], [cx1, cy0, zt], [ix0, iy0, zf1 - .02], [ix1, iy0, zf1 - .02]));
+  CHU.push(fun([cx1, cy1, zt], [cx0, cy1, zt], [ix1, iy1, zf1 - .02], [ix0, iy1, zf1 - .02]));
+  CHU.push(fun([cx0, cy1, zt], [cx0, cy0, zt], [ix0, iy1, zf1 - .02], [ix0, iy0, zf1 - .02]));
+  CHU.push(fun([cx1, cy0, zt], [cx1, cy1, zt], [ix1, iy0, zf1 - .02], [ix1, iy1, zf1 - .02]));
+  /* shelf under the funnel carrying the ramp and the cradle cup over the NFC reader */
+  CHU.push(BB(.3, -.47, ZS - .005, .47, -.26, ZS, "plastic2"));
+  CHU.push(Object.assign(Bh(.09, .08, .004, .38, -.392, ZS + .008, "plastic"), {quat:q([1,0,0], -.09)}));
   const CUPX = .38, CUPY = -.312, CUPR = .037;
-  CHU.push(ghost(cyl(CUPR + .004, .002, [CUPX, CUPY, .024], "plastic")));
   for (let k = 0; k < 12; k++){ const a = k*Math.PI/6; if (Math.sin(a) < -.4) continue;   /* open toward the ramp */
-    CHU.push(Object.assign(Bh(.02, .004, .016, CUPX + (CUPR + .002)*Math.cos(a), CUPY + (CUPR + .002)*Math.sin(a), .029, "plastic"), {quat:q([0,0,1], a + Math.PI/2)})); }
-  CHU.push(ghost(Bh(.042, .04, .0016, CUPX, CUPY, .0215, "pcb_blue")), ghost(Bh(.034, .032, .0004, CUPX, CUPY, .0226, "gold")));
-  CHU.push(ghost(Object.assign(Bh(.04, .03, .002, .333, CUPY, .05, "plastic2"), {quat:q([0,1,0], -1.05)})), ghost(Bh(.012, .023, .029, .333, CUPY + .03, .045, "plastic")));
-  /* break beam pair on the collar diagonal, chute camera + LED on the back collar wall */
-  CHU.push(ghost(Bh(.012, .01, .01, cx0 + .008, cy0 + .03, LIP - .03, "plastic")), ghost(Bh(.012, .01, .01, cx1 - .008, cy1 - .03, LIP - .03, "plastic")));
-  CHU.push(ghost(Bh(.003, .003, .003, cx0 + .015, cy0 + .03, LIP - .03, "led_red")));
-  CHU.push(ghost(Bh(.025, .004, .024, .38, cy1 - .012, LIP - .012, "pcb")), ghost(cyl(.004, .006, [.38, cy1 - .015, LIP - .012], "lens", {quat:QX90})),
-           ghost(Bh(.006, .001, .006, .4, cy1 - .0145, LIP - .012, "led_chute")));
+    CHU.push(Object.assign(Bh(.02, .004, .016, CUPX + (CUPR + .002)*Math.cos(a), CUPY + (CUPR + .002)*Math.sin(a), ZS + .008, "plastic"), {quat:q([0,0,1], a + Math.PI/2)})); }
+  CHU.push(ghost(Bh(.042, .04, .0016, CUPX, CUPY, ZS - .006, "pcb_blue")), ghost(Bh(.034, .032, .0004, CUPX, CUPY, ZS - .005, "gold")));
+  CHU.push(ghost(Object.assign(Bh(.04, .03, .002, .333, CUPY, ZS + .03, "plastic2"), {quat:q([0,1,0], -1.05)})), ghost(Bh(.012, .023, .029, .333, CUPY + .03, ZS + .02, "plastic")));
+  /* break beam pair across the slot, chute camera + LED on its back wall */
+  CHU.push(ghost(Bh(.012, .01, .01, cx0 + .008, cy0 + .03, zf0 - .012, "plastic")), ghost(Bh(.012, .01, .01, cx1 - .008, cy1 - .03, zf0 - .012, "plastic")));
+  CHU.push(ghost(Bh(.003, .003, .003, cx0 + .015, cy0 + .03, zf0 - .012, "led_red")));
+  CHU.push(ghost(Bh(.025, .004, .024, .38, cy1 - .006, zf0 - .012, "pcb")), ghost(Bh(.006, .001, .006, .4, cy1 - .009, zf0 - .012, "led_chute")));
   fixed("chute", CHU);
-
-  /* ---------------- grip calibration puck, back left ---------------- */
-  fixed("grip_puck", [cyl(.03, .004, [-.4, .4, FZ + .002], "plastic2"), cyl(.01, .028, [-.4, .4, FZ + .018], "plastic2"),
-    ghost(Bh(.034, .0127, .0127, -.4, .4, FZ + .018, "psu")), {type:"sphere", radius:.0275, pos:[-.4, .4, r4(FZ + .055)], material:"plastic"}]);
 
   /* ---------------- static gantry parts: Y rails on the top beams, belts, Y motors, drag chain shelf ---------------- */
   const GS = [];
@@ -199,7 +193,6 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
     else { GS.push(ghost(BB(x0, y0, .968, x0 + .0012, y1, .98, "blue")), ghost(BB(x1 - .0012, y0, .968, x1, y1, .98, "blue"))); }
     GS.push(ghost(BB(x0 + .002, y0 + .002, .9745, x1 - .002, y1 - .002, .975, "led_warm")));
   };
-  led(-.478, -.466, -.466, .466); led(.466, -.466, .478, .466); led(-.466, -.478, .466, -.466); led(-.466, .466, .466, .478);
   /* play camera: Camera Module 3 Wide in the top front left corner, aimed at the floor centre */
   const PC = [-.415, -.455, .945], aim = [0 - PC[0], .05 - PC[1], FZ - PC[2]], qa = qz(aim);
   GS.push(ghost(Object.assign(Bh(.025, .024, .004, ...PC, "pcb"), {quat:qa})), ghost(Object.assign(cyl(.0045, .007, PC.map((v, k) => v + aim[k]/Math.hypot(...aim)*.004), "lens"), {quat:qa})));
@@ -234,8 +227,8 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   M.push({name:"lift", relation:{parent:"move_y"}, transform:{pos:[0,0,0]}, gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.05},
     joint:{type:"slide", axis:[0,0,1], range:[-SEG, 0], damping:2, frictionLoss:1, drive:{mode:"velocity", damping:900, forceLimit:15, ctrlrange:[r4(-.12/K), r4(.12/K)]}}, geoms:[], collider:{}});
   /* carriage 90 x 90 x 75 with the Z winch: block on the rail, top plate, body in front of the beam, spool, pancake motor */
-  const CAR = [ghost(BB(-.0227, -.0135, .023, .0227, .0135, .033, "block")), BB(-.045, -.075, .033, .045, .02, .038, "plastic"),
-    BB(-.045, -.075, -.03, .045, -.012, .033, "plastic"),
+  const CAR = [ghost(BB(-.0227, -.0135, .023, .0227, .0135, .033, "block")), BB(-.045, -.075, .033, .045, .02, .038, "carriage"),
+    BB(-.045, -.075, -.03, .045, -.012, .033, "carriage"),
     ghost(BB(-.03, LINE_Y - .025, -.071, -.026, LINE_Y + .025, -.03, "plastic")), ghost(BB(.026, LINE_Y - .025, -.071, .03, LINE_Y + .025, -.03, "plastic")),
     ghost(cyl(.015, .05, [0, LINE_Y, -.048], "plastic2", {quat:QY90})),
     ghost(cyl(.019, .002, [-.025, LINE_Y, -.048], "plastic2", {quat:QY90})), ghost(cyl(.019, .002, [.025, LINE_Y, -.048], "plastic2", {quat:QY90})),
@@ -250,7 +243,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   const constraint = {};
   for (let s = 1; s <= K; s++){
     const geoms = [ghost(cyl(.0011, SEG, [0, 0, SEG/2], "line"))];
-    const turns = 2, pts = 8*turns, cr = .009, cx = .024;
+    const turns = s <= 3 ? 5 : 0, pts = 8*turns, cr = .011, cx = .026;
     for (let k = 0; k < pts; k++){
       const a0 = 2*Math.PI*k/8, a1 = 2*Math.PI*(k + 1)/8, z0 = SEG*k/pts, z1 = SEG*(k + 1)/pts;
       const p0 = [cx + cr*Math.cos(a0), cr*Math.sin(a0), z0], p1 = [cx + cr*Math.cos(a1), cr*Math.sin(a1), z1], d = [0,1,2].map(i => p1[i] - p0[i]);
@@ -259,7 +252,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
     if (s === K){
       /* the claw itself: swivel, eye, hub, blue collar, actuator body (Aethelark module look) */
       geoms.push(ghost({type:"sphere", radius:.004, pos:[0,0,-.002], material:"steel"}), ghost(cyl(.0025, .012, [0,0,-.01], "steel")),
-        cyl(.026*S/.79, .04, [0,0,-HUB], "plastic"), ghost(cyl(.02, .006, [0,0,-.006], "blue")),
+        cyl(.026*S/.79, .04, [0,0,-HUB], "chrome"), ghost(cyl(.02, .006, [0,0,-.006], "blue")),
         ghost(cyl(.012, .03, [0,0,-HUB - .03], "plastic2")), ghost({type:"cylinder", radius:.0275, height:.004, pos:[0,0,-HUB - .019], material:"blue"}));
       /* the coil cable's lower end ties into the hub */
       geoms.push(ghost(cyl(.0035, .01, [.012, 0, -.002], "plastic2", {quat:QY90})));
@@ -277,8 +270,8 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
       gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.015},
       joint:{type:"hinge", axis:[0,1,0], range:[r4(-.3 - OFF), r4(.7 - OFF)], damping:.02, stiffness:SPRING, armature:.0005},
       geoms:[
-        {type:"capsule", radius:r4(FR_), height:r4(UP), pos:[r4(Math.sin(TILT)*UP/2), 0, r4(-Math.cos(TILT)*UP/2)], quat:q([0,1,0], TILT), material:"plastic", friction:1.4},
-        {type:"capsule", radius:r4(FR_), height:r4(TL), pos:[r4(Math.sin(TILT)*UP + Math.sin(TIP)*TL/2), 0, r4(-Math.cos(TILT)*UP - Math.cos(TIP)*TL/2)], quat:q([0,1,0], TIP), material:"orange", friction:1.6},
+        {type:"capsule", radius:r4(FR_), height:r4(UP), pos:[r4(Math.sin(TILT)*UP/2), 0, r4(-Math.cos(TILT)*UP/2)], quat:q([0,1,0], TILT), material:"chrome", friction:1.4},
+        {type:"capsule", radius:r4(FR_), height:r4(TL), pos:[r4(Math.sin(TILT)*UP + Math.sin(TIP)*TL/2), 0, r4(-Math.cos(TILT)*UP - Math.cos(TIP)*TL/2)], quat:q([0,1,0], TIP), material:"chrome", friction:1.6},
         ghost(cyl(.0025, .012, [r4(Math.sin(TILT)*UP*.55 - .008), 0, r4(-Math.cos(TILT)*UP*.4)], "steel", {quat:q([0,1,0], .9)}))   // push rod
       ], collider:{}});
   }
@@ -289,21 +282,20 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
     coupling:{ grip:{ type:"fixed_tendon", joints:fingers.map(j => ({joint:j, coefficient:1})), drive:{forceLimit:.4, ctrlrange:[-.4,.15]} } } };
   E.push({name:"claw", asset:assetUrl, controller:{type:"direct", config:""}});
 
-  /* ---------------- capsules: 60 mm glass shells with a coin inside, one layer like the real floor ---------------- */
+  /* ---------------- capsules: 60 mm two-tone shells (gold or lavender) with a seam, one layer on the tray ---------------- */
   const caps = [];
   for (let j = 0; j < 9; j++) for (let i = 0; i < 11; i++){
     const x = .085 + i*.082 + (rnd() - .5)*.016, y = .27 + j*.082 + (rnd() - .5)*.016;
     if (x > .76 && y < .26) continue;
-    if ((x - .1)**2 + (y - .9)**2 < .075**2) continue;
     caps.push([x - .5, y - .5]);
   }
   [[.2, .19], [.34, .19], [.5, .19], [.64, .19]].forEach(([x, y]) => caps.push([x - .5 + (rnd() - .5)*.01, y - .5]));
   caps.forEach(([x, y], k) => {
-    const coin = k % 9 === 0 ? "coin_blue" : k % 4 === 0 ? "silver" : "gold";
+    const shell = rnd() < .58 ? "cap_gold" : "cap_violet";
     E.push({name:"capsule_" + String(k + 1).padStart(2, "0"), transform:{pos:[r4(x), r4(y), r4(FZ + R + .002)], quat:q([rnd(), rnd(), 1].map((v, i, a) => v/Math.hypot(...a)), rnd()*6.28)},
       physics:{type:"rigid", motion:"dynamic", mass:.015}, joint:{type:"free"},
-      geoms:[{type:"sphere", radius:R, material:"shell", friction:1.3},
-             ghost({type:"cylinder", radius:.0145, height:.003, pos:[r4((rnd() - .5)*.008), r4((rnd() - .5)*.008), r4(-.016 + rnd()*.004)], quat:q([1,0,0], (rnd() - .5)*1.2), material:coin})], collider:{}});
+      geoms:[{type:"sphere", radius:R, material:shell, friction:1.3},
+             ghost({type:"cylinder", radius:r4(R + .0006), height:.0035, pos:[0,0,0], material:"seam"})], collider:{}});
   });
 
   /* ---------------- the filming room (same room as v1: walls, glass front and right, lamp grid, shelf, desk, tripod) ---------------- */
@@ -356,8 +348,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   E.push({name:"key_light", transform:{pos:[-.3,-2.1,2.6]}, light:{type:"spot", color:"#fff4e6", intensity:6, dir:[.12,.86,-.5], angle:.7, castShadow:true}});
   E.push({name:"rim_light", transform:{pos:[.7,2.3,1.6]}, light:{type:"spot", color:"#8ca8ff", intensity:5, dir:[-.25,-.9,-.35], angle:.8}});
   E.push({name:"fill_light", transform:{pos:[-2.0,-.6,.9]}, light:{type:"point", color:"#d8e2ff", intensity:1.4, range:4}});
-  E.push({name:"led_light_l", transform:{pos:[-.3,0,.95]}, light:{type:"point", color:"#ffb877", intensity:1, range:1.1}});
-  E.push({name:"led_light_r", transform:{pos:[.3,0,.95]}, light:{type:"point", color:"#ffb877", intensity:1, range:1.1}});
+  E.push({name:"top_light", transform:{pos:[0,-.1,1.6]}, light:{type:"point", color:"#e6ecff", intensity:1.6, range:2.2}});
   E.push({name:"back_glow", transform:{pos:[0, 2.0, 2.2]}, light:{type:"point", color:"#7d84ff", intensity:2, range:4.5}});
   E.push({name:"chute_glow", transform:{pos:[.38, -.39, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.12, range:.3}});
 
