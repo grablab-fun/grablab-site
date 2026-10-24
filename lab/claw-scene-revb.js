@@ -293,7 +293,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   caps.forEach(([x, y], k) => {
     const shell = rnd() < .58 ? "cap_gold" : "cap_violet";
     E.push({name:"capsule_" + String(k + 1).padStart(2, "0"), transform:{pos:[r4(x), r4(y), r4(FZ + R + .002)], quat:q([rnd(), rnd(), 1].map((v, i, a) => v/Math.hypot(...a)), rnd()*6.28)},
-      physics:{type:"rigid", motion:"dynamic", mass:.015}, joint:{type:"free"},
+      physics:{type:"rigid", motion:"dynamic", mass:.015, angularDamping:.00003, linearDamping:.0005}, joint:{type:"free"},
       geoms:[{type:"sphere", radius:R, material:shell, friction:1.3},
              ghost({type:"cylinder", radius:r4(R + .0006), height:.0035, pos:[0,0,0], material:"seam"})], collider:{}});
   });
@@ -353,7 +353,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   E.push({name:"chute_glow", transform:{pos:[.38, -.39, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.12, range:.3}});
 
   const task = { instruction:"Grablab Prototype 01 Rev B. Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the gantry. Lift left lowers the claw on its line, grip left opens it, grip back to the centre closes it on the spring grip, lift right raises it. Carry the capsule to the chute in the front right corner and open the grip: it drops through the beam into the NFC cradle." };
-  return { scene:{ _format:"simarena/scene@1.0", name:"Grablab Prototype 01 Rev B", sim:{timestep:.002, gravity:[0,0,-9.81]}, material, task, entities:E }, asset };
+  return { scene:{ _format:"simarena/scene@1.0", name:"Grablab Prototype 01 Rev B", sim:{timestep:.002, gravity:[0,0,-9.81], sleep:true}, material, task, entities:E }, asset };
 }
 if (typeof module !== "undefined" && require.main === module){
   const fs = require("fs"), path = require("path"), { scene, asset } = buildRevBScene();
