@@ -28,7 +28,9 @@ export function buildMachine(THREE, api){
   const yellow = () => m("yellow", { color:0xf2c418, roughness:.4, metalness:0 });
   const wireR = () => m("wirer", { color:0xc22325, roughness:.45 });
   const wireK = () => m("wirek", { color:0x0e0e10, roughness:.45 });
-  const acrylic = () => m("acrylic", { color:0xdfe7ff, roughness:.04, metalness:0, clearcoat:1, clearcoatRoughness:.05, transparent:true, opacity:.14, depthWrite:false }, true);
+  const acrylic0 = () => m("acrylic", { color:0xdfe7ff, roughness:.04, metalness:0, clearcoat:1, clearcoatRoughness:.05, transparent:true, opacity:.14, depthWrite:false }, true);
+  const acrylic = () => { const a = acrylic0(); a.userData.noPick = true; return a; };
+  const np = mt => { (typeof mt === "function" ? mt() : mt).userData.noPick = true; return mt; };
   const lens = () => m("lens", { color:0x05060a, roughness:.05, metalness:.8 });
   const led = c => m("led" + c.toString(16), { color:c, emissive:c, emissiveIntensity:1.6, roughness:1 });
   const pcbRed = () => m("pcbr", { color:0x8a1b1b, roughness:.45 });
@@ -50,6 +52,13 @@ export function buildMachine(THREE, api){
   const cylY = (r, h, k = 32) => new THREE.CylinderGeometry(r, r, h, k);
   const long = fn => { const was = PART; PART = "wiring"; fn(); PART = was; };
   const tube = (pts, r, mt, name, k = 64) => add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p)), false, "centripetal"), k, r, 8), mt, 0, 0, 0, 0, 0, 0, name);
+  /* a cable laid like a real harness: straight runs between the points, a small radius at every bend */
+  const harness = (pts, r, mt, name) => { const P = pts.map(p => new THREE.Vector3(...p)), path = new THREE.CurvePath(); let prev = P[0];
+    for (let i = 1; i < P.length; i++){ const a = P[i];
+      if (i === P.length - 1){ path.add(new THREE.LineCurve3(prev, a)); break; }
+      const f = Math.min(.007, a.distanceTo(P[i - 1])/2.2, a.distanceTo(P[i + 1])/2.2), p1 = a.clone().add(P[i - 1].clone().sub(a).setLength(f)), p2 = a.clone().add(P[i + 1].clone().sub(a).setLength(f));
+      path.add(new THREE.LineCurve3(prev, p1)); path.add(new THREE.QuadraticBezierCurve3(p1, a, p2)); prev = p2; }
+    return add(new THREE.TubeGeometry(path, Math.max(32, P.length*20), r, 8), mt, 0, 0, 0, 0, 0, 0, name); };
   const canvasTex = (w, h, draw) => { const cv = document.createElement("canvas"); cv.width = w; cv.height = h; const g = cv.getContext("2d"); draw(g, w, h);
     const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; t.userData.redraw = () => { g.clearRect(0, 0, w, h); draw(g, w, h); t.needsUpdate = true; }; return t; };
   /* a printed face: canvas drawn at about 12 px per mm, capped at 2048 px */
@@ -135,7 +144,7 @@ export function buildMachine(THREE, api){
   for (const [x, y] of POSTS) add(cylZ(.018, .008), pom, x, y, -.004, 0, 0, 0, "frame_foot");
   for (const [x, y] of [[-.48, -.5005], [.48, -.5005], [-.48, .5005], [.48, .5005]]) for (const z of [.012, .028, 1.012, 1.028]) add(cylY(.0035, .001, 12), steel, x, y, z, 0, 0, 0, "frame_screw");
 
-  /* =========================================================================================== rear panel: MDF 1000 x 300, outer face */
+  /* =========================================================================================== front panel: MDF 1000 x 300, the face of the machine under the floor */
   use("panel");
   const IN = .50, PY1 = .512;                                     // inner face (components) and outer face (E-stop, QR, GRABLAB)
   box(-.5, IN, .02, .5, PY1, .32, mdf, "panel_mdf");
@@ -177,16 +186,16 @@ export function buildMachine(THREE, api){
   for (let r = 0; r < 3; r++) for (let i = 0; i < 12; i++) box(-.445 + i*.0085, IN - .0424, .04 + r*.012, -.441 + i*.0085, IN - .042, .048 + r*.012, dark, "el_psu_vent");
   box(-.288, IN - .05, .042, -.259, IN - .042, .126, m("term", { color:0x18191d, roughness:.5 }), "el_psu_terminals");
   for (let i = 0; i < 7; i++) add(cylY(.003, .002, 12), steel, -.2735, IN - .051, .05 + i*.0115, 0, 0, 0, "el_psu_screw");
-  const psuLbl = label("psulbl", .08, .036, (g, w, h) => { g.fillStyle = "#e9ebef"; g.fillRect(0, 0, w, h); g.fillStyle = "#1d1f24"; g.font = `700 ${h*.3}px Satoshi, sans-serif`; g.fillText("12 V  10 A", w*.06, h*.42); g.font = `500 ${h*.18}px Satoshi, sans-serif`; g.fillText("120 W   AC IN   DC OUT", w*.06, h*.76); });
+  const psuLbl = label("psulbl", .08, .036, (g, w, h) => { g.fillStyle = "#e9ebef"; g.fillRect(0, 0, w, h); g.fillStyle = "#1d1f24"; g.font = `700 ${h*.3}px Satoshi, sans-serif`; g.fillText("DC 12 V", w*.06, h*.5); });
   add(new THREE.PlaneGeometry(.08, .036), psuLbl, -.34, IN - .0426, .1, ...FACE_NEG_Y, "el_psu_label");
-  /* Wago 221 5-way pair */
-  for (const z of [.25, .215]){ box(-.32, IN - .018, z, -.275, IN, z + .02, wagoM, "el_wago");
-    for (let i = 0; i < 5; i++) box(-.318 + i*.009, IN - .022, z + .012, -.311 + i*.009, IN - .018, z + .02, lever, "el_wago_lever"); }
+  /* two 5 way lever connectors side by side: 12 V and ground */
+  for (const x0 of [-.32, -.27]){ box(x0, IN - .018, .24, x0 + .045, IN, .26, wagoM, "el_wago");
+    for (let i = 0; i < 5; i++) box(x0 + .002 + i*.009, IN - .022, .252, x0 + .009 + i*.009, IN - .018, .26, lever, "el_wago_lever"); }
   /* Arduino UNO on standoffs, CNC Shield V3 on its headers, 4 x A4988 with heatsinks */
-  const ux0 = -.24, uz0 = .095;
+  const ux0 = -.232, uz0 = .095;
   for (const [dx, dz] of [[.004, .004], [.064, .004], [.004, .049], [.064, .049]]) add(cylY(.0025, .006, 10), brass, ux0 + dx, IN - .003, uz0 + dz, 0, 0, 0, "el_uno_standoff");
   box(ux0, IN - .0076, uz0, ux0 + .0686, IN - .006, uz0 + .0534, m("uno", { color:0x0e6ea8, roughness:.45 }), "el_uno");
-  box(ux0 - .006, IN - .019, uz0 + .03, ux0 + .01, IN - .0076, uz0 + .042, steel, "el_uno_usb");
+  box(ux0 + .03, IN - .019, uz0 - .006, ux0 + .042, IN - .0076, uz0 + .01, steel, "el_uno_usb");
   for (let i = 0; i < 24; i++) box(ux0 + .006 + i*.0024, IN - .0199, uz0 + .002, ux0 + .0072 + i*.0024, IN - .0076, uz0 + .0034, brass, "el_shield_pins");
   box(ux0 + .003, IN - .0215, uz0 + .001, ux0 + .0656, IN - .0199, uz0 + .052, m("shield", { color:0x1b3a87, roughness:.45 }), "el_cnc_shield");
   for (let i = 0; i < 4; i++){ const x = ux0 + .007 + i*.0145;
@@ -200,9 +209,9 @@ export function buildMachine(THREE, api){
   box(cx0 + .006, IN - .0046, .091, cx0 + .049, IN - .003, .134, m("l298", { color:0xc0262e, roughness:.45 }), "el_l298n");
   box(cx0 + .016, IN - .027, .1, cx0 + .039, IN - .0046, .125, m("hs", { color:0x101114, roughness:.4, metalness:.6 }), "el_l298n_heatsink");
   for (let f = 0; f < 7; f++) box(cx0 + .016 + f*.0035, IN - .035, .1, cx0 + .0175 + f*.0035, IN - .027, .125, m("hs"), "el_l298n_fin");
-  box(cx0 + .008, IN - .0126, .091, cx0 + .03, IN - .0046, .099, m("term2"), "el_l298n_terminal");
+  box(cx0 + .008, IN - .0126, .091, cx0 + .03, IN - .0046, .099, m("term2"), "el_l298n_terminal"); box(cx0 + .034, IN - .0126, .134, cx0 + .048, IN - .0046, .142, m("term2"), "el_l298n_terminal");
   box(cx0 + .057, IN - .016, .1, cx0 + .095, IN - .003, .13, m("conv", { color:0x101013, roughness:.55 }), "el_converter");
-  const convLbl = label("convlbl", .034, .022, (g, w, h) => { g.fillStyle = "#101013"; g.fillRect(0, 0, w, h); g.fillStyle = "#e6e8ee"; g.font = `700 ${h*.3}px Satoshi, sans-serif`; g.fillText("12V > 5V", w*.08, h*.45); g.font = `500 ${h*.22}px Satoshi, sans-serif`; g.fillText("3 A  15 W", w*.08, h*.8); });
+  const convLbl = label("convlbl", .034, .022, (g, w, h) => { g.fillStyle = "#101013"; g.fillRect(0, 0, w, h); g.fillStyle = "#e6e8ee"; g.font = `700 ${h*.3}px Satoshi, sans-serif`; g.fillText("5 V", w*.08, h*.6); });
   add(new THREE.PlaneGeometry(.034, .022), convLbl, cx0 + .076, IN - .0161, .115, ...FACE_NEG_Y, "el_converter_label");
   /* Pi case 100 x 70 x 35: back on the panel, Raspberry Pi 4 on posts, OPTIGA Trust M Express on its own 2 posts, smoked lid with the 30 mm fan */
   const px0 = 0, pz0 = .12, pib = IN - .008;                       // pib: back of the Pi board
@@ -231,24 +240,29 @@ export function buildMachine(THREE, api){
   /* 4 Dupont wires GPIO to OPTIGA (3V3, GND, SDA, SCL) */
   [[0xd8352a, 0], [0x111111, .0025], [0x2a6de0, .005], [0xf1c40f, .0075]].forEach(([c, dx], i) => tube([[px0 + .0124 + dx*2, pib - .0086, pz0 + .058], [px0 + .02 + dx, pib - .015, pz0 + .048], [ox0 + .006 + dx, ob - .0017, oz0 + .0235]], .0007, m("dup" + i, { color:c, roughness:.5 }), "el_dupont", 20));
   /* smoked lid and the 30 mm fan behind it */
-  const lid = m("lid", { color:0x3a3d47, roughness:.3, metalness:.1, transparent:true, opacity:.3, depthWrite:false });
+  const lid = np(m("lid", { color:0x3a3d47, roughness:.3, metalness:.1, transparent:true, opacity:.3, depthWrite:false }));
   box(px0, IN - .0375, pz0, px0 + .1, IN - .035, pz0 + .07, lid, "el_picase_lid");
   const fx = px0 + .078, fz = pz0 + .05;
   for (const [a, b, c, d] of [[-.015, -.015, .015, -.013], [-.015, .013, .015, .015], [-.015, -.015, -.013, .015], [.013, -.015, .015, .015]]) box(fx + a, IN - .035, fz + b, fx + c, IN - .025, fz + d, m("fan", { color:0x15161a, roughness:.5 }), "el_pi_fan");
   add(cylY(.0055, .01, 24), m("fan"), fx, IN - .03, fz, 0, 0, 0, "el_pi_fan_hub");
   for (let i = 0; i < 7; i++) add(BOX(.027, .0008, .0045), m("fanblade", { color:0x2a2c33, roughness:.5 }), fx, IN - .033, fz, 0, i*Math.PI/7 + .3, 0, "el_pi_fan_blade");
-  /* power and signal wiring */
-  const W = (pts, r, hot, nm) => tube(pts, r, hot ? wireR : wireK, nm, 24);
-  W([[-.2735, IN - .052, .108], [-.29, IN - .034, .16], [-.34, IN - .052, .2], [-.345, IN - .0455, .208]], .0016, 1, "el_wire_psu_estop");
-  W([[-.338, IN - .0455, .232], [-.332, IN - .034, .258], [-.3205, IN - .012, .26]], .0016, 1, "el_wire_estop_wago");
-  W([[-.2735, IN - .052, .073], [-.3, IN - .034, .15], [-.3205, IN - .012, .225]], .0016, 0, "el_wire_psu_gnd");
-  W([[-.2745, IN - .01, .262], [-.23, IN - .04, .2], [-.186, IN - .0305, .146]], .0014, 1, "el_wire_shield"); W([[-.2745, IN - .01, .226], [-.23, IN - .03, .19], [-.181, IN - .0305, .144]], .0014, 0, "el_wire_shield");
-  W([[-.2745, IN - .012, .266], [-.2, IN - .032, .17], [-.141, IN - .0131, .098]], .0014, 1, "el_wire_l298n"); W([[-.2745, IN - .012, .23], [-.21, IN - .03, .14], [-.132, IN - .0131, .097]], .0014, 0, "el_wire_l298n");
-  W([[-.2745, IN - .014, .258], [-.16, IN - .03, .2], [-.0985, IN - .01, .124]], .0014, 1, "el_wire_converter"); W([[-.2745, IN - .014, .222], [-.15, IN - .03, .18], [-.0985, IN - .01, .108]], .0014, 0, "el_wire_converter");
-  W([[-.0595, IN - .01, .118], [-.03, IN - .03, .132], [-.0005, IN - .02, .136]], .0014, 1, "el_wire_pi_5v");
-  tube([[ux0 - .0065, IN - .013, uz0 + .036], [-.265, IN - .05, .16], [-.1, IN - .045, .17], [.04, IN - .03, .17], [.082, IN - .0378, .14]], .0028, m("usb", { color:0x0d0d0f, roughness:.5 }), "el_usb_uno_pi", 48);
-  /* the claw's 12 V pair from the L298N climbs the rear left post to the drag chain */
-  long(() => W([[-.147, IN - .0131, .095], [-.3, IN - .05, .3], [-.455, IN - .02, .33], [-.457, .474, .7], [-.457, .474, 1.0]], .0018, 0, "el_wire_claw"));
+  /* power and signal wiring: red on the panel, black one layer out, every bend rounded, never through a board */
+  const R = (pts, nm) => harness(pts, .0015, wireR, nm), K = (pts, nm) => harness(pts, .0015, wireK, nm);
+  const wr = i => -.32 + .0055 + .009*i, wk = i => -.27 + .0055 + .009*i, WB = .2395;
+  R([[-.2735, IN - .052, .108], [-.2475, IN - .052, .108], [-.2475, IN - .004, .108], [-.2475, IN - .004, .162], [-.345, IN - .004, .162], [-.345, IN - .004, .19], [-.345, IN - .02, .2045]], "el_wire_psu_estop");
+  R([[-.3345, IN - .02, .215], [wr(0), IN - .02, .215], [wr(0), IN - .009, .228], [wr(0), IN - .009, WB]], "el_wire_estop_wago");
+  K([[-.2735, IN - .052, .073], [-.2435, IN - .052, .073], [-.2435, IN - .013, .073], [-.2435, IN - .013, .225], [wk(4), IN - .013, .225], [wk(4), IN - .009, WB]], "el_wire_psu_gnd");
+  R([[wr(1), IN - .009, WB], [wr(1), IN - .004, .19], [-.182, IN - .004, .19], [-.182, IN - .004, .16], [-.182, IN - .026, .1465]], "el_wire_shield");
+  K([[wk(0), IN - .009, WB], [wk(0), IN - .0085, .185], [-.174, IN - .0085, .185], [-.174, IN - .0085, .16], [-.174, IN - .026, .1465]], "el_wire_shield");
+  R([[wr(2), IN - .009, WB], [wr(2), IN - .004, .182], [-.143, IN - .004, .182], [-.143, IN - .008, .175], [-.143, IN - .008, .0995]], "el_wire_l298n");
+  K([[wk(1), IN - .009, WB], [wk(1), IN - .0085, .178], [-.152, IN - .0085, .178], [-.152, IN - .0085, .095], [-.1472, IN - .0085, .095]], "el_wire_l298n");
+  R([[wr(3), IN - .009, WB], [wr(3), IN - .004, .174], [-.09, IN - .004, .174], [-.09, IN - .008, .168], [-.09, IN - .008, .1305]], "el_wire_converter");
+  K([[wk(2), IN - .009, WB], [wk(2), IN - .0085, .17], [-.08, IN - .0085, .17], [-.08, IN - .0085, .1305]], "el_wire_converter");
+  R([[-.0595, IN - .008, .118], [-.03, IN - .008, .118], [-.03, IN - .008, .14], [-.0005, IN - .008, .14]], "el_wire_pi_5v");
+  K([[-.0595, IN - .012, .108], [-.025, IN - .012, .108], [-.025, IN - .012, .132], [-.0005, IN - .012, .132]], "el_wire_pi_5v");
+  harness([[ux0 + .036, IN - .013, uz0 - .0065], [ux0 + .036, IN - .013, .075], [.08, IN - .013, .075], [.08, IN - .013, .1195]], .0028, m("usb", { color:0x0d0d0f, roughness:.5 }), "el_usb_uno_pi");
+  /* the loom: claw power from the claw driver and the X motor leads, through a floor grommet in the corner, up to the gantry */
+  long(() => harness([[-.114, IN - .008, .1425], [-.114, IN - .016, .15], [-.114, IN - .016, .284], [-.44, IN - .016, .284], [-.452, .452, .31], [-.452, .452, .99], [-.44, .44, 1.06], [-.44, .2, 1.14], [-.44, .07, 1.14], [-.453, .07, 1.125], [-.453, .0605, 1.117]], .0018, wireK, "el_wire_claw"));
 
   /* =========================================================================================== floor and walls */
   use("cage");
@@ -256,11 +270,22 @@ export function buildMachine(THREE, api){
   box(-.5, HY1, FZ, .5, .5, FZ + FT, mdf, "cage_floor"); box(-.5, -.5, FZ, HX0, HY1, FZ + FT, mdf, "cage_floor");
   box(HX1, -.5, FZ, .5, HY1, FZ + FT, mdf, "cage_floor"); box(HX0, -.5, FZ, HX1, HY0, FZ + FT, mdf, "cage_floor");
   for (const [x, y] of [[-.48, -.3], [-.48, .3], [.48, -.2], [.48, .3], [-.2, -.48], [.1, -.48], [-.2, .48], [.2, .48]]) add(cylZ(.0035, .001, 12), steel, x, y, FZ + FT + .0005, 0, 0, 0, "cage_floor_screw");
-  /* acrylic: front and both sides, outside the posts, 400 to 1000 */
-  box(-.5, -.503, FZ, .5, -.5, 1.0, acrylic, "cage_acrylic"); box(-.503, -.5, FZ, -.5, .5, 1.0, acrylic, "cage_acrylic"); box(.5, -.5, FZ, .503, .5, 1.0, acrylic, "cage_acrylic");
+  /* acrylic on all four sides, outside the posts, 400 to 1000 */
+  box(-.5, .5, FZ, .5, .503, 1.0, acrylic, "cage_acrylic"); box(-.5, -.503, FZ, .5, -.5, 1.0, acrylic, "cage_acrylic"); box(-.503, -.5, FZ, -.5, .5, 1.0, acrylic, "cage_acrylic"); box(.5, -.5, FZ, .503, .5, 1.0, acrylic, "cage_acrylic");
   for (const [a, z] of [[-.48, .42], [-.48, .98], [.48, .42], [.48, .98], [0, .42], [0, .98]]){
-    add(cylY(.006, .0015, 16), steel, a, -.50375, z, 0, 0, 0, "cage_acrylic_washer");
+    for (const s of [-1, 1]) add(cylY(.006, .0015, 16), steel, a, s*.50375, z, 0, 0, 0, "cage_acrylic_washer");
     for (const s of [-1, 1]) add(cylX(.006, .0015, 16), steel, s*.50375, a, z, 0, 0, 0, "cage_acrylic_washer"); }
+  /* rubber grommets where cables cross the floor */
+  const grom = m("grommet", { color:0x0d0d0f, roughness:.7 });
+  for (const [x, y] of [[-.449, .449], [-.452, -.452]]){ add(new THREE.TorusGeometry(.0085, .0022, 10, 28), grom, x, y, FZ + FT, 0, 0, 0, "cage_grommet"); add(new THREE.TorusGeometry(.0085, .0022, 10, 28), grom, x, y, FZ, 0, 0, 0, "cage_grommet"); add(new THREE.CylinderGeometry(.0072, .0072, FT, 24, 1, true).rotateX(Math.PI/2), grom, x, y, FZ + FT/2, 0, 0, 0, "cage_grommet"); }
+  /* guard around the prize hole: clear walls in a black frame, so capsules fall in only when the claw lets go */
+  const GH = .075, G0 = HX0 - .008, G1 = HX1 + .008, Q0 = HY0 - .008, Q1 = HY1 + .008, gz = FZ + FT, frameM = m("guardframe", { color:0x15161a, roughness:.4, metalness:.5 });
+  const glass = m("guardglass", { color:0xdfe7ff, roughness:.04, metalness:0, clearcoat:1, transparent:true, opacity:.2, depthWrite:false }, true); glass.userData.noPick = true;
+  box(G0, Q0, gz, G0 + .003, Q1, gz + GH, glass, "cage_guard"); box(G1 - .003, Q0, gz, G1, Q1, gz + GH, glass, "cage_guard");
+  box(G0, Q0, gz, G1, Q0 + .003, gz + GH, glass, "cage_guard"); box(G0, Q1 - .003, gz, G1, Q1, gz + GH, glass, "cage_guard");
+  for (const [x, y] of [[G0, Q0], [G1, Q0], [G0, Q1], [G1, Q1]]) box(x - .005, y - .005, gz, x + .005, y + .005, gz + GH + .004, frameM, "cage_guard_post");
+  box(G0 - .005, Q0 - .005, gz + GH, G1 + .005, Q0 + .003, gz + GH + .004, frameM, "cage_guard_rim"); box(G0 - .005, Q1 - .003, gz + GH, G1 + .005, Q1 + .005, gz + GH + .004, frameM, "cage_guard_rim");
+  box(G0 - .005, Q0 - .005, gz + GH, G0 + .003, Q1 + .005, gz + GH + .004, frameM, "cage_guard_rim"); box(G1 - .003, Q0 - .005, gz + GH, G1 + .005, Q1 + .005, gz + GH + .004, frameM, "cage_guard_rim");
 
   /* =========================================================================================== chute, tray, cup */
   use("chute");
@@ -277,7 +302,8 @@ export function buildMachine(THREE, api){
     box(s0, -.365, SZ - .022, s1, -.315, SZ + .022, m("e3jk", { color:0x1b1d22, roughness:.4 }), o < 0 ? "chute_e3jk_emitter" : "chute_e3jk_receiver");
     add(cylX(.006, .026), lens, (o < 0 ? HX0 : HX1) + o*.0025 - o*.004, -.34, SZ, 0, 0, 0, "chute_e3jk_lens");
     add(cylX(.0018, .002, 12), led(o < 0 ? 0xff5a3c : 0x52d96b), wx + o*.022, -.325, SZ + .015, 0, 0, 0, "chute_e3jk_led");
-    long(() => tube([[wx + o*.012, -.3155, SZ], [wx + o*.02, -.2, SZ + .005], [wx*.5, .2, FZ - .012], [-.15, .4, .3], [-.215, .4776, .12]], .0022, wireK, "chute_e3jk_cable", 48));
+    { const cx = o < 0 ? .256 : .424, ly = o < 0 ? .44 : .43, tx = o < 0 ? -.215 : -.205;
+      long(() => harness([[cx, -.3145, SZ], [cx, -.25, SZ], [cx, ly, SZ], [tx, ly, SZ], [tx, ly, .1], [tx, IN - .0217, .1]], .002, wireK, "chute_e3jk_cable")); }
   }
   /* printed tray under the chute: ACR122U in its pocket, flap on the 3 mm axle, MG90S and the Z-bent pushrod */
   const TX0 = .285, TX1 = .395, TY0 = -.38, TY1 = -.30, TZ0 = .112, TZ1 = .124;
@@ -287,7 +313,7 @@ export function buildMachine(THREE, api){
   box(HX0, TY0 + .01, TZ1, HX0 + .006, TY1 - .01, CZ0 + .012, petg, "chute_tray_hanger"); box(HX1 - .006, TY0 + .01, TZ1, HX1, TY1 - .01, CZ0 + .012, petg, "chute_tray_hanger");
   box(TX0 + .006, TY0 + .007, TZ0 + .002, TX1 - .006, TY1 - .007, TZ0 + .0128, m("acr", { color:0x15161a, roughness:.5 }), "chute_acr122u");
   const acrl = label("acr", .06, .04, (g, w, h) => { g.fillStyle = "#15161a"; g.fillRect(0, 0, w, h); g.strokeStyle = "rgba(160,190,255,.55)"; g.lineWidth = h*.025;
-    for (let i = 0; i < 3; i++){ const k = .1 + i*.08; g.strokeRect(w*k, h*k*1.4, w*(1 - 2*k), h*(1 - 2.8*k)); } g.fillStyle = "rgba(230,235,255,.8)"; g.font = `700 ${h*.11}px Satoshi, sans-serif`; g.fillText("ACR122U", w*.06, h*.95); });
+    for (let i = 0; i < 3; i++){ const k = .1 + i*.08; g.strokeRect(w*k, h*k*1.4, w*(1 - 2*k), h*(1 - 2.8*k)); } });
   add(new THREE.PlaneGeometry(.06, .04), acrl, (TX0 + TX1)/2, (TY0 + TY1)/2, TZ0 + .0129, 0, 0, 0, "chute_acr122u_top");
   add(cylZ(.002, .0008, 12), led(0x52d96b), TX1 - .02, TY0 + .015, TZ0 + .0132, 0, 0, 0, "chute_acr122u_led");
   const AXZ = TZ0 + .028, AY = TY1 - .004;
@@ -309,40 +335,45 @@ export function buildMachine(THREE, api){
   for (const z of [.13, .3]){ box(.455, -.5135, z, .468, -.5, z + .03, steel, "chute_hinge"); add(cylZ(.0018, .03, 10), steel, .4655, -.5135, z + .015, 0, 0, 0, "chute_hinge_pin"); }
   box(.17, -.5, .36, .2, -.47, .40, mdf, "chute_catch_block"); box(.175, -.5005, .345, .195, -.4995, .36, dark, "chute_magnet");
   box(.18, -.5175, .215, .2, -.512, .235, steel, "chute_door_knob");
-  /* C960 clipped to the front wall at the top, 250 above the flap, looking down at it */
-  box(HX0 + .005, HY0, CZ1 - .045, HX0 + .055, HY0 + .004, CZ1 - .01, dark, "chute_c960_clip");
-  const cam = new THREE.Group(); cam.position.set(HX0 + .03, HY0 + .014, CZ1 - .028); cam.rotation.set(-1.32, 0, 0); G("chute").add(cam);
+  /* C960 clipped to the rear wall at the top, 250 above the flap, looking down at it; its cable leaves through a grommet */
+  box(HX0 + .005, HY1 - .004, CZ1 - .045, HX0 + .055, HY1, CZ1 - .01, dark, "chute_c960_clip");
+  const cam = new THREE.Group(); cam.position.set(HX0 + .03, HY1 - .014, CZ1 - .028); cam.rotation.set(-1.82, 0, 0); G("chute").add(cam);
   add(BOX(.07, .02, .026), m("c960", { color:0x16171b, roughness:.45 }), 0, 0, 0, 0, 0, 0, "chute_c960", cam);
   add(cylY(.007, .004, 24), lens, 0, .012, 0, 0, 0, 0, "chute_c960_lens", cam);
-  long(() => tube([[HX0 + .055, HY0 + .002, CZ1 - .03], [HX0 - .03, HY0 + .03, CZ1 - .02], [.0, .1, FZ - .015], [.06, .4, .2], [.062, IN - .0378, .137]], .0022, wireK, "chute_c960_cable", 48));
-  long(() => tube([[TX0, TY1 - .02, TZ0 + .006], [.2, -.2, .25], [.05, .3, .2], [.072, IN - .0378, .137]], .0024, wireK, "chute_acr_usb", 48));
-  long(() => tube([[TX1 + .01, TY0 + .051, TZ0 + .02], [.42, -.2, .1], [.0, .3, .09], [-.188, IN - .0216, .1]], .0012, wireK, "chute_servo_cable", 32));
+  add(cylY(.0055, .022, 20), m("grommet", { color:0x0d0d0f, roughness:.7 }), HX0 + .07, HY1 + .006, CZ1 - .02, 0, 0, 0, "chute_grommet");
+  long(() => harness([[HX0 + .055, HY1 - .002, CZ1 - .02], [HX0 + .07, HY1 - .004, CZ1 - .02], [HX0 + .07, HY1 + .03, CZ1 - .02], [HX0 + .07, .41, CZ1 - .02], [.072, .41, CZ1 - .02], [.072, .41, .137], [.072, IN - .0378, .137]], .0022, wireK, "chute_c960_cable"));
+  long(() => harness([[TX0 - .0005, -.32, .118], [.24, -.32, .118], [.24, .40, .118], [.062, .40, .118], [.062, .40, .137], [.062, IN - .0378, .137]], .0024, wireK, "chute_acr_usb"));
+  long(() => harness([[TX1 + .0165, TY0 + .04, TZ0 + .013], [.43, TY0 + .04, TZ0 + .013], [.43, .42, .125], [-.195, .42, .125], [-.195, .42, .1], [-.195, IN - .0217, .1]], .0012, wireK, "chute_servo_cable"));
 
   /* =========================================================================================== capsules: clear, one colour, size not fixed */
   use("capsules");
   const capsules = [], CR = .025;
-  const shell = m("shell", { color:0xf2f5ff, roughness:.04, metalness:0, transmission:.95, thickness:.002, ior:1.49, clearcoat:1, clearcoatRoughness:.03, transparent:true, opacity:.6, side:THREE.DoubleSide }, true);
-  const seam = m("seam", { color:0xd6dbe6, roughness:.3, metalness:.1, transparent:true, opacity:.75 });
+  const shell = m("shell", { color:0xeef3ff, roughness:.03, metalness:0, clearcoat:1, clearcoatRoughness:.03, transparent:true, opacity:.2, specularIntensity:1, depthWrite:false, side:THREE.DoubleSide }, true);
   const tagT = new THREE.TextureLoader().load("assets/nfc-tag.png?v=1"); tagT.colorSpace = THREE.SRGBColorSpace; tagT.anisotropy = 8;
   const tagM = m("tag", { map:tagT, transparent:true, roughness:.6, metalness:0 });
-  const gTop = new THREE.SphereGeometry(CR, 40, 20, 0, Math.PI*2, 0, Math.PI/2).rotateX(Math.PI/2), gBot = new THREE.SphereGeometry(CR, 40, 20, 0, Math.PI*2, Math.PI/2, Math.PI/2).rotateX(Math.PI/2);
-  const gSeam = new THREE.TorusGeometry(CR + .0002, .0009, 8, 48), gTag = new THREE.CircleGeometry(.0105, 40);
+  const gTop = new THREE.SphereGeometry(CR, 28, 12, 0, Math.PI*2, 0, Math.PI/2).rotateX(Math.PI/2), gBot = new THREE.SphereGeometry(CR, 28, 12, 0, Math.PI*2, Math.PI/2, Math.PI/2).rotateX(Math.PI/2);
+  const gTag = new THREE.CircleGeometry(.0105, 32);
   let seed = 11; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
-  const spots = [];
-  for (let i = 0; i < 12; i++) for (let j = 0; j < 12; j++){
-    const x = -.44 + i*.08 + (rnd() - .5)*.018, y = -.44 + j*.08 + (rnd() - .5)*.018;
-    if (x > HX0 - .04 && x < HX1 + .04 && y > HY0 - .04 && y < HY1 + .04) continue; if (Math.abs(x) > .45 || Math.abs(y) > .45) continue; spots.push([x, y]);
-  }
-  spots.slice(0, 100).forEach(([x, y], k) => {
-    const o = new THREE.Group(); o.name = "capsule_" + String(k + 1).padStart(3, "0"); o.position.set(x, y, FZ + FT + CR + .0002);
-    o.quaternion.setFromEuler(new THREE.Euler((rnd() - .5)*.6, (rnd() - .5)*.6, rnd()*6.28));
+  /* a hexagonal pack on the floor, kept off the guard and the grommets, and a small pile on top of it */
+  const d = 2*CR + .0012, dy = d*Math.sqrt(3)/2, Lc = .455 - CR, spots = [], keep = new Set();
+  const clear = (x, y) => !(x > HX0 - .016 - CR && x < HX1 + .016 + CR && y > HY0 - .016 - CR && y < HY1 + .016 + CR) && Math.hypot(x + .449, y - .449) > .016 + CR && Math.hypot(x + .452, y + .452) > .016 + CR;
+  const z1 = FZ + FT + CR + .0002, z2 = z1 + CR*1.633 - .0004;
+  for (let r = 0; ; r++){ const y = -Lc + r*dy; if (y > Lc) break;
+    for (let c = 0; ; c++){ const x = -Lc + (r % 2 ? d/2 : 0) + c*d; if (x > Lc) break; if (clear(x, y)){ spots.push([x, y, z1]); keep.add(r + "," + c); } } }
+  for (let r = 0; ; r += 2){ const y = -Lc + r*dy; if (y > Lc) break;
+    for (let c = 0; ; c++){ const x = -Lc + c*d; if (x > Lc) break;
+      const x2 = x + d/2, y2 = y + dy/3; if (Math.hypot(x2 + .1, y2 - .08) > .19) continue;
+      if (keep.has(r + "," + c) && keep.has(r + "," + (c + 1)) && keep.has((r + 1) + "," + c)) spots.push([x2, y2, z2]); } }
+  spots.forEach(([x, y, z], k) => {
+    const o = new THREE.Group(); o.name = "capsule_" + String(k + 1).padStart(3, "0"); o.position.set(x, y, z);
+    o.quaternion.setFromEuler(new THREE.Euler((rnd() - .5)*.7, (rnd() - .5)*.7, rnd()*6.28));
     const lidG = new THREE.Group(); o.add(lidG);
-    const t = new THREE.Mesh(gTop, shell), b = new THREE.Mesh(gBot, shell), sm = new THREE.Mesh(gSeam, seam);
+    const t = new THREE.Mesh(gTop, shell), b = new THREE.Mesh(gBot, shell);
     lidG.add(t);
-    /* NTAG215 sticker on the outside of the lower half */
-    const tg = new THREE.Mesh(gTag, tagM); tg.position.set(0, -CR*.62*1.012, -CR*.78*1.012); tg.lookAt(0, -CR*1.4, -CR*1.76);
-    [t, b, sm, tg].forEach(mm => { mm.userData.part = "capsules"; mm.name = o.name; mm.castShadow = mm.receiveShadow = true; });
-    o.add(b, sm, tg); o.userData.lid = lidG; o.userData.q0 = o.quaternion.clone(); o.userData.cap = true; o.userData.part = "capsules";
+    /* NFC sticker on the outside of the lower half, on the side that turns to you when the capsule opens */
+    const tg = new THREE.Mesh(gTag, tagM); tg.position.set(0, CR*.995*1.012, -CR*.1*1.012); tg.lookAt(0, CR*1.99, -CR*.2);
+    [t, b, tg].forEach(mm => { mm.userData.part = "capsules"; mm.name = o.name; });
+    o.add(b, tg); o.userData.lid = lidG; o.userData.q0 = o.quaternion.clone(); o.userData.cap = true; o.userData.part = "capsules";
     G("capsules").add(o); capsules.push(o);
   });
 
@@ -402,8 +433,13 @@ export function buildMachine(THREE, api){
     for (let i = 0; i < k; i++){ const t = (i + .5)/k, p = c.getPointAt(t), d = c.getTangentAt(t);
       const o = add(BOX(.0128, .02, .01), m("chain", { color:0x131416, roughness:.55 }), p.x, p.y, p.z, 0, 0, 0, "gantry_drag_chain"); o.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), d); } }
   box(-.462, YC - .01, CTZ, -.444, YC + .01, CTZ + .01, petg, "gantry_drag_chain_mount");
+  /* the top run rests on a thin tray, held off the beam by three posts */
+  const trayM = m("tray", { color:0x2a2c33, roughness:.4, metalness:.7 });
+  box(-.49, YC - .012, hi - .0072, XC - .045, YC + .012, hi - .005, trayM, "gantry_chain_tray");
+  box(-.49, YC - .012, hi - .0072, XC - .045, YC - .0108, hi + .004, trayM, "gantry_chain_tray"); box(-.49, YC + .0108, hi - .0072, XC - .045, YC + .012, hi + .004, trayM, "gantry_chain_tray");
+  for (const x of [-.39, -.22, -.06]) box(x - .004, YC - .004, CTZ, x + .004, YC + .004, hi - .0072, trayM, "gantry_chain_tray_post");
   /* motor leads down the rear left post to the panel */
-  long(() => tube([[XMX, YC - .029, XSZ - .015], [-.53, .2, RZ - .02], [-.53, .48, RZ - .03], [-.456, .476, .96], [-.456, .476, .5], [-.3, .45, .33], [-.2, IN - .0225, .13]], .0026, wireK, "gantry_motor_leads", 64));
+  long(() => harness([[XMX, YC - .024, XSZ + .0245], [XMX, YC - .024, 1.17], [-.432, .15, 1.17], [-.432, .43, 1.07], [-.446, .446, .99], [-.446, .446, .38], [-.3, .47, .31], [-.205, IN - .026, .29], [-.205, IN - .026, .155], [-.205, IN - .0207, .1475]], .0026, wireK, "gantry_motor_leads"));
 
   /* =========================================================================================== X carriage and winch */
   use("winch");
@@ -507,7 +543,7 @@ export function buildMachine(THREE, api){
   add(cylY(.0048, .001, 32), m("glass", { color:0x2a3f8c, roughness:.02, metalness:.9, emissive:0x1a2a66, emissiveIntensity:.4 }), 0, .0181, -.008, 0, 0, 0, "camera_c920_glass", c2);
   for (const dx of [-.026, .026]) add(cylY(.0016, .001, 12), m("mic", { color:0x1a1b1f, roughness:.4, metalness:.6 }), dx, .0153, -.008, 0, 0, 0, "camera_c920_mic", c2);
   add(cylY(.0012, .001, 12), led(0xffffff), .016, .0153, -.008, 0, 0, 0, "camera_c920_led", c2);
-  long(() => tube([[-.44, -.44, H0 - .046], [-.453, -.453, .93], [-.455, -.455, .5], [-.44, -.42, .38], [-.2, .2, .33], [.082, IN - .0378, .137]], .0025, wireK, "camera_usb", 80));
+  long(() => harness([[-.44, -.44, H0 - .046], [-.452, -.452, .93], [-.452, -.452, .38], [-.43, -.43, .38], [-.43, .38, .38], [.082, .38, .38], [.082, .38, .137], [.082, IN - .0378, .137]], .0025, wireK, "camera_usb"));
 
   return { parts, capsules, dims:{ FZ, FT, HX0, HX1, HY0, HY1, CR, XC, YC, CT, LX, LY, IN, PY1 } };
 }
