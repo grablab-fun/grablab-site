@@ -1041,3 +1041,8 @@ body.is-loading{overflow:hidden}
 .scroll-hint .sh-chev b+b{animation-delay:.25s}
 @keyframes shChev{0%{opacity:0;transform:translateY(-6px) rotate(45deg)}35%{opacity:1}70%{opacity:0;transform:translateY(9px) rotate(45deg)}100%{opacity:0;transform:translateY(9px) rotate(45deg)}}
 @media(max-width:900px){.scroll-hint{bottom:14px;font-size:10px;gap:8px}}
+
+/* a heading set on two balanced lines on phones */
+@media (max-width:700px){ .section-head h2.two span{display:block;white-space:nowrap} .section-head h2.two{font-size:min(9.4vw,44px)} }
+/* phones: the inside video takes the full column, above the five steps */
+@media (max-width:900px){ .inside-show .inside-grid{height:auto} .inside-video{width:100%;max-width:460px;justify-self:center;aspect-ratio:4/5!important;height:auto!important} }

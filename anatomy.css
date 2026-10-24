@@ -353,3 +353,9 @@ body.ready .an-rail{opacity:1}
 .an-card .inside button{width:100%;box-sizing:border-box;justify-content:flex-start;min-height:30px;border-radius:10px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* phones: the menu sits inside the first screen */
 @media (max-width:980px){ .an-stage{height:calc(100svh - 300px);min-height:300px;max-height:66vh} }
+
+/* recording mode: only the machine on a transparent page */
+html.rec,html.rec body{background:transparent!important}
+html.rec body > *:not(main),html.rec .page-atmosphere,html.rec .grain,html.rec main > *:not(.an),html.rec .an > *:not(.an-stage),html.rec .an-stage > *:not(#view){display:none!important}
+html.rec .an{height:100vh!important;min-height:0!important}
+html.rec .an-stage{position:fixed!important;inset:0!important;height:100vh!important;max-height:none!important;min-height:0!important}

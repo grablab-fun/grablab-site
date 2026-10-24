@@ -5,6 +5,8 @@ import * as THREE from "./assets/vendor/three.module.min.js";
 import { buildMachine } from "./anatomy-model.js?v=27";
 
 const $ = s => document.querySelector(s);
+/* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
+const REC = /[?&]rec=1/.test(location.search); if (REC) document.documentElement.classList.add("rec");
 /* subs: [card item, mesh name prefixes it lights up in the model] */
 const PARTS = [
   { id:"frame", n:"01", name:"Frame", spec:"40 x 40 profile, matte black", ph:1.15, th:-1.2, anchor:[-.48,-.48,.7], ex:[0,0,0],
@@ -59,7 +61,7 @@ const stage = $("#stage"), canvas = $("#view");
 let renderer;
 try {
   const probe = document.createElement("canvas"); if (!(probe.getContext("webgl2") || probe.getContext("webgl"))) throw new Error("no webgl");
-  renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, powerPreference:"high-performance" });
+  renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, powerPreference:"high-performance", preserveDrawingBuffer:REC });
 } catch (e){
   /* WebGL off (Brave Shields "strict" fingerprinting, hardware acceleration off, old GPU): say so instead of spinning forever */
   stage.classList.add("err"); throw e;
@@ -224,6 +226,7 @@ const sph = new THREE.Sphere(), whole = new THREE.Box3(), pb = new THREE.Box3();
 /* the free part of the screen: between the nav and the bar, and between the card (or the title) and the parts list */
 const view = { cx:0, cy:0, fx:1, fy:1 };
 function measure(){
+  if (REC){ view.cx = stage.clientWidth/2; view.cy = stage.clientHeight/2; view.fx = .96; view.fy = .96; return; }
   const W = stage.clientWidth, H = stage.clientHeight, sr = stage.getBoundingClientRect();
   if (W < 980){ const c = card.classList.contains("on") ? card.getBoundingClientRect() : null, n = document.querySelector("#site-header, .nav"), nb = Math.max(14, n ? n.getBoundingClientRect().bottom - sr.top + 8 : 14);
     const bot = c ? c.top - sr.top - 10 : H*.92; view.cx = W/2; view.cy = (nb + bot)/2; view.fx = .9; view.fy = Math.max(.25, (bot - nb)/H); return; }
@@ -480,7 +483,7 @@ $("#reset").onclick = () => { setSelected(null); setExplode(0); orb.px = orb.py 
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
 /* ---------- loop: render only while something moves; phones get a lower, self adjusting resolution ---------- */
-let prCap = innerWidth < 980 ? 1.5 : 2, activeUntil = 0, mouseMoved = false, slow = 0, fast = 0;
+let prCap = REC ? 2 : innerWidth < 980 ? 1.5 : 2, activeUntil = 0, mouseMoved = false, slow = 0, fast = 0;
 const wake = (ms = 2500) => { activeUntil = Math.max(activeUntil, performance.now() + ms); };
 for (const ev of ["pointermove", "pointerdown", "pointerup", "wheel", "keydown", "scroll", "touchmove"]) addEventListener(ev, () => wake(), { passive:true });
 addEventListener("resize", () => wake());
@@ -491,7 +494,7 @@ function frame(now){
   const trapOn = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]);
   if (!(now < activeUntil || tour || trapOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0 || estop.k > .001 && estop.k < .999)){ requestAnimationFrame(frame); return; }
   /* frame time watchdog: drop the resolution a step if the device cannot keep up, raise it back when it can */
-  if (raw > 28) slow++; else if (raw < 18) fast++;
+  if (REC) slow = fast = 0; else if (raw > 28) slow++; else if (raw < 18) fast++;
   if (slow > 40 && prCap > 1){ prCap = Math.max(1, prCap - .25); slow = fast = 0; resize(); }
   else if (fast > 240 && prCap < (innerWidth < 980 ? 1.5 : 2)){ prCap = Math.min(innerWidth < 980 ? 1.5 : 2, prCap + .25); slow = fast = 0; resize(); }
   if (tour) tourStep(dt); else { orb.idle += dt; if (false) orb.th += dt*.08; if (!orb.down){ orb.vth *= .9; orb.vph *= .9; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); } }
@@ -515,7 +518,7 @@ function frame(now){
   if (pixel){ renderer.setRenderTarget(rt); renderer.setClearColor(0x000000, 0); renderer.clear(); renderer.render(scene, camera); renderer.setRenderTarget(null); post.uniforms.t.value = now/1000; renderer.render(postScene, postCam); }
   else { renderer.render(scene, camera); if (outlinePass()){ renderer.autoClear = false; renderer.render(outlineScene, camera); renderer.autoClear = true; } }
   placeLabels();
-  requestAnimationFrame(frame);
+  if (!REC) requestAnimationFrame(frame);
 }
 function makeThumbs(){
   const TW = 288, TH = 192, rt2 = new THREE.WebGLRenderTarget(TW, TH), cam2 = new THREE.PerspectiveCamera(28, TW/TH, .02, 40), buf = new Uint8Array(TW*TH*4);
@@ -536,5 +539,7 @@ load().then(() => {
   root.traverse(o => { if (o.isMesh && !/pushrod|estop/.test(o.name)){ o.updateMatrix(); o.matrixAutoUpdate = false; } });
   if (innerWidth < 980){ const sh = matCache.get("capsules|shell"); if (sh){ sh.side = THREE.FrontSide; sh.clearcoat = 0; sh.needsUpdate = true; } }
   buildInstances(); syncInstances();
-  wake(4000); resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, stats:() => { const by = {}, nm = {}; root.traverse(o => { if (o.isMesh){ by[o.userData.part] = (by[o.userData.part] || 0) + 1; const k = o.userData.part === "capsules" ? "capsule" : o.name; nm[k] = (nm[k] || 0) + 1; } }); return { by, top:Object.entries(nm).sort((a, b) => b[1] - a[1]).slice(0, 25) }; }, overlap:(pre) => { root.updateMatrixWorld(true); const all = []; root.traverse(o => { if (o.isMesh){ o.geometry.computeBoundingBox(); all.push([o, o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld).expandByScalar(-.0006)]); } }); const out = []; for (const [a, ba] of all) if (a.name.startsWith(pre)) for (const [c, bc] of all) if (c !== a && !c.name.startsWith(pre) && ba.intersectsBox(bc)) out.push(a.name + ' x ' + c.name); return out; }, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
+  wake(4000); resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, recFrame:(t, T) => { const k = t/T, ease = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2;
+    explodeTarget = explode = k < .16 ? 0 : k < .42 ? ease((k - .16)/.26) : k < .6 ? 1 : k < .86 ? 1 - ease((k - .6)/.26) : 0;
+    orb.th = -1.2 + .42*Math.sin(2*Math.PI*k); orb.ph = 1.16; orb.vth = orb.vph = 0; activeUntil = 1e15; frame(performance.now()); return renderer.domElement.toDataURL("image/png"); }, stats:() => { const by = {}, nm = {}; root.traverse(o => { if (o.isMesh){ by[o.userData.part] = (by[o.userData.part] || 0) + 1; const k = o.userData.part === "capsules" ? "capsule" : o.name; nm[k] = (nm[k] || 0) + 1; } }); return { by, top:Object.entries(nm).sort((a, b) => b[1] - a[1]).slice(0, 25) }; }, overlap:(pre) => { root.updateMatrixWorld(true); const all = []; root.traverse(o => { if (o.isMesh){ o.geometry.computeBoundingBox(); all.push([o, o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld).expandByScalar(-.0006)]); } }); const out = []; for (const [a, ba] of all) if (a.name.startsWith(pre)) for (const [c, bc] of all) if (c !== a && !c.name.startsWith(pre) && ba.intersectsBox(bc)) out.push(a.name + ' x ' + c.name); return out; }, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
   .catch(e => { console.error(e); $("#stage").classList.add("err"); });
