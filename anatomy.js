@@ -12,7 +12,7 @@ const PARTS = [
     subs:[["E-stop, 22 mm", -.415,-.48,.116], ["QR plate", -.324,-.48,.116], ["Wordmark", -.02,-.48,.116], ["Fan + grille", .34,-.48,.07], ["Power inlet", .3,.49,.07], ["Prize drawer", .2,-.53,.07]], proof:"No joystick. Browser only" },
   { id:"electronics", n:"02", name:"Electronics", spec:"Raspberry Pi, OPTIGA Trust M, motion board", ph:0.92, th:0.95, ents:["electronics"], ex:[0,-.56,.06],
     text:"One shelf in the base. Raspberry Pi runs the play and the stream. The motion board steps the gantry and the winch. OPTIGA Trust M signs each event. Its key never leaves the chip.",
-    subs:[["Raspberry Pi", -.38,-.38,.04], ["OPTIGA Trust M shield", -.38,-.38,.058], ["Motion board", -.21,-.38,.036], ["12 V supply", -.01,-.38,.04], ["Claw driver", -.29,-.31,.036], ["WAGO terminals", -.07,-.305,.036], ["Beam relay", -.1,-.31,.04]], proof:"Signed on peaqOS" },
+    subs:[["Raspberry Pi", -.38,-.38,.04], ["OPTIGA Trust M shield", -.38,-.38,.058], ["Motion board", -.21,-.38,.036], ["12 V supply", -.01,-.38,.04], ["Claw driver", -.29,-.31,.036], ["WAGO terminals", -.07,-.305,.036], ["Beam relay", -.1,-.31,.04]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
   { id:"tray", n:"03", name:"Prize tray", spec:"MDF 18 mm, raised", ph:1.0, th:1.2, ents:["floor_mdf"], anchor:[-.47,-.3,.25], ex:[0,0,.42],
     text:"Black MDF, 18 mm, 150 mm above the base. A rim all round. The chute opening sits front right.",
     subs:[["MDF floor, black", 0,.1,.22], ["Rim, 45 mm", -.47,0,.26], ["Chute opening, 160 mm", .38,-.39,.22]], proof:"Watched by the play camera" },
@@ -21,7 +21,7 @@ const PARTS = [
     subs:[["Guard glass + frame", .46,-.4,.3], ["Break beam pair", .31,-.44,.19], ["Chute camera + LED", .38,-.32,.19], ["Funnel, 160 to 90", .38,-.39,.15], ["Ramp", .4,-.4,.062], ["NFC cradle, PN532", .38,-.312,.06], ["Servo flap, MG90S", .333,-.31,.07], ["Chute camera", .3,-.3,.44]], proof:"Seen twice: beam and camera" },
   { id:"capsules", n:"05", name:"Capsules", spec:"50 mm shells, NTAG215 inside", ph:1.0, th:0.95, ents:["capsules"], anchor:[.35,-.2,.27], ex:[0,0,.62],
     text:"50 mm, two halves. An NTAG215 sticker inside, factory UID, read only. The inventory maps each UID to a prize before the night. Click one.",
-    subs:[["50 mm shell", 0,-.1,.25], ["NTAG215 sticker inside", -.2,.1,.25], ["Gold or violet halves", .2,.2,.25]], proof:"Inventory on chain" },
+    subs:[["50 mm shell", 0,-.1,.25], ["NTAG215 sticker inside", -.2,.1,.25], ["Gold or violet halves", .2,.2,.25]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
   { id:"frame", n:"06", name:"Frame", spec:"2020 V-slot, black anodised", ph:1.1, th:0.95, ents:["frame"], anchor:[-.49,-.49,.92], ex:[0,0,.3],
     text:"2020 V-slot, black anodised. A 1000 mm cube: 12 bars, 4 posts, cast corners. A third ring at 150 mm carries the tray. No glass.",
     subs:[["4 posts, 1000 mm", -.49,-.49,.5], ["Top ring", 0,-.49,.99], ["Floor ring, 150 mm", .49,0,.192], ["Corner brackets", .47,-.47,.97], ["Rubber feet", .49,.49,.006]], proof:"Open by design" },
@@ -49,7 +49,7 @@ try {
   stage.classList.add("err"); throw e;
 }
 renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
-renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.enabled = false;
 const scene = new THREE.Scene(); scene.background = null; const PIXBG = new THREE.Color(0x0a0c1a);
 const camera = new THREE.PerspectiveCamera(32, 1, .05, 40);
 const root = new THREE.Group(); root.rotation.x = -Math.PI/2; scene.add(root);   // z-up scene into y-up three
@@ -57,7 +57,7 @@ const root = new THREE.Group(); root.rotation.x = -Math.PI/2; scene.add(root);  
 /* ---------- lights ---------- */
 scene.add(new THREE.HemisphereLight(0xc3caff, 0x141830, 1.3));
 const key = new THREE.DirectionalLight(0xf3f5ff, 2.5); key.position.set(-1.4, 2.6, 2.2); scene.add(key);
-key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -.0004; key.shadow.normalBias = .02;
+key.castShadow = false; key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -.0004; key.shadow.normalBias = .02;
 Object.assign(key.shadow.camera, { left:-1.7, right:1.7, top:1.9, bottom:-1.3, near:.5, far:8 });
 /* shadow catcher under the machine: the only thing the floor does */
 const catcher = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.ShadowMaterial({ opacity:.55 })); catcher.receiveShadow = true; catcher.rotation.x = -Math.PI/2; catcher.position.y = .004; scene.add(catcher);
@@ -118,7 +118,7 @@ function entityObj(e, mats, part){
 }
 const partFor = n => { for (const p of PARTS) if (p.ents.includes(n)) return p.id; return null; };
 const capsules = [], mech = {};
-let GEO_TOP, GEO_BOT, GEO_TAG, GEO_COIN, tagMat, coinMat, coinFace, tagTex;
+let GEO_TOP, GEO_BOT, GEO_TAG, GEO_TAGB, GEO_COIN, tagMat, tagBase, coinMat, coinFace, tagTex;
 function buildCapsule(e, mats){
   const o = new THREE.Group(); o.name = e.name; const t = e.transform || {};
   if (t.pos) o.position.set(...t.pos); if (t.quat) o.quaternion.set(t.quat[1], t.quat[2], t.quat[3], t.quat[0]);
@@ -130,22 +130,22 @@ function buildCapsule(e, mats){
     g.fillStyle = "#f4f4f6"; g.beginPath(); g.arc(128, 128, 126, 0, Math.PI*2); g.fill();
     g.strokeStyle = "#8a5a1e"; g.lineWidth = 9; for (let r = 40; r <= 104; r += 16){ g.beginPath(); g.arc(128, 128, r, 0, Math.PI*2); g.stroke(); }
     g.fillStyle = "#1a1a1a"; g.fillRect(118, 112, 20, 32); g.font = "700 22px Satoshi, system-ui, sans-serif"; g.fillStyle = "#333"; g.textAlign = "center"; g.fillText("NTAG215", 128, 236);
-    tagTex = new THREE.CanvasTexture(cv); tagTex.colorSpace = THREE.SRGBColorSpace;
-    tagMat = new THREE.MeshStandardMaterial({ map:tagTex, roughness:.7, metalness:0 });
+    tagTex = new THREE.TextureLoader().load("assets/nfc-tag.png?v=1"); tagTex.colorSpace = THREE.SRGBColorSpace; tagTex.anisotropy = 8;
+    tagMat = new THREE.MeshStandardMaterial({ map:tagTex, transparent:true, roughness:.65, metalness:0 });
     coinMat = new THREE.MeshPhysicalMaterial({ color:0xffc04a, metalness:1, roughness:.18, clearcoat:.6, emissive:0xffb347, emissiveIntensity:.25 });
     /* the coin face carries the G mark */
     const fc = document.createElement("canvas"); fc.width = fc.height = 256; const fg = fc.getContext("2d"); fg.fillStyle = "#e9a93a"; fg.fillRect(0, 0, 256, 256);
     coinFace = new THREE.MeshPhysicalMaterial({ map:new THREE.CanvasTexture(fc), metalness:.9, roughness:.22, clearcoat:.6 }); coinFace.map.colorSpace = THREE.SRGBColorSpace;
     const im = new Image(); im.onload = () => { fg.drawImage(im, 40, 40, 176, 176); coinFace.map.needsUpdate = true; }; im.src = "assets/brand/mark-chrome-256.png";
-    GEO_TAG = new THREE.CylinderGeometry(.019, .019, .0012, 40).rotateX(Math.PI/2); GEO_COIN = new THREE.CylinderGeometry(.011, .011, .004, 48);
+    GEO_TAG = new THREE.CircleGeometry(.0195, 48); GEO_COIN = new THREE.CylinderGeometry(.011, .011, .004, 48);
     /* register them under the capsules part so isolation hides them with the shells */
     for (const [k, m] of [["capsules|tag", tagMat], ["capsules|coin", coinMat], ["capsules|coinface", coinFace]]){ m.userData.base = { opacity:1, ei:m.emissiveIntensity }; matCache.set(k, m); }
   }
   const lid = new THREE.Group(); const top = new THREE.Mesh(GEO_TOP, shell); lid.add(top);
   const bot = new THREE.Mesh(GEO_BOT, shell), seam = new THREE.Mesh(geometry({ type:"cylinder", radius:R + .0006, height:.0035 }), material(mats, "seam", "capsules"));
-  const tag = new THREE.Mesh(GEO_TAG, tagMat); tag.position.z = -.012; const coin = new THREE.Mesh(GEO_COIN, [coinMat, coinFace, coinMat]); coin.position.set(.003, .004, 0); coin.rotation.set(-.55, .3, .2);
-  [top, bot, seam, tag, coin].forEach(m => { m.userData.part = "capsules"; m.castShadow = true; m.receiveShadow = true; });
-  o.add(lid, bot, seam, tag, coin); o.userData.lid = lid; o.userData.q0 = o.quaternion.clone(); o.userData.cap = true;
+  const tag = new THREE.Mesh(GEO_TAG, tagMat); tag.position.z = -.0112; const tagBody = new THREE.Mesh(GEO_TAGB ||= new THREE.CylinderGeometry(.0195, .0195, .0008, 48).rotateX(Math.PI/2), tagBase ||= Object.assign(new THREE.MeshStandardMaterial({ color:0xf1f1f3, roughness:.7 }), { userData:{ base:{ opacity:1, ei:0 } } })); tagBody.position.z = -.0118; matCache.set("capsules|tagbase", tagBase); const coin = new THREE.Mesh(GEO_COIN, [coinMat, coinFace, coinMat]); coin.position.set(.003, .004, 0); coin.rotation.set(-.55, .3, .2);
+  [top, bot, seam, tag, tagBody, coin].forEach(m => { m.userData.part = "capsules"; m.castShadow = true; m.receiveShadow = true; });
+  o.add(lid, bot, seam, tagBody, tag, coin); o.userData.lid = lid; o.userData.q0 = o.quaternion.clone(); o.userData.cap = true;
   ents.set(e.name, o); partOf.set(e.name, "capsules"); return o;
 }
 async function load(){
@@ -363,7 +363,7 @@ stage.addEventListener("wheel", e => { e.preventDefault(); orb.zoom = Math.min(2
 /* where the camera wants to be: the whole machine, or the selected part framed */
 const sph = new THREE.Sphere();
 function goal(){
-  if (selectedCap){ selectedCap.getWorldPosition(tmpV); return { tx:tmpV.x, ty:tmpV.y + .01, tz:tmpV.z, r:.26 }; }
+  if (selectedCap){ selectedCap.getWorldPosition(tmpV); return { tx:tmpV.x, ty:tmpV.y + .02, tz:tmpV.z, r:.24 }; }
   if (selected){ box.makeEmpty(); for (const o of (selected.focus ? selected.focus.map(n => ents.get(n)) : selected.objs)) o.traverse(m => { if (m.isMesh && m.userData.part === selected.id){ m.getWorldPosition(tmpV); box.expandByPoint(tmpV); } });
     if (!box.isEmpty()){
       box.getCenter(ctr); box.expandByScalar(.03);
@@ -398,8 +398,8 @@ function setSelected(p, fromList){
   selected = p; liftK = 0; selectedCap = null; orb.phT = p && p.ph ? p.ph : null; orb.thT = p && p.th != null ? p.th : null; orb.zoom = 1; orb.px = orb.py = orb.pz = 0;
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
-    card.innerHTML = `<span class="n">${p.n} / 09</span><h3>${p.name}</h3><span class="spec">${p.spec}</span><p>${p.text}</p><div class="inside">${p.subs.map(x => `<span>${x[0]}</span>`).join("")}</div><span class="proof"><i></i>${p.proof}</span><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
-    card.dataset.n = p.n;
+    card.innerHTML = `<span class="n">${p.n} / 09</span><h3>${p.name}</h3><span class="spec">${p.spec}</span><p>${p.text}</p><div class="inside">${p.subs.map(x => `<span>${x[0]}</span>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><i></i>${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
+
     card.classList.add("on"); wireCard();
     if (explodeTarget < .5 && !tour) setExplode(.72);
   } else card.classList.remove("on");
@@ -439,8 +439,28 @@ function selectCap(o){
   card.innerHTML = `<span class="n">Capsule #${num}</span><h3>Custom NFC capsule</h3><span class="spec">50 mm shell, any prize</span>
     <p>NTAG215 inside, factory UID. The prize is whatever the project loads: an SPL token, an NFT, a tokenized stock, merch, an off chain code. Mapped to the UID in the published inventory.</p>
     <div class="inside"><span>SPL token</span><span>NFT</span><span>Tokenized stock</span><span>Merch</span><span>Off chain code</span><span>Anything else</span></div>
-    <span class="proof"><i></i>UID published in the inventory</span><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
+    <a class="proof" href="https://solana.com" target="_blank" rel="noopener"><img src="assets/chains/solana.jpg" alt="" />UID published in the inventory</a><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
   wireCard(); card.classList.add("on");
+}
+/* hover outline: the hovered part is redrawn as an inflated back-face silhouette in chrome blue */
+const outlineMat = new THREE.MeshBasicMaterial({ color:0x7fb0ff, side:THREE.BackSide, toneMapped:false });
+const maskMat = new THREE.MeshBasicMaterial({ colorWrite:false });
+const outlineScene = new THREE.Scene(); const outlineMeshes = new Map(); const kv = new THREE.Vector3();
+function outlinePass(){
+  const want = hovered && !selected && !orb.down && !tour ? hovered : null;
+  for (const [src, o] of outlineMeshes){ if (!want || src.userData.part !== want.id){ outlineScene.remove(o); outlineMeshes.delete(src); } }
+  if (!want) return false;
+  for (const ob of want.objs) ob.traverse(m => {
+    if (!m.isMesh || m.userData.part !== want.id || !m.visible) return;
+    let o = outlineMeshes.get(m); if (!o){ o = new THREE.Mesh(m.geometry, outlineMat); outlineMeshes.set(m, o); outlineScene.add(o); }
+    m.updateWorldMatrix(true, false); o.matrixAutoUpdate = false; o.matrix.copy(m.matrixWorld);
+    /* inflate by about 2 mm in world space, whatever the mesh size */
+    const e = m.matrixWorld.elements, sx = Math.hypot(e[0], e[1], e[2]) || 1;
+    const bb = m.geometry.boundingBox || (m.geometry.computeBoundingBox(), m.geometry.boundingBox); const sz = bb.getSize(tmpV);
+    kv.set(1 + .003/Math.max(.003, sz.x*sx), 1 + .003/Math.max(.003, sz.y*sx), 1 + .003/Math.max(.003, sz.z*sx));
+    o.matrix.scale(kv); o.matrixWorld.copy(o.matrix);
+  });
+  return true;
 }
 /* per part material state: hover glow, fade when another part is selected */
 function shade(){
@@ -598,7 +618,7 @@ function frame(now){
   applyExplode(); clawCycle(dt); shade(); capAnim(dt); easeCam(dt); cam();
   renderer.toneMappingExposure += ((selected ? 1.15 : 1.0) - renderer.toneMappingExposure)*Math.min(1, dt*4);
   if (pixel){ renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); post.uniforms.t.value = now/1000; renderer.render(postScene, postCam); }
-  else renderer.render(scene, camera);
+  else { renderer.render(scene, camera); if (outlinePass()){ renderer.autoClear = false; renderer.render(outlineScene, camera); renderer.autoClear = true; } }
   placeLabels();
   requestAnimationFrame(frame);
 }
