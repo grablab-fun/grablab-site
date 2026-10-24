@@ -141,7 +141,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   fixed("base_box", CB);
 
   /* ---------------- chute: dark slot in the tray, funnel 160 -> 90 inside the base, ramp, NFC cradle, servo flap ---------------- */
-  const [cx0, cx1, cy0, cy1] = CH, t = .003, ix0 = .335, ix1 = .425, iy0 = -.435, iy1 = -.345, zf0 = FZ - FT, zf1 = zf0 - .037, ZS = .09;
+  const [cx0, cx1, cy0, cy1] = CH, t = .003, ix0 = .335, ix1 = .425, iy0 = -.435, iy1 = -.345, zf0 = FZ - FT, zf1 = zf0 - .037, ZS = .05;
   const CHU = [
     BB(cx0, cy0, zf0 - .02, cx1, cy0 + t, FZ, "hole"), BB(cx0, cy1 - t, zf0 - .02, cx1, cy1, FZ, "hole"),
     BB(cx0, cy0, zf0 - .02, cx0 + t, cy1, FZ, "hole"), BB(cx1 - t, cy0, zf0 - .02, cx1, cy1, FZ, "hole")
@@ -162,7 +162,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   CHU.push(fun([cx1, cy0, zt], [cx1, cy1, zt], [ix1, iy0, zf1 - .02], [ix1, iy1, zf1 - .02]));
   /* shelf under the funnel carrying the ramp and the cradle cup over the NFC reader */
   CHU.push(BB(.3, -.47, ZS - .005, .47, -.26, ZS, "plastic2"));
-  CHU.push(Object.assign(Bh(.09, .08, .004, .38, -.392, ZS + .008, "plastic"), {quat:q([1,0,0], -.09)}));
+  CHU.push(Object.assign(Bh(.09, .08, .004, .38, -.392, ZS + .012, "plastic"), {quat:q([1,0,0], -.2)}));
   const CUPX = .38, CUPY = -.312, CUPR = .037;
   for (let k = 0; k < 12; k++){ const a = k*Math.PI/6; if (Math.sin(a) < -.4) continue;   /* open toward the ramp */
     CHU.push(Object.assign(Bh(.02, .004, .016, CUPX + (CUPR + .002)*Math.cos(a), CUPY + (CUPR + .002)*Math.sin(a), ZS + .008, "plastic"), {quat:q([0,0,1], a + Math.PI/2)})); }
