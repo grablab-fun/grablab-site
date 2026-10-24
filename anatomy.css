@@ -1,6 +1,7 @@
 /* ============ ANATOMY : full-bleed exploded machine ============ */
-.an{position:relative;height:100vh;min-height:640px;overflow:hidden;background:radial-gradient(ellipse 70% 60% at 50% 58%,#171b3a 0%,#0b0d1f 55%,#05060e 100%)}
-.an::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 60%,rgba(3,4,10,.55) 100%);z-index:1}
+.an{position:relative;height:100vh;min-height:640px;overflow:hidden;background:var(--bg) url("assets/bg-sky-dark.png") center 40%/cover no-repeat}
+.an::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,9,24,.55),rgba(5,9,24,.25) 45%,rgba(5,9,24,.75))}
+.an::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 55%,rgba(5,9,24,.6) 100%);z-index:1}
 .an-stage{position:absolute;inset:0;cursor:grab;touch-action:none}
 .an-stage:active{cursor:grabbing}
 #view{display:block;width:100%;height:100%}
@@ -29,18 +30,20 @@ body.ready .an-boot{opacity:0;pointer-events:none}
 .an-head h1{font-size:clamp(44px,6.6vw,104px);line-height:.94;margin:0 0 18px}
 .an-head p{color:var(--ink-2);font-size:clamp(16px,1.6vw,22px);margin:0;max-width:34ch}
 
-/* parts rail: numbered dots on a line, names slide in on hover, the active one is chrome */
-.an-rail{position:absolute;right:clamp(22px,3.4vw,54px);top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:9px;align-items:flex-end;padding:6px 0}
-.an-rail::before{content:"";position:absolute;right:17px;top:18px;bottom:18px;width:1px;background:linear-gradient(180deg,transparent,rgba(201,191,255,.35) 12%,rgba(201,191,255,.35) 88%,transparent)}
-.pt{position:relative;display:flex;align-items:center;gap:14px;background:transparent;border:0;padding:4px 0;cursor:pointer;color:var(--ink);font-family:var(--font);text-align:right}
-.pt .dot{position:relative;z-index:1;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-style:normal;font-size:10.5px;letter-spacing:.05em;color:var(--ink-2);background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.02)),rgba(10,12,28,.6);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(10px);transition:.2s;flex:none}
-.pt .nm{display:flex;flex-direction:column;align-items:flex-end;line-height:1.15;opacity:0;transform:translateX(8px);transition:.22s;pointer-events:none;white-space:nowrap}
-.pt .nm b{font-size:14px;font-weight:700}
-.pt .nm small{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--ink-3);margin-top:2px}
-.pt:hover .dot{border-color:var(--accent-2);color:var(--ink)}
-.pt:hover .nm,.pt.on .nm{opacity:1;transform:none}
-.pt.on .dot{color:#0a0c16;border-color:transparent;background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 60%,#1f4fd1 100%);box-shadow:0 0 22px rgba(59,123,255,.6)}
-.pt.on .nm b{color:#d6e4ff}
+/* parts index: glass panel, a rendered thumbnail, name, spec and number for every part */
+.an-rail{position:absolute;right:clamp(22px,3.2vw,52px);top:50%;transform:translateY(-50%);z-index:2;width:min(300px,26vw);max-height:calc(100vh - 150px);overflow:auto;display:flex;flex-direction:column;gap:2px;padding:10px;border-radius:22px;
+  background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02)),rgba(10,12,28,.45);border:1px solid rgba(255,255,255,.13);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 24px 60px rgba(0,0,0,.45);backdrop-filter:blur(18px) saturate(150%);scrollbar-width:none}
+.an-rail::-webkit-scrollbar{display:none}
+.pt{position:relative;display:grid;grid-template-columns:64px 1fr auto;align-items:center;gap:12px;background:transparent;border:1px solid transparent;border-radius:14px;padding:7px 10px 7px 7px;cursor:pointer;color:var(--ink);font-family:var(--font);text-align:left;transition:.18s}
+.pt .th{width:64px;height:44px;object-fit:contain;border-radius:9px;background:radial-gradient(ellipse at 50% 40%,rgba(154,123,255,.16),rgba(10,12,28,.35) 75%);border:1px solid rgba(255,255,255,.08)}
+.pt .nm{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.pt .nm b{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pt .nm small{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;color:var(--ink-3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pt .dot{font-family:var(--mono);font-style:normal;font-size:10.5px;letter-spacing:.08em;color:var(--ink-3);transition:.2s}
+.pt:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+.pt.on{background:linear-gradient(90deg,rgba(59,123,255,.18),rgba(59,123,255,.04));border-color:rgba(120,170,255,.35)}
+.pt.on::before{content:"";position:absolute;left:-1px;top:10px;bottom:10px;width:3px;border-radius:3px;background:linear-gradient(180deg,#d6e4ff,#3b7bff 55%,#1f4fd1);box-shadow:0 0 14px rgba(59,123,255,.7)}
+.pt.on .dot,.pt.on .nm small{color:#9cc0ff}
 
 /* part card: editorial panel with a watermark number, inside list, proof row and prev / next */
 .an-card{position:absolute;left:clamp(20px,4vw,56px);bottom:clamp(96px,14vh,130px);z-index:3;width:min(470px,calc(100vw - 40px));border-radius:22px;padding:26px 28px 22px;overflow:hidden;
@@ -74,7 +77,7 @@ body.ready .an-boot{opacity:0;pointer-events:none}
 .an-btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:9px 14px;cursor:pointer;transition:.15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
 .an-btn:hover{color:var(--ink);border-color:var(--accent-2)}
 .an-btn.on{color:#0a0c16;background:var(--ink);border-color:var(--ink)}
-.an-hint{position:absolute;right:clamp(20px,4vw,56px);bottom:clamp(30px,5.6vh,50px);z-index:2;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);display:flex;gap:10px;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(10,12,28,.4);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px)}
+.an-hint{position:absolute;left:50%;transform:translateX(-50%);bottom:6px;z-index:2;white-space:nowrap;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);display:flex;gap:10px;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(10,12,28,.4);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px)}
 .an-hint i{width:3px;height:3px;border-radius:50%;background:var(--ink-3)}
 
 /* minimal ui for recording */

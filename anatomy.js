@@ -149,7 +149,7 @@ function buildCapsule(e, mats){
   ents.set(e.name, o); partOf.set(e.name, "capsules"); return o;
 }
 async function load(){
-  const [sc, as] = await Promise.all([fetch("lab/grablab-claw-revb.scene.json?v=14").then(r => r.json()), fetch("lab/grablab-claw-revb-mech.asset.json?v=14").then(r => r.json())]);
+  const [sc, as] = await Promise.all([fetch("lab/grablab-claw-revb.scene.json?v=15").then(r => r.json()), fetch("lab/grablab-claw-revb-mech.asset.json?v=15").then(r => r.json())]);
   const capsGroup = new THREE.Group(); capsGroup.name = "capsules"; root.add(capsGroup); ents.set("capsules", capsGroup);
   for (const e of sc.entities){
     if (/^capsule_/.test(e.name)){ const o = buildCapsule(e, sc.material); capsGroup.add(o); o.userData.home = o.position.clone(); capsules.push(o); continue; }
@@ -179,8 +179,8 @@ async function load(){
   })();
   /* detail packs: the SimArena scene only carries what physics needs; the page shows the rest of the parts list */
   (function detailPacks(){
-    const mats = {};
-    const M = (k, o) => mats[k] ||= (() => { const m = new THREE.MeshStandardMaterial(o); m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity }; return m; })();
+    const mats = {}; let curPart = ""; const cur = p => { curPart = p; };
+    const M = (k, o) => mats[curPart + "|" + k] ||= (() => { const m = new THREE.MeshStandardMaterial(o); m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity }; return m; })();
     const reg = (part, m, k) => { const key = part + "|dp_" + k; if (!matCache.has(key)) matCache.set(key, m); return m; };
     const steel = o => M("steel", { color:0xb9bdc6, metalness:.95, roughness:.28 }), black = o => M("black", { color:0x121216, metalness:.15, roughness:.55 }),
       dark = o => M("dark", { color:0x24262e, metalness:.3, roughness:.5 }), red = o => M("red", { color:0xd01c22, metalness:.1, roughness:.35 }),
@@ -191,7 +191,7 @@ async function load(){
     const B = (a, b, c) => new THREE.BoxGeometry(a, b, c), C = (r, h, n = 24) => new THREE.CylinderGeometry(r, r, h, n).rotateX(Math.PI/2);
     const Cx = (r, h, n = 24) => new THREE.CylinderGeometry(r, r, h, n).rotateZ(Math.PI/2), Cy = (r, h, n = 24) => new THREE.CylinderGeometry(r, r, h, n);
     function put(part, ent, geo, m, x, y, z, rot){
-      const mat = typeof m === "function" ? m() : m; const o = new THREE.Mesh(geo, reg(part, mat, mat.uuid)); o.position.set(x, y, z); if (rot) o.rotation.set(...rot);
+      curPart = part; const mat = typeof m === "function" ? m() : m; const o = new THREE.Mesh(geo, reg(part, mat, mat.uuid)); o.position.set(x, y, z); if (rot) o.rotation.set(...rot);
       o.userData.part = part; o.castShadow = o.receiveShadow = true; ents.get(ent).add(o); return o;
     }
     /* a cable between two points */
@@ -202,6 +202,7 @@ async function load(){
     }
 
     /* 01 base: drawer pulled out on slides, 40 mm fan behind the grille, power inlet with switch and fuse, panel screws, cable gland + sleeve, tray brackets */
+    cur("base");
     const bb = "base_box";
     put("base", bb, B(.15, .19, .062), dark, .2, -.385, .056);                                  // drawer body
     put("base", bb, B(.17, .05, .075), black, .2, -.51, .062);                                   // drawer face, pulled 30 mm
@@ -216,6 +217,7 @@ async function load(){
     [[-.44, -.44], [.44, -.44], [-.44, .44], [.44, .44]].forEach(([x, y]) => put("base", bb, C(.016, .01), plastic, x, y, .015));   // rubber feet
 
     /* 02 electronics: shelf plate, standoffs, wiring, relay for the beam sensor, SD card, USB lead */
+    cur("electronics");
     const el = "electronics";
     put("electronics", el, B(.64, .22, .004), dark, -.2, -.385, .029);                           // shelf plate
     [[-.42, -.405], [-.34, -.355], [-.26, -.41], [-.16, -.35], [.05, -.42], [-.08, -.34]].forEach(([x, y]) => put("electronics", el, Cy(.0025, .01, 8), steel, x, y, .036));   // standoffs
@@ -225,13 +227,30 @@ async function load(){
     wire("electronics", el, M("wred", { color:0xc0262b, roughness:.5 }), [.04, -.43, .036], [-.165, -.43, .04]); wire("electronics", el, cable, [.04, -.425, .034], [-.165, -.425, .038]);   // 12 V to the board
     wire("electronics", el, M("wred", { color:0xc0262b, roughness:.5 }), [-.07, -.3, .04], [-.29, -.3, .04]); wire("electronics", el, cable, [-.07, -.295, .038], [-.29, -.295, .038]);      // WAGO to claw driver
     wire("electronics", el, cable, [-.1, -.3, .04], [-.1, -.27, .06], .002);                   // relay to the beam sensor, leaves the shelf
+    for (let r = 0; r < 2; r++) for (let c = 0; c < 20; c++) put("electronics", el, B(.0012, .0012, .006), M("pin", { color:0xd9c27a, metalness:.9, roughness:.3 }), -.404 + c*.0025, -.3505 + r*.0025, .042);   // GPIO 2 x 20
+    for (let i = 0; i < 6; i++) put("electronics", el, B(.014, .0012, .006), M("fin", { color:0x9aa0ad, metalness:.9, roughness:.35 }), -.38, -.386 + i*.0024, .035);   // CPU heatsink fins
+    put("electronics", el, B(.009, .0032, .003), steel, -.422, -.405, .0355);                   // USB-C power
+    put("electronics", el, B(.012, .012, .0025), M("mcu", { color:0x15161a, roughness:.3 }), -.2, -.4, .037); for (let i = 0; i < 6; i++) put("electronics", el, B(.006, .007, .008), M("term", { color:0x2f9a4a, roughness:.5 }), -.248 + i*.0075, -.412, .038);   // MCU + screw terminals
+    put("electronics", el, B(.009, .006, .004), steel, -.165, -.35, .036); put("electronics", el, B(.011, .002, .012), black, -.255, -.347, .04);   // board USB + SD slot
+    for (let i = 0; i < 5; i++) put("electronics", el, B(.008, .006, .004), M("lever", { color:0xe8731c, roughness:.5 }), -.1 + i*.014, -.297, .043);   // WAGO levers
+    for (let i = 0; i < 3; i++) put("electronics", el, B(.005, .006, .006), M("term", { color:0x2f9a4a, roughness:.5 }), -.112 + i*.006, -.325, .037);   // relay terminals
+    put("electronics", el, B(.6, .018, .024), plastic, -.2, -.283, .041); for (let i = 0; i < 24; i++) put("electronics", el, B(.004, .019, .016), dark, -.49 + i*.025, -.283, .045);   // slotted cable duct
+    /* printed labels on the boards */
+    const tag = (txt, w, h, x, y, z, bg, fg, size) => { const cv = document.createElement("canvas"); cv.width = 512; cv.height = Math.round(512*h/w); const g = cv.getContext("2d"); g.fillStyle = bg; g.fillRect(0, 0, cv.width, cv.height);
+      g.fillStyle = fg; g.font = `700 ${size || 64}px Satoshi, system-ui, sans-serif`; g.textAlign = "center"; g.textBaseline = "middle"; txt.split("\n").forEach((t, i, a) => g.fillText(t, 256, cv.height/2 + (i - (a.length - 1)/2)*(size || 64)*1.15));
+      const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace; const m = new THREE.MeshStandardMaterial({ map:tx, roughness:.6 }); m.userData.base = { opacity:1, ei:0 }; matCache.set("electronics|lbl_" + txt, m);
+      const o = new THREE.Mesh(new THREE.PlaneGeometry(w, h), m); o.position.set(x, y, z); o.userData.part = "electronics"; ents.get(el).add(o); return o; };
+    tag("MEAN WELL\nLRS-100-12", .1, .05, -.01, -.355, .0486, "#e8e8ea", "#1d1d22", 56); tag("12V 8.5A", .05, .02, -.01, -.41, .0486, "#f4d03f", "#1d1d22", 60);
+    tag("OPTIGA TRUST M", .05, .012, -.38, -.36, .0338, "#7a1d1d", "#f2e9e9", 54); tag("SKR MINI E3", .05, .012, -.21, -.372, .0338, "#1d4a2a", "#e6f2e8", 56);
 
     /* 03 tray: rim screws, two battens underneath, the tray wears the chute bezel on the physics side already */
+    cur("tray");
     const tr = "floor_mdf";
     [[-.47, -.47], [.47, -.47], [-.47, .47], [.47, .47], [0, -.47], [0, .47]].forEach(([x, y]) => put("tray", tr, Cy(.0035, .002, 12), black, x, y, .266));
     [-.25, .25].forEach(y => put("tray", tr, B(.9, .03, .03), black, 0, y, .187));
 
     /* 04 chute: the second webcam on a stalk over the guard, lenses on the beam pair, cable to the cradle */
+    cur("chute");
     const ch = "chute";
     put("chute", ch, Cy(.004, .09, 10), steel, .3, -.3, .39); put("chute", ch, B(.034, .026, .022), black, .3, -.3, .44); put("chute", ch, C(.007, .008), M("lens", { color:0x0a0a12, metalness:.8, roughness:.05 }), .3, -.314, .44, [.6, 0, 0]);
     put("chute", ch, C(.0025, .002), led, .31, -.315, .446, [.6, 0, 0]);
@@ -239,12 +258,14 @@ async function load(){
     wire("chute", ch, cable, [.3, -.3, .35], [.3, -.3, .1], .002); wire("chute", ch, cable, [.38, -.312, .052], [.42, -.28, .03], .0018);
 
     /* 06 frame: post caps, bracket screws, cable sleeve clipped to the rear left post */
+    cur("frame");
     const fr = "frame";
     [[-.49, -.49], [.49, -.49], [.49, .49], [-.49, .49]].forEach(([x, y]) => put("frame", fr, B(.022, .022, .004), black, x, y, 1.002));
     [[-.47, -.47], [.47, -.47], [.47, .47], [-.47, .47]].forEach(([x, y]) => [.03, .97].forEach(z => put("frame", fr, C(.003, .002, 10), black, x, y + (y < 0 ? -.011 : .011), z, [Math.PI/2, 0, 0])));
     wire("frame", fr, cable, [-.44, .5, .2], [-.44, .5, .975], .004); [.35, .6, .85].forEach(z => put("frame", fr, B(.02, .01, .01), black, -.455, .5, z));
 
     /* 07 gantry: X and Y end stops, belt clamps, motor connectors, a beam end cap */
+    cur("gantry");
     const g = "move_y";
     put("gantry", g, B(.02, .01, .006), M("pcbr", { color:0x8a1b1b, roughness:.5 }), -.44, -.03, .012); put("gantry", g, B(.004, .004, .004), steel, -.432, -.035, .017);   // X min end stop
     [-.1, .1].forEach(x => put("gantry", g, B(.014, .012, .008), plastic, x, -.016, .004));          // belt clamps
@@ -255,12 +276,14 @@ async function load(){
     wire("gantry", gs, cable, [-.53, .46, 1.04], [-.515, .4, .999], .0025); wire("gantry", gs, cable, [.53, .46, 1.04], [.52, .49, .99], .0025);
 
     /* 08 winch: line wound on the spool, motor lead, a swivel hook */
+    cur("winch");
     const w = "move_x";
     for (let i = 0; i < 5; i++) put("winch", w, C(.0158, .0012, 20), dyn, -.016 + i*.007, -.045, -.048, [0, Math.PI/2, 0]);
     wire("winch", w, cable, [.048, -.045, -.05], [.03, -.03, -.01], .002);
     put("winch", w, B(.012, .012, .012), white, .05, -.07, -.03);                                    // winch motor connector
 
     /* 09 claw: actuator rod, hex nut on the eye, hub gland, three push rods */
+    cur("claw");
     const cl = "seg_8";
     put("claw", cl, C(.003, .03, 10), steel, 0, 0, -.1); put("claw", cl, C(.0045, .004, 6), steel, 0, 0, -.015);
     put("claw", cl, Cx(.004, .01, 10), black, .024, 0, -.03);
@@ -390,7 +413,7 @@ function wireCard(){
 }
 for (const p of PARTS){
   const li = document.createElement("button"); li.type = "button"; li.className = "pt"; li.dataset.id = p.id;
-  li.innerHTML = `<span class="nm"><b>${p.name}</b><small>${p.spec}</small></span><i class="dot">${p.n}</i>`;
+  li.innerHTML = `<img class="th" alt="" /><span class="nm"><b>${p.name}</b><small>${p.spec}</small></span><i class="dot">${p.n}</i>`;
   li.onmouseenter = () => { hovered = p; }; li.onmouseleave = () => { hovered = null; };
   li.onclick = () => { setSelected(selected === p ? null : p, true); if (tour) stopTour(); };
   list.appendChild(li);
@@ -483,7 +506,6 @@ function layout(items, sb, W, H){
 }
 function placeLabels(){
   const W = stage.clientWidth, H = stage.clientHeight, items = [];
-  const show = explode > .35 || selected || hovered;
   const focusObjs = selectedCap ? [selectedCap] : selected ? (selected.focus ? selected.focus.map(n => ents.get(n)) : selected.objs) : [root];
   const sb = screenBox(focusObjs, selected && !selectedCap ? selected.id : null, W, H);
   const proj = () => { const sc = ctr.clone().project(camera); return sc.z > 1 ? null : [(sc.x*.5 + .5)*W, (-sc.y*.5 + .5)*H]; };
@@ -492,7 +514,7 @@ function placeLabels(){
     if (p.anchor){ const o = offOf(p); ctr.set(p.anchor[0] + o[0], p.anchor[1] + o[1], p.anchor[2] + o[2]); root.localToWorld(ctr); }
     else { let n = 0; ctr.set(0, 0, 0); for (const o of p.objs) o.traverse(m => { if (m.isMesh && m.userData.part === p.id){ m.getWorldPosition(tmpV); ctr.add(tmpV); n++; } }); if (!n){ d.style.display = "none"; continue; } ctr.multiplyScalar(1/n); }
     const sp = proj();
-    const vis = show && sp && !selectedCap && (selected ? selected.id === p.id : (explode > .35 || (hovered && hovered.id === p.id)));
+    const vis = sp && !selectedCap && (selected ? selected.id === p.id : !!(hovered && hovered.id === p.id));
     d.style.display = vis ? "" : "none"; if (!vis) continue;
     d.classList.toggle("on", (selected && selected.id === p.id) || (hovered && hovered.id === p.id));
     items.push({ el:d, sx:sp[0], sy:sp[1], cls:"" });
@@ -523,7 +545,7 @@ const ease = x => x < .5 ? 2*x*x : 1 - Math.pow(-2*x + 2, 2)/2;
 let motionOn = false;
 function clawCycle(dt){
   if (!mech.move_y) return;
-  if (!motionOn){ for (let k = 1; k <= 3; k++) mech["finger_" + k].o.rotation.y = -.95; return; } CY.t = (CY.t + dt) % 22;
+  if (!motionOn){ for (let k = 1; k <= 3; k++) mech["finger_" + k].o.rotation.y = -1.05; return; } CY.t = (CY.t + dt) % 22;
   const t = CY.t; let x = 0, y = 0, lift = 0, open = 0, hold = false;
   const seg = (a, b) => t >= a && t < b ? ease((t - a)/(b - a)) : (t >= b ? 1 : 0);
   /* 0-3 travel to pick, 3-6 lower, 6-7 close, 7-10 raise, 10-14 travel to chute, 14-15 open, 15-17 hold open, 17-20 home, 20-22 rest */
@@ -580,5 +602,21 @@ function frame(now){
   placeLabels();
   requestAnimationFrame(frame);
 }
-load().then(() => { resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
+function makeThumbs(){
+  const TW = 288, TH = 192, rt2 = new THREE.WebGLRenderTarget(TW, TH), cam2 = new THREE.PerspectiveCamera(28, TW/TH, .02, 40), buf = new Uint8Array(TW*TH*4);
+  const cv = document.createElement("canvas"); cv.width = TW; cv.height = TH; const g = cv.getContext("2d"), img = g.createImageData(TW, TH);
+  const catcherWas = catcher.visible; catcher.visible = false; const expWas = renderer.toneMappingExposure; renderer.toneMappingExposure = 1.25;
+  for (const p of PARTS){
+    for (const [k, m] of matCache) m.visible = k.split("|")[0] === p.id;
+    box.makeEmpty(); for (const o of (p.focus ? p.focus.map(n => ents.get(n)) : p.objs)) o.traverse(m => { if (m.isMesh && m.userData.part === p.id){ m.getWorldPosition(tmpV); box.expandByPoint(tmpV); } });
+    if (box.isEmpty()) continue; box.expandByScalar(.03); box.getBoundingSphere(sph); const d = sph.radius/Math.sin(THREE.MathUtils.degToRad(14))*1.05;
+    const th = p.th ?? .95, ph = p.ph ?? 1.05, sp = Math.sin(ph), c = Math.cos(ph);
+    cam2.position.set(sph.center.x + d*sp*Math.cos(th), sph.center.y + d*c, sph.center.z + d*sp*Math.sin(th)); cam2.lookAt(sph.center); cam2.updateProjectionMatrix();
+    renderer.setRenderTarget(rt2); renderer.setClearColor(0x000000, 0); renderer.clear(); renderer.render(scene, cam2); renderer.readRenderTargetPixels(rt2, 0, 0, TW, TH, buf);
+    for (let y = 0; y < TH; y++) img.data.set(buf.subarray(y*TW*4, (y + 1)*TW*4), (TH - 1 - y)*TW*4);
+    g.putImageData(img, 0, 0); const el = list.querySelector(`[data-id="${p.id}"] .th`); if (el) el.src = cv.toDataURL("image/png");
+  }
+  renderer.setRenderTarget(null); for (const [, m] of matCache) m.visible = true; catcher.visible = catcherWas; renderer.toneMappingExposure = expWas; rt2.dispose();
+}
+load().then(() => { resize(); cam(); try { makeThumbs(); } catch (e) { console.warn("thumbs", e); } document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
   .catch(e => { console.error(e); $("#stage").classList.add("err"); });
