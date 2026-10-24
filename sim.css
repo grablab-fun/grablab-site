@@ -942,3 +942,29 @@ body.sim-lock{overflow:hidden}
 .rm-stream .rm-queue{top:48px;bottom:auto;left:auto;right:14px}
 @media(max-width:620px){ .rm-pips{width:58%;right:10px;bottom:10px;gap:6px} .rm-pip{border-radius:8px} }
 @media(max-width:620px){ .sv[data-v="claim"] .sv-head h2{font-size:min(30px,7.4vw);white-space:nowrap} }
+
+/* ===== phones: room and pay fit the first screen, prizes in one row of three ===== */
+@media (max-width:620px){
+  /* room: the three capsules side by side, compact */
+  .rm-tiers{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .rm-tiers .rt{flex-direction:column;align-items:flex-start;gap:6px;padding:10px 10px!important;border-bottom:0!important;border-right:1px solid rgba(180,186,255,.1)}
+  .rm-tiers .rt:last-child{border-right:0}
+  .rm-tiers .rt-cap{width:26px;height:26px}
+  .rm-tiers .rt small{font-size:9px}
+  .rm-tiers .rt b{font-size:12.5px!important;line-height:1.15;white-space:normal!important;overflow:visible!important}
+  .rm-stream{aspect-ratio:16/10!important}
+  /* pay: small heading, short video, prizes in one row, the price right under them */
+  .sv[data-v="pay"]{padding-top:12px}
+  .sv[data-v="pay"] .sv-head{margin-bottom:10px}
+  .sv[data-v="pay"] .sv-head h2{font-size:30px}
+  .sv[data-v="pay"] .pay-live{height:120px;margin-bottom:12px}
+  .sv[data-v="pay"] .pay-p{padding-bottom:10px;gap:10px}
+  .sv[data-v="pay"] .pay-p img{width:38px;height:38px}
+  .sv[data-v="pay"] .pay-p b{font-size:20px}
+  .sv[data-v="pay"] .pp-k{margin-bottom:6px}
+  .sv[data-v="pay"] .pp-row{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .sv[data-v="pay"] .pp{flex-direction:column;align-items:flex-start;gap:5px;padding:8px}
+  .sv[data-v="pay"] .pp img{width:22px;height:22px}
+  .sv[data-v="pay"] .pp b{font-size:11.5px;line-height:1.15;white-space:normal}
+  .sv[data-v="pay"] .pay-sum .row{padding:7px 0;font-size:13px}
+}
