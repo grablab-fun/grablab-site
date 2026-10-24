@@ -492,7 +492,7 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 @media(max-width:900px){.inside-video{aspect-ratio:4/5;height:auto}}
 
 /* footer: dark clouds without the bright horizon line */
-.footer-bg{background-image:url("assets/bg-sky-dark.png");background-position:center 70%;filter:brightness(.8) saturate(1)}
+.footer-bg{background-image:url("assets/bg-sky-dark.webp");background-position:center 70%;filter:brightness(.8) saturate(1)}
 
 /* restore the original footer sunset image; remove the hairline that crossed it */
 .footer-bg{background-image:url("assets/zone-footer.png");background-position:center 60%;filter:none}
@@ -542,7 +542,7 @@ body{background:transparent}
 /* ============ HERO SCENE : pinned full-bleed stage, scroll drives chapters (replaces the split hero) ============ */
 .scene{position:relative;height:400vh}
 .stage{position:sticky;top:0;height:100vh;overflow:hidden;--mw:min(40vw,72vh)}
-.stage .sky{position:absolute;inset:0;background:url(assets/bg-sky.png) center 60%/cover no-repeat;filter:saturate(1.15);transform:scale(1.06);transition:transform 1.2s cubic-bezier(.22,.9,.3,1)}
+.stage .sky{position:absolute;inset:0;background:url(assets/bg-sky.webp) center 60%/cover no-repeat;filter:saturate(1.15);transform:scale(1.06);transition:transform 1.2s cubic-bezier(.22,.9,.3,1)}
 .stage .sky::after{content:"";position:absolute;inset:0;background:
   linear-gradient(90deg,rgba(5,9,24,.78) 0%,rgba(5,9,24,.45) 38%,rgba(5,9,24,.05) 65%,rgba(5,9,24,.35) 100%),
   linear-gradient(180deg,rgba(5,9,24,.55) 0%,transparent 30%,transparent 70%,rgba(5,9,24,.85) 100%)}
@@ -661,7 +661,7 @@ body.is-loading{overflow:hidden}
 
 
 /* ============ ONE PALETTE : the hero's twilight sky everywhere (replaces the dark galaxy) ============ */
-.page-atmosphere{background:url("assets/bg-sky.png") center 100%/cover no-repeat;filter:saturate(1.15)}
+.page-atmosphere{background:url("assets/bg-sky.webp") center 100%/cover no-repeat;filter:saturate(1.15)}
 .page-atmosphere::after{background:linear-gradient(180deg,rgba(5,9,24,.62) 0%,rgba(5,9,24,.38) 40%,rgba(5,9,24,.22) 75%,rgba(5,9,24,.35) 100%),
   linear-gradient(90deg,rgba(5,9,24,.55) 0%,rgba(5,9,24,.2) 45%,transparent 70%)}
 /* one glass language: every card uses the nav island surface */

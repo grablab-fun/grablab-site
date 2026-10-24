@@ -411,7 +411,8 @@ try { if (localStorage.getItem("gl_wallet")) (window.requestIdleCallback || setT
    then start it for real as soon as the pointer or focus heads for a Connect button */
 addEventListener("load", () => setTimeout(() => (window.requestIdleCallback || setTimeout)(() => {
   if (privy || document.querySelector('link[href$="privy/wallet.js"]')) return;
-  const l = document.createElement("link"); l.rel = "modulepreload"; l.href = "assets/privy/wallet.js"; document.head.appendChild(l);
+  if (document.documentElement.classList.contains("lite")) return;
+  const l = document.createElement("link"); l.rel = "prefetch"; l.as = "script"; l.href = "assets/privy/wallet.js"; document.head.appendChild(l);   /* download only; it is compiled when a Connect button is reached */
 }), 2500));
 ["pointerover", "focusin", "touchstart"].forEach(ev => document.addEventListener(ev, e => {
   if (!privy && e.target.closest && e.target.closest("#connectBtn, #connectBtn2, #connectBtnM")) loadPrivy();

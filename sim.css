@@ -1,6 +1,6 @@
 /* ============ SIMULATOR : pick a drop, pay, claim, drive the claw, win (participate page) ============ */
 .sim{position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;color:var(--ink);
-  background:linear-gradient(180deg,rgba(5,9,24,.94),rgba(5,9,24,.86)),url(assets/bg-sky.png) center bottom/cover;
+  background:linear-gradient(180deg,rgba(5,9,24,.94),rgba(5,9,24,.86)),url(assets/bg-sky.webp) center bottom/cover;
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);opacity:0;transition:opacity .35s ease}
 .sim[hidden]{display:none}
 .sim.open{opacity:1}
