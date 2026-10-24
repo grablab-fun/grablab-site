@@ -397,7 +397,9 @@ export function buildMachine(THREE, api){
   /* C960 clipped to the rear wall at the top, 250 above the flap, looking down at it; its cable leaves through a grommet */
   /* landing camera outside the chute, behind the window, on a printed L bracket, looking down at the flap */
   /* a printed shelf under the camera, held to the wall by two side plates that stay clear of the window */
-  rb(.29, HY1 + WT, .316, .39, HY1 + WT + .036, .32, petg, "chute_c960_clip", .002);
+  /* the shelf has a notch at the front, so the lens looks down through it */
+  rb(.29, HY1 + WT + .021, .316, .39, HY1 + WT + .036, .32, petg, "chute_c960_clip", .002);
+  rb(.29, HY1 + WT, .316, .322, HY1 + WT + .022, .32, petg, "chute_c960_clip", .002); rb(.358, HY1 + WT, .316, .39, HY1 + WT + .022, .32, petg, "chute_c960_clip", .002);
   for (const x of [.286, .39]) rb(x, HY1 + WT, .296, x + .004, HY1 + WT + .036, .324, petg, "chute_c960_clip", .0015);
   for (const x of [.288, .392]) for (const z of [.302, .316]) add(cylY(.0022, .0012, 10), dark, x, HY1 + WT + .036 + .0006, z, 0, 0, 0, "chute_c960_clip_screw");
   const cam = new THREE.Group(); cam.position.set(.34, HY1 + WT + .024, .337); cam.rotation.set(-2.43, 0, 0); G("chute").add(cam);
@@ -416,7 +418,7 @@ export function buildMachine(THREE, api){
     add(g, cone, 0, 0, 0, 0, 0, 0, "chute_c960_view");
     const lp = []; for (const c of P) lp.push(apex.x, apex.y, apex.z, c.x, c.y, c.z);
     const lg = new THREE.BufferGeometry(); lg.setAttribute("position", new THREE.Float32BufferAttribute(lp, 3));
-    const ln = new THREE.LineSegments(lg, m("viewline", { color:0x9cc0ff, emissive:0x3b7bff, emissiveIntensity:1, transparent:true, opacity:.35, depthWrite:false, toneMapped:false })); ln.userData.part = "chute"; ln.name = "chute_c960_view"; G("chute").add(ln); }
+    const ln = new THREE.LineSegments(lg, m("viewline", { color:0x9cc0ff, emissive:0x3b7bff, emissiveIntensity:1, transparent:true, opacity:.35, depthWrite:false, toneMapped:false })); ln.userData.part = "chute"; ln.name = "chute_c960_view"; ln.raycast = () => {}; G("chute").add(ln); }
   long(() => harness([[.34, HY1 + WT + .036, .345], [.36, HY1 + WT + .05, .37], [.36, HY1 + .1, CZ1 - .02], [.36, .41, CZ1 - .02], [.072, .41, CZ1 - .02], [.072, .41, .137], [.072, IN - .0378, .137]], .0022, wireK, "chute_c960_cable"));
   long(() => harness([[.34, Y1 + .0112, CB + .04], [.34, -.245, CB + .04], [.34, -.245, .3], [.24, -.245, .3], [.24, .40, .3], [.062, .40, .3], [.062, .40, .137], [.062, IN - .0378, .137]], .0024, wireK, "chute_acr_usb"));
   long(() => harness([[SX0 + .0224, SY + .007, SZ0], [.452, SY + .007, SZ0], [.452, SY + .007, .3], [.452, .42, .3], [-.195, .42, .3], [-.195, .42, .1], [-.195, IN - .0217, .1]], .0012, wireK, "chute_servo_cable"));

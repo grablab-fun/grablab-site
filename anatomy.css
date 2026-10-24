@@ -236,3 +236,6 @@ body.ready .an-rail{opacity:1}
   .an-rail .pt{flex:1;padding-top:0;padding-bottom:0}
   .an-card,body.ui-min .an-card{left:var(--side-m)}
 }
+
+/* the title on two lines in its panel */
+@media (min-width:981px){ .an-head h1{font-size:clamp(24px,2vw,40px)} .an-head h1 .l1,.an-head h1 .hl{display:block;white-space:nowrap} }
