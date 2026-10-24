@@ -15,4 +15,3 @@ _headers
 assets/play/_*
 wallet-src/
 lab/*.js
-maintenance.html
