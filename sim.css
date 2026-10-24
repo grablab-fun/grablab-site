@@ -911,3 +911,20 @@ body.sim-lock{overflow:hidden}
 /* pick a drop: the subtitle as two lines that each fit */
 .sv-sub.two span{display:block}
 @media (max-width:620px){ .sv-sub.two{font-size:min(14px,3.6vw);line-height:1.5} .sv-sub.two span{white-space:nowrap} }
+
+/* ===== 3D machine: main camera fills the stage, two live camera windows you can swap in ===== */
+.stagew .s3{position:absolute;inset:0;width:100%;height:100%;display:none}
+.sim.s3-on .stagew .s3{display:block}
+.sim.s3-on .stagew #simCv{visibility:hidden}
+.s3-pip,.s3-main{display:none}
+.sim.s3-on .s3-pip{display:block;position:absolute;bottom:clamp(10px,2vh,16px);z-index:3;width:clamp(116px,24%,270px);aspect-ratio:16/10;padding:0;border-radius:14px;border:1px solid rgba(180,186,255,.45);background:transparent;cursor:pointer;box-shadow:0 10px 28px rgba(0,0,0,.45);transition:border-color .2s,transform .2s}
+.sim.s3-on .s3-pip.l{left:clamp(10px,1.6vw,16px)}
+.sim.s3-on .s3-pip.r{right:clamp(10px,1.6vw,16px)}
+.sim.s3-on .s3-pip:hover{border-color:#9cc0ff;transform:translateY(-2px)}
+.s3-pip span{position:absolute;left:8px;top:7px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,9,24,.62);padding:3px 7px;border-radius:999px}
+.sim.s3-on .s3-main{display:block;position:absolute;left:clamp(12px,1.6vw,18px);top:clamp(52px,7vh,62px);z-index:3;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#cfe0ff;background:rgba(5,9,24,.55);border:1px solid rgba(180,186,255,.25);padding:4px 9px;border-radius:999px}
+.sim.s3-on .stagew .toast.hint{bottom:auto;top:clamp(84px,11vh,100px)}
+@media (max-width:620px){ .sim.s3-on .s3-pip{width:31%;border-radius:10px} .s3-pip span{font-size:7.5px;left:5px;top:5px;padding:2px 5px} }
+/* both camera windows sit bottom left, the timer keeps the bottom right */
+.sim.s3-on .s3-pip.r{right:auto;left:calc(clamp(10px,1.6vw,16px) + clamp(116px,24%,270px) + 10px)}
+@media (max-width:620px){ .sim.s3-on .s3-pip.r{left:calc(10px + 31% + 8px)} }

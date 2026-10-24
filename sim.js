@@ -294,6 +294,10 @@
       <section class="sv" data-v="play">
         <div class="stagew" id="stagew">
           <canvas id="simCv"></canvas>
+          <canvas id="sim3d" class="s3" aria-label="The machine, live"></canvas>
+          <span class="s3-main" id="s3Main">Corner camera</span>
+          <button class="s3-pip l" type="button" data-cam="1"><span>Claw camera</span></button>
+          <button class="s3-pip r" type="button" data-cam="2"><span>Chute camera</span></button>
           <div class="shud tl"><div class="bcast"><span class="slive">Live</span><i class="bdiv"></i><img class="bimg" id="hudLogo" src="" alt="" /><span class="smach" id="hudProj"></span></div></div>
           <div class="shud tm"><b id="simT">0:30</b><span class="tb"><i id="simTb"></i></span></div>
           <div class="shud tr"><span class="swatch"><i></i><b class="vn" data-n="1284">1,284</b> watching</span></div>
@@ -458,12 +462,21 @@
     if (v === "play") game.start();
     else game.stop();
   }
+  /* the 3D machine with three live cameras (sim3d.js), loaded when the simulator opens; the photo mode stays as the fallback */
+  let S3 = null, S3m = null, S3p = null;
+  function load3d(){
+    if (S3p || !root) return S3p;
+    const c = root.querySelector("#sim3d"); if (!c) return null;
+    const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
+    S3p = import("./sim3d.js?v=2").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    return S3p;
+  }
   function open(){
     if (!root) build();
     lastFocus = document.activeElement;
     root.hidden = false; document.body.classList.add("sim-lock");
     requestAnimationFrame(() => root.classList.add("open"));
-    go("pick");
+    go("pick"); load3d();
     if (window.glBack && !glBack.has("sim")) glBack.push("sim", simBack);
     feeds.forEach(g => { if (!g.isRunning()) g.start(); });
     root.querySelectorAll(".pc-vid").forEach(v => {
@@ -588,11 +601,12 @@
     const el = s => (o.el ? o.el(s) : $(s, root)) || DUMMY;
     let cv, cx, W = 0, H = 0, dpr = 1, raf = 0, last = 0, running = false;
     let caps = [], parts = [], st, keys = {}, joyV = { x:0, z:0 };
-    const R = 0.085, TOP = 0.98;
+    let R = 0.085, M3 = false; const TOP = 0.98, R2 = 0.085;
     /* PHOTO MODE (full simulator): the machine is a real photo of the cabinet (assets/play/plate.webp) and only the claw,
        the grabbed capsule and shadows are drawn over it. The chute is the acrylic box front-left in that photo. */
     const PH = !o.auto && !o.cam ? photoKit() : null;
-    const CHUTE = PH ? { x0:-1, x1:-0.56, z0:0.1, z1:0.48, h:0.2 } : { x0:-1, x1:-0.6, z0:0, z1:0.36, h:0.2 };
+    const CHUTE0 = PH ? { x0:-1, x1:-0.56, z0:0.1, z1:0.48, h:0.2 } : { x0:-1, x1:-0.6, z0:0, z1:0.36, h:0.2 };
+    let CHUTE = CHUTE0, DZ = 1.15;
     let joyEl = null;
     function tilt(ux, uy){
       if (!joyEl) joyEl = el("#simJoy");
@@ -604,6 +618,7 @@
       const r = cv.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio || 1);
       W = r.width; H = r.height; cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
       if (PH) PH.fit(W, H);
+      if (M3 && S3) S3.resize();
     }
     /* world: x -1..1 (left..right), z 0..1 (front..back), y 0..1 (floor..top) */
     function P(x, y, z){
@@ -615,6 +630,11 @@
 
     function fill(){
       caps = [];
+      if (M3){   /* our machine: one clear layer packed on the floor, a few on top */
+        const sp = S3.spots();
+        for (const [x, z] of sp) caps.push({ x, z, y:R, kind:(r => r < 0.1 ? "rare" : r < 0.38 ? "violet" : "gold")(Math.random()), vy:0, rest:R, state:"pile", a:1 });
+        return;
+      }
       if (PH){   /* the photo pile is dense: every spot has a capsule under it */
         const kinds = () => { const r = Math.random(); return r < 0.1 ? "rare" : r < 0.38 ? "violet" : "gold"; };
         for (let z = 0.08; z < 0.97; z += 0.1) for (let x = -0.92; x < 0.95; x += 0.11){
@@ -886,6 +906,7 @@
       cx.setTransform(dpr,0,0,dpr,0,0);
       const sh = st.shake > 0 ? (Math.random()-.5)*st.shake*8 : 0;
       cx.translate(sh, 0);
+      if (M3){ S3.draw(st, caps); return; }
       if (PH){ drawPhoto(dt); return; }
       drawRoom(); drawChute();
       const list = caps.filter(c => c !== st.held && c.state !== "gone").sort((a,b) => b.z - a.z || a.y - b.y);
@@ -903,15 +924,15 @@
     /* ---------- logic ---------- */
     function topAt(x, z){
       let best = 0;
-      for (const c of caps){ if (c.state !== "pile") continue; const d = Math.hypot(c.x - x, (c.z - z)*1.15); if (d < R*1.1) best = Math.max(best, c.y + R*Math.sqrt(1 - Math.min(1,(d/(R*1.1))**2))); }
+      for (const c of caps){ if (c.state !== "pile") continue; const d = Math.hypot(c.x - x, (c.z - z)*DZ); if (d < R*1.1) best = Math.max(best, c.y + R*Math.sqrt(1 - Math.min(1,(d/(R*1.1))**2))); }
       return best;
     }
     function nearest(x, z){
       let best = null, bd = 1e9;
-      for (const c of caps){ if (c.state !== "pile") continue; const d = Math.hypot(c.x - x, (c.z - z)*1.15) - (c.y - R)*0.4; if (d < bd){ bd = d; best = c; } }
+      for (const c of caps){ if (c.state !== "pile") continue; const d = Math.hypot(c.x - x, (c.z - z)*DZ) - (c.y - R)*0.4; if (d < bd){ bd = d; best = c; } }
       return { c: best, d: bd };
     }
-    function inChute(){ return st.x < CHUTE.x1 - 0.02 && st.z < CHUTE.z1 - 0.02; }
+    function inChute(){ return M3 ? st.x < CHUTE.x1 - 0.02 && st.z > CHUTE.z0 + 0.02 : st.x < CHUTE.x1 - 0.02 && st.z < CHUTE.z1 - 0.02; }
     function toast(t, ms){
       const node = el("#simToast"); node.textContent = t; node.classList.add("on");
       clearTimeout(node._t); node._t = setTimeout(() => node.classList.remove("on"), ms || 1300);
@@ -1027,7 +1048,7 @@
       } else if (st.phase === "release"){
         st.ph += dt;
         /* glide to the centre of the chute, then open */
-        const tx = (CHUTE.x0 + CHUTE.x1)/2 + 0.04, tz = (CHUTE.z0 + CHUTE.z1)/2, e = Math.min(1, dt*7);
+        const tx = CHUTE.cx != null ? CHUTE.cx : (CHUTE.x0 + CHUTE.x1)/2 + 0.04, tz = CHUTE.cz != null ? CHUTE.cz : (CHUTE.z0 + CHUTE.z1)/2, e = Math.min(1, dt*7);
         st.x += (tx - st.x)*e; st.z += (tz - st.z)*e;
         if (st.held){ st.held.x = st.x; st.held.z = st.z; }
         if (st.ph > 0.4) st.open = Math.min(1, st.open + dt*4);
@@ -1063,7 +1084,7 @@
           ap.tgt = pick[0] || caps.find(c => c.state === "pile");
         }
         tx = ap.tgt.x; tz = ap.tgt.z;
-      } else if (st.phase === "carry"){ tx = (CHUTE.x0 + CHUTE.x1)/2; tz = (CHUTE.z0 + CHUTE.z1)/2; }
+      } else if (st.phase === "carry"){ tx = CHUTE.cx != null ? CHUTE.cx : (CHUTE.x0 + CHUTE.x1)/2; tz = CHUTE.cz != null ? CHUTE.cz : (CHUTE.z0 + CHUTE.z1)/2; }
       else { move(0, 0); return; }
       const dx = tx - st.x, dz = tz - st.z;
       move(Math.abs(dx) > 0.008 ? Math.max(-1, Math.min(1, dx*4)) : 0, Math.abs(dz) > 0.008 ? Math.max(-1, Math.min(1, dz*4)) : 0);
@@ -1134,6 +1155,9 @@
         addEventListener("resize", () => { if (running) layout(); });
       },
       start(){
+        /* the full simulator plays on the 3D machine once it has loaded */
+        M3 = !o.auto && !o.cam && !!S3 && S3.ok(); R = M3 ? S3m.CAP_R : R2; CHUTE = M3 ? S3m.CHUTE : CHUTE0; DZ = M3 ? 2 : 1.15;
+        if (root && !o.auto && !o.cam){ root.classList.toggle("s3-on", M3); }
         el("#hudProj").textContent = proj.name; el("#hudLogo").src = proj.logo;
         reset(); setTimer(); grabBtn(false); hint("");
         running = true; layout(); last = performance.now();
