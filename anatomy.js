@@ -2,7 +2,7 @@
    The machine is modelled part by part from the bill of materials and the build tutorial (anatomy-model.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-model.js?v=17";
+import { buildMachine } from "./anatomy-model.js?v=18";
 
 const $ = s => document.querySelector(s);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
@@ -236,7 +236,7 @@ function easeCam(dt){ const g = goal(), k = Math.min(1, dt*3.2); if (orb.phT != 
 let explode = 0, explodeTarget = 0, selected = null, hovered = null, tour = null, selectedCap = null, animCap = null, openK = 0, capHover = null, lastHitCap = null, subFocus = null;
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(-2, -2);
 const card = $("#card"), list = $("#parts"), labels = $("#labels"), lines = $("#lines");
-function setExplode(v){ explodeTarget = v; const b = document.getElementById("explode"); if (b){ b.classList.toggle("on", v > .5); b.textContent = v > .5 ? "Assemble" : "Explode"; } }
+function setExplode(v){ explodeTarget = v; const b = document.getElementById("explode"); if (b){ b.classList.toggle("on", v > .5);  } }
 document.getElementById("explode").onclick = () => { subFocus = null; const on = explodeTarget < .5; setExplode(on ? 1 : 0); if (!selected){ orb.thT = on ? -.9 : -1.57; orb.phT = on ? 1.1 : 1.28; } if (tour) stopTour(); };
 function applyExplode(){
   const E = explode;
@@ -409,8 +409,8 @@ function clawCycle(dt){
 
 /* ---------- tour: for the video and the lazy ---------- */
 const tourBtn = $("#tour");
-function startTour(){ tour = { t:0, i:-1 }; tourBtn.classList.add("on"); tourBtn.textContent = "Stop tour"; setSelected(null); }
-function stopTour(){ tour = null; tourBtn.classList.remove("on"); tourBtn.textContent = "Play tour"; }
+function startTour(){ tour = { t:0, i:-1 }; tourBtn.classList.add("on"); tourBtn.querySelector("span").textContent = "Stop tour"; setSelected(null); }
+function stopTour(){ tour = null; tourBtn.classList.remove("on"); tourBtn.querySelector("span").textContent = "Play tour"; }
 tourBtn.onclick = () => tour ? stopTour() : startTour();
 function tourStep(dt){
   tour.t += dt; const T = tour.t, S = 3, N = PARTS.length;

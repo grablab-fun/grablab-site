@@ -169,23 +169,23 @@ export function buildMachine(THREE, api){
   add(new THREE.SphereGeometry(.02, 40, 16, 0, Math.PI*2, 0, Math.PI/2), red, -.35, PY1 + .018, .22, 0, 0, 0, "panel_estop_mushroom");
   /* scan to play: anodised plate, QR, caption */
   const plateM = m("anod", { color:0x202229, roughness:.32, metalness:.7 });
-  box(-.27, PY1, .145, -.19, PY1 + .003, .235, plateM, "panel_qr_plate");
+  box(.31, PY1, .145, .39, PY1 + .003, .235, plateM, "panel_qr_plate");
   const qr = label("qr", .06, .06, (g, w, h) => { const N = 25, s = w/(N + 4); g.fillStyle = "#f4f5f8"; g.fillRect(0, 0, w, h); g.fillStyle = "#0c0d10"; let seed = 7; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
     const fin = (cx, cy) => { g.fillRect((cx + 2)*s, (cy + 2)*s, 7*s, 7*s); g.fillStyle = "#f4f5f8"; g.fillRect((cx + 3)*s, (cy + 3)*s, 5*s, 5*s); g.fillStyle = "#0c0d10"; g.fillRect((cx + 4)*s, (cy + 4)*s, 3*s, 3*s); };
     for (let r = 0; r < N; r++) for (let c = 0; c < N; c++){ if ((r < 8 && c < 8) || (r < 8 && c > N - 9) || (r > N - 9 && c < 8)) continue; if (rnd() < .48) g.fillRect((c + 2)*s, (r + 2)*s, s, s); }
     fin(0, 0); fin(N - 7, 0); fin(0, N - 7); });
-  add(new THREE.PlaneGeometry(.06, .06), qr, -.23, PY1 + .0031, .2, ...FACE_POS_Y, "panel_qr");
+  add(new THREE.PlaneGeometry(.06, .06), qr, .35, PY1 + .0031, .2, ...FACE_POS_Y, "panel_qr");
   const scan = label("scan", .07, .014, (g, w, h) => { g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "#f2f3fa"; g.font = `700 ${h*.52}px Satoshi, sans-serif`; try { g.letterSpacing = `${h*.09}px`; } catch (e) {} g.fillText("SCAN TO PLAY", w/2, h/2); }, { transparent:true, toneMapped:false });
-  add(new THREE.PlaneGeometry(.07, .014), scan, -.23, PY1 + .0031, .1565, ...FACE_POS_Y, "panel_scan");
+  add(new THREE.PlaneGeometry(.07, .014), scan, .35, PY1 + .0031, .1565, ...FACE_POS_Y, "panel_scan");
   /* GRABLAB plate with a chrome hairline */
-  box(-.155, PY1, .13, .255, PY1 + .003, .25, plateM, "panel_wordmark_plate");
-  box(-.155, PY1 + .003, .2465, .255, PY1 + .0036, .248, steel, "panel_trim"); box(-.155, PY1 + .003, .132, .255, PY1 + .0036, .1335, steel, "panel_trim");
+  box(-.205, PY1, .13, .205, PY1 + .003, .25, plateM, "panel_wordmark_plate");
+  box(-.205, PY1 + .003, .2465, .205, PY1 + .0036, .248, steel, "panel_trim"); box(-.205, PY1 + .003, .132, .205, PY1 + .0036, .1335, steel, "panel_trim");
   const wm = label("wordmark", .36, .1, (g, w, h) => { g.textAlign = "center"; g.textBaseline = "middle"; g.shadowColor = "rgba(200,215,255,.85)"; g.shadowBlur = h*.09; g.fillStyle = "#f6f7ff";
     g.font = `700 ${h*.44}px 'Clash Display', Satoshi, sans-serif`; try { g.letterSpacing = `${h*.02}px`; } catch (e) {} g.fillText("GRABLAB", w/2, h*.42); g.shadowBlur = 0; g.fillText("GRABLAB", w/2, h*.42);
     g.font = `500 ${h*.075}px Satoshi, sans-serif`; try { g.letterSpacing = `${h*.025}px`; } catch (e) {} g.fillStyle = "rgba(220,226,245,.78)"; g.fillText("PROVABLY FAIR CLAW", w/2, h*.76);
     g.fillStyle = "rgba(220,226,245,.5)"; g.font = `500 ${h*.06}px Satoshi, sans-serif`; g.fillText("PROTOTYPE 01", w/2, h*.89); }, { transparent:true, toneMapped:false });
   wm.emissive = new THREE.Color(0xffffff); wm.emissiveMap = wm.map; wm.emissiveIntensity = .9; wm.userData.base.ei = .9;
-  add(new THREE.PlaneGeometry(.36, .1), wm, .05, PY1 + .0031, .19, ...FACE_POS_Y, "panel_wordmark");
+  add(new THREE.PlaneGeometry(.36, .1), wm, 0, PY1 + .0031, .19, ...FACE_POS_Y, "panel_wordmark");
 
   /* =========================================================================================== electronics on the inner face, left to right */
   use("electronics");
@@ -487,7 +487,7 @@ export function buildMachine(THREE, api){
   endstop(-.42, YC, CTZ + .0015, Math.PI, "gantry_x_endstop");
   endstop(-RX, .42, RZ + .0115, -Math.PI/2, "gantry_y_endstop");
   /* drag chain 10 x 20: fixed on the beam's top slot near the X motor, a U turn, then the top run to the carriage */
-  const XC = .05, lo = CTZ + .005, hi = lo + .038, UX = -.49;
+  const XC = 0, lo = CTZ + .005, hi = lo + .038, UX = -.49;
   const cpts = [[-.45, YC, lo], [-.47, YC, lo]]; for (let i = 0; i <= 12; i++){ const th = -Math.PI/2 - i*Math.PI/12; cpts.push([UX + .019*Math.cos(th), YC, lo + .019 + .019*Math.sin(th)]); }
   cpts.push([-.47, YC, hi], [-.2, YC, hi], [XC - .03, YC, hi]);
   { const c = new THREE.CatmullRomCurve3(cpts.map(p => new THREE.Vector3(...p)), false, "centripetal"), L = c.getLength(), k = Math.floor(L/.0135);
