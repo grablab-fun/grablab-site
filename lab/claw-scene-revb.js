@@ -92,9 +92,10 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   const FZ = .22, FT = .018, CH = [.30, .46, -.47, -.31], RIM = .045;
   /* the prize tray: dark grey floor with a raised rim all round, the chute is a dark slot in its front right corner */
   fixed("floor_mdf", [
-    BB(-.48, CH[3], FZ - FT, .48, .48, FZ, "tray"),
-    BB(-.48, -.48, FZ - FT, CH[0], CH[3], FZ, "tray"),
-    BB(CH[1], -.48, FZ - FT, .48, CH[3], FZ, "tray"),
+    /* the floor collides 70 mm deep (hidden inside the base) so a dropped capsule can never tunnel through it */
+    BB(-.48, CH[3], FZ - .07, .48, .48, FZ, "tray"),
+    BB(-.48, -.48, FZ - .07, CH[0], CH[3], FZ, "tray"),
+    BB(CH[1], -.48, FZ - .07, .48, CH[3], FZ, "tray"),
     BB(CH[0], -.48, FZ - FT, CH[1], CH[2], FZ, "tray"),
     BB(-.48, -.48, FZ, .48, -.468, FZ + RIM, "tray"), BB(-.48, .468, FZ, .48, .48, FZ + RIM, "tray"),
     BB(-.48, -.468, FZ, -.468, .468, FZ + RIM, "tray"), BB(.468, -.468, FZ, .48, .468, FZ + RIM, "tray"),
