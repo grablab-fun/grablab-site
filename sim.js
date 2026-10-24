@@ -51,7 +51,7 @@
   const FEED = [[6,0,0],[4,0,0],[5,0,0],[1,0,0],[6,1,6],[4,1,5]];
   function feedVideo(i){
     const [n, mir, off] = FEED[i % FEED.length];
-    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=4" poster="assets/feeds/feed${n}.jpg?v=4" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
+    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=5" poster="assets/feeds/feed${n}.jpg?v=5" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
   }
   function capCluster(n){ return `<span class="pc-caps">${["","v","r"].slice(0,n).map(k => `<i class="cap ${k}"></i>`).join("")}</span>`; }
   /* project socials (demo projects: icons only, real ones link out) */
@@ -216,8 +216,8 @@
               <div class="pc-ov"><span class="sc"><i class="rec"></i>Live</span><span class="sc" id="rmCatch"></span></div>
               <span class="pc-view"><i></i><b class="vn" id="rmWatch" data-n="900">900</b> watching</span>
               <span class="sc rm-queue" id="rmQueue"></span>
-              <span class="rm-camname" id="rmCam">Stream camera</span>
-              <div class="rm-pips"><button class="rm-pip" type="button" data-k="top"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Top camera</span></button><button class="rm-pip" type="button" data-k="chute"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Beam sensor camera</span></button></div>
+              <span class="rm-camname" id="rmCam">Corner camera</span>
+              <div class="rm-pips"><button class="rm-pip" type="button" data-k="claw"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Claw camera</span></button><button class="rm-pip" type="button" data-k="chute"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Beam sensor camera</span></button></div>
             </div>
             <div class="rm-info">
               <div class="rm-tiers">
@@ -436,9 +436,9 @@
     $("#rmLogo", root).src = p.logo; $("#rmName", root).textContent = p.name; $("#rmTk", root).textContent = p.tk; $("#rmCat", root).textContent = p.tags;
     $("#rmSoc", root).innerHTML = socials(p);
     /* three cameras on the same play: the stream, straight down from the top, and the beam sensor in the chute; tap a window to swap it in */
-    const CAMN = { main:"Stream camera", top:"Top camera", chute:"Beam sensor camera" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=4`;
+    const CAMN = { main:"Corner camera", claw:"Claw camera", chute:"Beam sensor camera" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=5`;
     const pips = [...root.querySelectorAll(".rm-pip")];
-    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "main"; v.src = url("main"); v.poster = `assets/feeds/feed${fn}.jpg?v=4`;
+    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "main"; v.src = url("main"); v.poster = `assets/feeds/feed${fn}.jpg?v=5`;
       pips.forEach(b => { const pv = b.querySelector("video"); pv.src = url(b.dataset.k); pv.dataset.k = b.dataset.k; b.querySelector("span").textContent = CAMN[b.dataset.k]; }); $("#rmCam", root).textContent = CAMN.main; }
     if (!root.dataset.rmPips){ root.dataset.rmPips = "1";
       /* keep the windows on the same moment as the main feed */
@@ -480,7 +480,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=6").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=7").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){
@@ -527,7 +527,7 @@
   function demoAddr(c){ return c === "base" ? "0x" + Array.from({length:40}, () => "0123456789abcdef"[Math.random()*16|0]).join("") : b58(44); }
   function enterPay(){
     const pi = PROJECTS.indexOf(proj), [fn, mir] = FEED[pi % FEED.length], pv = $("#payVid", root);
-    if (!pv.src.endsWith(`feed${fn}.mp4?v=4`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=4`; pv.poster = `assets/feeds/feed${fn}.jpg?v=4`; }
+    if (!pv.src.endsWith(`feed${fn}.mp4?v=5`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=5`; pv.poster = `assets/feeds/feed${fn}.jpg?v=5`; }
     pv.classList.toggle("mir", !!mir); pv.play().catch(() => {});
     $("#payMach", root).textContent = `Catching at ${proj.name}`;
     const w = 380 + (proj.left * 37) % 1400, wv = $("#payWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);

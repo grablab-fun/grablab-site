@@ -220,7 +220,7 @@ stage.addEventListener("pointermove", e => { mouse.x = (e.clientX - stage.getBou
     orb.px += (-dx*m[0] + dy*m[4])*k; orb.py += (-dx*m[1] + dy*m[5])*k; orb.pz += (-dx*m[2] + dy*m[6])*k; return; }
   if (!orb.down) return; orb.vth = (e.clientX - orb.lx)*.006; orb.vph = e.pointerType === "touch" ? 0 : (e.clientY - orb.ly)*.006; orb.lx = e.clientX; orb.ly = e.clientY; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); orb.moved = (orb.moved || 0) + Math.abs(orb.vth) + Math.abs(orb.vph); });
 stage.addEventListener("pointerup", () => { orb.down = false; orb.pan = false; });
-stage.addEventListener("wheel", e => { e.preventDefault(); orb.zoom = Math.min(2.4, Math.max(.45, orb.zoom*(1 + Math.sign(e.deltaY)*.08))); orb.idle = 0; }, { passive:false });
+stage.addEventListener("wheel", e => { if (!e.ctrlKey && !e.metaKey) return; /* a plain wheel scrolls the page; ctrl + wheel or a pinch zooms */ e.preventDefault(); orb.zoom = Math.min(2.4, Math.max(.45, orb.zoom*(1 + Math.sign(e.deltaY)*.08))); orb.idle = 0; }, { passive:false });
 /* where the camera wants to be: the whole machine, or the selected part framed */
 const sph = new THREE.Sphere(), whole = new THREE.Box3(), pb = new THREE.Box3();
 /* the free part of the screen: between the nav and the bar, and between the card (or the title) and the parts list */
