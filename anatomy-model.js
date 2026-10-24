@@ -299,7 +299,11 @@ export function buildMachine(THREE, api){
   use("chute");
   const CZ0 = .25, CZ1 = FZ, WT = .012;                                  // a 150 deep chute, so the prize bin fits under it
   const wall = m("wall", { color:0x17181c, roughness:.9, metalness:0 }); wall.userData.xray = .28;      // see-through when the chute is isolated
-  box(HX0 - WT, HY0 - WT, CZ0, HX1 + WT, HY0, CZ1, wall, "chute_wall"); box(HX0 - WT, HY1, CZ0, HX1 + WT, HY1 + WT, CZ1, wall, "chute_wall");
+  box(HX0 - WT, HY0 - WT, CZ0, HX1 + WT, HY0, CZ1, wall, "chute_wall"); /* rear wall with a small acrylic window: the landing camera films from outside, out of the capsule's way */
+  const WX0 = .30, WX1 = .38, WZ0 = .30, WZ1 = .385;
+  box(HX0 - WT, HY1, CZ0, WX0, HY1 + WT, CZ1, wall, "chute_wall"); box(WX1, HY1, CZ0, HX1 + WT, HY1 + WT, CZ1, wall, "chute_wall");
+  box(WX0, HY1, CZ0, WX1, HY1 + WT, WZ0, wall, "chute_wall"); box(WX0, HY1, WZ1, WX1, HY1 + WT, CZ1, wall, "chute_wall");
+  { const wg = m("window", { color:0xdfe7ff, roughness:.04, metalness:0, clearcoat:1, transparent:true, opacity:.18, depthWrite:false }, true); wg.userData.noPick = true; box(WX0, HY1 + .004, WZ0, WX1, HY1 + .007, WZ1, wg, "chute_c960_window"); }
   box(HX0 - WT, HY0, CZ0, HX0, HY1, CZ1, wall, "chute_wall"); box(HX1, HY0, CZ0, HX1 + WT, HY1, CZ1, wall, "chute_wall");
   /* E3JK pair on printed L brackets, 30 below the floor, lenses through 20 mm holes in the side walls */
   const SZ = FZ - .03;
@@ -316,6 +320,10 @@ export function buildMachine(THREE, api){
   const beamM = m("laser", { color:0xff2a2a, emissive:0xff2a2a, emissiveIntensity:2.2, transparent:true, opacity:.85, toneMapped:false, depthWrite:false }); beamM.userData.noPick = true;
   add(cylX(.0009, HX1 - HX0 - .002, 10), beamM, (HX0 + HX1)/2, -.34, SZ, 0, 0, 0, "chute_e3jk_beam");
   add(cylX(.0028, HX1 - HX0 - .002, 16), m("laserglow", { color:0xff3030, emissive:0xff2020, emissiveIntensity:1.2, transparent:true, opacity:.18, toneMapped:false, depthWrite:false, blending:THREE.AdditiveBlending }), (HX0 + HX1)/2, -.34, SZ, 0, 0, 0, "chute_e3jk_beam");
+  /* rubber curtain under the beam: two soft flaps the capsule pushes down through, and that stop it bouncing back up */
+  const rub = m("curtain", { color:0x101013, roughness:.8, transparent:true, opacity:.85 }); rub.userData.xray = .35;
+  for (const s of [-1, 1]){ const o = add(rbox(.118, .062, .0016, .0006), rub, (HX0 + HX1)/2, (HY0 + HY1)/2 + s*.03, SZ - .05, s*.55, 0, 0, "chute_curtain");
+    box(HX0, s < 0 ? HY0 : HY1 - .006, SZ - .036, HX1, s < 0 ? HY0 + .006 : HY1, SZ - .03, m("curtainbar", { color:0x2a2c33, roughness:.45, metalness:.5 }), "chute_curtain_bar"); }
   /* printed cradle under the chute: the reader in its pocket, a flap over it on a 3 mm axle, the servo outside driving it through a lever and a pushrod */
   const X0 = HX0 - WT, X1 = HX1 + WT, Y0 = HY0 - WT, Y1 = HY1 + WT, CB = .11;
   const pla = () => m("pla", { color:0x34373f, roughness:.48, metalness:.05 });
@@ -332,6 +340,8 @@ export function buildMachine(THREE, api){
   const AXZ = CB + .0215, AY = -.395;
   const flapM = m("flapM", { color:0x3c4049, roughness:.45, metalness:.05 }); flapM.userData.xray = .3;     // see-through when the chute is open, so the reader shows
   rb(.285, AY, AXZ - .0015, .395, -.285, AXZ + .0015, flapM, "chute_flap", .004);
+  const foam = m("foam", { color:0x24262c, roughness:.95 }); foam.userData.xray = .3;
+  rb(.289, AY + .004, AXZ + .0015, .391, -.289, AXZ + .006, foam, "chute_flap_pad", .003);
   add(cylX(.0032, .11, 20), pla, .34, AY, AXZ, 0, 0, 0, "chute_flap_hinge");
   add(cylX(.0015, X1 - X0 + .012, 12), steel, .34, AY, AXZ, 0, 0, 0, "chute_axle");
   for (const x of [X0 + .004, X1 - .012]) rb(x, AY - .006, AXZ - .008, x + .008, AY + .006, AXZ + .006, pla, "chute_axle_block", .002);
@@ -372,8 +382,9 @@ export function buildMachine(THREE, api){
   box(.5115, -.43, .18, .5175, -.41, .21, steel, "cage_door_knob");
   use("chute");
   /* C960 clipped to the rear wall at the top, 250 above the flap, looking down at it; its cable leaves through a grommet */
-  box(HX0 + .005, HY1 - .004, CZ1 - .045, HX0 + .055, HY1, CZ1 - .01, dark, "chute_c960_clip");
-  const cam = new THREE.Group(); cam.position.set(HX0 + .03, HY1 - .014, CZ1 - .028); cam.rotation.set(-1.82, 0, 0); G("chute").add(cam);
+  /* landing camera outside the chute, behind the window, on a printed L bracket, looking down at the flap */
+  box(.312, HY1 + WT, .318, .368, HY1 + WT + .034, .322, petg, "chute_c960_clip"); box(.312, HY1 + WT, .318, .368, HY1 + WT + .004, .335, petg, "chute_c960_clip");
+  const cam = new THREE.Group(); cam.position.set(.34, HY1 + WT + .022, .336); cam.rotation.set(-2.43, 0, 0); G("chute").add(cam);
   add(rbox(.064, .02, .024, .009), m("c960", { color:0x121317, roughness:.35, metalness:.2 }), 0, 0, 0, Math.PI/2, 0, 0, "chute_c960", cam);
   add(rbox(.05, .002, .017, .007), m("c960face", { color:0x050507, roughness:.08, metalness:.3, clearcoat:1 }, true), 0, .0105, 0, Math.PI/2, 0, 0, "chute_c960_face", cam);
   add(cylY(.0075, .004, 32), m("ring", { color:0xa8adb7, roughness:.3, metalness:1 }), 0, .0125, 0, 0, 0, 0, "chute_c960_lens_ring", cam);
@@ -390,8 +401,7 @@ export function buildMachine(THREE, api){
     const lp = []; for (const c of P) lp.push(apex.x, apex.y, apex.z, c.x, c.y, c.z);
     const lg = new THREE.BufferGeometry(); lg.setAttribute("position", new THREE.Float32BufferAttribute(lp, 3));
     const ln = new THREE.LineSegments(lg, m("viewline", { color:0x9cc0ff, emissive:0x3b7bff, emissiveIntensity:1, transparent:true, opacity:.35, depthWrite:false, toneMapped:false })); ln.userData.part = "chute"; ln.name = "chute_c960_view"; G("chute").add(ln); }
-  for (const y of [HY1 - .0005, HY1 + WT + .0005]) add(new THREE.TorusGeometry(.0042, .0015, 10, 24), m("grommet", { color:0x0d0d0f, roughness:.7 }), HX0 + .07, y, CZ1 - .02, Math.PI/2, 0, 0, "chute_grommet");
-  long(() => harness([[HX0 + .055, HY1 - .002, CZ1 - .02], [HX0 + .07, HY1 - .004, CZ1 - .02], [HX0 + .07, HY1 + .03, CZ1 - .02], [HX0 + .07, .41, CZ1 - .02], [.072, .41, CZ1 - .02], [.072, .41, .137], [.072, IN - .0378, .137]], .0022, wireK, "chute_c960_cable"));
+  long(() => harness([[.34, HY1 + WT + .036, .345], [.36, HY1 + WT + .05, .37], [.36, HY1 + .1, CZ1 - .02], [.36, .41, CZ1 - .02], [.072, .41, CZ1 - .02], [.072, .41, .137], [.072, IN - .0378, .137]], .0022, wireK, "chute_c960_cable"));
   for (const x of [X0 - .0005, X0 + .0045]) add(new THREE.TorusGeometry(.0038, .0014, 10, 24), m("grommet", { color:0x0d0d0f, roughness:.7 }), x, -.34, CB + .0105, 0, Math.PI/2, 0, "chute_grommet");
   long(() => harness([[.2912, -.34, CB + .0105], [.255, -.34, CB + .0105], [.24, -.34, .3], [.24, .40, .3], [.062, .40, .3], [.062, .40, .137], [.062, IN - .0378, .137]], .0024, wireK, "chute_acr_usb"));
   long(() => harness([[SX0 + .0224, SY + .007, SZ0], [.452, SY + .007, SZ0], [.452, SY + .007, .3], [.452, .42, .3], [-.195, .42, .3], [-.195, .42, .1], [-.195, IN - .0217, .1]], .0012, wireK, "chute_servo_cable"));
