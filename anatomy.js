@@ -2,7 +2,7 @@
    The machine is modelled part by part from the bill of materials and the build tutorial (anatomy-model.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-model.js?v=25";
+import { buildMachine } from "./anatomy-model.js?v=26";
 
 const $ = s => document.querySelector(s);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
@@ -11,8 +11,8 @@ const PARTS = [
     text:["Four 1200 mm posts, 40 x 40 profile, matte black.", "Two floor rails carry the play floor.", "Steel brackets in the corners, rubber feet below."],
     subs:[["Posts", ["frame_post"]], ["Rails", ["frame_rail", "frame_floor_rail"]], ["Angle brackets", ["frame_bracket"]], ["Rubber feet", ["frame_foot"], { ph:1.42, one:true }]], proof:"Built from the parts list" },
   { id:"cage", n:"02", name:"Floor and walls", spec:"12 mm MDF, 3 mm acrylic", ph:1.0, th:-1.2, anchor:[-.3,-.3,.412], ex:[0,0,.2],
-    text:["A 12 mm MDF floor with one prize hole.", "A clear guard keeps capsules out until they drop.", "Clear acrylic on all four sides.", "A closed cabinet below, with a side door."],
-    subs:[["MDF floor", ["cage_floor"]], ["Prize hole guard", ["cage_guard"]], ["Cable grommets", ["cage_grommet"]], ["Cabinet walls", ["cage_cabinet"]], ["Prize bin door", ["cage_door"]], ["Acrylic walls", []]], proof:"Watched by the play camera" },
+    text:["A 12 mm MDF floor with one prize hole.", "The front right corner is the drop zone, a funnel.", "Clear acrylic on all four sides.", "A closed cabinet below, with a side door."],
+    subs:[["MDF floor", ["cage_floor"]], ["Drop zone guard and funnel", ["cage_guard", "cage_drop_funnel"]], ["Cable grommets", ["cage_grommet"]], ["Cabinet walls", ["cage_cabinet"]], ["Prize bin door", ["cage_door"]], ["Acrylic walls", []]], proof:"Watched by the play camera" },
   { id:"panel", n:"03", name:"Front panel", spec:"MDF, anodised plates", ph:1.32, th:-1.57, anchor:[.05,.513,.19], ex:[0,.5,0],
     text:["The face of the machine, under the floor.", "Emergency stop, scan to play QR, GRABLAB plate.", "All the electronics sit behind it."],
     subs:[["Emergency stop", ["panel_estop"]], ["Scan to play", ["panel_qr", "panel_scan"]], ["GRABLAB plate", ["panel_wordmark", "panel_trim"]], ["MDF panel", ["panel_mdf", "panel_screw"]]], proof:"No joystick. Browser only" },
@@ -42,7 +42,7 @@ const byId = id => PARTS.find(p => p.id === id);
 const ICON = { frame:"assets/parts/post.png", cage:"assets/parts/mdf.png", panel:"assets/parts/estop.png", electronics:"assets/parts/optiga.png", chute:"assets/parts/funnel.png", capsules:"assets/parts/capsule.png", gantry:"assets/parts/rail.png", winch:"assets/parts/spool.png", claw:"assets/parts/claw.png", camera:"assets/parts/webcam.png" };
 const SUBICON = {
   "Posts":"assets/parts/post.png", "Rails":"assets/parts/framering.png", "Angle brackets":"assets/parts/bracket.png", "Rubber feet":"assets/parts/foot.png",
-  "MDF floor":"assets/parts/mdf.png", "Prize hole guard":"assets/parts/guard.png", "Cable grommets":"assets/parts/gland.png", "Acrylic walls":"assets/parts/guard.png",
+  "MDF floor":"assets/parts/mdf.png", "Drop zone guard and funnel":"assets/parts/guard.png", "Cable grommets":"assets/parts/gland.png", "Acrylic walls":"assets/parts/guard.png",
   "Emergency stop":"assets/parts/estop.png", "Scan to play":"assets/parts/qr.png", "GRABLAB plate":"assets/brand/mark-chrome-256.png", "MDF panel":"assets/parts/mdf.png",
   "OPTIGA Trust M":"assets/parts/optiga.png", "Raspberry Pi":"assets/parts/pi.png", "Pi case and fan":"assets/parts/fan.png", "Power supply":"assets/parts/psu.png", "Motion controller":"assets/parts/motionboard.png",
   "Claw driver":"assets/parts/clawdriver.png", "5 V supply":"assets/parts/relay.png", "Power splitters":"assets/parts/wago.png", "Wiring":"assets/parts/coil.png",

@@ -286,14 +286,17 @@ export function buildMachine(THREE, api){
   /* rubber grommets where cables cross the floor */
   const grom = m("grommet", { color:0x0d0d0f, roughness:.7 });
   for (const [x, y] of [[-.449, .449], [-.452, -.452]]){ add(new THREE.TorusGeometry(.0085, .0022, 10, 28), grom, x, y, FZ + FT, 0, 0, 0, "cage_grommet"); add(new THREE.TorusGeometry(.0085, .0022, 10, 28), grom, x, y, FZ, 0, 0, 0, "cage_grommet"); add(new THREE.CylinderGeometry(.0072, .0072, FT, 24, 1, true).rotateX(Math.PI/2), grom, x, y, FZ + FT/2, 0, 0, 0, "cage_grommet"); }
-  /* guard around the prize hole: clear walls in a black frame, so capsules fall in only when the claw lets go */
-  const GH = .075, G0 = HX0 - .008, G1 = HX1 + .008, Q0 = HY0 - .008, Q1 = HY1 + .008, gz = FZ + FT, frameM = m("guardframe", { color:0x15161a, roughness:.4, metalness:.5 });
+  /* the whole front right corner is the drop zone: a clear guard on its two open sides, wall to wall,
+     and a funnel that slopes from the guard and the cage walls down into the 120 mm hole */
+  const GH = .075, G0 = HX0 - .06, Q1 = HY1 + .06, XW = .497, YW = -.497, gz = FZ + FT, frameM = m("guardframe", { color:0x15161a, roughness:.4, metalness:.5 });
   const glass = m("guardglass", { color:0xdfe7ff, roughness:.04, metalness:0, clearcoat:1, transparent:true, opacity:.2, depthWrite:false }, true); glass.userData.noPick = true;
-  box(G0, Q0, gz, G0 + .003, Q1, gz + GH, glass, "cage_guard"); box(G1 - .003, Q0, gz, G1, Q1, gz + GH, glass, "cage_guard");
-  box(G0, Q0, gz, G1, Q0 + .003, gz + GH, glass, "cage_guard"); box(G0, Q1 - .003, gz, G1, Q1, gz + GH, glass, "cage_guard");
-  for (const [x, y] of [[G0, Q0], [G1, Q0], [G0, Q1], [G1, Q1]]) box(x - .005, y - .005, gz, x + .005, y + .005, gz + GH + .004, frameM, "cage_guard_post");
-  box(G0 - .005, Q0 - .005, gz + GH, G1 + .005, Q0 + .003, gz + GH + .004, frameM, "cage_guard_rim"); box(G0 - .005, Q1 - .003, gz + GH, G1 + .005, Q1 + .005, gz + GH + .004, frameM, "cage_guard_rim");
-  box(G0 - .005, Q0 - .005, gz + GH, G0 + .003, Q1 + .005, gz + GH + .004, frameM, "cage_guard_rim"); box(G1 - .003, Q0 - .005, gz + GH, G1 + .005, Q1 + .005, gz + GH + .004, frameM, "cage_guard_rim");
+  box(G0, YW, gz, G0 + .003, Q1, gz + GH, glass, "cage_guard"); box(G0, Q1 - .003, gz, XW, Q1, gz + GH, glass, "cage_guard");
+  for (const [x, y] of [[G0, YW + .005], [G0, Q1], [XW - .005, Q1]]) box(x - .005, y - .005, gz, x + .005, y + .005, gz + GH + .004, frameM, "cage_guard_post");
+  box(G0 - .005, YW, gz + GH, G0 + .003, Q1 + .005, gz + GH + .004, frameM, "cage_guard_rim"); box(G0 - .005, Q1 - .003, gz + GH, XW, Q1 + .005, gz + GH + .004, frameM, "cage_guard_rim");
+  { const ft = gz + .05, fb = gz + .001, O = [[G0 + .003, YW, ft], [XW, YW, ft], [XW, Q1 - .003, ft], [G0 + .003, Q1 - .003, ft]], I = [[HX0, HY0, fb], [HX1, HY0, fb], [HX1, HY1, fb], [HX0, HY1, fb]], pos = [];
+    for (let i = 0; i < 4; i++){ const j = (i + 1) % 4; pos.push(...O[i], ...O[j], ...I[j], ...O[i], ...I[j], ...I[i]); }
+    const fg = new THREE.BufferGeometry(); fg.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); fg.computeVertexNormals();
+    add(fg, m("funnel", { color:0x2b2e36, roughness:.35, metalness:.2, side:THREE.DoubleSide }), 0, 0, 0, 0, 0, 0, "cage_drop_funnel"); }
 
   /* =========================================================================================== chute, tray, cup */
   use("chute");
@@ -434,7 +437,7 @@ export function buildMachine(THREE, api){
   let seed = 11; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
   /* a hexagonal pack on the floor, kept off the guard and the grommets, and a small pile on top of it */
   const d = 2*CR + .0012, dy = d*Math.sqrt(3)/2, Lc = .455 - CR, spots = [], keep = new Set();
-  const clear = (x, y) => !(x > HX0 - .016 - CR && x < HX1 + .016 + CR && y > HY0 - .016 - CR && y < HY1 + .016 + CR) && Math.hypot(x + .449, y - .449) > .016 + CR && Math.hypot(x + .452, y + .452) > .016 + CR;
+  const clear = (x, y) => !(x > HX0 - .07 - CR && y < HY1 + .07 + CR) && Math.hypot(x + .449, y - .449) > .016 + CR && Math.hypot(x + .452, y + .452) > .016 + CR;
   const z1 = FZ + FT + CR + .0002, z2 = z1 + CR*1.633 - .0004;
   for (let r = 0; ; r++){ const y = -Lc + r*dy; if (y > Lc) break;
     for (let c = 0; ; c++){ const x = -Lc + (r % 2 ? d/2 : 0) + c*d; if (x > Lc) break; if (clear(x, y)){ spots.push([x, y, z1]); keep.add(r + "," + c); } } }
