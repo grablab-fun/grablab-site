@@ -30,7 +30,7 @@
     const f = document.createElement("iframe");
     f.src = labUrl; f.title = "Grablab claw in SimArena"; f.allow = "fullscreen; clipboard-write"; f.loading = "eager";
     frame.appendChild(f); frame.classList.add("on");
-    if (touch){ const fit = () => { const w = frame.clientWidth, k = w/1280; f.style.width = "1280px"; f.style.height = Math.round(1280*.75) + "px"; f.style.transform = `scale(${k})`; f.style.transformOrigin = "0 0"; frame.style.height = Math.round(1280*.75*k) + "px"; };
+    if (touch){ const fit = () => { const w = frame.clientWidth, VW = 960, VH = 1240, k = w/VW; f.style.width = VW + "px"; f.style.height = VH + "px"; f.style.transform = `scale(${k})`; f.style.transformOrigin = "0 0"; frame.style.height = Math.round(VH*k) + "px"; };
       fit(); addEventListener("resize", fit); }
   }
   function load(e){
