@@ -24,8 +24,7 @@
 <link rel="stylesheet" href="styles.css?v=20261020w1" />
 <link rel="stylesheet" href="pages.css?v=20261024s4" />
 <link rel="stylesheet" href="sub.css?v=37" />
-<link rel="stylesheet" href="anatomy.css?v=33" />
-<link rel="stylesheet" href="anatomy-sides.css?v=2" />
+<link rel="stylesheet" href="anatomy.css?v=34" />
 </head>
 <body data-page="anatomy">
 <div class="loader" id="loader" aria-hidden="true">
@@ -90,12 +89,5 @@
 <script src="consent.js?v=9"></script>
 <script src="sub.js?v=7"></script>
 <script type="module" src="anatomy.js?v=43"></script>
-<script>
-(function(){ var N = ["Spine","Marquee","Ruler","Counter","Dial"], q = new URLSearchParams(location.search), v = +q.get("side"); if (!v) return;
-  var bar = document.createElement("div"); bar.className = "side-pick";
-  function set(i){ v = i; for (var k = 1; k <= 5; k++) document.body.classList.toggle("side-v" + k, k === i); bar.querySelectorAll("button").forEach(function(b, k){ b.classList.toggle("on", k + 1 === i); }); }
-  N.forEach(function(n, i){ var b = document.createElement("button"); b.type = "button"; b.textContent = (i + 1) + " " + n; b.onclick = function(){ set(i + 1); }; bar.appendChild(b); });
-  document.body.appendChild(bar); set(v); })();
-</script>
 </body>
 </html>
