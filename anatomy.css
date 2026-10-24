@@ -244,3 +244,7 @@ body.ready .an-rail{opacity:1}
 .an-card .lines{display:flex;flex-direction:column;gap:9px;margin:0 0 16px}
 .an-card .lines p{margin:0;padding-left:14px;border-left:2px solid rgba(143,184,255,.32);font-size:14px;line-height:1.5;color:var(--ink-2)}
 .an-card .lines p:first-child{color:var(--ink);border-left-color:#7fa8ff}
+
+/* card lines: one row each */
+.an-card .lines p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13.5px}
+@media (max-width:980px){ .an-card .lines p{white-space:normal} }

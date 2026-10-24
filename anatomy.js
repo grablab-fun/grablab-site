@@ -8,34 +8,34 @@ const $ = s => document.querySelector(s);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
 const PARTS = [
   { id:"frame", n:"01", name:"Frame", spec:"40 x 40 profile, matte black", ph:1.15, th:-1.2, anchor:[-.48,-.48,.7], ex:[0,0,0],
-    text:["Four 1200 mm posts and two squares of 40 x 40 profile, matte black.", "Two floor rails carry the play floor.", "Steel angle brackets in every corner, rubber feet under the posts."],
+    text:["Four 1200 mm posts, 40 x 40 profile, matte black.", "Two floor rails carry the play floor.", "Steel brackets in the corners, rubber feet below."],
     subs:[["Posts", ["frame_post"]], ["Rails", ["frame_rail", "frame_floor_rail"]], ["Angle brackets", ["frame_bracket"]], ["Rubber feet", ["frame_foot"], { ph:1.42, one:true }]], proof:"Built from the parts list" },
   { id:"cage", n:"02", name:"Floor and walls", spec:"12 mm MDF, 3 mm acrylic", ph:1.0, th:-1.2, anchor:[-.3,-.3,.412], ex:[0,0,.2],
-    text:["A 12 mm MDF floor with one square prize hole.", "A low clear guard around it, so capsules fall in only when the claw lets go.", "Clear acrylic on all four sides: the cameras and the players see everything.", "Under the floor, a closed cabinet with a side door to the prize bin."],
+    text:["A 12 mm MDF floor with one prize hole.", "A clear guard keeps capsules out until they drop.", "Clear acrylic on all four sides.", "A closed cabinet below, with a side door."],
     subs:[["MDF floor", ["cage_floor"]], ["Prize hole guard", ["cage_guard"]], ["Cable grommets", ["cage_grommet"]], ["Cabinet walls", ["cage_cabinet"]], ["Prize bin door", ["cage_door"]], ["Acrylic walls", []]], proof:"Watched by the play camera" },
   { id:"panel", n:"03", name:"Front panel", spec:"MDF, anodised plates", ph:1.32, th:-1.57, anchor:[.05,.513,.19], ex:[0,.5,0],
-    text:["The face of the machine, under the floor.", "The red emergency stop, the QR you scan to play, the GRABLAB plate.", "Behind it, all the electronics."],
+    text:["The face of the machine, under the floor.", "Emergency stop, scan to play QR, GRABLAB plate.", "All the electronics sit behind it."],
     subs:[["Emergency stop", ["panel_estop"]], ["Scan to play", ["panel_qr", "panel_scan"]], ["GRABLAB plate", ["panel_wordmark", "panel_trim"]], ["MDF panel", ["panel_mdf", "panel_screw"]]], proof:"No joystick. Browser only" },
   { id:"electronics", n:"04", name:"Electronics", spec:"Boards and wiring on MDF", ph:1.36, th:1.57, anchor:[.04,.47,.145], ex:[0,.24,0],
-    text:["Power, the motion controller, the claw driver and a 5 V supply, on the back of the front panel.", "The Raspberry Pi runs the play and the stream.", "The OPTIGA Trust M signs every event. Its key never leaves the chip."],
+    text:["Power, motion and claw drivers on one panel.", "The Raspberry Pi runs the play and the stream.", "The OPTIGA Trust M signs every event.", "Its key never leaves the chip."],
     subs:[["OPTIGA Trust M", ["el_optiga"]], ["Raspberry Pi", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Pi case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
   { id:"chute", n:"05", name:"Chute and prize bin", spec:"MDF chute, printed cradle", ph:1.22, th:.4, anchor:[.412,-.34,.3], ex:[.32,-.36,0],
-    text:["A closed MDF chute under the prize hole.", "A red light beam sees the capsule fall: the first proof.", "It lands on a padded trapdoor, beside the NFC reader, filmed by a small camera.", "Once the UID is read, the trapdoor drops it into the 30 litre prize bin."],
+    text:["A closed MDF chute under the prize hole.", "A red light beam sees the capsule fall.", "It lands on a padded trapdoor, filmed up close.", "The NFC reader takes its UID.", "Then the trapdoor drops it into the 30 L bin."],
     subs:[["Chute", ["chute_wall"]], ["Drop sensor, laser beam", ["chute_e3jk", "chute_sensor"]], ["Landing camera", ["chute_c960"]], ["NFC reader", ["chute_acr122u"]], ["Printed cradle", ["chute_cradle", "chute_axle_block"]], ["Trapdoor and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Prize bin", ["chute_bin"]]], proof:"Seen twice: beam and camera" },
   { id:"capsules", n:"06", name:"Capsules", spec:"Clear plastic, NFC sticker", ph:1.0, th:-1.2, anchor:[.2,.2,.44], ex:[0,0,.42],
-    text:["Clear two piece shells with an NFC sticker, factory UID, read only.", "The size is set by a grip test first, then the shells are bought or printed to fit.", "Click one to open it."],
+    text:["Clear two piece shells, NFC sticker inside.", "Factory UID, read only.", "Size set by the grip test, then bought or printed.", "Click one to open it."],
     subs:[["Clear two piece shell", []], ["NFC sticker", []], ["Size set by the grip test", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
   { id:"gantry", n:"07", name:"Gantry", spec:"Aluminium V-slot, steel", ph:1.0, th:-1.9, anchor:[.48,-.2,1.06], ex:[0,0,.6],
-    text:["Two Y rails on the frame, one X beam across them, on V wheel carriages.", "Three stepper motors with toothed belts.", "End stops on X and Y, a drag chain on its tray for the cables."],
+    text:["Two Y rails and one X beam on V wheels.", "Three stepper motors with toothed belts.", "End stops on X and Y, a drag chain for cables."],
     subs:[["Y rails", ["gantry_y_rail", "gantry_rail_screw"]], ["X beam", ["gantry_x_beam"]], ["Carriages", ["gantry_y_carriage", "gantry_y_wheel", "gantry_matik", "gantry_bracket"]], ["Motors", ["gantry_y_motor", "gantry_x_motor"]], ["Belts and pulleys", ["gantry_y_belt", "gantry_x_belt", "gantry_y_pulley", "gantry_x_pulley", "gantry_y_idler", "gantry_x_idler"]], ["End stops", ["gantry_x_endstop", "gantry_y_endstop"]], ["Drag chain", ["gantry_drag", "gantry_chain"]]], proof:"Position known to the step" },
   { id:"winch", n:"08", name:"Carriage and winch", spec:"Aluminium plate, printed spool", ph:1.15, th:1.15, chain:["gantry"], anchor:[.05,-.0075,1.1], ex:[0,-.22,.12],
-    text:["The carriage rides the X beam.", "Under it, a stepper turns a printed spool that winds the line.", "An end stop finds the top. The claw cable joins the chain here."],
+    text:["The carriage rides the X beam.", "A stepper winds the line on a printed spool.", "An end stop finds the top."],
     subs:[["Carriage", ["winch_x_carriage", "winch_x_wheel"]], ["Winch motor", ["winch_motor", "winch_mount"]], ["Spool and line", ["winch_spool", "winch_line"]], ["Top end stop", ["winch_z_endstop"]], ["Cable joints", ["winch_wago", "winch_four_core", "winch_chain"]], ["Belt clip", ["winch_x_belt_clip"]]], proof:"Same depth every play" },
   { id:"claw", n:"09", name:"Claw", spec:"Printed body, steel pins", ph:1.1, th:1.2, chain:["gantry", "winch"], anchor:[.096,-.0075,.72], ex:[0,0,-.2], skip:["claw_coil_cable", "claw_line"],
-    text:["A printed claw with three fingers.", "A 12 V linear actuator inside the body opens and closes them.", "It hangs from a swivel on the line, a coiled cable brings the power down."],
+    text:["A printed claw with three fingers.", "A 12 V actuator opens and closes them.", "It hangs from a swivel on the line.", "A coiled cable brings the power down."],
     subs:[["Swivel", ["claw_swivel"]], ["Cap", ["claw_cap"]], ["Linear actuator", ["claw_actuator"]], ["Body", ["claw_body", "claw_hub"]], ["Fingers", ["claw_finger", "claw_pad", "claw_lug", "claw_rod", "claw_bearing", "claw_link", "claw_spreader"]], ["Coil cable", ["claw_coil", "claw_cable_tie"]]], proof:"Grip measured before you play" },
   { id:"camera", n:"10", name:"Play camera", spec:"Webcam on an MDF block", ph:1.25, th:-.55, anchor:[-.44,-.44,.93], ex:[-.15,-.15,.1],
-    text:["A webcam in the front corner, tilted down over the floor.", "Its picture is the stream you play from."],
+    text:["A webcam in the front corner, tilted down.", "Its picture is the stream you play from."],
     subs:[["Webcam", ["camera_c920"]], ["Mount", ["camera_block", "camera_clip"]]], proof:"The stream you play" }
 ];
 const byId = id => PARTS.find(p => p.id === id);
@@ -326,7 +326,7 @@ function selectCap(o){
   for (const li of list.children) li.classList.toggle("on", li.dataset.id === "capsules");
   const num = o.name.replace("capsule_", "");
   card.innerHTML = `<span class="n">Capsule #${num}</span><h3>Custom NFC capsule</h3>
-    <div class="lines"><p>A clear shell with an NFC sticker, factory UID.</p><p>The prize is whatever the project loads: a token, an NFT, a tokenized stock, merch, an off chain code.</p><p>It is mapped to the UID in the published inventory.</p></div>
+    <div class="lines"><p>A clear shell with an NFC sticker, factory UID.</p><p>The prize is whatever the project loads.</p><p>A token, an NFT, a stock, merch or a code.</p><p>Mapped to the UID in the published inventory.</p></div>
     <div class="inside"><button type="button" disabled><img src="assets/sub/token-silver.png" alt="" />Token</button><button type="button" disabled><img src="assets/parts/nft.png" alt="" />NFT</button><button type="button" disabled><img src="assets/parts/stock.png" alt="" />Tokenized stock</button><button type="button" disabled><img src="assets/parts/merch.png" alt="" />Merch</button><button type="button" disabled><img src="assets/parts/voucher.png" alt="" />Off chain code</button><button type="button" disabled><img src="assets/parts/gift.png" alt="" />Anything else</button></div>
     <a class="proof" href="https://solana.com" target="_blank" rel="noopener"><img src="assets/chains/solana.jpg" alt="" />UID published in the inventory</a><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
   wireCard(); card.classList.add("on"); document.body.classList.add("card-on");
