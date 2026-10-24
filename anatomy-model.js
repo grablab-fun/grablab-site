@@ -344,14 +344,17 @@ export function buildMachine(THREE, api){
   for (const x of [.296, .384]) add(cylY(.0028, .0012, 12), dark, x, Y1 + .0115, CB + .05, 0, 0, 0, "chute_acr122u_screw");
   /* trapdoor: hinged on the front edge, held shut by the servo; it swings down and the capsule drops straight into the bin */
   const AXZ = CB + .0015, AY = Y0 + .007;
-  const flapM = m("flapM", { color:0x3c4049, roughness:.45, metalness:.05 });
-  rb(X0 + .005, AY, AXZ - .0015, X1 - .005, Y1 - .005, AXZ + .0015, flapM, "chute_flap", .004);
-  rb(X0 + .009, AY + .004, AXZ + .0015, X1 - .009, Y1 - .009, AXZ + .006, m("foam", { color:0x24262c, roughness:.95 }), "chute_flap_pad", .003);
-  add(cylX(.0032, X1 - X0 - .012, 20), pla, .34, AY, AXZ, 0, 0, 0, "chute_flap_hinge");
+  const flapM = m("flapM", { color:0x4a4f5c, roughness:.42, metalness:.08 });
+  /* the trapdoor, its pad, hinge barrel and lever turn together around the axle (the page swings it open to show how it works) */
+  const trap = new THREE.Group(); trap.name = "chute_trap"; trap.position.set(0, AY, AXZ); trap.userData.trap = true; G("chute").add(trap);
+  const TR = (geo, mt, x, y, z, nm) => add(geo, mt, x, y - AY, z - AXZ, 0, 0, 0, nm, trap);
+  TR(rbox(X1 - X0 - .01, Y1 - .005 - AY, .003, .004), flapM, (X0 + X1)/2, (AY + Y1 - .005)/2, AXZ, "chute_flap");
+  TR(rbox(X1 - X0 - .018, Y1 - .009 - AY - .004, .0045, .003), m("foam", { color:0x24262c, roughness:.95 }), (X0 + X1)/2, (AY + .004 + Y1 - .009)/2, AXZ + .00375, "chute_flap_pad");
+  TR(cylX(.0032, X1 - X0 - .012, 20), pla, .34, AY, AXZ, "chute_flap_hinge");
   add(cylX(.0015, X1 - X0 + .012, 12), steel, .34, AY, AXZ, 0, 0, 0, "chute_axle");
   /* lever on the axle outside the wall, pointing up */
-  add(cylX(.0042, .003, 20), pla, X1 + .003, AY, AXZ, 0, 0, 0, "chute_lever");
-  rb(X1 + .0015, AY - .004, AXZ, X1 + .0045, AY + .004, AXZ + .02, pla, "chute_lever", .002);
+  TR(cylX(.0042, .003, 20), pla, X1 + .003, AY, AXZ, "chute_lever");
+  TR(rbox(.003, .008, .02, .002), pla, X1 + .003, AY, AXZ + .01, "chute_lever");
   /* servo: dark body, mounting ears on two standoffs, gear boss, white horn */
   const SY = -.352, SZ0 = AXZ + .008, SX0 = X1 + .0085;                       // SX0: the shaft face of the body
   rb(SX0, SY - .0114, SZ0 - .0061, SX0 + .0225, SY + .0114, SZ0 + .0061, m("mg90", { color:0x1d2c55, roughness:.4 }), "chute_mg90s", .0015);
@@ -384,8 +387,11 @@ export function buildMachine(THREE, api){
   use("chute");
   /* C960 clipped to the rear wall at the top, 250 above the flap, looking down at it; its cable leaves through a grommet */
   /* landing camera outside the chute, behind the window, on a printed L bracket, looking down at the flap */
-  box(.312, HY1 + WT, .318, .368, HY1 + WT + .034, .322, petg, "chute_c960_clip"); box(.312, HY1 + WT, .318, .368, HY1 + WT + .004, .335, petg, "chute_c960_clip");
-  const cam = new THREE.Group(); cam.position.set(.34, HY1 + WT + .022, .336); cam.rotation.set(-2.43, 0, 0); G("chute").add(cam);
+  /* a printed shelf under the camera, held to the wall by two side plates that stay clear of the window */
+  rb(.29, HY1 + WT, .316, .39, HY1 + WT + .036, .32, petg, "chute_c960_clip", .002);
+  for (const x of [.286, .39]) rb(x, HY1 + WT, .296, x + .004, HY1 + WT + .036, .324, petg, "chute_c960_clip", .0015);
+  for (const x of [.288, .392]) for (const z of [.302, .316]) add(cylY(.0022, .0012, 10), dark, x, HY1 + WT + .036 + .0006, z, 0, 0, 0, "chute_c960_clip_screw");
+  const cam = new THREE.Group(); cam.position.set(.34, HY1 + WT + .024, .337); cam.rotation.set(-2.43, 0, 0); G("chute").add(cam);
   add(rbox(.064, .02, .024, .009), m("c960", { color:0x121317, roughness:.35, metalness:.2 }), 0, 0, 0, Math.PI/2, 0, 0, "chute_c960", cam);
   add(rbox(.05, .002, .017, .007), m("c960face", { color:0x050507, roughness:.08, metalness:.3, clearcoat:1 }, true), 0, .0105, 0, Math.PI/2, 0, 0, "chute_c960_face", cam);
   add(cylY(.0075, .004, 32), m("ring", { color:0xa8adb7, roughness:.3, metalness:1 }), 0, .0125, 0, 0, 0, 0, "chute_c960_lens_ring", cam);

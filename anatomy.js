@@ -2,7 +2,7 @@
    The machine is modelled part by part from the bill of materials and the build tutorial (anatomy-model.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-model.js?v=19";
+import { buildMachine } from "./anatomy-model.js?v=21";
 
 const $ = s => document.querySelector(s);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
@@ -202,6 +202,9 @@ function cam(){
   const tx = orb.tx + orb.px, ty = orb.ty + orb.py, tz = orb.tz + orb.pz;
   camera.position.set(tx + r*sp*Math.cos(orb.th), ty + r*c, tz + r*sp*Math.sin(orb.th));
   tgt.set(tx, ty, tz); camera.lookAt(tgt);
+  /* shift the picture so its centre sits in the middle of the free part of the screen */
+  const W = stage.clientWidth, H = stage.clientHeight; orb.vx = (orb.vx ?? 0) + ((W/2 - view.cx) - (orb.vx ?? 0))*.12; orb.vy = (orb.vy ?? 0) + ((H/2 - view.cy) - (orb.vy ?? 0))*.12;
+  if (W && H) camera.setViewOffset(W, H, orb.vx, orb.vy, W, H);
 }
 /* left button orbits, right button pans the view */
 stage.addEventListener("contextmenu", e => e.preventDefault());
@@ -213,23 +216,37 @@ stage.addEventListener("pointermove", e => { mouse.x = (e.clientX - stage.getBou
 stage.addEventListener("pointerup", () => { orb.down = false; orb.pan = false; });
 stage.addEventListener("wheel", e => { e.preventDefault(); orb.zoom = Math.min(2.4, Math.max(.45, orb.zoom*(1 + Math.sign(e.deltaY)*.08))); orb.idle = 0; }, { passive:false });
 /* where the camera wants to be: the whole machine, or the selected part framed */
-const sph = new THREE.Sphere();
+const sph = new THREE.Sphere(), whole = new THREE.Box3(), pb = new THREE.Box3();
+/* the free part of the screen: between the nav and the bar, and between the card (or the title) and the parts list */
+const view = { cx:0, cy:0, fx:1, fy:1 };
+function measure(){
+  const W = stage.clientWidth, H = stage.clientHeight, sr = stage.getBoundingClientRect();
+  if (W < 980){ const c = card.classList.contains("on") ? card.getBoundingClientRect() : null, n = document.querySelector("#site-header, .nav"), nb = n ? n.getBoundingClientRect().bottom - sr.top : 64;
+    const bot = c ? c.top - sr.top - 10 : H*.92; view.cx = W/2; view.cy = (nb + bot)/2; view.fx = .9; view.fy = Math.max(.25, (bot - nb)/H); return; }
+  const rect = el => el && el.offsetParent !== null ? el.getBoundingClientRect() : null;
+  const nav = rect(document.querySelector("#site-header, .nav")), bar = rect(document.querySelector(".an-bar")), rail = rect(list), cd = card.classList.contains("on") ? rect(card) : null;
+  const top = Math.max(12, (nav ? nav.bottom - sr.top : 70) + 10), bottom = (bar ? bar.top - sr.top : H - 90) - 14;
+  const h1 = rect(document.querySelector(".an-head h1")), left = cd ? cd.right - sr.left + 24 : Math.max(W*.22, (h1 ? h1.right - sr.left : W*.3)*.82), right = (rail ? rail.left - sr.left : W - 300) - 24;
+  view.cx = (left + right)/2; view.cy = (top + bottom)/2; view.fx = Math.max(.2, (right - left)/W); view.fy = Math.max(.3, (bottom - top)/H);
+}
+/* distance that keeps a box inside the free part of the view */
+function fit(b, minR, margin){
+  b.getCenter(ctr);
+  const sp = Math.sin(orb.ph), c = Math.cos(orb.ph), dir = new THREE.Vector3(-sp*Math.cos(orb.th), -c, -sp*Math.sin(orb.th)).normalize();
+  const right = new THREE.Vector3().crossVectors(dir, camera.up).normalize(), up2 = new THREE.Vector3().crossVectors(right, dir);
+  const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*view.fy, th = Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*camera.aspect*view.fx; let D = 0;
+  for (let i = 0; i < 8; i++){ tmpV.set(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z).sub(ctr);
+    const x = Math.abs(tmpV.dot(right)), y = Math.abs(tmpV.dot(up2)), z = tmpV.dot(dir); D = Math.max(D, Math.max(x/th, y/tv) - z); }
+  return { tx:ctr.x, ty:ctr.y, tz:ctr.z, r:Math.max(minR, D*margin) };
+}
 function goal(){
   if (selectedCap){ selectedCap.getWorldPosition(tmpV); return { tx:tmpV.x, ty:tmpV.y + .015, tz:tmpV.z, r:.2 }; }
-  if (subFocus || selected){ if (subFocus) box.copy(subFocus.box); else partBox(selected, box);
-    if (!box.isEmpty()){
-      box.getCenter(ctr); box.expandByScalar(.03);
-      /* distance that keeps every box corner inside both the vertical and the horizontal field of view */
-      const sp = Math.sin(orb.ph), c = Math.cos(orb.ph), dir = new THREE.Vector3(-sp*Math.cos(orb.th), -c, -sp*Math.sin(orb.th)).normalize();
-      const right = new THREE.Vector3().crossVectors(dir, camera.up).normalize(), up2 = new THREE.Vector3().crossVectors(right, dir);
-      const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov)/2), th = tv*camera.aspect; let D = 0;
-      for (let i = 0; i < 8; i++){ tmpV.set(i & 1 ? box.max.x : box.min.x, i & 2 ? box.max.y : box.min.y, i & 4 ? box.max.z : box.min.z).sub(ctr);
-        const x = Math.abs(tmpV.dot(right)), y = Math.abs(tmpV.dot(up2)), z = tmpV.dot(dir); D = Math.max(D, Math.max(x/th, y/tv) - z); }
-      return { tx:ctr.x, ty:ctr.y, tz:ctr.z, r:Math.max(subFocus ? .2 : .42, D*1.18) };
-    } }
-  return { tx:0, ty:.76 + .3*explode, tz:0, r:4.25*(1 + .45*explode) };
+  if (subFocus){ box.copy(subFocus.box).expandByScalar(.02); return fit(box, .2, 1.15); }
+  if (selected){ partBox(selected, box); if (!box.isEmpty()){ box.expandByScalar(.03); return fit(box, .42, 1.12); } }
+  whole.makeEmpty(); for (const p of PARTS) if (p.lbox && !p.lbox.isEmpty() && p.id !== "capsules") whole.union(partBox(p, pb));
+  return fit(whole, 1.2, 1.04);
 }
-function easeCam(dt){ const g = goal(), k = Math.min(1, dt*3.2); if (orb.phT != null){ orb.ph += (orb.phT - orb.ph)*k; if (Math.abs(orb.phT - orb.ph) < .002) orb.phT = null; }
+function easeCam(dt){ measure(); const g = goal(), k = Math.min(1, dt*3.2); if (orb.phT != null){ orb.ph += (orb.phT - orb.ph)*k; if (Math.abs(orb.phT - orb.ph) < .002) orb.phT = null; }
   if (orb.thT != null){ let d = ((orb.thT - orb.th + Math.PI) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI) - Math.PI; orb.th += d*k; if (Math.abs(d) < .002) orb.thT = null; } orb.tx += (g.tx - orb.tx)*k; orb.ty += (g.ty - orb.ty)*k; orb.tz += (g.tz - orb.tz)*k; orb.r += (g.r - orb.r)*k; }
 
 /* ---------- focus in place: the machine stays whole, the chosen part stays solid, the rest turns to a ghost ---------- */
@@ -261,9 +278,9 @@ function setSelected(p, fromList){
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
     card.innerHTML = `<span class="n">${p.n} / ${String(PARTS.length).padStart(2, "0")}</span><h3>${p.name}</h3><p>${p.text}</p><div class="inside">${p.subs.map((x, i) => `<button type="button" data-i="${i}"${x[1] && x[1].length ? "" : " disabled"}><img src="${SUBICON[x[0]] || ICON[p.id]}" alt="" />${x[0]}</button>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><img src="assets/parts/shield.png" alt="" />${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
-    card.classList.add("on"); wireCard();
+    card.classList.add("on"); document.body.classList.add("card-on"); wireCard();
     card.querySelectorAll(".inside button").forEach(b => { b.onclick = () => setSub(+b.dataset.i); });
-  } else card.classList.remove("on");
+  } else { card.classList.remove("on"); document.body.classList.remove("card-on"); }
   if (!fromList && !tour) orb.idle = 0;
 }
 function wireCard(){
@@ -310,7 +327,7 @@ function selectCap(o){
     <p>A clear shell with an NFC sticker, factory UID. The prize is whatever the project loads: a token, an NFT, a tokenized stock, merch, an off chain code. It is mapped to the UID in the published inventory.</p>
     <div class="inside"><button type="button" disabled><img src="assets/sub/token.png" alt="" />Token</button><button type="button" disabled><img src="assets/parts/nft.png" alt="" />NFT</button><button type="button" disabled><img src="assets/parts/stock.png" alt="" />Tokenized stock</button><button type="button" disabled><img src="assets/parts/merch.png" alt="" />Merch</button><button type="button" disabled><img src="assets/parts/voucher.png" alt="" />Off chain code</button><button type="button" disabled><img src="assets/parts/gift.png" alt="" />Anything else</button></div>
     <a class="proof" href="https://solana.com" target="_blank" rel="noopener"><img src="assets/chains/solana.jpg" alt="" />UID published in the inventory</a><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
-  wireCard(); card.classList.add("on");
+  wireCard(); card.classList.add("on"); document.body.classList.add("card-on");
 }
 /* outline: a thin chrome blue rim around the hovered part, or around the card item you picked; never on glass */
 const outlineMat = new THREE.MeshBasicMaterial({ color:0x8fb8ff, side:THREE.BackSide, toneMapped:false, transparent:true, opacity:.9 });
@@ -429,12 +446,16 @@ $("#reset").onclick = () => { setSelected(null); setExplode(0); orb.px = orb.py 
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
 /* ---------- loop ---------- */
-let last = performance.now();
+let last = performance.now(), trapG = null, trapT = 0;
 function frame(now){
   const dt = Math.min(.05, (now - last)/1000); last = now;
   if (tour) tourStep(dt); else { orb.idle += dt; if (false) orb.th += dt*.08; if (!orb.down){ orb.vth *= .9; orb.vph *= .9; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); } }
   explode += (explodeTarget - explode)*Math.min(1, dt*4.5);
   if (!orb.down && !orb.pan && !tour){ const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p || estopHit() ? "pointer" : "grab"; }
+  /* the trapdoor swings open and shut while its card item is picked */
+  if (!trapG) root.traverse(o => { if (o.userData.trap) trapG = o; });
+  if (trapG){ const on = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]); trapT = on ? trapT + dt : 0;
+    const want = on ? -1.1*(.5 - .5*Math.cos(trapT*2.2)) : 0; trapG.rotation.x += (want - trapG.rotation.x)*Math.min(1, dt*10); }
   if (!estop.ms.length) root.traverse(o => { if (/^panel_estop_(mushroom|rim)/.test(o.name)){ o.userData.y0 = o.position.y; estop.ms.push(o); } });
   estop.k += ((estop.on ? 1 : 0) - estop.k)*Math.min(1, dt*14); for (const o of estop.ms) o.position.y = o.userData.y0 - .007*estop.k;
   if (toastT > 0 && (toastT -= dt) <= 0) toast.classList.remove("on");

@@ -173,3 +173,51 @@ body.ready .an-rail{opacity:1}
 .pt .dot{font-family:var(--display);font-style:normal;font-size:18px;line-height:1;letter-spacing:.02em;background:var(--chrome, linear-gradient(176deg,#fff 10%,#c9cfe0 45%,#8a91a8 70%,#e9ecf5));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.5;transition:opacity .2s}
 .pt:hover .dot{opacity:.85}
 .pt.on .dot{opacity:1;background:var(--blue-chrome, linear-gradient(176deg,#fff 8%,#d6e4ff 35%,#7fa8ff 65%,#3b7bff));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* mirror the title: the parts list starts at the same height, with the same margin, on the right */
+@media (min-width:981px){
+  .an-rail{right:clamp(20px,4vw,56px);top:calc(var(--nav-h,72px) + clamp(20px,4vh,44px));transform:none;max-height:calc(100vh - var(--nav-h,72px) - 200px)}
+  body.ui-min .an-rail{top:48px;right:56px}
+  .an-bar{bottom:clamp(56px,7.5vh,78px)}
+  .an-hint{bottom:16px}
+  .an-tip.an-toast{bottom:calc(clamp(56px,7.5vh,78px) + 66px)}
+}
+
+/* when a card is open the title steps back, so the two never overlap */
+@media (min-width:981px){
+  .an-head p,.an-head h1,.an-head .eyebrow{transition:opacity .35s}
+  body.card-on .an-head p{opacity:0}
+  body.card-on .an-head h1{opacity:.35}
+  .an-card{max-height:calc(100vh - var(--nav-h,72px) - 170px);overflow:auto;scrollbar-width:none}
+  .an-card::-webkit-scrollbar{display:none}
+}
+
+/* menu, refined: silver chrome action, toggles that light up like the nav's active pill, a plain round reset */
+.an-btn.pri{background:var(--chrome,linear-gradient(176deg,#fff 0%,#eef1f8 38%,#aab4cf 54%,#f6f8fc 72%,#c7cfe2 100%));box-shadow:0 6px 22px rgba(243,244,251,.18),inset 0 1px 0 #fff;color:#0a0c16}
+.an-btn.pri.on{background:linear-gradient(176deg,#fff 0%,#ffe2e2 35%,#ff9a9a 60%,#ffd2d2 100%);box-shadow:0 6px 22px rgba(255,120,120,.25)}
+.an-btn.tog{gap:9px;padding:9px 16px;border:1px solid transparent}
+.an-btn.tog svg{opacity:.75}
+.an-btn.tog.on{color:#0a0c16;font-weight:600;border-color:transparent;background:var(--blue-chrome,linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%));box-shadow:0 0 18px rgba(59,123,255,.45),inset 0 1px 0 rgba(255,255,255,.85)}
+.an-btn.tog.on svg{opacity:1}
+.an-btn.ico{border-color:rgba(180,186,255,.22);background:transparent}
+/* an open card takes the title's place, aligned with the parts list */
+@media (min-width:981px){
+  body.card-on .an-head{opacity:0}
+  .an-head{transition:opacity .35s}
+  .an-card{top:calc(var(--nav-h,72px) + clamp(20px,4vh,44px));bottom:auto;max-height:calc(100vh - var(--nav-h,72px) - clamp(20px,4vh,44px) - clamp(120px,15vh,150px))}
+  body.ui-min .an-card{top:48px}
+}
+
+/* narrow desktops and tablets: the card and the list give the machine more room */
+@media (min-width:981px) and (max-width:1400px){ .an-card{width:min(440px,35vw);padding:22px 22px 18px} .an-card p{font-size:13.5px} .an-rail{width:min(230px,19vw)} }
+@media (max-width:980px){ .an-btn{white-space:nowrap} .an-btn.pri,.an-btn.tog{padding:9px 12px} .an-sep{margin:0 2px} }
+
+/* both side panels sit on the vertical middle of the stage */
+@media (min-width:981px){
+  .an-rail,body.ui-min .an-rail{top:50%;transform:translateY(-50%)}
+  .an-card,body.ui-min .an-card{top:50%;bottom:auto;transform:translateY(calc(-50% + 14px))}
+  .an-card.on{transform:translateY(-50%)}
+  .an-card{max-height:calc(100vh - 2*(var(--nav-h,72px) + 40px))}
+}
+
+@media (min-width:981px) and (max-width:1180px){ .an-rail{width:224px} .pt{padding:9px 10px;gap:8px;grid-template-columns:28px 1fr} .pt .nm{font-size:13px} .an-card{width:min(400px,38vw)} }
