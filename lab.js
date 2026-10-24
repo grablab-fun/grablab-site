@@ -13,17 +13,16 @@
   if (open) open.href = local ? EDITOR : labUrl;
   const allowed = () => !window.GLConsent || GLConsent.allowed("embeds");
   let asked = false;
-  /* phones and tablets: the SimArena editor needs a keyboard and a wide screen, so offer what works here instead */
+  /* phones and tablets: the SimArena editor is laid out for a desktop, so it runs at desktop size, scaled down to fit;
+     its Controls sliders work with a finger, the arrow keys need a keyboard */
   const touch = matchMedia("(pointer:coarse)").matches || innerWidth < 900;
   if (touch && frame){
     document.documentElement.classList.add("lab-touch");
-    if (play) play.textContent = "Best on a desktop";
-    note.textContent = "The lab is driven with the keyboard. On your phone, play the simulator instead.";
-    const btn = frame.querySelector(".lab-play"); if (btn){ btn.removeAttribute("data-lab-load"); btn.setAttribute("aria-label", "Play the simulator"); btn.addEventListener("click", () => { location.href = "participate.html#simulate"; }); }
+    note.textContent = "Runs at desktop size, scaled to your screen. Use the Controls sliders.";
     const links = document.querySelector(".lab-links");
-    if (links){ links.innerHTML = '<a href="participate.html#simulate">Play the simulator</a><a href="#" id="labSend">Send the lab to my desktop</a>';
-      document.getElementById("labSend").addEventListener("click", async ev => { ev.preventDefault(); const url = location.origin + "/lab"; const t = ev.currentTarget;
-        try { if (navigator.share){ await navigator.share({ title:"Grablab physics lab", text:"Open this on a desktop", url }); return; } await navigator.clipboard.writeText(url); t.textContent = "Link copied"; } catch (e) { t.textContent = url; } }); }
+    if (links){ const send = document.createElement("a"); send.href = "#"; send.textContent = "Send to my desktop"; links.appendChild(send);
+      send.addEventListener("click", async ev => { ev.preventDefault(); const url = location.origin + "/lab";
+        try { if (navigator.share){ await navigator.share({ title:"Grablab physics lab", url }); return; } await navigator.clipboard.writeText(url); send.textContent = "Link copied"; } catch (e) { send.textContent = url; } }); }
   }
 
   function mount(){
@@ -31,6 +30,8 @@
     const f = document.createElement("iframe");
     f.src = labUrl; f.title = "Grablab claw in SimArena"; f.allow = "fullscreen; clipboard-write"; f.loading = "eager";
     frame.appendChild(f); frame.classList.add("on");
+    if (touch){ const fit = () => { const w = frame.clientWidth, k = w/1280; f.style.width = "1280px"; f.style.height = Math.round(1280*.75) + "px"; f.style.transform = `scale(${k})`; f.style.transformOrigin = "0 0"; frame.style.height = Math.round(1280*.75*k) + "px"; };
+      fit(); addEventListener("resize", fit); }
   }
   function load(e){
     if (e) e.preventDefault();
@@ -42,7 +43,7 @@
     if (play) play.textContent = "Allow & load";
     note.innerHTML = 'The lab runs on SimArena (app.simarena.ai), which may store data in your browser. Click again to allow embedded content. <a href="cookies.html" style="color:#f3f4fb;border-bottom:1px solid rgba(180,186,255,.4)">Cookie policy</a>';
   }
-  if (!touch) document.querySelectorAll("[data-lab-load]").forEach(b => b.addEventListener("click", load));
+  document.querySelectorAll("[data-lab-load]").forEach(b => b.addEventListener("click", load));
   document.addEventListener("gl:consent", e => {
     if (e.detail && e.detail.embeds){ if (asked) mount(); }
     else if (frame.classList.contains("on")){ frame.querySelector("iframe")?.remove(); frame.classList.remove("on"); asked = false; if (play) play.textContent = "Load the lab"; note.textContent = NOTE; }

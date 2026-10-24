@@ -184,7 +184,7 @@
       <section class="sv" data-v="pick">
 <div class="pick-top">
         <div class="sv-head"><h2>Pick a <span class="hl">drop.</span></h2>
-          <p class="sv-sub">Every capsule holds a real on-chain prize: tokens, an NFT or an allocation.<br>Grab one live for the ticket price, no airdrop needed.</p></div>
+          <p class="sv-sub two"><span>Every capsule holds a real on-chain prize.</span><span>Grab one live for the ticket price.</span></p></div>
         <div class="sv-tabs" role="tablist">
           <button class="sv-tab on" type="button" data-tab="live" role="tab">Live drops<em>${PROJECTS.length}</em></button>
           <button class="sv-tab" type="button" data-tab="quests" role="tab">Earn plays<em>${PROJECTS.length * 3}</em></button>
@@ -579,6 +579,7 @@
     playNo += 1 + Math.floor(Math.random()*3);
   }
 
+  window.__simDbg = { go:v => go(v), result:(w, k) => result(w, k) };   /* for the page checks */
   /* ================= the machine : pseudo 3D canvas game ================= */
   /* the claw game; makeGame() = full simulator, makeGame({auto, el, cam, onResult, onMove, paused}) = self-playing demo */
   function makeGame(o){

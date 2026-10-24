@@ -889,3 +889,25 @@ body.sim-lock{overflow:hidden}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .swp{background:rgba(4,5,12,.78) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.14'/%3E%3C/svg%3E")}
 .swp-chain img[src$=".svg"],.swp-tok img[src$=".svg"]{background:none}
+
+/* ===== play and win fit one screen: no scrolling while you play or celebrate ===== */
+.sim-body:has(> .sv.on[data-v="play"]),.sim-body:has(> .sv.on[data-v="win"]){overflow:hidden}
+.sv.on[data-v="play"]{display:flex;flex-direction:column;height:100%;box-sizing:border-box;padding-bottom:clamp(12px,2.4vh,26px)}
+.sv.on[data-v="play"] .stagew{flex:1 1 auto;min-height:0;max-height:none;aspect-ratio:auto;width:100%}
+.sv.on[data-v="play"] .ctrl{flex:none;margin-top:clamp(10px,1.8vh,18px)}
+.sv.on[data-v="win"]{display:flex;flex-direction:column;justify-content:center;height:100%;box-sizing:border-box;padding-top:clamp(10px,2vh,24px);padding-bottom:clamp(10px,2vh,24px)}
+.sv[data-v="win"] .win-cap{width:min(196px,19vh);height:min(196px,19vh);margin:0 auto clamp(10px,2.2vh,26px);flex:none}
+.sv[data-v="win"] .win-k{margin-bottom:clamp(6px,1.2vh,12px)}
+.sv[data-v="win"] .win-prize{font-size:min(clamp(44px,9vw,112px),9.5vh)}
+.sv[data-v="win"] .win-sub{margin:clamp(8px,1.6vh,18px) 0 clamp(12px,2.2vh,26px)}
+.sv[data-v="win"] .rc{margin-bottom:clamp(12px,2.2vh,28px);padding:clamp(10px,1.6vh,16px) 18px}
+.sv[data-v="win"] .rc-r{padding:clamp(4px,.9vh,9px) 0;font-size:min(13.5px,1.9vh)}
+@media (max-width:620px){
+  .sv.on[data-v="play"]{padding-top:10px}
+  .sv[data-v="win"] .win-acts{flex-wrap:nowrap}
+  .sv[data-v="win"] .win-acts .btn{flex:1;padding-left:12px;padding-right:12px}
+}
+
+/* pick a drop: the subtitle as two lines that each fit */
+.sv-sub.two span{display:block}
+@media (max-width:620px){ .sv-sub.two{font-size:min(14px,3.6vw);line-height:1.5} .sv-sub.two span{white-space:nowrap} }
