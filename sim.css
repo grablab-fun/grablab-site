@@ -972,3 +972,4 @@ body.sim-lock{overflow:hidden}
 /* while you play nothing on the controls can be selected or long-pressed into a menu */
 .sv[data-v="play"],.sv[data-v="play"] *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .sv[data-v="play"] .ctrl{touch-action:none}
+@media(min-width:621px){ br.mbr2{display:none} }

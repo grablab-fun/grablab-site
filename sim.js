@@ -199,7 +199,7 @@
           <div class="pqgrid">${PROJECTS.map(projQuestCard).join("")}</div>
         </div>
         <div class="tabpane" data-pane="soon">
-          <div class="qnote"><b>Machines warming up.</b><span>Sponsors locking in capsules now. Set a reminder and be first on the claw.</span></div>
+          <div class="qnote"><b>Machines warming up.</b><span>Sponsors locking in capsules now.<br class="mbr2"> Set a reminder and be first on the claw.</span></div>
           <div class="ugrid">${UPCOMING.map(upcomingCard).join("")}</div>
         </div>
       </section>
