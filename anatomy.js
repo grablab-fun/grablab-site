@@ -58,10 +58,10 @@ const SUBICON = {
 const PAL = [[.047,.051,.098],[.094,.09,.188],[.192,.161,.31],[.33,.27,.42],[.545,.475,.576],[.855,.843,.847],[1,.824,.478],[.788,.714,1],[.231,.482,1],[.122,.31,.82]];
 
 const stage = $("#stage"), canvas = $("#view");
-let renderer;
+let renderer; const LITE = document.documentElement.classList.contains("lite");
 try {
   const probe = document.createElement("canvas"); if (!(probe.getContext("webgl2") || probe.getContext("webgl"))) throw new Error("no webgl");
-  renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, powerPreference:"high-performance", preserveDrawingBuffer:REC });
+  renderer = new THREE.WebGLRenderer({ canvas, antialias:!LITE, alpha:true, powerPreference:"high-performance", preserveDrawingBuffer:REC });
 } catch (e){
   /* WebGL off (Brave Shields "strict" fingerprinting, hardware acceleration off, old GPU): say so instead of spinning forever */
   stage.classList.add("err"); throw e;
@@ -106,12 +106,33 @@ async function load(){
   /* every material is keyed part|name, so shade() can isolate a part */
   const mat = (part, key, o, phys) => {
     const k = part + "|" + key; if (matCache.has(k)) return matCache.get(k);
+    /* weak GPUs: clearcoat doubles the lighting cost of every glass pixel, so lite mode draws plain standard materials */
+    if (LITE && phys){ o = { ...o }; delete o.clearcoat; delete o.clearcoatRoughness; delete o.specularIntensity; phys = false; }
     const m = phys ? new THREE.MeshPhysicalMaterial(o) : new THREE.MeshStandardMaterial(o);
     if (!o.emissive && !o.map){ m.emissive = m.color.clone(); m.emissiveIntensity = 0; }
     m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity || 0 }; matCache.set(k, m); return m;
   };
   const M = buildMachine(THREE, { mat, onFont:cb => fonts.then(cb) });
   for (const [id, g] of Object.entries(M.parts)){ root.add(g); ents.set(id, g); }
+  /* draw calls: siblings with the same material and the same name become one mesh, so a weak GPU draws ~hundreds, not ~1900.
+     Names survive (card items pick meshes by name); anything that moves on its own is left alone. */
+  const KEEP = /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view/;
+  (function mergeAll(o){
+    for (const c of [...o.children]) if (c.children.length && !c.isMesh) mergeAll(c);
+    const groups = new Map();
+    for (const c of o.children){ if (!c.isMesh || c.isInstancedMesh || KEEP.test(c.name) || c.children.length) continue;
+      const k = c.material.uuid + "|" + c.name; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(c); }
+    for (const list of groups.values()){
+      if (list.length < 2) continue;
+      const parts = list.map(m => { m.updateMatrix(); const g = m.geometry.index ? m.geometry.toNonIndexed() : m.geometry.clone(); g.applyMatrix4(m.matrix); return g; });
+      let n = 0; for (const g of parts) n += g.attributes.position.count;
+      const P = new Float32Array(n*3), N = new Float32Array(n*3), U = new Float32Array(n*2); let i = 0;
+      for (const g of parts){ const c = g.attributes.position.count; P.set(g.attributes.position.array, i*3); if (g.attributes.normal) N.set(g.attributes.normal.array, i*3); if (g.attributes.uv) U.set(g.attributes.uv.array, i*2); i += c; g.dispose(); }
+      const mg = new THREE.BufferGeometry(); mg.setAttribute("position", new THREE.BufferAttribute(P, 3)); mg.setAttribute("normal", new THREE.BufferAttribute(N, 3)); mg.setAttribute("uv", new THREE.BufferAttribute(U, 2));
+      const mesh = new THREE.Mesh(mg, list[0].material); mesh.name = list[0].name; mesh.userData = { ...list[0].userData }; o.add(mesh);
+      for (const m of list) o.remove(m);
+    }
+  })(root);
   M.capsules.forEach(o => { o.userData.home = o.position.clone(); o.userData.spread = new THREE.Vector3(o.position.x*.22, o.position.y*.22, 0); capsules.push(o); });
   for (const p of PARTS){ p.objs = [ents.get(p.id)].filter(Boolean); p.objs.forEach(o => { o.userData.home = o.position.clone(); }); }
   /* each part's real bounds in machine space (cables that leave the part are not part of its frame) */
@@ -455,7 +476,7 @@ $("#reset").onclick = () => { setSelected(null); setExplode(0); orb.px = orb.py 
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
 /* ---------- loop: render only while something moves; phones get a lower, self adjusting resolution ---------- */
-let prCap = REC ? 2 : document.documentElement.classList.contains("lite") ? 1 : innerWidth < 980 ? 1.5 : 2, activeUntil = 0, mouseMoved = false, slow = 0, fast = 0;
+let prCap = REC ? 2 : LITE ? .85 : innerWidth < 980 ? 1.5 : 2, activeUntil = 0, mouseMoved = false, slow = 0, fast = 0;
 const wake = (ms = 2500) => { activeUntil = Math.max(activeUntil, performance.now() + ms); };
 for (const ev of ["pointermove", "pointerdown", "pointerup", "wheel", "keydown", "scroll", "touchmove"]) addEventListener(ev, () => wake(), { passive:true });
 addEventListener("resize", () => wake());
@@ -467,7 +488,8 @@ function frame(now){
   if (!(now < activeUntil || tour || trapOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0 || estop.k > .001 && estop.k < .999)){ requestAnimationFrame(frame); return; }
   /* frame time watchdog: drop the resolution a step if the device cannot keep up, raise it back when it can */
   if (REC) slow = fast = 0; else if (raw > 28) slow++; else if (raw < 18) fast++;
-  if (slow > 40 && prCap > 1){ prCap = Math.max(1, prCap - .25); slow = fast = 0; resize(); }
+  const floor = LITE || document.documentElement.classList.contains("lite") ? .6 : 1;
+  if (slow > 40 && prCap > floor){ prCap = Math.max(floor, prCap - .25); slow = fast = 0; resize(); }
   else if (fast > 240 && prCap < (innerWidth < 980 ? 1.5 : 2)){ prCap = Math.min(innerWidth < 980 ? 1.5 : 2, prCap + .25); slow = fast = 0; resize(); }
   if (tour) tourStep(dt); else { orb.idle += dt; if (false) orb.th += dt*.08; if (!orb.down){ orb.vth *= .9; orb.vph *= .9; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); } }
   explode += (explodeTarget - explode)*Math.min(1, dt*4.5);
@@ -494,7 +516,7 @@ function frame(now){
 }
 load().then(() => {
   root.traverse(o => { if (o.isMesh && !/pushrod|estop/.test(o.name)){ o.updateMatrix(); o.matrixAutoUpdate = false; } });
-  if (innerWidth < 980){ const sh = matCache.get("capsules|shell"); if (sh){ sh.side = THREE.FrontSide; sh.clearcoat = 0; sh.needsUpdate = true; } }
+  if (LITE || innerWidth < 980){ const sh = matCache.get("capsules|shell"); if (sh){ sh.side = THREE.FrontSide; sh.clearcoat = 0; sh.needsUpdate = true; } }
   buildInstances(); syncInstances();
   wake(4000); resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, recFrame:(t, T) => { const k = t/T, ease = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2;
     explodeTarget = explode = k < .16 ? 0 : k < .42 ? ease((k - .16)/.26) : k < .6 ? 1 : k < .86 ? 1 - ease((k - .6)/.26) : 0;

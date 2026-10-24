@@ -505,7 +505,7 @@ html.wl-open,html.wl-open body{overflow:hidden;overscroll-behavior:none}
 .page-atmosphere{animation:none!important;transition:none!important}
 /* lite mode, switched on for slow graphics: glass becomes solid, glows stop, the parallax stops */
 html.lite *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-html.lite .glass,html.lite .isl,html.lite .islands,html.lite .an-card,html.lite .an-bar,html.lite .an-rail,html.lite .an-tip,html.lite .lab-card,html.lite [class*="sheet"]{background-color:rgba(9,13,32,.94)!important}
+html.lite .glass,html.lite .isl,html.lite .islands,html.lite .an-card,html.lite .an-bar,html.lite .an-tip,html.lite .lab-card,html.lite [class*="sheet"]{background-color:rgba(9,13,32,.94)!important}
 
 
 html.lite .page-atmosphere{transform:none!important;filter:none!important}
