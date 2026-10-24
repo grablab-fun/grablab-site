@@ -163,10 +163,11 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   CHU.push(fun([cx1, cy0, zt], [cx1, cy1, zt], [ix1, iy0, zf1 - .02], [ix1, iy1, zf1 - .02]));
   /* shelf under the funnel carrying the ramp and the cradle cup over the NFC reader */
   CHU.push(BB(.3, -.47, ZS - .005, .47, -.26, ZS, "plastic2"));
+  CHU.push(BB(.3, -.265, ZS, .47, -.26, ZS + .06, "plastic2"), BB(.3, -.47, ZS, .305, -.26, ZS + .06, "plastic2"), BB(.465, -.47, ZS, .47, -.26, ZS + .06, "plastic2"), BB(.3, -.47, ZS, .47, -.465, ZS + .06, "plastic2"));   // lip round the shelf
   CHU.push(Object.assign(Bh(.09, .08, .004, .38, -.392, ZS + .012, "plastic"), {quat:q([1,0,0], -.2)}));
   const CUPX = .38, CUPY = -.312, CUPR = .037;
   for (let k = 0; k < 12; k++){ const a = k*Math.PI/6; if (Math.sin(a) < -.4) continue;   /* open toward the ramp */
-    CHU.push(Object.assign(Bh(.02, .004, .016, CUPX + (CUPR + .002)*Math.cos(a), CUPY + (CUPR + .002)*Math.sin(a), ZS + .008, "plastic"), {quat:q([0,0,1], a + Math.PI/2)})); }
+    CHU.push(Object.assign(Bh(.02, .004, .036, CUPX + (CUPR + .002)*Math.cos(a), CUPY + (CUPR + .002)*Math.sin(a), ZS + .018, "plastic"), {quat:q([0,0,1], a + Math.PI/2)})); }
   CHU.push(ghost(Bh(.042, .04, .0016, CUPX, CUPY, ZS - .006, "pcb_blue")), ghost(Bh(.034, .032, .0004, CUPX, CUPY, ZS - .005, "gold")));
   CHU.push(ghost(Object.assign(Bh(.04, .03, .002, .333, CUPY, ZS + .03, "plastic2"), {quat:q([0,1,0], -1.05)})), ghost(Bh(.012, .023, .029, .333, CUPY + .03, ZS + .02, "plastic")));
   /* break beam pair across the slot, chute camera + LED on its back wall */
