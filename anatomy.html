@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Anatomy, Grablab</title>
+<meta name="description" content="Prototype 01, exploded. Every part of the honest claw machine, from the frame to the chip that signs each play. Pull it apart, click a part, see what it proves." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Grablab" />
+<meta property="og:title" content="Anatomy, Grablab" />
+<meta property="og:description" content="Prototype 01, exploded. Every part of the honest claw machine, from the frame to the chip that signs each play." />
+<meta property="og:url" content="https://grablab.fun/anatomy" />
+<meta property="og:image" content="https://grablab.fun/assets/og-share.jpg?v=3" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Grablab Prototype 01, exploded view" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Anatomy, Grablab" />
+<meta name="twitter:description" content="Prototype 01, exploded. Every part of the honest claw machine, from the frame to the chip that signs each play." />
+<meta name="twitter:image" content="https://grablab.fun/assets/og-share.jpg?v=3" />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
+<link rel="stylesheet" href="styles.css?v=20261020w1" />
+<link rel="stylesheet" href="pages.css?v=20261024s4" />
+<link rel="stylesheet" href="sub.css?v=37" />
+<link rel="stylesheet" href="anatomy.css?v=2" />
+</head>
+<body data-page="anatomy">
+<div class="loader" id="loader" aria-hidden="true">
+  <script>try{if(sessionStorage.getItem("gl_loaded")){document.getElementById("loader").remove();}}catch(e){}</script>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"></header>
+<main>
+  <!-- THE MACHINE, EXPLODED -->
+  <section class="an" id="anatomy">
+    <div class="an-stage" id="stage">
+      <canvas id="view"></canvas>
+      <svg class="an-lines" id="lines" aria-hidden="true"></svg>
+      <div class="an-labels" id="labels" aria-hidden="true"></div>
+      <div class="an-boot"><span></span>Building the machine</div>
+      <div class="an-err">WebGL is off in this browser. The lab still works: <a href="lab.html">open the physics lab</a>.</div>
+    </div>
+
+    <div class="an-head">
+      <span class="eyebrow">Prototype 01 / Rev B</span>
+      <h1>Anatomy of an <span class="hl">honest claw.</span></h1>
+      <p>Nine parts. Pull them apart, click one, see what it proves.</p>
+    </div>
+
+    <aside class="an-side glass">
+      <div class="an-side-k">Parts</div>
+      <div class="an-parts" id="parts"></div>
+    </aside>
+
+    <div class="an-card glass" id="card"></div>
+
+    <div class="an-bar glass">
+      <label class="an-ex"><span>Assembled</span><input id="explode" type="range" min="0" max="100" value="0" aria-label="Explode" /><span>Exploded</span></label>
+      <div class="an-btns">
+        <button class="an-btn" id="tour" type="button">Play tour</button>
+        <button class="an-btn" id="pix" type="button" title="Pixel render on or off">Pixel</button>
+        <button class="an-btn" id="reset" type="button">Reset</button>
+      </div>
+    </div>
+    <div class="an-hint">drag to orbit <i></i> scroll to zoom <i></i> click a part</div>
+  </section>
+
+  <!-- WHAT IT PROVES -->
+  <section class="blk" id="proof">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Same files, three places</span><h2 class="reveal d1">One machine, <span class="hl">built three times.</span></h2></div>
+      <div class="an-three">
+        <a class="card glass glass-hover reveal" href="lab.html"><span class="k">01</span><h3>In physics</h3><p>The same geometry runs in MuJoCo inside SimArena. Drive it, drop a capsule, watch it land in the cradle.</p><span class="go">Open the lab &rarr;</span></a>
+        <div class="card glass reveal d1"><span class="k">02</span><h3>In metal</h3><p>Black 2020 frame, H-bot gantry, a winch on Dyneema, a 12 V claw. Every bracket in this view is on the parts list.</p><span class="go muted">In the workshop now</span></div>
+        <a class="card glass glass-hover reveal d2" href="provably-fair.html"><span class="k">03</span><h3>On chain</h3><p>Grip promised, drop seen twice, tag read, event signed by the OPTIGA chip. Five proofs per play.</p><span class="go">How the proof works &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="callout glass reveal">
+    <h2 class="chrome">Then grab it live.</h2>
+    <a href="participate.html" class="btn btn-primary big">Participate</a>
+  </section>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js?v=20261020w3"></script>
+<script src="consent.js?v=9"></script>
+<script src="sub.js?v=7"></script>
+<script type="module" src="anatomy.js?v=2"></script>
+</body>
+</html>

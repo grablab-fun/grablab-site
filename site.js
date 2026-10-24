@@ -11,7 +11,7 @@
 const I18N = {
   en: {
     _name:"English", _flag:"EN",
-    "nav.home":"Home", "nav.inside":"INSIDE", "nav.fair":"Provably fair", "nav.rent":"Rent", "nav.participate":"Participate",
+    "nav.home":"Home", "nav.inside":"INSIDE", "nav.fair":"Provably fair", "nav.anatomy":"Anatomy", "nav.rent":"Rent", "nav.participate":"Participate",
     "cta.connect":"CONNECT WALLET",
     "foot.tagline":"The first claw machine that can't cheat you, and every capsule is a coin.",
     "foot.explore":"Explore", "foot.projects":"Projects", "foot.connect":"Connect",
@@ -22,7 +22,7 @@ const I18N = {
   },
   zh: {
     _name:"中文", _flag:"中文",
-    "nav.home":"首页", "nav.inside":"机器内部", "nav.fair":"公平可证", "nav.rent":"租用", "nav.participate":"参与",
+    "nav.home":"首页", "nav.inside":"机器内部", "nav.fair":"公平可证", "nav.anatomy":"机器解剖", "nav.rent":"租用", "nav.participate":"参与",
     "cta.connect":"连接钱包",
     "foot.tagline":"第一台无法作弊的抓娃娃机，每一个胶囊都是一枚代币。",
     "foot.explore":"探索", "foot.projects":"项目方", "foot.connect":"联系",
@@ -33,7 +33,7 @@ const I18N = {
   },
   es: {
     _name:"Español", _flag:"ES",
-    "nav.home":"Inicio", "nav.inside":"POR DENTRO", "nav.fair":"Juego justo", "nav.rent":"Alquilar", "nav.participate":"Participar",
+    "nav.home":"Inicio", "nav.inside":"POR DENTRO", "nav.fair":"Juego justo", "nav.anatomy":"Anatomía", "nav.rent":"Alquilar", "nav.participate":"Participar",
     "cta.connect":"CONECTAR WALLET",
     "foot.tagline":"La primera máquina de garra que no puede hacer trampa, y cada cápsula es una moneda.",
     "foot.explore":"Explorar", "foot.projects":"Proyectos", "foot.connect":"Conectar",
@@ -79,6 +79,7 @@ function navHTML(){
     <nav class="isl nav-links">
       ${link("index.html","nav.home","home")}
       ${link("provably-fair.html","nav.fair","fair")}
+      ${link("anatomy.html","nav.anatomy","anatomy")}
       ${link("rent.html","nav.rent","rent")}
       ${link("participate.html","nav.participate","participate")}
     </nav>
@@ -94,6 +95,7 @@ function navHTML(){
       <nav class="mm-links">
         <div class="mm-li">${link("index.html","nav.home","home")}</div>
         <div class="mm-li">${link("provably-fair.html","nav.fair","fair")}</div>
+        <div class="mm-li">${link("anatomy.html","nav.anatomy","anatomy")}</div>
         <div class="mm-li">${link("rent.html","nav.rent","rent")}</div>
         <div class="mm-li">${link("participate.html","nav.participate","participate")}</div>
       </nav>
