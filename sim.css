@@ -968,3 +968,7 @@ body.sim-lock{overflow:hidden}
   .sv[data-v="pay"] .pp b{font-size:11.5px;line-height:1.15;white-space:normal}
   .sv[data-v="pay"] .pay-sum .row{padding:7px 0;font-size:13px}
 }
+
+/* while you play nothing on the controls can be selected or long-pressed into a menu */
+.sv[data-v="play"],.sv[data-v="play"] *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.sv[data-v="play"] .ctrl{touch-action:none}

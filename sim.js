@@ -462,7 +462,7 @@
   /* ---------------- navigation ---------------- */
   let view = "pick";
   function go(v){
-    view = v;
+    view = v; root.oncontextmenu = v === "play" ? (e => e.preventDefault()) : null;
     const idx = ["pick","pay","claim","play","win"].indexOf(v === "room" ? "pick" : v);
     root.querySelectorAll(".sv").forEach(s => s.classList.toggle("on", s.dataset.v === v));
     root.querySelectorAll(".sim-steps li").forEach((li,i) => { li.classList.toggle("on", i === idx); li.classList.toggle("done", i < idx); });
@@ -480,7 +480,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=5").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=6").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){

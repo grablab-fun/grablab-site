@@ -101,7 +101,8 @@ export function createSim3D(canvas, pips){
   /* cameras */
   const mk = fov => { const c = new THREE.PerspectiveCamera(fov, 1, .01, 30); return c; };
   const cams = [
-    { name:"Corner camera", cam:mk(30), pose(c){ c.position.set(-1.62, 1.78, -2.05); c.lookAt(0, .64, .02); } },
+    /* inside the cage, in the top front corner, where the real play camera is mounted */
+    { name:"Corner camera", cam:mk(76), pose(c){ c.up.set(0, 1, 0); c.position.set(-.44, 1.0, -.44); c.lookAt(.16, .36, .2); } },
     /* under the claw body, looking down past the fingers; the back of the machine is up on screen */
     { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, 1); c.position.set(p.x + .06, p.y - .1, p.z - .02); c.lookAt(p.x - .005, FLOOR - .02, p.z + .01); } },
     /* the landing camera behind the window of the chute, on the trapdoor */
