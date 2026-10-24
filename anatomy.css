@@ -368,3 +368,5 @@ html.rec .an-stage{position:fixed!important;inset:0!important;height:100vh!impor
 .an-err li{counter-increment:s;display:grid;grid-template-columns:22px 1fr;gap:8px;color:var(--ink-2)}
 .an-err li::before{content:counter(s, decimal-leading-zero);font-family:var(--mono);font-size:11px;color:#9cc0ff;padding-top:2px}
 .an-err .btn{display:inline-flex}
+/* the vignette fades out toward the bottom, so the stage blends into the next section */
+.an::after{background:radial-gradient(ellipse 80% 70% at 50% 45%,transparent 60%,rgba(5,9,24,.4) 100%);-webkit-mask:linear-gradient(#000 0,#000 70%,transparent 100%);mask:linear-gradient(#000 0,#000 70%,transparent 100%)}
