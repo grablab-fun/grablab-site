@@ -142,6 +142,21 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   [...WORD].forEach((ch, i) => GLY[ch].forEach(([x0, y0, x1, y1]) =>
     CB.push(ghost(BB(W0 + i*(LW + GAP) + x0*U, BY0 - .0035, LZ + y0*U, W0 + i*(LW + GAP) + x1*U, BY0 - .0005, LZ + y1*U, "logo")))));
   fixed("base_box", CB);
+  /* electronics on a shelf inside the base (Blender x,y -> X = x - .5, Y = y - .5) */
+  const EL = [];
+  const board = (x, y, z, sx, sy, sz, m, chips = []) => { EL.push(ghost(Bh(sx, sy, sz, x, y, z + sz/2, m))); chips.forEach(([cx, cy, csx, csy, csz]) => EL.push(ghost(Bh(csx, csy, csz, x + cx, y + cy, z + sz + csz/2, "chip")))); };
+  board(-.38, -.38, BZ0 + .012, .085, .056, .0016, "pcb", [[0, .004, .016, .016, .0025], [.028, 0, .014, .012, .003]]);   // Raspberry Pi
+  EL.push(ghost(Bh(.048, .04, .012, -.385, -.376, BZ0 + .026, "psu")));                                                    // cooler
+  board(-.38, -.38, BZ0 + .032, .065, .056, .0016, "pcb_red", [[-.01, 0, .008, .008, .002]]);                               // OPTIGA Trust M shield
+  board(-.21, -.38, BZ0 + .012, .1, .07, .0016, "pcb", [0,1,2,3].map(i => [-.025 + .018*i, .012, .014, .014, .004]));     // motion board
+  for (let i = 0; i < 4; i++) EL.push(ghost(Bh(.011, .011, .009, -.235 + .018*i, -.368, BZ0 + .0226, "psu")));
+  EL.push(ghost(Bh(.129, .097, .03, -.01, -.38, BZ0 + .018, "psu")));                                                      // 12 V supply
+  for (let i = 0; i < 9; i++) EL.push(ghost(Bh(.004, .08, .001, -.06 + i*.011, -.38, BZ0 + .0335, "chip")));
+  board(-.29, -.31, BZ0 + .012, .045, .04, .0016, "pcb_blue", [[0, 0, .012, .012, .012]]);                                 // claw driver
+  board(-.23, -.31, BZ0 + .012, .03, .02, .0016, "pcb_blue", [[0, 0, .008, .008, .006]]);                                  // buck converter
+  for (let i = 0; i < 5; i++) EL.push(ghost(Bh(.012, .02, .018, -.1 + i*.014, -.305, BZ0 + .012, "plastic2")));            // WAGO 221
+  EL.push(ghost(Bh(.004, .004, .004, -.33, -.4, BZ0 + .03, "led_red")));                                                   // power LED
+  fixed("electronics", EL);
 
   /* ---------------- chute: dark slot in the tray, funnel 160 -> 90 inside the base, ramp, NFC cradle, servo flap ---------------- */
   const [cx0, cx1, cy0, cy1] = CH, t = .003, ix0 = .335, ix1 = .425, iy0 = -.435, iy1 = -.345, zf0 = FZ - FT, zf1 = zf0 - .037, ZS = .05;

@@ -7,33 +7,33 @@ import * as THREE from "./assets/vendor/three.module.min.js";
 
 const $ = s => document.querySelector(s);
 const PARTS = [
-  { id:"base", n:"01", name:"Base and panel", spec:"QR, E-stop, prize drawer", ents:["base_box"], anchor:[-.3,-.48,.12], ex:[0,0,0],
-    text:"The whole machine stands on this box. No joystick: you scan the code and play from the browser. The red mushroom cuts the 12 V to everything that moves, the drawer at the front gives you the prize.",
-    subs:[["E-stop, 22 mm", -.415,-.48,.116], ["QR plate", -.324,-.48,.116], ["Wordmark", -.02,-.48,.116], ["Service hatch", .34,-.48,.07], ["Prize drawer", .2,-.3,.06]], proof:"Browser only" },
-  { id:"electronics", n:"02", name:"Electronics", spec:"Raspberry Pi, OPTIGA Trust M, motion board", ents:["electronics"], ex:[0,-.56,.06],
-    text:"One shelf inside the base. The Pi runs the play, the stream and the proof. The motion board drives the gantry and the winch. The OPTIGA chip signs every event with a key that never leaves it, so a play cannot be faked after the fact.",
-    subs:[["Raspberry Pi", -.38,-.38,.04], ["OPTIGA Trust M shield", -.38,-.38,.058], ["Motion board", -.21,-.38,.036], ["12 V supply", -.01,-.38,.04], ["Claw driver", -.29,-.31,.036], ["WAGO terminals", -.07,-.305,.036]], proof:"Signed by the machine on peaqOS" },
-  { id:"tray", n:"03", name:"Prize tray", spec:"MDF 18 mm, raised", ents:["floor_mdf"], anchor:[-.47,-.3,.25], ex:[0,0,.42],
-    text:"A black floor with a rim all round, 150 mm above the base so the drawer fits under it. One layer of prizes, the opening for the chute in the front right corner.",
-    subs:[["MDF floor, black", 0,.1,.22], ["Rim, 45 mm", -.47,0,.26], ["Chute opening, 160 mm", .38,-.39,.22]], proof:"Seen by the play camera" },
-  { id:"chute", n:"04", name:"Chute", spec:"beam, camera, NFC cradle, servo flap", ents:["chute"], ex:[.36,-.38,.48],
-    text:"The drop, proven. The capsule falls through the glass guard, breaks the beam, the chute camera hashes its frames, it rolls down the ramp into the cradle where the PN532 reads its tag, then the servo flap lets it slide into the drawer.",
-    subs:[["Guard glass + frame", .46,-.4,.3], ["Break beam pair", .31,-.44,.19], ["Chute camera + LED", .38,-.32,.19], ["Funnel, 160 to 90", .38,-.39,.15], ["Ramp", .4,-.4,.062], ["NFC cradle, PN532", .38,-.312,.06], ["Servo flap, MG90S", .333,-.31,.07]], proof:"Seen twice: beam and camera" },
-  { id:"capsules", n:"05", name:"Capsules", spec:"50 mm shells, NTAG215 inside", ents:["capsules"], anchor:[.35,-.2,.27], ex:[0,0,.62],
-    text:"Every capsule is two halves with a prize and an NFC sticker inside. The sticker has a factory UID that cannot be rewritten. Before the night, the inventory maps each UID to its prize and is published on chain.",
+  { id:"base", n:"01", name:"Base and panel", spec:"QR, E-stop, prize drawer", ph:0.98, th:0.95, ents:["base_box"], anchor:[-.3,-.48,.12], ex:[0,0,0],
+    text:"1000 x 200 x 110 mm, under the tray. Scan the QR, play from the browser. E-stop on the 12 V line. The drawer at the front gives you the prize.",
+    subs:[["E-stop, 22 mm", -.415,-.48,.116], ["QR plate", -.324,-.48,.116], ["Wordmark", -.02,-.48,.116], ["Fan + grille", .34,-.48,.07], ["Power inlet", .3,.49,.07], ["Prize drawer", .2,-.53,.07]], proof:"No joystick. Browser only" },
+  { id:"electronics", n:"02", name:"Electronics", spec:"Raspberry Pi, OPTIGA Trust M, motion board", ph:0.92, th:0.95, ents:["electronics"], ex:[0,-.56,.06],
+    text:"One shelf in the base. Raspberry Pi runs the play and the stream. The motion board steps the gantry and the winch. OPTIGA Trust M signs each event. Its key never leaves the chip.",
+    subs:[["Raspberry Pi", -.38,-.38,.04], ["OPTIGA Trust M shield", -.38,-.38,.058], ["Motion board", -.21,-.38,.036], ["12 V supply", -.01,-.38,.04], ["Claw driver", -.29,-.31,.036], ["WAGO terminals", -.07,-.305,.036], ["Beam relay", -.1,-.31,.04]], proof:"Signed on peaqOS" },
+  { id:"tray", n:"03", name:"Prize tray", spec:"MDF 18 mm, raised", ph:1.0, th:1.2, ents:["floor_mdf"], anchor:[-.47,-.3,.25], ex:[0,0,.42],
+    text:"Black MDF, 18 mm, 150 mm above the base. A rim all round. The chute opening sits front right.",
+    subs:[["MDF floor, black", 0,.1,.22], ["Rim, 45 mm", -.47,0,.26], ["Chute opening, 160 mm", .38,-.39,.22]], proof:"Watched by the play camera" },
+  { id:"chute", n:"04", name:"Chute", spec:"beam, camera, NFC cradle, servo flap", ph:1.02, th:0.45, ents:["chute"], ex:[.36,-.38,.48],
+    text:"160 mm opening, funnel to 90 mm. The capsule breaks the beam, the camera keeps the frames, the cradle reads the tag. The flap opens only after the read.",
+    subs:[["Guard glass + frame", .46,-.4,.3], ["Break beam pair", .31,-.44,.19], ["Chute camera + LED", .38,-.32,.19], ["Funnel, 160 to 90", .38,-.39,.15], ["Ramp", .4,-.4,.062], ["NFC cradle, PN532", .38,-.312,.06], ["Servo flap, MG90S", .333,-.31,.07], ["Chute camera", .3,-.3,.44]], proof:"Seen twice: beam and camera" },
+  { id:"capsules", n:"05", name:"Capsules", spec:"50 mm shells, NTAG215 inside", ph:1.0, th:0.95, ents:["capsules"], anchor:[.35,-.2,.27], ex:[0,0,.62],
+    text:"50 mm, two halves. An NTAG215 sticker inside, factory UID, read only. The inventory maps each UID to a prize before the night. Click one.",
     subs:[["50 mm shell", 0,-.1,.25], ["NTAG215 sticker inside", -.2,.1,.25], ["Gold or violet halves", .2,.2,.25]], proof:"Inventory on chain" },
-  { id:"frame", n:"06", name:"Frame", spec:"2020 V-slot, black anodised", ents:["frame"], anchor:[-.49,-.49,.92], ex:[0,0,.3],
-    text:"Twelve 1 m bars and four posts make a 1000 mm cube, joined with cast corner brackets. A third ring at 150 mm carries the tray. No glass: the play camera is the window.",
+  { id:"frame", n:"06", name:"Frame", spec:"2020 V-slot, black anodised", ph:1.1, th:0.95, ents:["frame"], anchor:[-.49,-.49,.92], ex:[0,0,.3],
+    text:"2020 V-slot, black anodised. A 1000 mm cube: 12 bars, 4 posts, cast corners. A third ring at 150 mm carries the tray. No glass.",
     subs:[["4 posts, 1000 mm", -.49,-.49,.5], ["Top ring", 0,-.49,.99], ["Floor ring, 150 mm", .49,0,.192], ["Corner brackets", .47,-.47,.97], ["Rubber feet", .49,.49,.006]], proof:"Open by design" },
-  { id:"gantry", n:"07", name:"Gantry", spec:"H-bot, two NEMA 17", ents:["gantry_static","move_y"], anchor:[.49,.2,1.0], ex:[0,0,1.3],
-    text:"Two Y rails on the top beams carry a 2040 X beam on linear blocks. One GT2 belt loop in H-bot routing, both motors fixed to the frame, so the moving mass stays light. The play camera sits in the top front corner.",
-    subs:[["Y rail, left", -.49,0,1.004], ["Y rail, right", .49,0,1.004], ["X beam, 2040", 0,0,1.033], ["Y motors, NEMA 17", .526,.451,1.01], ["GT2 belt", -.503,0,1.007], ["Drag chain", -.515,.1,.995], ["Play camera", -.415,-.455,.945]], proof:"Position known by step count" },
-  { id:"winch", n:"08", name:"Carriage and winch", spec:"pancake NEMA 17, printed spool", ents:["move_x"], chain:["gantry"], ex:[0,0,-.3],
-    text:"Rides the X rail on a linear block. A pancake stepper turns a printed 30 mm spool with a helical groove that winds 2 mm Dyneema. Top position from the Z end stop, bottom from stall detection when the claw touches down.",
+  { id:"gantry", n:"07", name:"Gantry", spec:"H-bot, two NEMA 17", ph:1.15, th:2.35, ents:["gantry_static","move_y"], anchor:[.49,.2,1.0], ex:[0,0,1.3],
+    text:"Two Y rails, one 2040 X beam, MGN12 blocks. H-bot: one GT2 loop, both NEMA 17 fixed to the frame. Play camera in the top front corner.",
+    subs:[["Y rail, left", -.49,0,1.004], ["Y rail, right", .49,0,1.004], ["X beam, 2040", 0,0,1.033], ["Y motors, NEMA 17", .526,.451,1.01], ["GT2 belt", -.503,0,1.007], ["Drag chain", -.515,.1,.995], ["Play camera", -.415,-.455,.945]], proof:"Position known to the step" },
+  { id:"winch", n:"08", name:"Carriage and winch", spec:"pancake NEMA 17, printed spool", ph:1.0, th:1.1, ents:["move_x"], chain:["gantry"], ex:[0,0,-.3],
+    text:"One block on the X rail. Pancake NEMA 17, printed 30 mm spool, 2 mm Dyneema. Z end stop at the top, stall detect at the bottom.",
     subs:[["MGN12 block", 0,0,1.061], ["Winch spool, 30 mm", 0,-.045,.985], ["Pancake NEMA 17", .042,-.045,.985], ["POV camera", -.048,-.045,.975], ["Z end stop", .03,-.06,1.076], ["Cable gland", .024,-.049,1.003]], proof:"Same depth every play" },
-  { id:"claw", n:"09", name:"Claw", spec:"3 fingers, 12 V linear actuator", ents:["seg_1"], focus:["seg_8"], chain:["gantry","winch"], ex:[0,0,-.42],
-    text:"Hangs from a swivel on the line. A 30 mm linear actuator in the hub pushes three printed fingers open; a spring closes them, and that closing force is the grip we promise. The 6 core coiled cable brings the 12 V down beside the line.",
-    subs:[["Swivel on Dyneema", 0,-.045,.972], ["Coil cable, 6 core", .028,-.045,.95], ["Hub, 12 V actuator", 0,-.045,.915], ["Chrome collar", .024,-.045,.893], ["3 printed fingers", .035,-.045,.86], ["Rubber tips", .04,-.045,.825]], proof:"Grip measured, published before you play" }
+  { id:"claw", n:"09", name:"Claw", spec:"3 fingers, 12 V linear actuator", ph:1.08, th:0.95, ents:["seg_1"], focus:["seg_8"], chain:["gantry","winch"], ex:[0,0,-.42],
+    text:"Three printed fingers. A 30 mm linear actuator opens them, a spring closes them. That closing force is the grip we publish. A 6 core coiled cable brings the 12 V down.",
+    subs:[["Swivel on Dyneema", 0,-.045,.972], ["Coil cable, 6 core", .028,-.045,.95], ["Hub, 12 V actuator", 0,-.045,.915], ["Chrome collar", .024,-.045,.893], ["3 printed fingers", .035,-.045,.86], ["Rubber tips", .04,-.045,.825]], proof:"Grip measured before you play" }
 ];
 const KEEP = new Set(["frame","floor_mdf","base_box","electronics","chute","gantry_static","claw"]);
 const byId = id => PARTS.find(p => p.id === id);
@@ -86,7 +86,7 @@ const fill = new THREE.PointLight(0xffb877, 2.0, 3.5); fill.position.set(.1, 1.0
 const matCache = new Map(), ents = new Map(), partOf = new Map();
 function material(mats, name, part){
   const k = part + "|" + name; if (matCache.has(k)) return matCache.get(k);
-  const OVR = { tray:[.045,.047,.055,1], base:[.04,.042,.05,1], alu:[.02,.02,.025,1], cap_gold:[1,.62,.16,1], cap_violet:[.52,.42,1,1] };
+  const OVR = { tray:[.045,.047,.055,1], base:[.04,.042,.05,1], alu:[.02,.02,.025,1], cap_gold:[1,.62,.16,1], cap_violet:[.52,.42,1,1], pcb:[.05,.36,.16,1], pcb_red:[.55,.08,.08,1], pcb_blue:[.08,.18,.7,1], psu:[.72,.73,.76,1] };
   const d = mats[name] || { rgba:[.5,.5,.5,1] }, c = OVR[name] || d.rgba;
   const m = name.startsWith("cap_") ? new THREE.MeshPhysicalMaterial({ side:THREE.DoubleSide, color:new THREE.Color(c[0]*.85, c[1]*.85, c[2]*.85), metalness:.08, roughness:.32, clearcoat:1, clearcoatRoughness:.1, emissive:new THREE.Color(c[0], c[1], c[2]), emissiveIntensity:.03 })
     : new THREE.MeshStandardMaterial({ color:new THREE.Color(c[0], c[1], c[2]), metalness:d.metalness ?? .2, roughness:d.roughness ?? .6,
@@ -118,34 +118,38 @@ function entityObj(e, mats, part){
 }
 const partFor = n => { for (const p of PARTS) if (p.ents.includes(n)) return p.id; return null; };
 const capsules = [], mech = {};
-let GEO_TOP, GEO_BOT, GEO_TAG, GEO_COIN, tagMat, coinMat, tagTex;
+let GEO_TOP, GEO_BOT, GEO_TAG, GEO_COIN, tagMat, coinMat, coinFace, tagTex;
 function buildCapsule(e, mats){
   const o = new THREE.Group(); o.name = e.name; const t = e.transform || {};
   if (t.pos) o.position.set(...t.pos); if (t.quat) o.quaternion.set(t.quat[1], t.quat[2], t.quat[3], t.quat[0]);
   const R = .03, shell = material(mats, e.geoms[0].material, "capsules");
-  GEO_TOP ||= new THREE.SphereGeometry(R, 28, 18, 0, Math.PI*2, 0, Math.PI/2).rotateX(Math.PI/2);
-  GEO_BOT ||= new THREE.SphereGeometry(R, 28, 18, 0, Math.PI*2, Math.PI/2, Math.PI/2).rotateX(Math.PI/2);
+  GEO_TOP ||= new THREE.SphereGeometry(R, 48, 32, 0, Math.PI*2, 0, Math.PI/2).rotateX(Math.PI/2);
+  GEO_BOT ||= new THREE.SphereGeometry(R, 48, 32, 0, Math.PI*2, Math.PI/2, Math.PI/2).rotateX(Math.PI/2);
   if (!tagMat){
     const cv = document.createElement("canvas"); cv.width = cv.height = 256; const g = cv.getContext("2d");
     g.fillStyle = "#f4f4f6"; g.beginPath(); g.arc(128, 128, 126, 0, Math.PI*2); g.fill();
-    g.strokeStyle = "#b8893a"; g.lineWidth = 7; for (let r = 40; r <= 104; r += 16){ g.beginPath(); g.arc(128, 128, r, 0, Math.PI*2); g.stroke(); }
+    g.strokeStyle = "#8a5a1e"; g.lineWidth = 9; for (let r = 40; r <= 104; r += 16){ g.beginPath(); g.arc(128, 128, r, 0, Math.PI*2); g.stroke(); }
     g.fillStyle = "#1a1a1a"; g.fillRect(118, 112, 20, 32); g.font = "700 22px Satoshi, system-ui, sans-serif"; g.fillStyle = "#333"; g.textAlign = "center"; g.fillText("NTAG215", 128, 236);
     tagTex = new THREE.CanvasTexture(cv); tagTex.colorSpace = THREE.SRGBColorSpace;
     tagMat = new THREE.MeshStandardMaterial({ map:tagTex, roughness:.7, metalness:0 });
     coinMat = new THREE.MeshPhysicalMaterial({ color:0xffc04a, metalness:1, roughness:.18, clearcoat:.6, emissive:0xffb347, emissiveIntensity:.25 });
-    GEO_TAG = new THREE.CylinderGeometry(.019, .019, .0012, 40).rotateX(Math.PI/2); GEO_COIN = new THREE.CylinderGeometry(.011, .011, .0024, 40).rotateX(Math.PI/2);
+    /* the coin face carries the G mark */
+    const fc = document.createElement("canvas"); fc.width = fc.height = 256; const fg = fc.getContext("2d"); fg.fillStyle = "#e9a93a"; fg.fillRect(0, 0, 256, 256);
+    coinFace = new THREE.MeshPhysicalMaterial({ map:new THREE.CanvasTexture(fc), metalness:.9, roughness:.22, clearcoat:.6 }); coinFace.map.colorSpace = THREE.SRGBColorSpace;
+    const im = new Image(); im.onload = () => { fg.drawImage(im, 40, 40, 176, 176); coinFace.map.needsUpdate = true; }; im.src = "assets/brand/mark-chrome-256.png";
+    GEO_TAG = new THREE.CylinderGeometry(.019, .019, .0012, 40).rotateX(Math.PI/2); GEO_COIN = new THREE.CylinderGeometry(.011, .011, .004, 48);
     /* register them under the capsules part so isolation hides them with the shells */
-    for (const [k, m] of [["capsules|tag", tagMat], ["capsules|coin", coinMat]]){ m.userData.base = { opacity:1, ei:m.emissiveIntensity }; matCache.set(k, m); }
+    for (const [k, m] of [["capsules|tag", tagMat], ["capsules|coin", coinMat], ["capsules|coinface", coinFace]]){ m.userData.base = { opacity:1, ei:m.emissiveIntensity }; matCache.set(k, m); }
   }
   const lid = new THREE.Group(); const top = new THREE.Mesh(GEO_TOP, shell); lid.add(top);
   const bot = new THREE.Mesh(GEO_BOT, shell), seam = new THREE.Mesh(geometry({ type:"cylinder", radius:R + .0006, height:.0035 }), material(mats, "seam", "capsules"));
-  const tag = new THREE.Mesh(GEO_TAG, tagMat); tag.position.z = -.012; const coin = new THREE.Mesh(GEO_COIN, coinMat); coin.position.set(.004, .003, -.001); coin.rotation.set(1.0, .35, 0);
+  const tag = new THREE.Mesh(GEO_TAG, tagMat); tag.position.z = -.012; const coin = new THREE.Mesh(GEO_COIN, [coinMat, coinFace, coinMat]); coin.position.set(.003, .004, 0); coin.rotation.set(-.55, .3, .2);
   [top, bot, seam, tag, coin].forEach(m => { m.userData.part = "capsules"; m.castShadow = true; m.receiveShadow = true; });
   o.add(lid, bot, seam, tag, coin); o.userData.lid = lid; o.userData.q0 = o.quaternion.clone(); o.userData.cap = true;
   ents.set(e.name, o); partOf.set(e.name, "capsules"); return o;
 }
 async function load(){
-  const [sc, as] = await Promise.all([fetch("lab/grablab-claw-revb.scene.json?v=13").then(r => r.json()), fetch("lab/grablab-claw-revb-mech.asset.json?v=13").then(r => r.json())]);
+  const [sc, as] = await Promise.all([fetch("lab/grablab-claw-revb.scene.json?v=14").then(r => r.json()), fetch("lab/grablab-claw-revb-mech.asset.json?v=14").then(r => r.json())]);
   const capsGroup = new THREE.Group(); capsGroup.name = "capsules"; root.add(capsGroup); ents.set("capsules", capsGroup);
   for (const e of sc.entities){
     if (/^capsule_/.test(e.name)){ const o = buildCapsule(e, sc.material); capsGroup.add(o); o.userData.home = o.position.clone(); capsules.push(o); continue; }
@@ -159,12 +163,116 @@ async function load(){
     }
     root.add(entityObj(e, sc.material, partFor(e.name)));
   }
+  /* electronics details: USB and ethernet blocks, GPIO header, HDMI, PSU terminal block, board standoffs */
+  (function details(){
+    const el = ents.get("electronics"); if (!el) return; const M = (n, r) => new THREE.MeshStandardMaterial({ color:n, metalness:r ? .9 : .1, roughness:r ? .3 : .5 });
+    const steel = M(0xb8bcc4, 1), black = M(0x111114), yellow = M(0xd8c26a), green = M(0x3a8a4a); [steel, black, yellow, green].forEach((m, i) => { m.userData.base = { opacity:1, ei:0 }; matCache.set("electronics|d" + i, m); });
+    const add = (geo, m, x, y, z) => { const o = new THREE.Mesh(geo, m); o.position.set(x, y, z); o.userData.part = "electronics"; o.castShadow = o.receiveShadow = true; el.add(o); };
+    const B = (a, b, c) => new THREE.BoxGeometry(a, b, c);
+    add(B(.016, .013, .016), steel, -.345, -.395, .041); add(B(.016, .013, .016), steel, -.345, -.375, .041);   // USB stacks
+    add(B(.016, .016, .013), steel, -.345, -.355, .0395);                                                          // ethernet
+    add(B(.052, .005, .009), black, -.38, -.352, .0375);                                                            // GPIO header
+    add(B(.007, .012, .004), steel, -.4, -.405, .035);                                                              // HDMI
+    add(B(.004, .004, .012), yellow, -.351, -.39, .058); add(B(.004, .004, .012), yellow, -.409, -.39, .058);       // shield standoffs
+    add(B(.02, .09, .012), green, .05, -.38, .024);                                                                 // PSU terminal block
+    for (let i = 0; i < 6; i++) add(B(.003, .003, .006), steel, .05, -.42 + i*.016, .033);
+  })();
+  /* detail packs: the SimArena scene only carries what physics needs; the page shows the rest of the parts list */
+  (function detailPacks(){
+    const mats = {};
+    const M = (k, o) => mats[k] ||= (() => { const m = new THREE.MeshStandardMaterial(o); m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity }; return m; })();
+    const reg = (part, m, k) => { const key = part + "|dp_" + k; if (!matCache.has(key)) matCache.set(key, m); return m; };
+    const steel = o => M("steel", { color:0xb9bdc6, metalness:.95, roughness:.28 }), black = o => M("black", { color:0x121216, metalness:.15, roughness:.55 }),
+      dark = o => M("dark", { color:0x24262e, metalness:.3, roughness:.5 }), red = o => M("red", { color:0xd01c22, metalness:.1, roughness:.35 }),
+      white = o => M("white", { color:0xe9e9ee, metalness:0, roughness:.5 }), cable = o => M("cable", { color:0x0b0b0e, metalness:.1, roughness:.45 }),
+      copper = o => M("copper", { color:0xb87333, metalness:.9, roughness:.35 }), green = o => M("green", { color:0x2f7a3e, metalness:.1, roughness:.5 }),
+      blue = o => M("blue", { color:0x1f4fd1, metalness:.6, roughness:.3 }), plastic = o => M("plastic", { color:0x3a3c46, metalness:.05, roughness:.6 }),
+      led = o => M("led", { color:0xffffff, emissive:0x9cc0ff, emissiveIntensity:1.6, roughness:1 }), dyn = o => M("dyn", { color:0x3a3a40, roughness:.7 });
+    const B = (a, b, c) => new THREE.BoxGeometry(a, b, c), C = (r, h, n = 24) => new THREE.CylinderGeometry(r, r, h, n).rotateX(Math.PI/2);
+    const Cx = (r, h, n = 24) => new THREE.CylinderGeometry(r, r, h, n).rotateZ(Math.PI/2), Cy = (r, h, n = 24) => new THREE.CylinderGeometry(r, r, h, n);
+    function put(part, ent, geo, m, x, y, z, rot){
+      const mat = typeof m === "function" ? m() : m; const o = new THREE.Mesh(geo, reg(part, mat, mat.uuid)); o.position.set(x, y, z); if (rot) o.rotation.set(...rot);
+      o.userData.part = part; o.castShadow = o.receiveShadow = true; ents.get(ent).add(o); return o;
+    }
+    /* a cable between two points */
+    function wire(part, ent, m, a, b, r = .002){
+      const d = new THREE.Vector3(b[0] - a[0], b[1] - a[1], b[2] - a[2]), L = d.length();
+      const o = put(part, ent, new THREE.CapsuleGeometry(r, L, 3, 8), m, (a[0] + b[0])/2, (a[1] + b[1])/2, (a[2] + b[2])/2);
+      o.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize()); return o;
+    }
+
+    /* 01 base: drawer pulled out on slides, 40 mm fan behind the grille, power inlet with switch and fuse, panel screws, cable gland + sleeve, tray brackets */
+    const bb = "base_box";
+    put("base", bb, B(.15, .19, .062), dark, .2, -.385, .056);                                  // drawer body
+    put("base", bb, B(.17, .05, .075), black, .2, -.51, .062);                                   // drawer face, pulled 30 mm
+    put("base", bb, B(.06, .006, .006), steel, .2, -.537, .085);                                 // handle
+    [.122, .278].forEach(x => put("base", bb, B(.004, .19, .012), steel, x, -.385, .03));        // slides
+    put("base", bb, C(.021, .01), black, .34, -.468, .072); put("base", bb, C(.006, .012), dark, .34, -.462, .072);   // fan + hub
+    for (let i = 0; i < 5; i++) put("base", bb, B(.036, .002, .003), plastic, .34, -.466, .072, [0, i*Math.PI/5, 0]);  // blades
+    put("base", bb, B(.03, .018, .024), black, .28, .488, .07); put("base", bb, B(.012, .006, .016), red, .33, .49, .07); put("base", bb, C(.005, .012), plastic, .36, .49, .07);  // IEC inlet, rocker, fuse
+    [[-.455, .035], [-.455, .185], [0, .035], [0, .185], [.455, .035], [.455, .185]].forEach(([x, z]) => put("base", bb, C(.0035, .002, 12), black, x, -.4855, z));   // panel screws
+    put("base", bb, C(.009, .02), black, -.44, .49, .11); wire("base", bb, cable, [-.44, .5, .11], [-.44, .5, .19], .004);  // gland + sleeve up the rear post
+    [[-.46, -.46], [.46, -.46], [-.46, .46], [.46, .46]].forEach(([x, y]) => { put("base", bb, B(.03, .03, .003), steel, x, y, .2); put("base", bb, B(.003, .03, .03), steel, x + (x < 0 ? .0135 : -.0135), y, .187); });  // tray brackets
+    [[-.44, -.44], [.44, -.44], [-.44, .44], [.44, .44]].forEach(([x, y]) => put("base", bb, C(.016, .01), plastic, x, y, .015));   // rubber feet
+
+    /* 02 electronics: shelf plate, standoffs, wiring, relay for the beam sensor, SD card, USB lead */
+    const el = "electronics";
+    put("electronics", el, B(.64, .22, .004), dark, -.2, -.385, .029);                           // shelf plate
+    [[-.42, -.405], [-.34, -.355], [-.26, -.41], [-.16, -.35], [.05, -.42], [-.08, -.34]].forEach(([x, y]) => put("electronics", el, Cy(.0025, .01, 8), steel, x, y, .036));   // standoffs
+    put("electronics", el, B(.04, .03, .0016), M("pcbb", { color:0x12309a, roughness:.45 }), -.1, -.31, .033); put("electronics", el, B(.016, .012, .012), black, -.1, -.31, .04);   // relay module
+    put("electronics", el, B(.011, .015, .001), black, -.424, -.38, .037);                      // SD card
+    wire("electronics", el, cable, [-.345, -.37, .046], [-.265, -.395, .045], .0025);          // Pi to motion board USB
+    wire("electronics", el, M("wred", { color:0xc0262b, roughness:.5 }), [.04, -.43, .036], [-.165, -.43, .04]); wire("electronics", el, cable, [.04, -.425, .034], [-.165, -.425, .038]);   // 12 V to the board
+    wire("electronics", el, M("wred", { color:0xc0262b, roughness:.5 }), [-.07, -.3, .04], [-.29, -.3, .04]); wire("electronics", el, cable, [-.07, -.295, .038], [-.29, -.295, .038]);      // WAGO to claw driver
+    wire("electronics", el, cable, [-.1, -.3, .04], [-.1, -.27, .06], .002);                   // relay to the beam sensor, leaves the shelf
+
+    /* 03 tray: rim screws, two battens underneath, the tray wears the chute bezel on the physics side already */
+    const tr = "floor_mdf";
+    [[-.47, -.47], [.47, -.47], [-.47, .47], [.47, .47], [0, -.47], [0, .47]].forEach(([x, y]) => put("tray", tr, Cy(.0035, .002, 12), black, x, y, .266));
+    [-.25, .25].forEach(y => put("tray", tr, B(.9, .03, .03), black, 0, y, .187));
+
+    /* 04 chute: the second webcam on a stalk over the guard, lenses on the beam pair, cable to the cradle */
+    const ch = "chute";
+    put("chute", ch, Cy(.004, .09, 10), steel, .3, -.3, .39); put("chute", ch, B(.034, .026, .022), black, .3, -.3, .44); put("chute", ch, C(.007, .008), M("lens", { color:0x0a0a12, metalness:.8, roughness:.05 }), .3, -.314, .44, [.6, 0, 0]);
+    put("chute", ch, C(.0025, .002), led, .31, -.315, .446, [.6, 0, 0]);
+    [[.31, -.44], [.45, -.32]].forEach(([x, y]) => put("chute", ch, C(.003, .004, 10), M("lens", { color:0x0a0a12, metalness:.8, roughness:.05 }), x, y, .208));
+    wire("chute", ch, cable, [.3, -.3, .35], [.3, -.3, .1], .002); wire("chute", ch, cable, [.38, -.312, .052], [.42, -.28, .03], .0018);
+
+    /* 06 frame: post caps, bracket screws, cable sleeve clipped to the rear left post */
+    const fr = "frame";
+    [[-.49, -.49], [.49, -.49], [.49, .49], [-.49, .49]].forEach(([x, y]) => put("frame", fr, B(.022, .022, .004), black, x, y, 1.002));
+    [[-.47, -.47], [.47, -.47], [.47, .47], [-.47, .47]].forEach(([x, y]) => [.03, .97].forEach(z => put("frame", fr, C(.003, .002, 10), black, x, y + (y < 0 ? -.011 : .011), z, [Math.PI/2, 0, 0])));
+    wire("frame", fr, cable, [-.44, .5, .2], [-.44, .5, .975], .004); [.35, .6, .85].forEach(z => put("frame", fr, B(.02, .01, .01), black, -.455, .5, z));
+
+    /* 07 gantry: X and Y end stops, belt clamps, motor connectors, a beam end cap */
+    const g = "move_y";
+    put("gantry", g, B(.02, .01, .006), M("pcbr", { color:0x8a1b1b, roughness:.5 }), -.44, -.03, .012); put("gantry", g, B(.004, .004, .004), steel, -.432, -.035, .017);   // X min end stop
+    [-.1, .1].forEach(x => put("gantry", g, B(.014, .012, .008), plastic, x, -.016, .004));          // belt clamps
+    put("gantry", g, B(.012, .014, .01), white, -.525, 0, .024);                                      // X motor connector
+    const gs = "gantry_static";
+    put("gantry", gs, B(.01, .02, .006), M("pcbr", { color:0x8a1b1b, roughness:.5 }), -.48, -.45, 1.012); // Y min end stop
+    [[-.53, .45], [.53, .45]].forEach(([x, y]) => put("gantry", gs, B(.012, .012, .014), white, x, y, 1.035)); // Y motor connectors
+    wire("gantry", gs, cable, [-.53, .46, 1.04], [-.515, .4, .999], .0025); wire("gantry", gs, cable, [.53, .46, 1.04], [.52, .49, .99], .0025);
+
+    /* 08 winch: line wound on the spool, motor lead, a swivel hook */
+    const w = "move_x";
+    for (let i = 0; i < 5; i++) put("winch", w, C(.0158, .0012, 20), dyn, -.016 + i*.007, -.045, -.048, [0, Math.PI/2, 0]);
+    wire("winch", w, cable, [.048, -.045, -.05], [.03, -.03, -.01], .002);
+    put("winch", w, B(.012, .012, .012), white, .05, -.07, -.03);                                    // winch motor connector
+
+    /* 09 claw: actuator rod, hex nut on the eye, hub gland, three push rods */
+    const cl = "seg_8";
+    put("claw", cl, C(.003, .03, 10), steel, 0, 0, -.1); put("claw", cl, C(.0045, .004, 6), steel, 0, 0, -.015);
+    put("claw", cl, Cx(.004, .01, 10), black, .024, 0, -.03);
+    for (let k = 0; k < 3; k++){ const a = k*2*Math.PI/3 + Math.PI/3; put("claw", cl, C(.0015, .028, 8), steel, .012*Math.cos(a), .012*Math.sin(a), -.078); }
+  })();
   /* GRABLAB wordmark: real type on a thin emissive plane on the front panel */
   (function wordmark(){
     const cv = document.createElement("canvas"); cv.width = 1024; cv.height = 220; const g = cv.getContext("2d");
     g.fillStyle = "#fff"; g.font = "700 150px Anton, 'Clash Display', Impact, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; try { g.letterSpacing = "6px"; } catch (e) {} g.fillText("GRABLAB", 512, 118);
     const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 8;
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(.30, .064), new THREE.MeshBasicMaterial({ map:tx, transparent:true, toneMapped:false }));
+    const wm = new THREE.MeshBasicMaterial({ map:tx, transparent:true, toneMapped:false }); wm.userData.base = { opacity:1, ei:0 }; matCache.set("base|wordmark", wm);
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(.30, .064), wm);
     m.rotation.x = Math.PI/2; m.position.set(-.02, -.4845, .116); m.userData.part = "base"; ents.get("base_box").add(m);
   })();
   /* part roots: the objects that get the explode offset */
@@ -212,14 +320,14 @@ function resize(){
 addEventListener("resize", resize);
 
 /* ---------- orbit: drag, wheel, inertia, idle auto spin ---------- */
-const orb = { th:-.95, ph:1.12, r:3.0, tx:0, ty:.52, tz:0, vth:0, vph:0, down:false, lx:0, ly:0, idle:0, zoom:1 };
+const orb = { th:.95, ph:1.12, r:3.0, tx:0, ty:.52, tz:0, vth:0, vph:0, down:false, lx:0, ly:0, idle:0, zoom:1 };
 const tgt = new THREE.Vector3();
 function cam(){
   const sp = Math.sin(orb.ph), c = Math.cos(orb.ph), r = orb.r*orb.zoom;
   camera.position.set(orb.tx + r*sp*Math.cos(orb.th), orb.ty + r*c, orb.tz + r*sp*Math.sin(orb.th));
   tgt.set(orb.tx, orb.ty, orb.tz); camera.lookAt(tgt);
 }
-stage.addEventListener("pointerdown", e => { orb.down = true; orb.lx = e.clientX; orb.ly = e.clientY; orb.idle = 0; stage.setPointerCapture(e.pointerId); });
+stage.addEventListener("pointerdown", e => { orb.down = true; orb.phT = null; orb.thT = null; orb.lx = e.clientX; orb.ly = e.clientY; orb.idle = 0; stage.setPointerCapture(e.pointerId); });
 stage.addEventListener("pointermove", e => { mouse.x = (e.clientX - stage.getBoundingClientRect().left)/stage.clientWidth*2 - 1; mouse.y = -((e.clientY - stage.getBoundingClientRect().top)/stage.clientHeight)*2 + 1;
   if (!orb.down) return; orb.vth = (e.clientX - orb.lx)*.006; orb.vph = (e.clientY - orb.ly)*.006; orb.lx = e.clientX; orb.ly = e.clientY; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); orb.moved = (orb.moved || 0) + Math.abs(orb.vth) + Math.abs(orb.vph); });
 stage.addEventListener("pointerup", () => { orb.down = false; });
@@ -228,10 +336,21 @@ stage.addEventListener("wheel", e => { e.preventDefault(); orb.zoom = Math.min(2
 const sph = new THREE.Sphere();
 function goal(){
   if (selectedCap){ selectedCap.getWorldPosition(tmpV); return { tx:tmpV.x, ty:tmpV.y + .01, tz:tmpV.z, r:.26 }; }
-  if (selected){ box.makeEmpty(); for (const o of (selected.focus ? selected.focus.map(n => ents.get(n)) : selected.objs)) o.traverse(m => { if (m.isMesh && m.userData.part === selected.id){ m.getWorldPosition(tmpV); box.expandByPoint(tmpV); } }); if (!box.isEmpty()){ box.getBoundingSphere(sph); return { tx:sph.center.x, ty:sph.center.y, tz:sph.center.z, r:Math.max(.6, sph.radius*2.7) }; } }
+  if (selected){ box.makeEmpty(); for (const o of (selected.focus ? selected.focus.map(n => ents.get(n)) : selected.objs)) o.traverse(m => { if (m.isMesh && m.userData.part === selected.id){ m.getWorldPosition(tmpV); box.expandByPoint(tmpV); } });
+    if (!box.isEmpty()){
+      box.getCenter(ctr); box.expandByScalar(.03);
+      /* distance that keeps every box corner inside both the vertical and the horizontal field of view */
+      const sp = Math.sin(orb.ph), c = Math.cos(orb.ph), dir = new THREE.Vector3(-sp*Math.cos(orb.th), -c, -sp*Math.sin(orb.th)).normalize();
+      const right = new THREE.Vector3().crossVectors(dir, camera.up).normalize(), up2 = new THREE.Vector3().crossVectors(right, dir);
+      const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov)/2), th = tv*camera.aspect; let D = 0;
+      for (let i = 0; i < 8; i++){ tmpV.set(i & 1 ? box.max.x : box.min.x, i & 2 ? box.max.y : box.min.y, i & 4 ? box.max.z : box.min.z).sub(ctr);
+        const x = Math.abs(tmpV.dot(right)), y = Math.abs(tmpV.dot(up2)), z = tmpV.dot(dir); D = Math.max(D, Math.max(x/th, y/tv) - z); }
+      return { tx:ctr.x, ty:ctr.y, tz:ctr.z, r:Math.max(.42, D*1.18) };
+    } }
   return { tx:0, ty:.52 + .55*explode, tz:0, r:3.0*(1 + .62*explode) };
 }
-function easeCam(dt){ const g = goal(), k = Math.min(1, dt*3.2); orb.tx += (g.tx - orb.tx)*k; orb.ty += (g.ty - orb.ty)*k; orb.tz += (g.tz - orb.tz)*k; orb.r += (g.r - orb.r)*k; }
+function easeCam(dt){ const g = goal(), k = Math.min(1, dt*3.2); if (orb.phT != null){ orb.ph += (orb.phT - orb.ph)*k; if (Math.abs(orb.phT - orb.ph) < .002) orb.phT = null; }
+  if (orb.thT != null){ let d = ((orb.thT - orb.th + Math.PI) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI) - Math.PI; orb.th += d*k; if (Math.abs(d) < .002) orb.thT = null; } orb.tx += (g.tx - orb.tx)*k; orb.ty += (g.ty - orb.ty)*k; orb.tz += (g.tz - orb.tz)*k; orb.r += (g.r - orb.r)*k; }
 
 /* ---------- explode, selection, labels ---------- */
 let explode = 0, explodeTarget = 0, selected = null, hovered = null, tour = null, selectedCap = null, animCap = null, openK = 0, capHover = null, lastHitCap = null;
@@ -248,7 +367,7 @@ function applyExplode(){
 }
 let liftK = 0;
 function setSelected(p, fromList){
-  selected = p; liftK = 0; selectedCap = null;
+  selected = p; liftK = 0; selectedCap = null; orb.phT = p && p.ph ? p.ph : null; orb.thT = p && p.th != null ? p.th : null; orb.zoom = 1;
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
     card.innerHTML = `<span class="n">${p.n} / 09</span><h3>${p.name}</h3><span class="spec">${p.spec}</span><p>${p.text}</p><div class="inside">${p.subs.map(x => `<span>${x[0]}</span>`).join("")}</div><span class="proof"><i></i>${p.proof}</span><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
@@ -289,8 +408,8 @@ function selectCap(o){
   selectedCap = o; animCap = o; selected = byId("capsules"); liftK = 0;
   for (const li of list.children) li.classList.toggle("on", li.dataset.id === "capsules");
   const num = o.name.replace("capsule_", "");
-  card.innerHTML = `<span class="n">Capsule #${num}</span><h3>Custom NFC capsule</h3><span class="spec">50 mm shell, NTAG215 inside</span>
-    <p>Every capsule is a custom NFC tag with a prize slot. What goes in is up to the project: an SPL token, an NFT, a tokenized stock, merch, or a code for something off chain. The tag's factory UID is mapped to that prize in the inventory published before the night, so the machine cannot swap it later.</p>
+  card.innerHTML = `<span class="n">Capsule #${num}</span><h3>Custom NFC capsule</h3><span class="spec">50 mm shell, any prize</span>
+    <p>NTAG215 inside, factory UID. The prize is whatever the project loads: an SPL token, an NFT, a tokenized stock, merch, an off chain code. Mapped to the UID in the published inventory.</p>
     <div class="inside"><span>SPL token</span><span>NFT</span><span>Tokenized stock</span><span>Merch</span><span>Off chain code</span><span>Anything else</span></div>
     <span class="proof"><i></i>UID published in the inventory</span><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
   wireCard(); card.classList.add("on");
@@ -321,49 +440,74 @@ const IDQ = new THREE.Quaternion(), YQ = new THREE.Quaternion(), ZAX = new THREE
 const lab = {}; let capLab = null; const box = new THREE.Box3(), ctr = new THREE.Vector3(), tmpV = new THREE.Vector3();
 for (const p of PARTS){ const d = document.createElement("div"); d.className = "lab"; d.innerHTML = `<b>${p.n}</b>${p.name}`; d.onclick = () => setSelected(p); labels.appendChild(d); lab[p.id] = d; }
 const offOf = p => { const o = [0,0,0]; for (const id of [...(p.chain || []), p.id]){ const e = byId(id).ex; o[0] += e[0]*explode; o[1] += e[1]*explode; o[2] += e[2]*explode; } return o; };
+/* labels live in the margins: on the side of the thing they name, outside the picture, stacked so they never overlap */
+function screenBox(objs, part, W, H){
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9, n = 0;
+  for (const o of objs) o.traverse(m => {
+    if (!m.isMesh || !m.visible || (part && m.userData.part !== part) || (m.material && m.material.visible === false)) return;
+    m.getWorldPosition(tmpV).project(camera); if (tmpV.z > 1) return;
+    const x = (tmpV.x*.5 + .5)*W, y = (-tmpV.y*.5 + .5)*H; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); n++;
+  });
+  if (!n) return { x0:W*.4, x1:W*.6, y0:H*.4, y1:H*.6 };
+  return { x0:x0 - 34, x1:x1 + 34, y0, y1 };
+}
+function layout(items, sb, W, H){
+  let svg = ""; const railW = document.body.classList.contains("ui-min") || W < 980 ? 0 : 118, cardOn = card.classList.contains("on");
+  const cx = (sb.x0 + sb.x1)/2, L = [], R = [];
+  for (const it of items){ it.side = it.sx < cx ? -1 : 1; (it.side < 0 ? L : R).push(it); }
+  for (const g of [L, R]){
+    g.sort((a, b) => a.sy - b.sy); let y = -1e9;
+    for (const it of g){
+      const w = it.el.offsetWidth || 120, h = it.el.offsetHeight || 26;
+      it.ly = Math.max(y + h + 8, it.sy - h/2); y = it.ly;
+      it.lx = it.side < 0 ? Math.max(10, sb.x0 - 30 - w) : Math.min(W - w - 10 - railW, sb.x1 + 30);
+    }
+    /* keep the stack on screen: above the bar, and on the left above the card */
+    const sr = stage.getBoundingClientRect(), barTop = (document.querySelector(".an-bar")?.getBoundingClientRect().top ?? sr.bottom) - sr.top;
+    const cardTop = cardOn ? card.getBoundingClientRect().top - sr.top : H;
+    const limit = (g === L && cardOn ? Math.min(cardTop, barTop) : barTop) - 12;
+    const maxY = limit - (g.length ? (g[g.length - 1].el.offsetHeight || 26) : 0), lastBottom = g.length ? g[g.length - 1].ly : 0;
+    if (lastBottom > maxY){ let shift = lastBottom - maxY; for (let i = g.length - 1; i >= 0 && shift > 0; i--){ g[i].ly -= shift; if (i > 0){ const h2 = g[i - 1].el.offsetHeight || 26; const room = g[i].ly - (g[i - 1].ly + h2 + 8); if (room >= 0) shift = 0; } } }
+    for (const it of g){
+      it.ly = Math.max(8, it.ly); it.el.style.transform = `translate(${it.lx}px, ${it.ly}px)`;
+      const h = it.el.offsetHeight || 26, ex = it.side < 0 ? it.lx + (it.el.offsetWidth || 120) : it.lx, ey = it.ly + h/2;
+      svg += `<line class="${it.cls}" x1="${it.sx}" y1="${it.sy}" x2="${ex}" y2="${ey}"/><circle class="${it.cls}" cx="${it.sx}" cy="${it.sy}" r="2.4"/>`;
+    }
+  }
+  return svg;
+}
 function placeLabels(){
-  const W = stage.clientWidth, H = stage.clientHeight; let svg = "";
+  const W = stage.clientWidth, H = stage.clientHeight, items = [];
   const show = explode > .35 || selected || hovered;
+  const focusObjs = selectedCap ? [selectedCap] : selected ? (selected.focus ? selected.focus.map(n => ents.get(n)) : selected.objs) : [root];
+  const sb = screenBox(focusObjs, selected && !selectedCap ? selected.id : null, W, H);
+  const proj = () => { const sc = ctr.clone().project(camera); return sc.z > 1 ? null : [(sc.x*.5 + .5)*W, (-sc.y*.5 + .5)*H]; };
   for (const p of PARTS){
     const d = lab[p.id];
     if (p.anchor){ const o = offOf(p); ctr.set(p.anchor[0] + o[0], p.anchor[1] + o[1], p.anchor[2] + o[2]); root.localToWorld(ctr); }
-    else {
-      let n = 0; ctr.set(0, 0, 0);
-      for (const o of p.objs) o.traverse(m => { if (m.isMesh && m.userData.part === p.id){ m.getWorldPosition(tmpV); ctr.add(tmpV); n++; } });
-      if (!n){ d.style.display = "none"; continue; } ctr.multiplyScalar(1/n);
-    }
-    const s = ctr.clone().project(camera); const sx = (s.x*.5 + .5)*W, sy = (-s.y*.5 + .5)*H;
-    const vis = show && s.z < 1 && !selectedCap && (selected ? selected.id === p.id : (explode > .35 || (hovered && hovered.id === p.id)));
+    else { let n = 0; ctr.set(0, 0, 0); for (const o of p.objs) o.traverse(m => { if (m.isMesh && m.userData.part === p.id){ m.getWorldPosition(tmpV); ctr.add(tmpV); n++; } }); if (!n){ d.style.display = "none"; continue; } ctr.multiplyScalar(1/n); }
+    const sp = proj();
+    const vis = show && sp && !selectedCap && (selected ? selected.id === p.id : (explode > .35 || (hovered && hovered.id === p.id)));
     d.style.display = vis ? "" : "none"; if (!vis) continue;
-    const sideW = document.body.classList.contains("ui-min") || W < 980 ? 0 : 330, side = sx > W*.58 ? -1 : 1;
-    let lx = sx + side*(W*.12), ly = Math.min(H - 110, Math.max(70, sy - 26 - (p.ex[2] > 0 ? 10 : 0)));
-    lx = Math.min(W - sideW - 12 - (side > 0 ? d.offsetWidth : 0), Math.max(12 + (side < 0 ? d.offsetWidth : 0), lx));
-    d.style.transform = `translate(${lx + (side < 0 ? -d.offsetWidth : 0)}px, ${ly - 12}px)`;
     d.classList.toggle("on", (selected && selected.id === p.id) || (hovered && hovered.id === p.id));
-    svg += `<line x1="${sx}" y1="${sy}" x2="${lx}" y2="${ly}"/><circle cx="${sx}" cy="${sy}" r="2.5"/>`;
+    items.push({ el:d, sx:sp[0], sy:sp[1], cls:"" });
   }
   capLab ||= CAPSUBS.map(sd => { const e = document.createElement("div"); e.className = "lab sub"; e.textContent = sd[0]; labels.appendChild(e); return e; });
   capLab.forEach((e, i) => {
     if (!selectedCap || openK < .7){ e.style.display = "none"; return; }
-    const sd = CAPSUBS[i]; ctr.set(sd[1], sd[2], sd[3]); selectedCap.localToWorld(ctr);
-    const sc = ctr.clone().project(camera); if (sc.z > 1){ e.style.display = "none"; return; }
-    const sx = (sc.x*.5 + .5)*W, sy = (-sc.y*.5 + .5)*H, side = i % 2 ? 1 : -1; e.style.display = "";
-    const lx = sx + side*(120 + i*10), ly = sy - 10 - i*22; e.style.transform = `translate(${lx + (side < 0 ? -e.offsetWidth : 0)}px, ${ly - 11}px)`;
-    svg += `<line class="s" x1="${sx}" y1="${sy}" x2="${lx}" y2="${ly}"/><circle class="s" cx="${sx}" cy="${sy}" r="2"/>`;
+    const sd = CAPSUBS[i]; ctr.set(sd[1], sd[2], sd[3]); selectedCap.localToWorld(ctr); const sp = proj(); if (!sp){ e.style.display = "none"; return; }
+    e.style.display = ""; items.push({ el:e, sx:sp[0], sy:sp[1], cls:"s" });
   });
   for (const p of PARTS){
     const on = selected && selected.id === p.id && liftK > .6 && !selectedCap;
-    p.subEls ||= p.subs.map((sd, i) => { const e = document.createElement("div"); e.className = "lab sub"; e.textContent = sd[0]; labels.appendChild(e); return e; });
+    p.subEls ||= p.subs.map(sd => { const e = document.createElement("div"); e.className = "lab sub"; e.textContent = sd[0]; labels.appendChild(e); return e; });
     p.subEls.forEach((e, i) => {
       if (!on){ e.style.display = "none"; return; }
-      const sd = p.subs[i], o = offOf(p); ctr.set(sd[1] + o[0], sd[2] + o[1], sd[3] + o[2] + .09*liftK); root.localToWorld(ctr);
-      const sc = ctr.clone().project(camera); if (sc.z > 1){ e.style.display = "none"; return; }
-      const sx = (sc.x*.5 + .5)*W, sy = (-sc.y*.5 + .5)*H, side = i % 2 ? 1 : -1;
-      e.style.display = ""; const lx = sx + side*(100 + (i >> 1)*18), ly = sy + (side < 0 ? -1 : 1)*(14 + (i >> 1)*24);
-      e.style.transform = `translate(${lx + (side < 0 ? -e.offsetWidth : 0)}px, ${ly - 11}px)`;
-      svg += `<line class="s" x1="${sx}" y1="${sy}" x2="${lx}" y2="${ly}"/><circle class="s" cx="${sx}" cy="${sy}" r="2"/>`;
+      const sd = p.subs[i], o = offOf(p); ctr.set(sd[1] + o[0], sd[2] + o[1], sd[3] + o[2] + .09*liftK); root.localToWorld(ctr); const sp = proj(); if (!sp){ e.style.display = "none"; return; }
+      e.style.display = ""; items.push({ el:e, sx:sp[0], sy:sp[1], cls:"s" });
     });
   }
+  const svg = layout(items, sb, W, H);
   lines.setAttribute("viewBox", `0 0 ${W} ${H}`); lines.innerHTML = svg;
 }
 
@@ -414,7 +558,7 @@ const q = new URLSearchParams(location.search);
 $("#pix").onclick = e => { pixel = !pixel; e.currentTarget.classList.toggle("on", pixel); document.body.classList.toggle("pix", pixel); post.uniforms.pixel.value = pixel ? 1 : 0; scene.background = pixel ? PIXBG : null; resize(); };
 if (q.get("pixel") === "1") $("#pix").click();
 if (q.get("motion") === "1") motionOn = true;
-$("#reset").onclick = () => { setSelected(null); setExplode(0); orb.th = -.95; orb.ph = 1.12; orb.zoom = 1; if (tour) stopTour(); };
+$("#reset").onclick = () => { setSelected(null); setExplode(0); orb.th = .95; orb.ph = 1.12; orb.zoom = 1; if (tour) stopTour(); };
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
 /* ---------- loop ---------- */
@@ -425,10 +569,11 @@ function frame(now){
   explode += (explodeTarget - explode)*Math.min(1, dt*4.5); liftK += ((selected ? 1 : 0) - liftK)*Math.min(1, dt*5);
   if (!orb.down && !tour){ const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p ? "pointer" : "grab"; }
   applyExplode(); clawCycle(dt); shade(); capAnim(dt); easeCam(dt); cam();
+  renderer.toneMappingExposure += ((selected ? 1.15 : 1.0) - renderer.toneMappingExposure)*Math.min(1, dt*4);
   if (pixel){ renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); post.uniforms.t.value = now/1000; renderer.render(postScene, postCam); }
   else renderer.render(scene, camera);
   placeLabels();
   requestAnimationFrame(frame);
 }
-load().then(() => { resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
+load().then(() => { resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
   .catch(e => { console.error(e); $("#stage").classList.add("err"); });

@@ -6505,6 +6505,572 @@
    "collider": {}
   },
   {
+   "name": "electronics",
+   "geoms": [
+    {
+     "type": "box",
+     "size": [
+      0.085,
+      0.056,
+      0.0016
+     ],
+     "pos": [
+      -0.38,
+      -0.38,
+      0.0328
+     ],
+     "material": "pcb",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.016,
+      0.016,
+      0.0025
+     ],
+     "pos": [
+      -0.38,
+      -0.376,
+      0.0349
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.014,
+      0.012,
+      0.003
+     ],
+     "pos": [
+      -0.352,
+      -0.38,
+      0.0351
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.048,
+      0.04,
+      0.012
+     ],
+     "pos": [
+      -0.385,
+      -0.376,
+      0.046
+     ],
+     "material": "psu",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.065,
+      0.056,
+      0.0016
+     ],
+     "pos": [
+      -0.38,
+      -0.38,
+      0.0528
+     ],
+     "material": "pcb_red",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.008,
+      0.008,
+      0.002
+     ],
+     "pos": [
+      -0.39,
+      -0.38,
+      0.0546
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.1,
+      0.07,
+      0.0016
+     ],
+     "pos": [
+      -0.21,
+      -0.38,
+      0.0328
+     ],
+     "material": "pcb",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.014,
+      0.014,
+      0.004
+     ],
+     "pos": [
+      -0.235,
+      -0.368,
+      0.0356
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.014,
+      0.014,
+      0.004
+     ],
+     "pos": [
+      -0.217,
+      -0.368,
+      0.0356
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.014,
+      0.014,
+      0.004
+     ],
+     "pos": [
+      -0.199,
+      -0.368,
+      0.0356
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.014,
+      0.014,
+      0.004
+     ],
+     "pos": [
+      -0.181,
+      -0.368,
+      0.0356
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.011,
+      0.011,
+      0.009
+     ],
+     "pos": [
+      -0.235,
+      -0.368,
+      0.0426
+     ],
+     "material": "psu",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.011,
+      0.011,
+      0.009
+     ],
+     "pos": [
+      -0.217,
+      -0.368,
+      0.0426
+     ],
+     "material": "psu",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.011,
+      0.011,
+      0.009
+     ],
+     "pos": [
+      -0.199,
+      -0.368,
+      0.0426
+     ],
+     "material": "psu",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.011,
+      0.011,
+      0.009
+     ],
+     "pos": [
+      -0.181,
+      -0.368,
+      0.0426
+     ],
+     "material": "psu",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.129,
+      0.097,
+      0.03
+     ],
+     "pos": [
+      -0.01,
+      -0.38,
+      0.038
+     ],
+     "material": "psu",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.08,
+      0.001
+     ],
+     "pos": [
+      -0.06,
+      -0.38,
+      0.0535
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.08,
+      0.001
+     ],
+     "pos": [
+      -0.049,
+      -0.38,
+      0.0535
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.08,
+      0.001
+     ],
+     "pos": [
+      -0.038,
+      -0.38,
+      0.0535
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.08,
+      0.001
+     ],
+     "pos": [
+      -0.027,
+      -0.38,
+      0.0535
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.08,
+      0.001
+     ],
+     "pos": [
+      -0.016,
+      -0.38,
+      0.0535
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.08,
+      0.001
+     ],
+     "pos": [
+      -0.005,
+      -0.38,
+      0.0535
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.08,
+      0.001
+     ],
+     "pos": [
+      0.006,
+      -0.38,
+      0.0535
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.08,
+      0.001
+     ],
+     "pos": [
+      0.017,
+      -0.38,
+      0.0535
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.08,
+      0.001
+     ],
+     "pos": [
+      0.028,
+      -0.38,
+      0.0535
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.045,
+      0.04,
+      0.0016
+     ],
+     "pos": [
+      -0.29,
+      -0.31,
+      0.0328
+     ],
+     "material": "pcb_blue",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.012,
+      0.012,
+      0.012
+     ],
+     "pos": [
+      -0.29,
+      -0.31,
+      0.0396
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.03,
+      0.02,
+      0.0016
+     ],
+     "pos": [
+      -0.23,
+      -0.31,
+      0.0328
+     ],
+     "material": "pcb_blue",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.008,
+      0.008,
+      0.006
+     ],
+     "pos": [
+      -0.23,
+      -0.31,
+      0.0366
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.012,
+      0.02,
+      0.018
+     ],
+     "pos": [
+      -0.1,
+      -0.305,
+      0.032
+     ],
+     "material": "plastic2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.012,
+      0.02,
+      0.018
+     ],
+     "pos": [
+      -0.086,
+      -0.305,
+      0.032
+     ],
+     "material": "plastic2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.012,
+      0.02,
+      0.018
+     ],
+     "pos": [
+      -0.072,
+      -0.305,
+      0.032
+     ],
+     "material": "plastic2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.012,
+      0.02,
+      0.018
+     ],
+     "pos": [
+      -0.058,
+      -0.305,
+      0.032
+     ],
+     "material": "plastic2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.012,
+      0.02,
+      0.018
+     ],
+     "pos": [
+      -0.044,
+      -0.305,
+      0.032
+     ],
+     "material": "plastic2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.004,
+      0.004
+     ],
+     "pos": [
+      -0.33,
+      -0.4,
+      0.05
+     ],
+     "material": "led_red",
+     "contype": 0,
+     "conaffinity": 0
+    }
+   ],
+   "collider": {}
+  },
+  {
    "name": "chute",
    "geoms": [
     {
