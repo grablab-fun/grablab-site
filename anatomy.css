@@ -167,3 +167,9 @@ body.ready .an-rail{opacity:1}
 .an-btn.tog.on .led{background:#7fffa8;box-shadow:0 0 8px #3fe07a}
 .an-btn.ico{width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
 .an-btn.ico svg{width:15px;height:15px}
+
+/* part numbers like the rest of the site: display type in chrome */
+.pt{grid-template-columns:34px 1fr}
+.pt .dot{font-family:var(--display);font-style:normal;font-size:18px;line-height:1;letter-spacing:.02em;background:var(--chrome, linear-gradient(176deg,#fff 10%,#c9cfe0 45%,#8a91a8 70%,#e9ecf5));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.5;transition:opacity .2s}
+.pt:hover .dot{opacity:.85}
+.pt.on .dot{opacity:1;background:var(--blue-chrome, linear-gradient(176deg,#fff 8%,#d6e4ff 35%,#7fa8ff 65%,#3b7bff));-webkit-background-clip:text;background-clip:text;color:transparent}
