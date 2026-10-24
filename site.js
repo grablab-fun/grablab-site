@@ -362,13 +362,25 @@ window.glBack = (function(){
   });
 })();
 
+/* ---------------- lite mode: if the first second of frames is slow, drop the expensive glass and glows ---------------- */
+(function lite(){
+  const root = document.documentElement;
+  try { if (localStorage.getItem("gl_lite") === "1" || /[?&]lite=1/.test(location.search)){ root.classList.add("lite"); return; } } catch (e){}
+  if (/[?&]lite=0/.test(location.search)) return;
+  if ((navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2)){ root.classList.add("lite"); return; }
+  const ts = []; let l = 0, n = 0;
+  const f = t => { if (l) ts.push(t - l); l = t; if (++n < 70) requestAnimationFrame(f); else { ts.sort((a, b) => a - b); const med = ts[ts.length >> 1];
+    if (med > 24 && !document.hidden){ root.classList.add("lite"); try { localStorage.setItem("gl_lite", "1"); } catch (e){} } } };
+  setTimeout(() => requestAnimationFrame(f), 1800);   /* after the loader and the first paint */
+})();
+
 /* ---------------- atmosphere parallax (gives depth on scroll) ---------------- */
 (function parallax(){
   const atmo = document.querySelector(".page-atmosphere"); if (!atmo) return;
   let ticking = false;
   /* gentle parallax: the layer is 130vh tall and travels at most 10vh over the whole page, so it stays close to the hero sky at the handoff and never leaves the screen */
   function update(){ const max = Math.max(1, document.documentElement.scrollHeight - innerHeight); const p = Math.min(1, scrollY / max); atmo.style.transform = `translate3d(0, ${-p * 10}vh, 0)`; ticking = false; }
-  window.addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(update); } }, { passive:true });
+  window.addEventListener("scroll", () => { if (document.documentElement.classList.contains("lite")) return; if (!ticking){ ticking = true; requestAnimationFrame(update); } }, { passive:true });
   update();
 })();
 

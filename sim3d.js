@@ -120,7 +120,7 @@ export function createSim3D(canvas, pips){
 
   const S = { claw:new THREE.Vector3() }, m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), sc = new THREE.Vector3(1, 1, 1);
   let W = 0, H = 0, pr = 1, frameN = 0; const PRX = +(new URLSearchParams(location.search).get("pr") || 0);   // recordings render supersampled
-  function resize(){ const r = canvas.getBoundingClientRect(); if (r.width < 2 || r.height < 2) return; if (!renderer && !failed) makeRenderer(); if (!renderer) return; pr = PRX || Math.min(innerWidth < 900 ? 1.75 : 2, devicePixelRatio || 1); W = r.width; H = r.height; renderer.setPixelRatio(pr); renderer.setSize(W, H, false); }
+  function resize(){ const r = canvas.getBoundingClientRect(); if (r.width < 2 || r.height < 2) return; if (!renderer && !failed) makeRenderer(); if (!renderer) return; pr = PRX || (document.documentElement.classList.contains("lite") ? 1 : Math.min(innerWidth < 900 ? 1.75 : 2, devicePixelRatio || 1)); W = r.width; H = r.height; renderer.setPixelRatio(pr); renderer.setSize(W, H, false); }
   canvas.addEventListener("webglcontextlost", e => { failed = true; e.preventDefault(); });
 
   /* draw one frame from the game state */

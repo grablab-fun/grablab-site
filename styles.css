@@ -500,3 +500,15 @@ html.wl-open,html.wl-open body{overflow:hidden;overscroll-behavior:none}
 
 /* while the nav measures its pill, nothing animates */
 .nav.measuring *,.nav.measuring{transition:none!important}
+
+/* ===== performance: nothing full screen animates forever ===== */
+/* the grain is a still texture (it was a fixed layer twice the screen, moving every second) */
+.grain{animation:none!important;inset:0!important}
+/* the sky does not drift; it only follows the scroll a little */
+.page-atmosphere{animation:none!important;transition:none!important}
+/* lite mode, switched on for slow graphics: glass becomes solid, glows stop, the parallax stops */
+html.lite *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html.lite .glass,html.lite .isl,html.lite .islands,html.lite .an-card,html.lite .an-bar,html.lite .an-rail,html.lite .an-tip,html.lite .lab-card,html.lite .ck,html.lite [class*="sheet"]{background-color:rgba(9,13,32,.94)!important}
+html.lite .hero-glows span{animation:none!important;filter:none!important;opacity:.25!important}
+html.lite .grain{display:none!important}
+html.lite .page-atmosphere{transform:none!important;filter:none!important}

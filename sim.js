@@ -462,7 +462,7 @@
   /* ---------------- navigation ---------------- */
   let view = "pick";
   function go(v){
-    view = v; root.oncontextmenu = v === "play" ? (e => e.preventDefault()) : null;
+    view = v; if (v !== "win") confetti.stop(); root.oncontextmenu = v === "play" ? (e => e.preventDefault()) : null;
     const idx = ["pick","pay","claim","play","win"].indexOf(v === "room" ? "pick" : v);
     root.querySelectorAll(".sv").forEach(s => s.classList.toggle("on", s.dataset.v === v));
     root.querySelectorAll(".sim-steps li").forEach((li,i) => { li.classList.toggle("on", i === idx); li.classList.toggle("done", i < idx); });
@@ -480,7 +480,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=7").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=8").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){
@@ -1204,7 +1204,7 @@
 
   /* ---------------- confetti ---------------- */
   const confetti = (function(){
-    let cv, cx, ps = [], raf = 0, until = 0;
+    let cv, cx, ps = [], raf = 0, until = 0, last = 0, hardEnd = 0;
     const COLS = { gold:["#ffb24a","#ffe3ad","#ffffff","#3b7bff","#b4baff"], violet:["#9a7bff","#c9bfff","#ffffff","#3b7bff","#ffb24a"], rare:["#3b7bff","#d6e4ff","#ffffff","#7db0ff","#ffb24a"] };
     function size(){ const d = Math.min(2, devicePixelRatio || 1); cv.width = innerWidth*d; cv.height = innerHeight*d; cx.setTransform(d,0,0,d,0,0); }
     function add(n, cols, fromTop){
@@ -1215,9 +1215,11 @@
           : { x: innerWidth/2 + (Math.random()-.5)*120, y: innerHeight*0.42, vx: Math.cos(a)*v, vy: Math.sin(a)*v, w: 6 + Math.random()*7, h: 3 + Math.random()*4, r: Math.random()*6, vr:(Math.random()-.5)*12, c: cols[i % cols.length], life: 5 });
       }
     }
-    function frame(){
+    function frame(now){
       cx.clearRect(0,0,innerWidth,innerHeight);
-      const dt = 1/60;
+      /* real time, so a slow machine ends the confetti on time; never longer than 4.5 s */
+      const dt = Math.min(.05, ((now || performance.now()) - (last || now || performance.now()))/1000) || 1/60; last = now || performance.now();
+      if (last > hardEnd){ ps = []; cx.clearRect(0,0,innerWidth,innerHeight); raf = 0; return; }
       ps = ps.filter(p => (p.life -= dt) > 0 && p.y < innerHeight + 40);
       for (const p of ps){
         p.vy += 520*dt; p.vx *= 0.985; p.vy = Math.min(p.vy, 380); p.x += p.vx*dt; p.y += p.vy*dt; p.r += p.vr*dt;
@@ -1230,10 +1232,12 @@
       burst(kind){
         cv = $("#simConf", root); cx = cv.getContext("2d"); size();
         const cols = COLS[kind] || COLS.gold;
-        add(180, cols, false); setTimeout(() => add(160, cols, true), 350); setTimeout(() => add(90, cols, false), 900);
+        const lite = innerWidth < 900 || (navigator.hardwareConcurrency || 8) <= 4, k = lite ? .5 : 1;
+        add(Math.round(180*k), cols, false); setTimeout(() => add(Math.round(160*k), cols, true), 350); setTimeout(() => add(Math.round(90*k), cols, false), 900);
+        last = 0; hardEnd = performance.now() + 4500;
         until = performance.now() + 2000; cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
       },
-      stop(){ ps = []; cancelAnimationFrame(raf); if (cx) cx.clearRect(0,0,innerWidth,innerHeight); }
+      stop(){ ps = []; hardEnd = 0; cancelAnimationFrame(raf); raf = 0; if (cx) cx.clearRect(0,0,innerWidth,innerHeight); }
     };
   })();
 

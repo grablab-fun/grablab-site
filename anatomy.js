@@ -483,7 +483,7 @@ $("#reset").onclick = () => { setSelected(null); setExplode(0); orb.px = orb.py 
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
 /* ---------- loop: render only while something moves; phones get a lower, self adjusting resolution ---------- */
-let prCap = REC ? 2 : innerWidth < 980 ? 1.5 : 2, activeUntil = 0, mouseMoved = false, slow = 0, fast = 0;
+let prCap = REC ? 2 : document.documentElement.classList.contains("lite") ? 1 : innerWidth < 980 ? 1.5 : 2, activeUntil = 0, mouseMoved = false, slow = 0, fast = 0;
 const wake = (ms = 2500) => { activeUntil = Math.max(activeUntil, performance.now() + ms); };
 for (const ev of ["pointermove", "pointerdown", "pointerup", "wheel", "keydown", "scroll", "touchmove"]) addEventListener(ev, () => wake(), { passive:true });
 addEventListener("resize", () => wake());
