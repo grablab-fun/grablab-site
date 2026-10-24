@@ -81,7 +81,9 @@ export function createSim3D(canvas, pips){
     /* under the claw body, looking down past the fingers; the back of the machine is up on screen */
     { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, 1); c.position.set(p.x + .06, p.y - .1, p.z - .02); c.lookAt(p.x - .005, FLOOR - .02, p.z + .01); } },
     /* the landing camera behind the window of the chute, on the trapdoor */
-    { name:"Chute camera", cam:mk(64), pose(c){ c.up.set(0, 1, 0); c.position.set(.34, .385, .292); c.lookAt(.34, .205, .345); } }
+    { name:"Chute camera", cam:mk(64), pose(c){ c.up.set(0, 1, 0); c.position.set(.34, .385, .292); c.lookAt(.34, .205, .345); } },
+    /* recordings only: a stream camera over the front glass, looking down into the pile */
+    { name:"Stream camera", cam:mk(46), pose(c){ c.up.set(0, 1, 0); c.position.set(-.34, 1.02, -.92); c.lookAt(.04, .6, .06); } }
   ];
   let main = 0;
   const setMain = i => { main = i; layoutPips(); };

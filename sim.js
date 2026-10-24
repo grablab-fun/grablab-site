@@ -51,7 +51,7 @@
   const FEED = [[6,0,0],[4,0,0],[5,0,0],[1,0,0],[6,1,6],[4,1,5]];
   function feedVideo(i){
     const [n, mir, off] = FEED[i % FEED.length];
-    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4" poster="assets/feeds/feed${n}.jpg" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
+    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=3" poster="assets/feeds/feed${n}.jpg?v=3" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
   }
   function capCluster(n){ return `<span class="pc-caps">${["","v","r"].slice(0,n).map(k => `<i class="cap ${k}"></i>`).join("")}</span>`; }
   /* project socials (demo projects: icons only, real ones link out) */
@@ -433,7 +433,7 @@
     const p = proj, pi = PROJECTS.indexOf(p), [fn, mir] = FEED[pi % FEED.length], v = $("#rmVid", root);
     $("#rmLogo", root).src = p.logo; $("#rmName", root).textContent = p.name; $("#rmTk", root).textContent = p.tk; $("#rmCat", root).textContent = p.tags;
     $("#rmSoc", root).innerHTML = socials(p);
-    if (!v.src.endsWith(`feed${fn}.mp4`)){ v.src = `assets/feeds/feed${fn}.mp4`; v.poster = `assets/feeds/feed${fn}.jpg`; }
+    if (!v.src.endsWith(`feed${fn}.mp4?v=3`)){ v.src = `assets/feeds/feed${fn}.mp4?v=3`; v.poster = `assets/feeds/feed${fn}.jpg?v=3`; }
     v.classList.toggle("mir", !!mir); v.play().catch(() => {});
     $("#rmCatch", root).textContent = `Catching at ${p.name}`;
     const w = 380 + (p.left * 37) % 1400, wv = $("#rmWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);
@@ -468,7 +468,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=2").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=3").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){
@@ -515,7 +515,7 @@
   function demoAddr(c){ return c === "base" ? "0x" + Array.from({length:40}, () => "0123456789abcdef"[Math.random()*16|0]).join("") : b58(44); }
   function enterPay(){
     const pi = PROJECTS.indexOf(proj), [fn, mir] = FEED[pi % FEED.length], pv = $("#payVid", root);
-    if (!pv.src.endsWith(`feed${fn}.mp4`)){ pv.src = `assets/feeds/feed${fn}.mp4`; pv.poster = `assets/feeds/feed${fn}.jpg`; }
+    if (!pv.src.endsWith(`feed${fn}.mp4?v=3`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=3`; pv.poster = `assets/feeds/feed${fn}.jpg?v=3`; }
     pv.classList.toggle("mir", !!mir); pv.play().catch(() => {});
     $("#payMach", root).textContent = `Catching at ${proj.name}`;
     const w = 380 + (proj.left * 37) % 1400, wv = $("#payWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);
