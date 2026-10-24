@@ -7,7 +7,7 @@
   const frame = document.getElementById("labFrame"), note = document.getElementById("labNote"), open = document.getElementById("labOpen");
   const play = frame && frame.querySelector(".lab-cta b");
   const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === "file:";
-  const sceneUrl = new URL("lab/grablab-claw-revb.scene.json?v=10", location.href).href;   /* bump on every scene change: SimArena fetches it and browsers cache /lab/ for 5 min */
+  const sceneUrl = new URL("lab/grablab-claw-revb.scene.json?v=11", location.href).href;   /* bump on every scene change: SimArena fetches it and browsers cache /lab/ for 5 min */
   const labUrl = EDITOR + "?scene=" + encodeURIComponent(sceneUrl);
   const NOTE = note ? note.textContent : "";
   if (open) open.href = local ? EDITOR : labUrl;

@@ -27,6 +27,8 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
     mdf:{rgba:[.02,.02,.022,1],metalness:0,roughness:.85},
     tray:{rgba:[.09,.095,.105,1],metalness:.25,roughness:.55}, base:{rgba:[.075,.08,.09,1],metalness:.35,roughness:.45},
     chrome:{rgba:[.86,.88,.92,1],metalness:1,roughness:.12}, carriage:{rgba:[.32,.33,.36,1],metalness:.6,roughness:.35},
+    cable:{rgba:[.025,.025,.028,1],metalness:.15,roughness:.42}, dyneema:{rgba:[.22,.22,.24,1],metalness:0,roughness:.7},
+    invis:{rgba:[0,0,0,0],metalness:0,roughness:1}, rubber:{rgba:[.04,.04,.045,1],metalness:0,roughness:.85}, chrome_dk:{rgba:[.5,.52,.58,1],metalness:1,roughness:.22},
     yellow:{rgba:[.95,.72,.05,1],metalness:.1,roughness:.3}, logo:{rgba:[1,1,1,1],emission:1.6}, hole:{rgba:[.005,.005,.008,1],metalness:0,roughness:1},
     cap_gold:{rgba:[.95,.7,.32,1],metalness:.85,roughness:.22}, cap_violet:{rgba:[.74,.68,.95,1],metalness:.6,roughness:.18}, seam:{rgba:[.12,.12,.15,1],metalness:.5,roughness:.4},
     belt:{rgba:[.015,.015,.015,1],metalness:0,roughness:.85},
@@ -45,12 +47,12 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
     qr_w:{rgba:[.92,.92,.92,1],metalness:0,roughness:.6}, qr_k:{rgba:[.01,.01,.01,1],metalness:0,roughness:.7},
     led_warm:{rgba:[1,.72,.45,1],emission:2}, led_chute:{rgba:[1,.88,.72,1],emission:1.6}, led_red:{rgba:[1,.15,.1,1],emission:1.5},
     /* the filming room around the machine */
-    concrete:{rgba:[.1,.11,.15,1],metalness:.05,roughness:.95}, wall:{rgba:[.06,.07,.11,1],metalness:.12,roughness:.75},
-    wall_lt:{rgba:[.1,.12,.18,1],metalness:.15,roughness:.7}, paint:{rgba:[.03,.05,.14,1],metalness:.1,roughness:.6},
+    concrete:{rgba:[.025,.028,.04,1],metalness:.35,roughness:.32}, wall:{rgba:[.018,.02,.032,1],metalness:.1,roughness:.85},
+    wall_lt:{rgba:[.022,.025,.04,1],metalness:.1,roughness:.85}, paint:{rgba:[.03,.05,.14,1],metalness:.1,roughness:.6},
     led_blue:{rgba:[.23,.48,1,1],emission:1}, led_cyan:{rgba:[.25,.91,1,1],emission:1}, led_pink:{rgba:[1,.36,.68,1],emission:1}, led_gold:{rgba:[1,.75,.4,1],emission:1},
     cam_body:{rgba:[.04,.05,.08,1],metalness:.45,roughness:.4}, rec:{rgba:[1,.2,.25,1],emission:1.2},
-    truss:{rgba:[.28,.31,.4,1],metalness:.8,roughness:.35}, pillar:{rgba:[.08,.1,.17,1],metalness:.3,roughness:.6},
-    acoustic:{rgba:[.09,.13,.3,1],metalness:.05,roughness:.95}, glass_room:{rgba:[.75,.82,1,.07],metalness:.1,roughness:.05},
+    truss:{rgba:[.28,.31,.4,1],metalness:.8,roughness:.35}, pillar:{rgba:[.03,.035,.05,1],metalness:.3,roughness:.6},
+    acoustic:{rgba:[.03,.04,.08,1],metalness:.05,roughness:.95}, glass_room:{rgba:[.75,.82,1,.03],metalness:.1,roughness:.05},
     lamp_body:{rgba:[.05,.06,.09,1],metalness:.6,roughness:.35}, lamp_lens:{rgba:[1,.97,.88,1],emission:2},
     beam_1:{rgba:[1,.95,.82,.09],emission:.6}, beam_2:{rgba:[1,.95,.82,.05],emission:.4}, beam_3:{rgba:[1,.95,.82,.03],emission:.3},
     wood:{rgba:[.22,.16,.12,1],metalness:.05,roughness:.8}, screen:{rgba:[.2,.45,1,1],emission:1.1}, navy2:{rgba:[.06,.1,.29,1],metalness:.35,roughness:.45},
@@ -244,18 +246,23 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   /* telescoping hoist: each segment carries one stretch of the line and of the blue coil cable */
   const constraint = {};
   for (let s = 1; s <= K; s++){
-    const geoms = [ghost(cyl(.0011, SEG, [0, 0, SEG/2], "line"))];
-    const turns = s <= 3 ? 5 : 0, pts = 8*turns, cr = .011, cx = .026;
+    const geoms = [ghost(cyl(.0011, SEG, [0, 0, SEG/2], "dyneema"))];
+    const turns = 6, pts = 8*turns, cr = .0078, cx = .02;
     for (let k = 0; k < pts; k++){
       const a0 = 2*Math.PI*k/8, a1 = 2*Math.PI*(k + 1)/8, z0 = SEG*k/pts, z1 = SEG*(k + 1)/pts;
       const p0 = [cx + cr*Math.cos(a0), cr*Math.sin(a0), z0], p1 = [cx + cr*Math.cos(a1), cr*Math.sin(a1), z1], d = [0,1,2].map(i => p1[i] - p0[i]);
-      geoms.push(ghost({type:"capsule", radius:.0024, height:r4(Math.hypot(...d)), pos:[0,1,2].map(i => r4((p0[i] + p1[i])/2)), quat:qz(d), material:"blue"}));
+      geoms.push(ghost({type:"capsule", radius:.0021, height:r4(Math.hypot(...d)), pos:[0,1,2].map(i => r4((p0[i] + p1[i])/2)), quat:qz(d), material:"cable"}));
     }
     if (s === K){
       /* the claw itself: swivel, eye, hub, blue collar, actuator body (Aethelark module look) */
-      geoms.push(ghost({type:"sphere", radius:.004, pos:[0,0,-.002], material:"steel"}), ghost(cyl(.0025, .012, [0,0,-.01], "steel")),
-        cyl(.026*S/.79, .04, [0,0,-HUB], "chrome"), ghost(cyl(.02, .006, [0,0,-.006], "blue")),
-        ghost(cyl(.012, .03, [0,0,-HUB - .03], "plastic2")), ghost({type:"cylinder", radius:.0275, height:.004, pos:[0,0,-HUB - .019], material:"blue"}));
+      geoms.push(ghost({type:"sphere", radius:.004, pos:[0,0,-.002], material:"steel"}), ghost(cyl(.0025, .01, [0,0,-.008], "steel")),
+        cyl(.026*S/.79, .04, [0,0,-HUB], "invis"),
+        /* Aethelark claw module: top cap, chrome body with grooves, blue collar, hinge lugs, actuator housing */
+        ghost(cyl(.017, .006, [0,0,-.014], "chrome_dk")), ghost(cyl(.024, .004, [0,0,-.018], "chrome")),
+        ghost(cyl(.027, .03, [0,0,-.035], "chrome")), ghost(cyl(.0275, .0025, [0,0,-.027], "chip")), ghost(cyl(.0275, .0025, [0,0,-.043], "chip")),
+        ghost(cyl(.0285, .005, [0,0,-.0505], "blue")), ghost(cyl(.022, .01, [0,0,-.058], "chrome_dk")),
+        ghost(cyl(.012, .026, [0,0,-.072], "plastic2")), ghost({type:"sphere", radius:.012, pos:[0,0,-.085], material:"plastic2"}),
+        ...[0,1,2].map(k => { const a = k*2*Math.PI/3 + Math.PI/3; return ghost(Object.assign(Bh(.006, .006, .006, .025*Math.cos(a), .025*Math.sin(a), -.03, "steel"), {quat:q([0,0,1], a)})); }));
       /* the coil cable's lower end ties into the hub */
       geoms.push(ghost(cyl(.0035, .01, [.012, 0, -.002], "plastic2", {quat:QY90})));
     }
@@ -266,15 +273,32 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   }
   /* three spring-closed fingers, the tuned v1 profile scaled by S (opens to ~4.3 cm, tip under the capsule) */
   const fingers = [], UP = .09*S, OFF = .6, TILT = .5 - OFF, TIP = -1 - OFF, TL = .05*S, SPRING = .14, FR_ = .0065*S;
+  /* visual arm in the finger frame (x out, z down): a smooth chrome blade along the collider path, bowed outward,
+     with a hinge boss, knuckle pin, a dark inner rib and a rubber tip pad */
+  function armVis(){
+    const P0 = [0, 0], P1 = [Math.sin(TILT)*UP, -Math.cos(TILT)*UP], P2 = [P1[0] + Math.sin(TIP)*TL, P1[1] - Math.cos(TIP)*TL];
+    const C = [P1[0] + .012, P1[1] + .004], N = 10, G = [], pt = t => [0,1].map(i => (1-t)*(1-t)*P0[i] + 2*(1-t)*t*C[i] + t*t*P2[i]);
+    for (let i = 0; i < N; i++){
+      const a = pt(i/N), b = pt((i + 1)/N), m = [(a[0] + b[0])/2, (a[1] + b[1])/2], d = [b[0] - a[0], 0, b[1] - a[1]], L = Math.hypot(d[0], d[2]);
+      const w = .0145 - .006*i/N, th = .0068 - .002*i/N, Q = qz(d);
+      G.push(ghost(Object.assign(B([th/2, w/2, L/2 + .0012], [m[0], 0, m[1]], "chrome"), {quat:Q})));
+      G.push(ghost(Object.assign(B([.0012, w/2 - .003, L/2], [m[0] - th/2*Math.cos(Math.atan2(d[2], d[0]) + Math.PI/2)*0, 0, m[1]], "chip"), {quat:Q})));
+    }
+    G.push(ghost(cyl(.0062, .019, [0, 0, 0], "chrome_dk", {quat:QX90})), ghost(cyl(.0028, .023, [0, 0, 0], "steel", {quat:QX90})));
+    const k = pt(.5); G.push(ghost(cyl(.0034, .017, [k[0], 0, k[1]], "steel", {quat:QX90})));
+    const e = pt(.93), f = pt(1), dd = [f[0] - e[0], 0, f[1] - e[1]];
+    G.push(ghost({type:"capsule", radius:.0042, height:.012, pos:[r4(f[0] - .002), 0, r4(f[1] + .003)], quat:qz(dd), material:"rubber"}));
+    return G;
+  }
   for (let k = 0; k < 3; k++){
     const a = k*2*Math.PI/3, name = "finger_" + (k+1); fingers.push(name);
     M.push({name, relation:{parent:"seg_" + K}, transform:{pos:[r4(.024*S*Math.cos(a)), r4(.024*S*Math.sin(a)), r4(-HUB - .025*S)], quat:q([0,0,1], a)},
       gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.015},
       joint:{type:"hinge", axis:[0,1,0], range:[r4(-.3 - OFF), r4(.7 - OFF)], damping:.02, stiffness:SPRING, armature:.0005},
       geoms:[
-        {type:"capsule", radius:r4(FR_), height:r4(UP), pos:[r4(Math.sin(TILT)*UP/2), 0, r4(-Math.cos(TILT)*UP/2)], quat:q([0,1,0], TILT), material:"chrome", friction:1.4},
-        {type:"capsule", radius:r4(FR_), height:r4(TL), pos:[r4(Math.sin(TILT)*UP + Math.sin(TIP)*TL/2), 0, r4(-Math.cos(TILT)*UP - Math.cos(TIP)*TL/2)], quat:q([0,1,0], TIP), material:"chrome", friction:1.6},
-        ghost(cyl(.0025, .012, [r4(Math.sin(TILT)*UP*.55 - .008), 0, r4(-Math.cos(TILT)*UP*.4)], "steel", {quat:q([0,1,0], .9)}))   // push rod
+        {type:"capsule", radius:r4(FR_), height:r4(UP), pos:[r4(Math.sin(TILT)*UP/2), 0, r4(-Math.cos(TILT)*UP/2)], quat:q([0,1,0], TILT), material:"invis", friction:1.4},
+        {type:"capsule", radius:r4(FR_), height:r4(TL), pos:[r4(Math.sin(TILT)*UP + Math.sin(TIP)*TL/2), 0, r4(-Math.cos(TILT)*UP - Math.cos(TIP)*TL/2)], quat:q([0,1,0], TIP), material:"invis", friction:1.6},
+        ...armVis()
       ], collider:{}});
   }
   const used = new Set(); M.forEach(e => e.geoms.forEach(g => used.add(g.material)));
@@ -302,9 +326,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
 
   /* ---------------- the filming room (same room as v1: walls, glass front and right, lamp grid, shelf, desk, tripod) ---------------- */
   const RX = 2.0, RB = 2.2, RF = -1.6, RH = 3.6, tw = .12, RD = RB - RF, RZT = RH - .07;
-  fixed("room_floor", [{type:"plane", size:[10,10,.05], material:"concrete"}, ghost(B([.75,.75,.003], [0,0,.003], "paint")),
-    ghost(B([.76,.008,.005], [0,-.76,.005], "led_blue")), ghost(B([.76,.008,.005], [0,.76,.005], "led_blue")),
-    ghost(B([.008,.76,.005], [-.76,0,.005], "led_blue")), ghost(B([.008,.76,.005], [.76,0,.005], "led_blue"))]);
+  fixed("room_floor", [{type:"plane", size:[10,10,.05], material:"concrete"}]);
   fixed("room", [
     B([RX + tw/2, tw/2, RH/2], [0, RB, RH/2], "wall"), B([tw/2, (RD + tw)/2, RH/2], [-RX, (RB + RF)/2, RH/2], "wall_lt"),
     B([.01, RD/2, (RH - .14)/2], [RX, (RB + RF)/2, (RH - .14)/2 + .07], "glass_room"),
@@ -320,8 +342,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   [[0, .45], [-1.2, 1.45], [1.2, 1.45]].forEach(([x, y], i) => {
     const DROP = 1.25, zl = RZT - DROP;
     fixed("lamp_" + (i + 1), [ghost(cyl(.008, DROP - .05, [x, y, RZT - (DROP - .05)/2], "truss")), ghost(cyl(.075, .12, [x, y, zl], "lamp_body")),
-      ghost(cyl(.065, .008, [x, y, zl - .064], "lamp_lens")), ghost(cyl(.079, .022, [x, y, zl - .045], "lamp_lens")), ghost(cyl(.09, .35, [x, y, zl - .25], "beam_1")),
-      ...(Math.abs(x) < .7 && Math.abs(y) < .6 ? [] : [ghost(cyl(.16, .45, [x, y, zl - .65], "beam_2")), ghost(cyl(.24, .5, [x, y, zl - 1.12], "beam_3"))])]);
+      ghost(cyl(.065, .008, [x, y, zl - .064], "lamp_lens")), ghost(cyl(.079, .022, [x, y, zl - .045], "lamp_lens")), ]);
     const d = [-x, -y, .6 - zl], nn = Math.hypot(...d);
     E.push({name:"lamp_light_" + (i + 1), transform:{pos:[x, y, r4(zl - .08)]}, light:{type:"spot", color:"#fff2dc", intensity:i < 1 ? 4 : 2.5, dir:d.map(v => r4(v/nn)), angle:.75, castShadow:i === 0}});
   });

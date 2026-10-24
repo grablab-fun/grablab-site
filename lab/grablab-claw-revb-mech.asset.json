@@ -1229,767 +1229,919 @@
       0,
       0.0392
      ],
-     "material": "line",
+     "material": "dyneema",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.001
+      0.0267,
+      0.0028,
+      0.0008
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0029
+      0.0228,
+      0.0067,
+      0.0024
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0049
+      0.0172,
+      0.0067,
+      0.0041
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0069
+      0.0133,
+      0.0028,
+      0.0057
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0088
+      0.0133,
+      -0.0028,
+      0.0073
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0108
+      0.0172,
+      -0.0067,
+      0.009
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0127
+      0.0228,
+      -0.0067,
+      0.0106
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0147
+      0.0267,
+      -0.0028,
+      0.0122
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.0166
+      0.0267,
+      0.0028,
+      0.0139
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0186
+      0.0228,
+      0.0067,
+      0.0155
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0206
+      0.0172,
+      0.0067,
+      0.0171
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0225
+      0.0133,
+      0.0028,
+      0.0188
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0245
+      0.0133,
+      -0.0028,
+      0.0204
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0264
+      0.0172,
+      -0.0067,
+      0.022
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0284
+      0.0228,
+      -0.0067,
+      0.0237
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0303
+      0.0267,
+      -0.0028,
+      0.0253
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.0323
+      0.0267,
+      0.0028,
+      0.0269
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0343
+      0.0228,
+      0.0067,
+      0.0285
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0362
+      0.0172,
+      0.0067,
+      0.0302
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0382
+      0.0133,
+      0.0028,
+      0.0318
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0401
+      0.0133,
+      -0.0028,
+      0.0334
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0421
+      0.0172,
+      -0.0067,
+      0.0351
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.044
+      0.0228,
+      -0.0067,
+      0.0367
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.046
+      0.0267,
+      -0.0028,
+      0.0383
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.048
+      0.0267,
+      0.0028,
+      0.04
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0499
+      0.0228,
+      0.0067,
+      0.0416
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0519
+      0.0172,
+      0.0067,
+      0.0432
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0538
+      0.0133,
+      0.0028,
+      0.0449
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0558
+      0.0133,
+      -0.0028,
+      0.0465
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0577
+      0.0172,
+      -0.0067,
+      0.0481
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0597
+      0.0228,
+      -0.0067,
+      0.0498
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0617
+      0.0267,
+      -0.0028,
+      0.0514
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.0636
+      0.0267,
+      0.0028,
+      0.053
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0656
+      0.0228,
+      0.0067,
+      0.0546
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0675
+      0.0172,
+      0.0067,
+      0.0563
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0695
+      0.0133,
+      0.0028,
+      0.0579
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0714
+      0.0133,
+      -0.0028,
+      0.0595
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0734
+      0.0172,
+      -0.0067,
+      0.0612
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0754
+      0.0228,
+      -0.0067,
+      0.0628
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0773
+      0.0267,
+      -0.0028,
+      0.0644
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0661
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0677
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0693
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.071
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0726
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0742
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0759
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0775
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     }
@@ -2037,767 +2189,919 @@
       0,
       0.0392
      ],
-     "material": "line",
+     "material": "dyneema",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.001
+      0.0267,
+      0.0028,
+      0.0008
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0029
+      0.0228,
+      0.0067,
+      0.0024
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0049
+      0.0172,
+      0.0067,
+      0.0041
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0069
+      0.0133,
+      0.0028,
+      0.0057
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0088
+      0.0133,
+      -0.0028,
+      0.0073
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0108
+      0.0172,
+      -0.0067,
+      0.009
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0127
+      0.0228,
+      -0.0067,
+      0.0106
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0147
+      0.0267,
+      -0.0028,
+      0.0122
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.0166
+      0.0267,
+      0.0028,
+      0.0139
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0186
+      0.0228,
+      0.0067,
+      0.0155
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0206
+      0.0172,
+      0.0067,
+      0.0171
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0225
+      0.0133,
+      0.0028,
+      0.0188
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0245
+      0.0133,
+      -0.0028,
+      0.0204
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0264
+      0.0172,
+      -0.0067,
+      0.022
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0284
+      0.0228,
+      -0.0067,
+      0.0237
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0303
+      0.0267,
+      -0.0028,
+      0.0253
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.0323
+      0.0267,
+      0.0028,
+      0.0269
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0343
+      0.0228,
+      0.0067,
+      0.0285
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0362
+      0.0172,
+      0.0067,
+      0.0302
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0382
+      0.0133,
+      0.0028,
+      0.0318
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0401
+      0.0133,
+      -0.0028,
+      0.0334
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0421
+      0.0172,
+      -0.0067,
+      0.0351
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.044
+      0.0228,
+      -0.0067,
+      0.0367
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.046
+      0.0267,
+      -0.0028,
+      0.0383
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.048
+      0.0267,
+      0.0028,
+      0.04
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0499
+      0.0228,
+      0.0067,
+      0.0416
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0519
+      0.0172,
+      0.0067,
+      0.0432
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0538
+      0.0133,
+      0.0028,
+      0.0449
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0558
+      0.0133,
+      -0.0028,
+      0.0465
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0577
+      0.0172,
+      -0.0067,
+      0.0481
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0597
+      0.0228,
+      -0.0067,
+      0.0498
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0617
+      0.0267,
+      -0.0028,
+      0.0514
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.0636
+      0.0267,
+      0.0028,
+      0.053
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0656
+      0.0228,
+      0.0067,
+      0.0546
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0675
+      0.0172,
+      0.0067,
+      0.0563
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0695
+      0.0133,
+      0.0028,
+      0.0579
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0714
+      0.0133,
+      -0.0028,
+      0.0595
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0734
+      0.0172,
+      -0.0067,
+      0.0612
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0754
+      0.0228,
+      -0.0067,
+      0.0628
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0773
+      0.0267,
+      -0.0028,
+      0.0644
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0661
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0677
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0693
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.071
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0726
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0742
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0759
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0775
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     }
@@ -2845,767 +3149,919 @@
       0,
       0.0392
      ],
-     "material": "line",
+     "material": "dyneema",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.001
+      0.0267,
+      0.0028,
+      0.0008
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0029
+      0.0228,
+      0.0067,
+      0.0024
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0049
+      0.0172,
+      0.0067,
+      0.0041
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0069
+      0.0133,
+      0.0028,
+      0.0057
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0088
+      0.0133,
+      -0.0028,
+      0.0073
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0108
+      0.0172,
+      -0.0067,
+      0.009
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0127
+      0.0228,
+      -0.0067,
+      0.0106
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0147
+      0.0267,
+      -0.0028,
+      0.0122
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.0166
+      0.0267,
+      0.0028,
+      0.0139
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0186
+      0.0228,
+      0.0067,
+      0.0155
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0206
+      0.0172,
+      0.0067,
+      0.0171
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0225
+      0.0133,
+      0.0028,
+      0.0188
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0245
+      0.0133,
+      -0.0028,
+      0.0204
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0264
+      0.0172,
+      -0.0067,
+      0.022
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0284
+      0.0228,
+      -0.0067,
+      0.0237
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0303
+      0.0267,
+      -0.0028,
+      0.0253
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.0323
+      0.0267,
+      0.0028,
+      0.0269
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0343
+      0.0228,
+      0.0067,
+      0.0285
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0362
+      0.0172,
+      0.0067,
+      0.0302
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0382
+      0.0133,
+      0.0028,
+      0.0318
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0401
+      0.0133,
+      -0.0028,
+      0.0334
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0421
+      0.0172,
+      -0.0067,
+      0.0351
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.044
+      0.0228,
+      -0.0067,
+      0.0367
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.046
+      0.0267,
+      -0.0028,
+      0.0383
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.048
+      0.0267,
+      0.0028,
+      0.04
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0499
+      0.0228,
+      0.0067,
+      0.0416
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0519
+      0.0172,
+      0.0067,
+      0.0432
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0538
+      0.0133,
+      0.0028,
+      0.0449
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0558
+      0.0133,
+      -0.0028,
+      0.0465
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0577
+      0.0172,
+      -0.0067,
+      0.0481
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0597
+      0.0228,
+      -0.0067,
+      0.0498
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0617
+      0.0267,
+      -0.0028,
+      0.0514
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      0.0039,
-      0.0636
+      0.0267,
+      0.0028,
+      0.053
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      -0.238,
+      0.7949,
+      -0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      0.0094,
-      0.0656
+      0.0228,
+      0.0067,
+      0.0546
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      -0.5746,
+      0.7949,
+      -0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      0.0094,
-      0.0675
+      0.0172,
+      0.0067,
+      0.0563
      ],
      "quat": [
-      0.7831,
-      0.238,
-      -0.5746,
+      0.7949,
+      0.2322,
+      -0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      0.0039,
-      0.0695
+      0.0133,
+      0.0028,
+      0.0579
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      -0.238,
+      0.7949,
+      0.5606,
+      -0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0166,
-      -0.0039,
-      0.0714
+      0.0133,
+      -0.0028,
+      0.0595
      ],
      "quat": [
-      0.7831,
-      0.5746,
-      0.238,
+      0.7949,
+      0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0221,
-      -0.0094,
-      0.0734
+      0.0172,
+      -0.0067,
+      0.0612
      ],
      "quat": [
-      0.7831,
-      0.238,
-      0.5746,
+      0.7949,
+      0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0299,
-      -0.0094,
-      0.0754
+      0.0228,
+      -0.0067,
+      0.0628
      ],
      "quat": [
-      0.7831,
-      -0.238,
-      0.5746,
+      0.7949,
+      -0.2322,
+      0.5606,
       0
      ],
-     "material": "blue",
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "capsule",
-     "radius": 0.0024,
-     "height": 0.0086,
+     "radius": 0.0021,
+     "height": 0.0062,
      "pos": [
-      0.0354,
-      -0.0039,
-      0.0773
+      0.0267,
+      -0.0028,
+      0.0644
      ],
      "quat": [
-      0.7831,
-      -0.5746,
-      0.238,
+      0.7949,
+      -0.5606,
+      0.2322,
       0
      ],
-     "material": "blue",
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0661
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0677
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0693
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.071
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0726
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0742
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0759
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0775
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     }
@@ -3653,7 +4109,919 @@
       0,
       0.0392
      ],
-     "material": "line",
+     "material": "dyneema",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0008
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0024
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0041
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0057
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0073
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.009
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0106
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0122
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0139
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0155
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0171
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0188
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0204
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.022
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0237
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0253
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0269
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0285
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0302
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0318
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0334
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0351
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0367
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0383
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.04
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0416
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0432
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0449
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0465
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0481
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0498
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0514
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.053
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0546
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0563
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0579
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0595
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0612
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0628
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0644
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0661
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0677
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0693
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.071
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0726
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0742
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0759
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0775
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     }
@@ -3701,7 +5069,919 @@
       0,
       0.0392
      ],
-     "material": "line",
+     "material": "dyneema",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0008
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0024
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0041
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0057
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0073
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.009
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0106
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0122
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0139
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0155
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0171
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0188
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0204
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.022
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0237
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0253
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0269
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0285
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0302
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0318
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0334
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0351
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0367
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0383
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.04
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0416
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0432
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0449
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0465
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0481
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0498
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0514
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.053
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0546
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0563
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0579
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0595
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0612
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0628
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0644
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0661
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0677
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0693
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.071
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0726
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0742
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0759
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0775
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     }
@@ -3749,7 +6029,919 @@
       0,
       0.0392
      ],
-     "material": "line",
+     "material": "dyneema",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0008
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0024
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0041
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0057
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0073
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.009
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0106
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0122
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0139
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0155
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0171
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0188
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0204
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.022
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0237
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0253
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0269
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0285
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0302
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0318
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0334
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0351
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0367
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0383
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.04
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0416
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0432
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0449
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0465
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0481
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0498
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0514
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.053
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0546
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0563
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0579
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0595
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0612
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0628
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0644
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0661
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0677
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0693
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.071
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0726
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0742
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0759
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0775
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     }
@@ -3797,7 +6989,919 @@
       0,
       0.0392
      ],
-     "material": "line",
+     "material": "dyneema",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0008
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0024
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0041
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0057
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0073
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.009
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0106
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0122
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0139
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0155
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0171
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0188
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0204
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.022
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0237
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0253
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0269
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0285
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0302
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0318
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0334
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0351
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0367
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0383
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.04
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0416
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0432
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0449
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0465
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0481
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0498
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0514
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.053
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0546
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0563
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0579
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0595
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0612
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0628
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0644
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0661
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0677
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0693
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.071
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0726
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0742
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0759
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0775
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     }
@@ -3845,7 +7949,919 @@
       0,
       0.0392
      ],
-     "material": "line",
+     "material": "dyneema",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0008
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0024
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0041
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0057
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0073
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.009
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0106
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0122
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0139
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0155
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0171
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0188
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0204
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.022
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0237
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0253
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0269
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0285
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0302
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0318
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0334
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0351
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0367
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0383
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.04
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0416
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0432
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0449
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0465
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0481
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0498
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0514
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.053
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0546
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0563
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.0579
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0595
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0612
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0628
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0644
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      0.0028,
+      0.0661
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      0.0067,
+      0.0677
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      0.0067,
+      0.0693
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      -0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      0.0028,
+      0.071
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      -0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0133,
+      -0.0028,
+      0.0726
+     ],
+     "quat": [
+      0.7949,
+      0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0172,
+      -0.0067,
+      0.0742
+     ],
+     "quat": [
+      0.7949,
+      0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0228,
+      -0.0067,
+      0.0759
+     ],
+     "quat": [
+      0.7949,
+      -0.2322,
+      0.5606,
+      0
+     ],
+     "material": "cable",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0021,
+     "height": 0.0062,
+     "pos": [
+      0.0267,
+      -0.0028,
+      0.0775
+     ],
+     "quat": [
+      0.7949,
+      -0.5606,
+      0.2322,
+      0
+     ],
+     "material": "cable",
      "contype": 0,
      "conaffinity": 0
     },
@@ -3864,11 +8880,11 @@
     {
      "type": "cylinder",
      "radius": 0.0025,
-     "height": 0.012,
+     "height": 0.01,
      "pos": [
       0,
       0,
-      -0.01
+      -0.008
      ],
      "material": "steel",
      "contype": 0,
@@ -3883,44 +8899,187 @@
       0,
       -0.025
      ],
-     "material": "chrome"
+     "material": "invis"
     },
     {
      "type": "cylinder",
-     "radius": 0.02,
+     "radius": 0.017,
      "height": 0.006,
      "pos": [
       0,
       0,
-      -0.006
+      -0.014
      ],
-     "material": "blue",
+     "material": "chrome_dk",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "cylinder",
-     "radius": 0.012,
+     "radius": 0.024,
+     "height": 0.004,
+     "pos": [
+      0,
+      0,
+      -0.018
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.027,
      "height": 0.03,
      "pos": [
       0,
       0,
-      -0.055
+      -0.035
      ],
-     "material": "plastic2",
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "cylinder",
      "radius": 0.0275,
-     "height": 0.004,
+     "height": 0.0025,
      "pos": [
       0,
       0,
-      -0.044
+      -0.027
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0275,
+     "height": 0.0025,
+     "pos": [
+      0,
+      0,
+      -0.043
+     ],
+     "material": "chip",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0285,
+     "height": 0.005,
+     "pos": [
+      0,
+      0,
+      -0.0505
      ],
      "material": "blue",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.022,
+     "height": 0.01,
+     "pos": [
+      0,
+      0,
+      -0.058
+     ],
+     "material": "chrome_dk",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.012,
+     "height": 0.026,
+     "pos": [
+      0,
+      0,
+      -0.072
+     ],
+     "material": "plastic2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "sphere",
+     "radius": 0.012,
+     "pos": [
+      0,
+      0,
+      -0.085
+     ],
+     "material": "plastic2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.006,
+      0.006,
+      0.006
+     ],
+     "pos": [
+      0.0125,
+      0.0217,
+      -0.03
+     ],
+     "material": "steel",
+     "quat": [
+      0.866,
+      0,
+      0,
+      0.5
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.006,
+      0.006,
+      0.006
+     ],
+     "pos": [
+      -0.025,
+      0,
+      -0.03
+     ],
+     "material": "steel",
+     "quat": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.006,
+      0.006,
+      0.006
+     ],
+     "pos": [
+      0.0125,
+      -0.0217,
+      -0.03
+     ],
+     "material": "steel",
+     "quat": [
+      -0.866,
+      0,
+      0,
+      0.5
+     ],
      "contype": 0,
      "conaffinity": 0
     },
@@ -4001,7 +9160,7 @@
       -0.05,
       0
      ],
-     "material": "chrome",
+     "material": "invis",
      "friction": 1.4
     },
     {
@@ -4019,25 +9178,522 @@
       -0.7174,
       0
      ],
-     "material": "chrome",
+     "material": "invis",
      "friction": 1.6
     },
     {
-     "type": "cylinder",
-     "radius": 0.0025,
-     "height": 0.012,
+     "type": "box",
+     "size": [
+      0.0068,
+      0.0145,
+      0.0151
+     ],
      "pos": [
-      -0.0119,
+      0.0002,
       0,
-      -0.0283
+      -0.0064
+     ],
+     "material": "chrome",
+     "quat": [
+      0.0164,
+      0,
+      0.9999,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0085,
+      0.0127
+     ],
+     "pos": [
+      0.0002,
+      0,
+      -0.0064
+     ],
+     "material": "chip",
+     "quat": [
+      0.0164,
+      0,
+      0.9999,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0066,
+      0.0139,
+      0.0139
+     ],
+     "pos": [
+      0.0001,
+      0,
+      -0.0184
+     ],
+     "material": "chrome",
+     "quat": [
+      0.0311,
+      0,
+      -0.9995,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0079,
+      0.0115
+     ],
+     "pos": [
+      0.0001,
+      0,
+      -0.0184
+     ],
+     "material": "chip",
+     "quat": [
+      0.0311,
+      0,
+      -0.9995,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0064,
+      0.0133,
+      0.0127
+     ],
+     "pos": [
+      -0.0012,
+      0,
+      -0.0292
+     ],
+     "material": "chrome",
+     "quat": [
+      0.0895,
+      0,
+      -0.996,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0073,
+      0.0103
+     ],
+     "pos": [
+      -0.0012,
+      0,
+      -0.0292
+     ],
+     "material": "chip",
+     "quat": [
+      0.0895,
+      0,
+      -0.996,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0062,
+      0.0127,
+      0.0118
+     ],
+     "pos": [
+      -0.0036,
+      0,
+      -0.0387
+     ],
+     "material": "chrome",
+     "quat": [
+      0.1606,
+      0,
+      -0.987,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0067,
+      0.0094
+     ],
+     "pos": [
+      -0.0036,
+      0,
+      -0.0387
+     ],
+     "material": "chip",
+     "quat": [
+      0.1606,
+      0,
+      -0.987,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.006,
+      0.0121,
+      0.011
+     ],
+     "pos": [
+      -0.0071,
+      0,
+      -0.047
+     ],
+     "material": "chrome",
+     "quat": [
+      0.2446,
+      0,
+      -0.9696,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0061,
+      0.0086
+     ],
+     "pos": [
+      -0.0071,
+      0,
+      -0.047
+     ],
+     "material": "chip",
+     "quat": [
+      0.2446,
+      0,
+      -0.9696,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0058,
+      0.0115,
+      0.0106
+     ],
+     "pos": [
+      -0.0118,
+      0,
+      -0.0539
+     ],
+     "material": "chrome",
+     "quat": [
+      0.3385,
+      0,
+      -0.941,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0055,
+      0.0082
+     ],
+     "pos": [
+      -0.0118,
+      0,
+      -0.0539
+     ],
+     "material": "chip",
+     "quat": [
+      0.3385,
+      0,
+      -0.941,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0056,
+      0.0109,
+      0.0105
+     ],
+     "pos": [
+      -0.0176,
+      0,
+      -0.0596
+     ],
+     "material": "chrome",
+     "quat": [
+      0.4348,
+      0,
+      -0.9005,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0049,
+      0.0081
+     ],
+     "pos": [
+      -0.0176,
+      0,
+      -0.0596
+     ],
+     "material": "chip",
+     "quat": [
+      0.4348,
+      0,
+      -0.9005,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0054,
+      0.0103,
+      0.0108
+     ],
+     "pos": [
+      -0.0245,
+      0,
+      -0.064
+     ],
+     "material": "chrome",
+     "quat": [
+      0.5246,
+      0,
+      -0.8514,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0043,
+      0.0084
+     ],
+     "pos": [
+      -0.0245,
+      0,
+      -0.064
+     ],
+     "material": "chip",
+     "quat": [
+      0.5246,
+      0,
+      -0.8514,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0052,
+      0.0097,
+      0.0114
+     ],
+     "pos": [
+      -0.0325,
+      0,
+      -0.0671
+     ],
+     "material": "chrome",
+     "quat": [
+      0.601,
+      0,
+      -0.7992,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0037,
+      0.009
+     ],
+     "pos": [
+      -0.0325,
+      0,
+      -0.0671
+     ],
+     "material": "chip",
+     "quat": [
+      0.601,
+      0,
+      -0.7992,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.005,
+      0.0091,
+      0.0122
+     ],
+     "pos": [
+      -0.0417,
+      0,
+      -0.069
+     ],
+     "material": "chrome",
+     "quat": [
+      0.6621,
+      0,
+      -0.7494,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0031,
+      0.0098
+     ],
+     "pos": [
+      -0.0417,
+      0,
+      -0.069
+     ],
+     "material": "chip",
+     "quat": [
+      0.6621,
+      0,
+      -0.7494,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0062,
+     "height": 0.019,
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "material": "chrome_dk",
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0028,
+     "height": 0.023,
+     "pos": [
+      0,
+      0,
+      0
      ],
      "material": "steel",
      "quat": [
-      0.9004,
+      0.7071,
+      0.7071,
       0,
-      0.435,
       0
      ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0034,
+     "height": 0.017,
+     "pos": [
+      -0.0092,
+      0,
+      -0.0508
+     ],
+     "material": "steel",
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0042,
+     "height": 0.012,
+     "pos": [
+      -0.0486,
+      0,
+      -0.0666
+     ],
+     "quat": [
+      0.67,
+      0,
+      -0.7423,
+      0
+     ],
+     "material": "rubber",
      "contype": 0,
      "conaffinity": 0
     }
@@ -4099,7 +9755,7 @@
       -0.05,
       0
      ],
-     "material": "chrome",
+     "material": "invis",
      "friction": 1.4
     },
     {
@@ -4117,25 +9773,522 @@
       -0.7174,
       0
      ],
-     "material": "chrome",
+     "material": "invis",
      "friction": 1.6
     },
     {
-     "type": "cylinder",
-     "radius": 0.0025,
-     "height": 0.012,
+     "type": "box",
+     "size": [
+      0.0068,
+      0.0145,
+      0.0151
+     ],
      "pos": [
-      -0.0119,
+      0.0002,
       0,
-      -0.0283
+      -0.0064
+     ],
+     "material": "chrome",
+     "quat": [
+      0.0164,
+      0,
+      0.9999,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0085,
+      0.0127
+     ],
+     "pos": [
+      0.0002,
+      0,
+      -0.0064
+     ],
+     "material": "chip",
+     "quat": [
+      0.0164,
+      0,
+      0.9999,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0066,
+      0.0139,
+      0.0139
+     ],
+     "pos": [
+      0.0001,
+      0,
+      -0.0184
+     ],
+     "material": "chrome",
+     "quat": [
+      0.0311,
+      0,
+      -0.9995,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0079,
+      0.0115
+     ],
+     "pos": [
+      0.0001,
+      0,
+      -0.0184
+     ],
+     "material": "chip",
+     "quat": [
+      0.0311,
+      0,
+      -0.9995,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0064,
+      0.0133,
+      0.0127
+     ],
+     "pos": [
+      -0.0012,
+      0,
+      -0.0292
+     ],
+     "material": "chrome",
+     "quat": [
+      0.0895,
+      0,
+      -0.996,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0073,
+      0.0103
+     ],
+     "pos": [
+      -0.0012,
+      0,
+      -0.0292
+     ],
+     "material": "chip",
+     "quat": [
+      0.0895,
+      0,
+      -0.996,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0062,
+      0.0127,
+      0.0118
+     ],
+     "pos": [
+      -0.0036,
+      0,
+      -0.0387
+     ],
+     "material": "chrome",
+     "quat": [
+      0.1606,
+      0,
+      -0.987,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0067,
+      0.0094
+     ],
+     "pos": [
+      -0.0036,
+      0,
+      -0.0387
+     ],
+     "material": "chip",
+     "quat": [
+      0.1606,
+      0,
+      -0.987,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.006,
+      0.0121,
+      0.011
+     ],
+     "pos": [
+      -0.0071,
+      0,
+      -0.047
+     ],
+     "material": "chrome",
+     "quat": [
+      0.2446,
+      0,
+      -0.9696,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0061,
+      0.0086
+     ],
+     "pos": [
+      -0.0071,
+      0,
+      -0.047
+     ],
+     "material": "chip",
+     "quat": [
+      0.2446,
+      0,
+      -0.9696,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0058,
+      0.0115,
+      0.0106
+     ],
+     "pos": [
+      -0.0118,
+      0,
+      -0.0539
+     ],
+     "material": "chrome",
+     "quat": [
+      0.3385,
+      0,
+      -0.941,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0055,
+      0.0082
+     ],
+     "pos": [
+      -0.0118,
+      0,
+      -0.0539
+     ],
+     "material": "chip",
+     "quat": [
+      0.3385,
+      0,
+      -0.941,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0056,
+      0.0109,
+      0.0105
+     ],
+     "pos": [
+      -0.0176,
+      0,
+      -0.0596
+     ],
+     "material": "chrome",
+     "quat": [
+      0.4348,
+      0,
+      -0.9005,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0049,
+      0.0081
+     ],
+     "pos": [
+      -0.0176,
+      0,
+      -0.0596
+     ],
+     "material": "chip",
+     "quat": [
+      0.4348,
+      0,
+      -0.9005,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0054,
+      0.0103,
+      0.0108
+     ],
+     "pos": [
+      -0.0245,
+      0,
+      -0.064
+     ],
+     "material": "chrome",
+     "quat": [
+      0.5246,
+      0,
+      -0.8514,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0043,
+      0.0084
+     ],
+     "pos": [
+      -0.0245,
+      0,
+      -0.064
+     ],
+     "material": "chip",
+     "quat": [
+      0.5246,
+      0,
+      -0.8514,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0052,
+      0.0097,
+      0.0114
+     ],
+     "pos": [
+      -0.0325,
+      0,
+      -0.0671
+     ],
+     "material": "chrome",
+     "quat": [
+      0.601,
+      0,
+      -0.7992,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0037,
+      0.009
+     ],
+     "pos": [
+      -0.0325,
+      0,
+      -0.0671
+     ],
+     "material": "chip",
+     "quat": [
+      0.601,
+      0,
+      -0.7992,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.005,
+      0.0091,
+      0.0122
+     ],
+     "pos": [
+      -0.0417,
+      0,
+      -0.069
+     ],
+     "material": "chrome",
+     "quat": [
+      0.6621,
+      0,
+      -0.7494,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0031,
+      0.0098
+     ],
+     "pos": [
+      -0.0417,
+      0,
+      -0.069
+     ],
+     "material": "chip",
+     "quat": [
+      0.6621,
+      0,
+      -0.7494,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0062,
+     "height": 0.019,
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "material": "chrome_dk",
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0028,
+     "height": 0.023,
+     "pos": [
+      0,
+      0,
+      0
      ],
      "material": "steel",
      "quat": [
-      0.9004,
+      0.7071,
+      0.7071,
       0,
-      0.435,
       0
      ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0034,
+     "height": 0.017,
+     "pos": [
+      -0.0092,
+      0,
+      -0.0508
+     ],
+     "material": "steel",
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0042,
+     "height": 0.012,
+     "pos": [
+      -0.0486,
+      0,
+      -0.0666
+     ],
+     "quat": [
+      0.67,
+      0,
+      -0.7423,
+      0
+     ],
+     "material": "rubber",
      "contype": 0,
      "conaffinity": 0
     }
@@ -4197,7 +10350,7 @@
       -0.05,
       0
      ],
-     "material": "chrome",
+     "material": "invis",
      "friction": 1.4
     },
     {
@@ -4215,25 +10368,522 @@
       -0.7174,
       0
      ],
-     "material": "chrome",
+     "material": "invis",
      "friction": 1.6
     },
     {
-     "type": "cylinder",
-     "radius": 0.0025,
-     "height": 0.012,
+     "type": "box",
+     "size": [
+      0.0068,
+      0.0145,
+      0.0151
+     ],
      "pos": [
-      -0.0119,
+      0.0002,
       0,
-      -0.0283
+      -0.0064
+     ],
+     "material": "chrome",
+     "quat": [
+      0.0164,
+      0,
+      0.9999,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0085,
+      0.0127
+     ],
+     "pos": [
+      0.0002,
+      0,
+      -0.0064
+     ],
+     "material": "chip",
+     "quat": [
+      0.0164,
+      0,
+      0.9999,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0066,
+      0.0139,
+      0.0139
+     ],
+     "pos": [
+      0.0001,
+      0,
+      -0.0184
+     ],
+     "material": "chrome",
+     "quat": [
+      0.0311,
+      0,
+      -0.9995,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0079,
+      0.0115
+     ],
+     "pos": [
+      0.0001,
+      0,
+      -0.0184
+     ],
+     "material": "chip",
+     "quat": [
+      0.0311,
+      0,
+      -0.9995,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0064,
+      0.0133,
+      0.0127
+     ],
+     "pos": [
+      -0.0012,
+      0,
+      -0.0292
+     ],
+     "material": "chrome",
+     "quat": [
+      0.0895,
+      0,
+      -0.996,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0073,
+      0.0103
+     ],
+     "pos": [
+      -0.0012,
+      0,
+      -0.0292
+     ],
+     "material": "chip",
+     "quat": [
+      0.0895,
+      0,
+      -0.996,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0062,
+      0.0127,
+      0.0118
+     ],
+     "pos": [
+      -0.0036,
+      0,
+      -0.0387
+     ],
+     "material": "chrome",
+     "quat": [
+      0.1606,
+      0,
+      -0.987,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0067,
+      0.0094
+     ],
+     "pos": [
+      -0.0036,
+      0,
+      -0.0387
+     ],
+     "material": "chip",
+     "quat": [
+      0.1606,
+      0,
+      -0.987,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.006,
+      0.0121,
+      0.011
+     ],
+     "pos": [
+      -0.0071,
+      0,
+      -0.047
+     ],
+     "material": "chrome",
+     "quat": [
+      0.2446,
+      0,
+      -0.9696,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0061,
+      0.0086
+     ],
+     "pos": [
+      -0.0071,
+      0,
+      -0.047
+     ],
+     "material": "chip",
+     "quat": [
+      0.2446,
+      0,
+      -0.9696,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0058,
+      0.0115,
+      0.0106
+     ],
+     "pos": [
+      -0.0118,
+      0,
+      -0.0539
+     ],
+     "material": "chrome",
+     "quat": [
+      0.3385,
+      0,
+      -0.941,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0055,
+      0.0082
+     ],
+     "pos": [
+      -0.0118,
+      0,
+      -0.0539
+     ],
+     "material": "chip",
+     "quat": [
+      0.3385,
+      0,
+      -0.941,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0056,
+      0.0109,
+      0.0105
+     ],
+     "pos": [
+      -0.0176,
+      0,
+      -0.0596
+     ],
+     "material": "chrome",
+     "quat": [
+      0.4348,
+      0,
+      -0.9005,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0049,
+      0.0081
+     ],
+     "pos": [
+      -0.0176,
+      0,
+      -0.0596
+     ],
+     "material": "chip",
+     "quat": [
+      0.4348,
+      0,
+      -0.9005,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0054,
+      0.0103,
+      0.0108
+     ],
+     "pos": [
+      -0.0245,
+      0,
+      -0.064
+     ],
+     "material": "chrome",
+     "quat": [
+      0.5246,
+      0,
+      -0.8514,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0043,
+      0.0084
+     ],
+     "pos": [
+      -0.0245,
+      0,
+      -0.064
+     ],
+     "material": "chip",
+     "quat": [
+      0.5246,
+      0,
+      -0.8514,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0052,
+      0.0097,
+      0.0114
+     ],
+     "pos": [
+      -0.0325,
+      0,
+      -0.0671
+     ],
+     "material": "chrome",
+     "quat": [
+      0.601,
+      0,
+      -0.7992,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0037,
+      0.009
+     ],
+     "pos": [
+      -0.0325,
+      0,
+      -0.0671
+     ],
+     "material": "chip",
+     "quat": [
+      0.601,
+      0,
+      -0.7992,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.005,
+      0.0091,
+      0.0122
+     ],
+     "pos": [
+      -0.0417,
+      0,
+      -0.069
+     ],
+     "material": "chrome",
+     "quat": [
+      0.6621,
+      0,
+      -0.7494,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0024,
+      0.0031,
+      0.0098
+     ],
+     "pos": [
+      -0.0417,
+      0,
+      -0.069
+     ],
+     "material": "chip",
+     "quat": [
+      0.6621,
+      0,
+      -0.7494,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0062,
+     "height": 0.019,
+     "pos": [
+      0,
+      0,
+      0
+     ],
+     "material": "chrome_dk",
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0028,
+     "height": 0.023,
+     "pos": [
+      0,
+      0,
+      0
      ],
      "material": "steel",
      "quat": [
-      0.9004,
+      0.7071,
+      0.7071,
       0,
-      0.435,
       0
      ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0034,
+     "height": 0.017,
+     "pos": [
+      -0.0092,
+      0,
+      -0.0508
+     ],
+     "material": "steel",
+     "quat": [
+      0.7071,
+      0.7071,
+      0,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0042,
+     "height": 0.012,
+     "pos": [
+      -0.0486,
+      0,
+      -0.0666
+     ],
+     "quat": [
+      0.67,
+      0,
+      -0.7423,
+      0
+     ],
+     "material": "rubber",
      "contype": 0,
      "conaffinity": 0
     }
@@ -4352,15 +11002,55 @@
    "metalness": 0.2,
    "roughness": 0.4
   },
-  "line": {
+  "dyneema": {
    "rgba": [
-    0.92,
-    0.92,
-    0.9,
+    0.22,
+    0.22,
+    0.24,
     1
    ],
    "metalness": 0,
-   "roughness": 0.55
+   "roughness": 0.7
+  },
+  "cable": {
+   "rgba": [
+    0.025,
+    0.025,
+    0.028,
+    1
+   ],
+   "metalness": 0.15,
+   "roughness": 0.42
+  },
+  "invis": {
+   "rgba": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "metalness": 0,
+   "roughness": 1
+  },
+  "chrome_dk": {
+   "rgba": [
+    0.5,
+    0.52,
+    0.58,
+    1
+   ],
+   "metalness": 1,
+   "roughness": 0.22
+  },
+  "chrome": {
+   "rgba": [
+    0.86,
+    0.88,
+    0.92,
+    1
+   ],
+   "metalness": 1,
+   "roughness": 0.12
   },
   "blue": {
    "rgba": [
@@ -4372,15 +11062,15 @@
    "metalness": 1,
    "roughness": 0.14
   },
-  "chrome": {
+  "rubber": {
    "rgba": [
-    0.86,
-    0.88,
-    0.92,
+    0.04,
+    0.04,
+    0.045,
     1
    ],
-   "metalness": 1,
-   "roughness": 0.12
+   "metalness": 0,
+   "roughness": 0.85
   }
  },
  "constraint": {

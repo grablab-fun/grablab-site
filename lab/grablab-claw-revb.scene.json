@@ -121,6 +121,56 @@
    "metalness": 0.6,
    "roughness": 0.35
   },
+  "cable": {
+   "rgba": [
+    0.025,
+    0.025,
+    0.028,
+    1
+   ],
+   "metalness": 0.15,
+   "roughness": 0.42
+  },
+  "dyneema": {
+   "rgba": [
+    0.22,
+    0.22,
+    0.24,
+    1
+   ],
+   "metalness": 0,
+   "roughness": 0.7
+  },
+  "invis": {
+   "rgba": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "metalness": 0,
+   "roughness": 1
+  },
+  "rubber": {
+   "rgba": [
+    0.04,
+    0.04,
+    0.045,
+    1
+   ],
+   "metalness": 0,
+   "roughness": 0.85
+  },
+  "chrome_dk": {
+   "rgba": [
+    0.5,
+    0.52,
+    0.58,
+    1
+   ],
+   "metalness": 1,
+   "roughness": 0.22
+  },
   "yellow": {
    "rgba": [
     0.95,
@@ -403,33 +453,33 @@
   },
   "concrete": {
    "rgba": [
-    0.1,
-    0.11,
-    0.15,
+    0.025,
+    0.028,
+    0.04,
     1
    ],
-   "metalness": 0.05,
-   "roughness": 0.95
+   "metalness": 0.35,
+   "roughness": 0.32
   },
   "wall": {
    "rgba": [
-    0.06,
-    0.07,
-    0.11,
+    0.018,
+    0.02,
+    0.032,
     1
    ],
-   "metalness": 0.12,
-   "roughness": 0.75
+   "metalness": 0.1,
+   "roughness": 0.85
   },
   "wall_lt": {
    "rgba": [
-    0.1,
-    0.12,
-    0.18,
+    0.022,
+    0.025,
+    0.04,
     1
    ],
-   "metalness": 0.15,
-   "roughness": 0.7
+   "metalness": 0.1,
+   "roughness": 0.85
   },
   "paint": {
    "rgba": [
@@ -508,9 +558,9 @@
   },
   "pillar": {
    "rgba": [
-    0.08,
-    0.1,
-    0.17,
+    0.03,
+    0.035,
+    0.05,
     1
    ],
    "metalness": 0.3,
@@ -518,9 +568,9 @@
   },
   "acoustic": {
    "rgba": [
-    0.09,
-    0.13,
-    0.3,
+    0.03,
+    0.04,
+    0.08,
     1
    ],
    "metalness": 0.05,
@@ -531,7 +581,7 @@
     0.75,
     0.82,
     1,
-    0.07
+    0.03
    ],
    "metalness": 0.1,
    "roughness": 0.05
@@ -12930,86 +12980,6 @@
       0.05
      ],
      "material": "concrete"
-    },
-    {
-     "type": "box",
-     "size": [
-      1.5,
-      1.5,
-      0.006
-     ],
-     "pos": [
-      0,
-      0,
-      0.003
-     ],
-     "material": "paint",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      1.52,
-      0.016,
-      0.01
-     ],
-     "pos": [
-      0,
-      -0.76,
-      0.005
-     ],
-     "material": "led_blue",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      1.52,
-      0.016,
-      0.01
-     ],
-     "pos": [
-      0,
-      0.76,
-      0.005
-     ],
-     "material": "led_blue",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.016,
-      1.52,
-      0.01
-     ],
-     "pos": [
-      -0.76,
-      0,
-      0.005
-     ],
-     "material": "led_blue",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.016,
-      1.52,
-      0.01
-     ],
-     "pos": [
-      0.76,
-      0,
-      0.005
-     ],
-     "material": "led_blue",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -13450,19 +13420,6 @@
      "material": "lamp_lens",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.09,
-     "height": 0.35,
-     "pos": [
-      0,
-      0.45,
-      2.03
-     ],
-     "material": "beam_1",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -13543,45 +13500,6 @@
      "material": "lamp_lens",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.09,
-     "height": 0.35,
-     "pos": [
-      -1.2,
-      1.45,
-      2.03
-     ],
-     "material": "beam_1",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.16,
-     "height": 0.45,
-     "pos": [
-      -1.2,
-      1.45,
-      1.63
-     ],
-     "material": "beam_2",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.24,
-     "height": 0.5,
-     "pos": [
-      -1.2,
-      1.45,
-      1.16
-     ],
-     "material": "beam_3",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -13660,45 +13578,6 @@
       2.235
      ],
      "material": "lamp_lens",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.09,
-     "height": 0.35,
-     "pos": [
-      1.2,
-      1.45,
-      2.03
-     ],
-     "material": "beam_1",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.16,
-     "height": 0.45,
-     "pos": [
-      1.2,
-      1.45,
-      1.63
-     ],
-     "material": "beam_2",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.24,
-     "height": 0.5,
-     "pos": [
-      1.2,
-      1.45,
-      1.16
-     ],
-     "material": "beam_3",
      "contype": 0,
      "conaffinity": 0
     }
