@@ -31,7 +31,7 @@
     f.src = labUrl; f.title = "Grablab claw in SimArena"; f.allow = "fullscreen; clipboard-write"; f.loading = "eager";
     /* SimArena takes a while to start its physics engine: say so, and offer the direct link if it takes too long */
     let ld = frame.querySelector(".lab-loading");
-    if (!ld){ ld = document.createElement("div"); ld.className = "lab-loading"; ld.innerHTML = '<b>Loading the lab</b><i></i><small>Starting the physics engine, about 9 MB. This takes 10 to 30 seconds.</small>'; frame.appendChild(ld); }
+    if (!ld){ ld = document.createElement("div"); ld.className = "lab-loading"; ld.innerHTML = '<b>Loading the lab</b><i></i><small><span style="white-space:nowrap">Starting the physics engine, about 9 MB.</span><br>This takes 10 to 30 seconds.</small>'; frame.appendChild(ld); }
     frame.classList.add("loading");
     const done = () => setTimeout(() => frame.classList.remove("loading"), 6000);
     f.addEventListener("load", done, { once:true });
