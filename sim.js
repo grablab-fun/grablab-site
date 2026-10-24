@@ -53,7 +53,6 @@
     const [n, mir, off] = FEED[i % FEED.length];
     return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=5" poster="assets/feeds/feed${n}.jpg?v=5" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
   }
-  function capCluster(n){ return `<span class="pc-caps">${["","v","r"].slice(0,n).map(k => `<i class="cap ${k}"></i>`).join("")}</span>`; }
   /* project socials (demo projects: icons only, real ones link out) */
   const SOC = {
     x:'<svg viewBox="0 0 24 24"><path d="M3 3l7.5 9.5L3.5 21H6l5.5-6.3L16 21h5l-7.9-10 7-8h-2.5l-5 5.7L8 3z"/></svg>',
@@ -75,11 +74,6 @@
     return d;
   }
   const hh = d => String(d.getUTCHours()).padStart(2,"0") + ":00 UTC";
-  function whenLabel(u){
-    const d = startOf(u), now = new Date();
-    const today = d.getUTCDate() === now.getUTCDate() && d - now < 864e5;
-    return (u.day < 0 && today ? "Tonight " : DAYS[d.getUTCDay()] + " ") + hh(d);
-  }
   function dayWord(u){
     const d = startOf(u), now = new Date(), day = 864e5;
     const dd = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()), nd = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
@@ -145,13 +139,6 @@
       <div class="pq-h"><img class="pc-logo" src="${p.logo}" alt="" /><div class="pq-n"><b>${p.name}</b><span><em>${p.tk}</em>${p.tags}</span></div><span class="pq-up"><b>+${up}</b><small>plays</small></span></div>
       <ul class="pq-l">${qs.map(q => `<li><img src="assets/icons/${QIMG[q.k]}.webp" alt="" /><span class="pq-t">${q.t}</span><span class="pq-r">+${q.r}</span><button class="qc-cta" type="button">${q.cta}</button></li>`).join("")}</ul>
       <div class="pq-p"><span class="pq-bar"><i></i></span><small><b>0</b> / ${qs.length} done</small></div>
-    </div>`;
-  }
-  function questCard(q){
-    return `<div class="qc" style="--c:#7db0ff">
-      <span class="qc-ic"><img src="assets/icons/${QIMG[q.k]}.webp" alt="" /></span>
-      <div class="qc-b"><b>${q.title}</b><p>${q.desc}</p></div>
-      <div class="qc-side"><span class="qc-reward">${q.reward}</span><button class="qc-cta" type="button">${q.cta}</button></div>
     </div>`;
   }
   function upcomingCard(u){

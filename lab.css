@@ -1,12 +1,11 @@
 /* ============ PHYSICS LAB : our claw in MuJoCo, embedded from SimArena ============ */
-.lab-machine{position:relative;height:min(74vh,700px);aspect-ratio:3/4;display:grid;place-items:center}
-.lab-machine video{width:100%;height:100%;object-fit:contain}
-.lab-tag{position:absolute;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);padding:9px 14px;border-radius:999px;
-  background:rgba(5,9,24,.62);border:1px solid rgba(180,186,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:labFloat 5s ease-in-out infinite}
-.lab-tag::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#3b7bff;box-shadow:0 0 10px #3b7bff;margin-right:9px;vertical-align:1px}
-.lab-tag.t1{top:16%;left:-4%}
-.lab-tag.t2{top:46%;right:-6%;animation-delay:-1.6s}
-.lab-tag.t3{bottom:18%;left:2%;animation-delay:-3.2s}
+
+
+
+
+
+
+
 @keyframes labFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
 .lab-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:24px;overflow:hidden;padding:0;
@@ -40,38 +39,38 @@
 .lab-credit a{color:var(--ink-2);border-bottom:1px solid rgba(180,186,255,.3)}
 
 @media(max-width:1000px){.lab-ctrl{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){.lab-machine{height:56vh}.lab-tag.t1{left:0}.lab-tag.t2{right:0}}
+
 @media(max-width:620px){.lab-ctrl{grid-template-columns:1fr}.lab-frame{aspect-ratio:3/4}}
 
 /* clean spec strip in the hero copy (replaces the scattered floating tags) */
-.lab-specs{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
-.lab-specs span{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);padding:8px 13px;border-radius:999px;border:1px solid rgba(180,186,255,.22);background:rgba(5,9,24,.4)}
-.lab-specs .pwr{color:#071029;background:var(--blue-chrome);border-color:transparent;font-weight:600}
+
+
+
 
 /* studio render of the machine + GrabLab logo on the marquee */
-.lab-machine.studio{aspect-ratio:3/4;height:min(78vh,760px);display:block;position:relative;place-items:unset}
-.lab-mach{width:100%;height:100%;object-fit:contain;display:block}
-.lab-logo{position:absolute;top:10.5%;left:50%;transform:translateX(-50%);width:30%;max-width:210px;opacity:.95;pointer-events:none;filter:drop-shadow(0 1px 6px rgba(0,0,0,.55))}
+
+
+
 
 /* logo on the new machine's marquee (transparent render) */
-.lab-machine.studio{height:min(82vh,840px);transform:translateX(5%)}
-@media(max-width:900px){.lab-machine.studio{transform:none;height:min(66vh,580px)}}
-.lab-machine.studio .lab-logo{top:5%;left:45.5%;width:29%;max-width:none;transform:translateX(-50%) rotate(-2.2deg)}
+
+
+
 
 /* hide the size/desktop note under LOAD THE LAB */
 .lab-cta small{display:none}
 
 /* partner logos : Powered by CodecFlow pill + credit line */
-.lab-specs .pwr{display:inline-flex;align-items:center;gap:8px;transition:transform .2s,box-shadow .2s}
-.lab-specs .pwr img{width:14px;height:14px;display:block}
-.lab-specs .pwr:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(59,123,255,.35)}
+
+
+
 .lab-credit{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 9px}
 .lab-credit i{font-style:normal;opacity:.6}
 .lab-credit a.lc-logo{display:inline-flex;align-items:center;gap:7px;color:var(--ink);border-bottom:0;opacity:.85;transition:opacity .2s}
 .lab-credit a.lc-logo:hover{opacity:1}
 .lab-credit a.lc-logo img{height:15px;width:auto;display:block}
 .lab-credit a.lc-logo img.mj{height:17px}
-.lab-specs a.pwr{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:8px 13px;border-radius:999px;color:#071029;background:var(--blue-chrome);border:1px solid transparent;font-weight:600}
+
 .lab-credit i.sep{display:inline-block;width:1px;height:12px;background:currentColor;opacity:.35}
 /* credit line sits on a bright sky: give it its own dark glass strip so it reads */
 .lab-credit{width:fit-content;max-width:calc(100% - 32px);margin:30px auto 0;padding:12px 22px;border-radius:999px;color:#b9c0dc;font-size:11px;

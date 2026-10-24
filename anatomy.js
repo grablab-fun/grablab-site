@@ -68,7 +68,7 @@ try {
 }
 renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
 renderer.shadowMap.enabled = false;
-const scene = new THREE.Scene(); scene.background = null; const PIXBG = new THREE.Color(0x0a0c1a);
+const scene = new THREE.Scene(); scene.background = null;
 const camera = new THREE.PerspectiveCamera(32, 1, .05, 40);
 const root = new THREE.Group(); root.rotation.x = -Math.PI/2; scene.add(root);   // z-up scene into y-up three
 
@@ -77,8 +77,6 @@ scene.add(new THREE.HemisphereLight(0xc3caff, 0x141830, 1.3));
 const key = new THREE.DirectionalLight(0xf3f5ff, 2.5); key.position.set(-1.4, 2.6, 2.2); scene.add(key);
 key.castShadow = false; key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -.0004; key.shadow.normalBias = .02;
 Object.assign(key.shadow.camera, { left:-1.7, right:1.7, top:1.9, bottom:-1.3, near:.5, far:8 });
-/* shadow catcher under the machine: the only thing the floor does */
-const catcher = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.ShadowMaterial({ opacity:.55 })); catcher.receiveShadow = true; catcher.rotation.x = -Math.PI/2; catcher.position.y = .004; scene.add(catcher);
 const rim = new THREE.DirectionalLight(0x6f8dff, 2.4); rim.position.set(2.2, 1.4, -2.4); scene.add(rim);
 const fill = new THREE.PointLight(0xffb877, 2.0, 3.5); fill.position.set(.1, 1.0, .1); scene.add(fill);
 
@@ -102,7 +100,7 @@ const fill = new THREE.PointLight(0xffb877, 2.0, 3.5); fill.position.set(.1, 1.0
 
 /* ---------- the machine: built from the BOM and the build tutorial (anatomy-model.js), one group per part ---------- */
 const matCache = new Map(), ents = new Map();
-const capsules = [], mech = {};
+const capsules = [];
 async function load(){
   const fonts = document.fonts ? Promise.all(["700 100px 'Clash Display'", "700 40px 'Satoshi'", "500 40px 'Satoshi'", "800 40px 'Satoshi'"].map(f => document.fonts.load(f))).catch(() => {}) : Promise.resolve();
   /* every material is keyed part|name, so shade() can isolate a part */
@@ -434,31 +432,6 @@ function placeLabels(){
   tip.style.transform = `translate(${Math.round(tipX + 16)}px, ${Math.round(tipY + 14)}px)`; tip.classList.add("on");
 }
 
-/* ---------- claw cycle: a slow grab, even while exploded ---------- */
-const CY = { t:0, cap:null, held:null };
-const CHUTE = [.38, -.39], PICK = [-.30, -.31], S = .79, GRAB_Z = .22 + .03 + .087*S, TRAVEL = .97 - .025 - GRAB_Z, SEG = TRAVEL/8;
-const ease = x => x < .5 ? 2*x*x : 1 - Math.pow(-2*x + 2, 2)/2;
-let motionOn = false;
-function clawCycle(dt){
-  if (!mech.move_y) return;
-  if (!motionOn) return; CY.t = (CY.t + dt) % 22;
-  const t = CY.t; let x = 0, y = 0, lift = 0, open = 0, hold = false;
-  const seg = (a, b) => t >= a && t < b ? ease((t - a)/(b - a)) : (t >= b ? 1 : 0);
-  /* 0-3 travel to pick, 3-6 lower, 6-7 close, 7-10 raise, 10-14 travel to chute, 14-15 open, 15-17 hold open, 17-20 home, 20-22 rest */
-  const toPick = seg(0, 3), down = seg(3, 6) - seg(7, 10), closeK = seg(6, 7) - seg(14, 15), toChute = seg(10, 14), home = seg(17, 20);
-  x = PICK[0]*toPick + (CHUTE[0] - PICK[0])*toChute - CHUTE[0]*home; y = PICK[1]*toPick + (CHUTE[1] - PICK[1])*toChute - CHUTE[1]*home;
-  lift = -SEG*Math.max(0, down); open = (1 - closeK)*.55 + (t >= 3 && t < 7 ? .55*(1 - seg(6, 7)) : 0); hold = closeK > .98 && t > 7.2;
-  mech.move_y.o.position.y = mech.move_y.o.userData.home.y + y + byId("gantry").ex[1]*explode;
-  mech.move_x.o.position.x = mech.move_x.o.userData.home.x - x;
-  for (let s = 1; s <= 8; s++) mech["seg_" + s].o.position.z = (s === 1 ? mech.seg_1.o.userData.home.z + byId("claw").ex[2]*explode : 0) + lift;
-  for (let k = 1; k <= 3; k++) mech["finger_" + k].o.rotation.y = -.6 - .55 + open;   /* geometry is built 0.6 rad more closed; opening swings the tip outward */
-  /* the capsule under the pick point rides with the claw when it is closed, then falls into the chute */
-  if (!CY.cap) CY.cap = capsules.reduce((b, c) => Math.hypot(c.userData.home.x - PICK[0], c.userData.home.y - PICK[1]) < Math.hypot(b.userData.home.x - PICK[0], b.userData.home.y - PICK[1]) ? c : b, capsules[0]);
-  const c = CY.cap; const hubWorld = new THREE.Vector3(); mech.seg_8.o.getWorldPosition(hubWorld); root.worldToLocal(hubWorld);
-  if (hold){ c.position.set(hubWorld.x, hubWorld.y, hubWorld.z - .025 - .065); c.userData.drop = null; }
-  else if (t >= 15 && t < 17.5){ c.userData.drop ??= { z:c.position.z, t0:t }; const k = Math.min(1, (t - c.userData.drop.t0)/1.1); c.position.set(CHUTE[0], CHUTE[1] + .02, c.userData.drop.z - (c.userData.drop.z - .11)*k*k); c.visible = k < .97; }
-  else if (t >= 17.5 || t < 3){ c.visible = true; c.position.copy(c.userData.home).addScaledVector(c.userData.spread, explode); }
-}
 
 /* ---------- tour: for the video and the lazy ---------- */
 const tourBtn = $("#tour");
@@ -478,7 +451,6 @@ function tourStep(dt){
 const q = new URLSearchParams(location.search);
 $("#pix").onclick = e => { pixel = !pixel; e.currentTarget.classList.toggle("on", pixel); document.body.classList.toggle("pix", pixel); post.uniforms.pixel.value = pixel ? 1 : 0; scene.background = null; resize(); };
 if (q.get("pixel") === "1") $("#pix").click();
-if (q.get("motion") === "1") motionOn = true;
 $("#reset").onclick = () => { setSelected(null); setExplode(0); orb.px = orb.py = orb.pz = 0; orb.thT = -1.57; orb.phT = 1.28; orb.zoom = 1; if (tour) stopTour(); };
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
@@ -513,27 +485,12 @@ function frame(now){
   if (!estop.ms.length) root.traverse(o => { if (/^panel_estop_(mushroom|rim)/.test(o.name)){ o.userData.y0 = o.position.y; estop.ms.push(o); } });
   estop.k += ((estop.on ? 1 : 0) - estop.k)*Math.min(1, dt*14); for (const o of estop.ms) o.position.y = o.userData.y0 - .007*estop.k;
   if (toastT > 0 && (toastT -= dt) <= 0) toast.classList.remove("on");
-  applyExplode(); clawCycle(dt); shade(); capAnim(dt); easeCam(dt); cam();
+  applyExplode(); shade(); capAnim(dt); easeCam(dt); cam();
   renderer.toneMappingExposure += ((selected ? 1.08 : 1.0) - renderer.toneMappingExposure)*Math.min(1, dt*4);
   if (pixel){ renderer.setRenderTarget(rt); renderer.setClearColor(0x000000, 0); renderer.clear(); renderer.render(scene, camera); renderer.setRenderTarget(null); post.uniforms.t.value = now/1000; renderer.render(postScene, postCam); }
   else { renderer.render(scene, camera); if (outlinePass()){ renderer.autoClear = false; renderer.render(outlineScene, camera); renderer.autoClear = true; } }
   placeLabels();
   if (!REC) requestAnimationFrame(frame);
-}
-function makeThumbs(){
-  const TW = 288, TH = 192, rt2 = new THREE.WebGLRenderTarget(TW, TH), cam2 = new THREE.PerspectiveCamera(28, TW/TH, .02, 40), buf = new Uint8Array(TW*TH*4);
-  const cv = document.createElement("canvas"); cv.width = TW; cv.height = TH; const g = cv.getContext("2d"), img = g.createImageData(TW, TH);
-  const catcherWas = catcher.visible; catcher.visible = false; const expWas = renderer.toneMappingExposure; renderer.toneMappingExposure = 1.25;
-  for (const p of PARTS){
-    for (const [k, m] of matCache) m.visible = k.split("|")[0] === p.id;
-    if (!p.lbox || p.lbox.isEmpty()) continue; partBox(p, box); box.expandByScalar(.03); box.getBoundingSphere(sph); const d = sph.radius/Math.sin(THREE.MathUtils.degToRad(14))*1.05;
-    const th = p.th ?? .95, ph = p.ph ?? 1.05, sp = Math.sin(ph), c = Math.cos(ph);
-    cam2.position.set(sph.center.x + d*sp*Math.cos(th), sph.center.y + d*c, sph.center.z + d*sp*Math.sin(th)); cam2.lookAt(sph.center); cam2.updateProjectionMatrix();
-    renderer.setRenderTarget(rt2); renderer.setClearColor(0x000000, 0); renderer.clear(); renderer.render(scene, cam2); renderer.readRenderTargetPixels(rt2, 0, 0, TW, TH, buf);
-    for (let y = 0; y < TH; y++) img.data.set(buf.subarray(y*TW*4, (y + 1)*TW*4), (TH - 1 - y)*TW*4);
-    g.putImageData(img, 0, 0); const el = list.querySelector(`[data-id="${p.id}"] .th`); if (el) el.src = cv.toDataURL("image/png");
-  }
-  renderer.setRenderTarget(null); for (const [, m] of matCache) m.visible = m.opacity > .01; catcher.visible = catcherWas; renderer.toneMappingExposure = expWas; rt2.dispose();
 }
 load().then(() => {
   root.traverse(o => { if (o.isMesh && !/pushrod|estop/.test(o.name)){ o.updateMatrix(); o.matrixAutoUpdate = false; } });
@@ -541,5 +498,5 @@ load().then(() => {
   buildInstances(); syncInstances();
   wake(4000); resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, recFrame:(t, T) => { const k = t/T, ease = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2;
     explodeTarget = explode = k < .16 ? 0 : k < .42 ? ease((k - .16)/.26) : k < .6 ? 1 : k < .86 ? 1 - ease((k - .6)/.26) : 0;
-    orb.th = -1.2 + .42*Math.sin(2*Math.PI*k); orb.ph = 1.16; orb.vth = orb.vph = 0; activeUntil = 1e15; frame(performance.now()); return renderer.domElement.toDataURL("image/png"); }, stats:() => { const by = {}, nm = {}; root.traverse(o => { if (o.isMesh){ by[o.userData.part] = (by[o.userData.part] || 0) + 1; const k = o.userData.part === "capsules" ? "capsule" : o.name; nm[k] = (nm[k] || 0) + 1; } }); return { by, top:Object.entries(nm).sort((a, b) => b[1] - a[1]).slice(0, 25) }; }, overlap:(pre) => { root.updateMatrixWorld(true); const all = []; root.traverse(o => { if (o.isMesh){ o.geometry.computeBoundingBox(); all.push([o, o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld).expandByScalar(-.0006)]); } }); const out = []; for (const [a, ba] of all) if (a.name.startsWith(pre)) for (const [c, bc] of all) if (c !== a && !c.name.startsWith(pre) && ba.intersectsBox(bc)) out.push(a.name + ' x ' + c.name); return out; }, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
+    orb.th = -1.2 + .42*Math.sin(2*Math.PI*k); orb.ph = 1.16; orb.vth = orb.vph = 0; activeUntil = 1e15; frame(performance.now()); return renderer.domElement.toDataURL("image/png"); }, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
   .catch(e => { console.error(e); $("#stage").classList.add("err"); });
