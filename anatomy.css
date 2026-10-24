@@ -15,7 +15,7 @@ body.pix #view{image-rendering:pixelated;image-rendering:crisp-edges}
 .an-lines line.s{stroke:rgba(120,170,255,.55)}.an-lines circle.s{fill:#9cc0ff}
 .an-card .inside{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin:0 0 18px;padding-top:6px;border-top:1px solid rgba(180,186,255,.14)}
 .an-card .inside span{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--ink-2);padding:7px 0;border-bottom:1px solid rgba(180,186,255,.08);line-height:1.3}
-.an-card .inside span img{width:22px;height:22px;object-fit:contain;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.an-card .inside span img{width:28px;height:28px;object-fit:contain;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
 .an-boot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-3);transition:opacity .4s}
 .an-boot span{width:10px;height:10px;border-radius:50%;background:var(--accent);animation:anpulse 1s ease-in-out infinite}
 @keyframes anpulse{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
@@ -50,7 +50,7 @@ body.ready .an-boot{opacity:0;pointer-events:none}
 .an-card::after{display:none}
 .an-card.on{opacity:1;transform:none;pointer-events:auto}
 .an-card .n{font-family:var(--mono);font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#9cc0ff}
-.an-card h3{font-size:34px;margin:8px 0 2px;font-family:var(--display);letter-spacing:-.01em;text-transform:uppercase}
+.an-card h3{font-size:34px;margin:8px 0 14px;font-family:var(--display);letter-spacing:-.01em;text-transform:uppercase}
 .an-card .spec{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-3);margin-bottom:12px}
 .an-card p{margin:0 0 14px;font-size:14.5px;color:var(--ink-2);line-height:1.55}
 .an-card .inside{display:grid;grid-template-columns:1fr 1fr;gap:5px 14px;margin:0 0 16px;padding-top:12px;border-top:1px solid rgba(201,191,255,.12)}

@@ -37,17 +37,59 @@ const PARTS = [
 ];
 const KEEP = new Set(["frame","floor_mdf","base_box","electronics","chute","gantry_static","claw"]);
 const byId = id => PARTS.find(p => p.id === id);
-const ICON = { base:"assets/icons/cabinet.png", electronics:"assets/icons/chip.png", tray:"assets/sub/inventory.png", chute:"assets/sub/v-beam.png", capsules:"assets/sub/cap.png", frame:"assets/icons/cabinet.png", gantry:"assets/icons/joystick.png", winch:"assets/icons/gauge.png", claw:"assets/icons/claw.png" };
+const ICON = {base:"assets/parts/estop.png", electronics:"assets/parts/pi.png", tray:"assets/parts/rim.png", chute:"assets/parts/funnel.png", capsules:"assets/parts/capsule.png", frame:"assets/parts/post.png", gantry:"assets/parts/rail.png", winch:"assets/parts/spool.png", claw:"assets/parts/claw.png" };
 const SUBICON = {
-  "E-stop, 22 mm":"assets/icons/proof.png", "QR plate":"assets/sub/quest.png", "Wordmark":"assets/brand/mark-chrome-256.png", "Fan + grille":"assets/icons/gauge.png", "Power inlet":"assets/icons/chip.png", "Prize drawer":"assets/sub/vault.png",
-  "Raspberry Pi":"assets/icons/chip.png", "OPTIGA Trust M shield":"assets/sub/v-sign.png", "Motion board":"assets/icons/chip.png", "12 V supply":"assets/icons/gauge.png", "Claw driver":"assets/icons/claw.png", "WAGO terminals":"assets/icons/chip.png", "Beam relay":"assets/sub/v-beam.png",
-  "MDF floor, black":"assets/sub/inventory.png", "Rim, 45 mm":"assets/icons/cabinet.png", "Chute opening, 160 mm":"assets/sub/v-settled.png",
-  "Guard glass + frame":"assets/icons/cabinet.png", "Break beam pair":"assets/sub/v-beam.png", "Chute camera + LED":"assets/sub/v-camera.png", "Funnel, 160 to 90":"assets/sub/v-settled.png", "Ramp":"assets/sub/v-settled.png", "NFC cradle, PN532":"assets/sub/nft.png", "Servo flap, MG90S":"assets/icons/gauge.png", "Chute camera":"assets/sub/camera.png",
-  "50 mm shell":"assets/sub/cap.png", "NTAG215 sticker inside":"assets/sub/nft.png", "Gold or violet halves":"assets/sub/token.png",
-  "4 posts, 1000 mm":"assets/icons/cabinet.png", "Top ring":"assets/icons/cabinet.png", "Floor ring, 150 mm":"assets/icons/cabinet.png", "Corner brackets":"assets/icons/proof.png", "Rubber feet":"assets/sub/v-settled.png",
-  "Y rail, left":"assets/icons/joystick.png", "Y rail, right":"assets/icons/joystick.png", "X beam, 2040":"assets/icons/joystick.png", "Y motors, NEMA 17":"assets/icons/gauge.png", "GT2 belt":"assets/icons/gauge.png", "Drag chain":"assets/icons/chip.png", "Play camera":"assets/sub/camera.png",
-  "MGN12 block":"assets/icons/gauge.png", "Winch spool, 30 mm":"assets/icons/gauge.png", "Pancake NEMA 17":"assets/icons/gauge.png", "POV camera":"assets/sub/camera.png", "Z end stop":"assets/icons/proof.png", "Cable gland":"assets/icons/chip.png",
-  "Swivel on Dyneema":"assets/icons/claw.png", "Coil cable, 6 core":"assets/icons/chip.png", "Hub, 12 V actuator":"assets/icons/claw.png", "Blue collar":"assets/icons/claw.png", "3 printed fingers":"assets/icons/claw.png", "Rubber tips":"assets/sub/v-settled.png" };
+  "E-stop, 22 mm":"assets/parts/estop.png",
+  "QR plate":"assets/parts/qr.png",
+  "Wordmark":"assets/brand/mark-chrome-256.png",
+  "Fan + grille":"assets/parts/fan.png",
+  "Power inlet":"assets/parts/inlet.png",
+  "Prize drawer":"assets/parts/drawer.png",
+  "Raspberry Pi":"assets/parts/pi.png",
+  "OPTIGA Trust M shield":"assets/parts/optiga.png",
+  "Motion board":"assets/parts/motionboard.png",
+  "12 V supply":"assets/parts/psu.png",
+  "Claw driver":"assets/parts/clawdriver.png",
+  "WAGO terminals":"assets/parts/wago.png",
+  "Beam relay":"assets/parts/relay.png",
+  "MDF floor, black":"assets/parts/mdf.png",
+  "Rim, 45 mm":"assets/parts/rim.png",
+  "Chute opening, 160 mm":"assets/parts/opening.png",
+  "Guard glass + frame":"assets/parts/guard.png",
+  "Break beam pair":"assets/parts/beam.png",
+  "Chute camera + LED":"assets/parts/webcam.png",
+  "Funnel, 160 to 90":"assets/parts/funnel.png",
+  "Ramp":"assets/parts/ramp.png",
+  "NFC cradle, PN532":"assets/parts/nfcreader.png",
+  "Servo flap, MG90S":"assets/parts/servo.png",
+  "Chute camera":"assets/parts/webcam.png",
+  "50 mm shell":"assets/parts/capsule.png",
+  "NTAG215 sticker inside":"assets/parts/nfcsticker.png",
+  "Gold or violet halves":"assets/parts/capsuleopen.png",
+  "4 posts, 1000 mm":"assets/parts/post.png",
+  "Top ring":"assets/parts/framering.png",
+  "Floor ring, 150 mm":"assets/parts/framering.png",
+  "Corner brackets":"assets/parts/bracket.png",
+  "Rubber feet":"assets/parts/foot.png",
+  "Y rail, left":"assets/parts/rail.png",
+  "Y rail, right":"assets/parts/rail.png",
+  "X beam, 2040":"assets/parts/beam2040.png",
+  "Y motors, NEMA 17":"assets/parts/nema17.png",
+  "GT2 belt":"assets/parts/belt.png",
+  "Drag chain":"assets/parts/dragchain.png",
+  "Play camera":"assets/parts/webcam.png",
+  "MGN12 block":"assets/parts/rail.png",
+  "Winch spool, 30 mm":"assets/parts/spool.png",
+  "Pancake NEMA 17":"assets/parts/pancake.png",
+  "POV camera":"assets/parts/webcam.png",
+  "Z end stop":"assets/parts/endstop.png",
+  "Cable gland":"assets/parts/gland.png",
+  "Swivel on Dyneema":"assets/parts/swivel.png",
+  "Coil cable, 6 core":"assets/parts/coil.png",
+  "Hub, 12 V actuator":"assets/parts/actuator.png",
+  "Blue collar":"assets/parts/collar.png",
+  "3 printed fingers":"assets/parts/claw.png",
+  "Rubber tips":"assets/parts/tips.png" };
 const PAL = [[.047,.051,.098],[.094,.09,.188],[.192,.161,.31],[.33,.27,.42],[.545,.475,.576],[.855,.843,.847],[1,.824,.478],[.788,.714,1],[.231,.482,1],[.122,.31,.82]];
 
 const stage = $("#stage"), canvas = $("#view");
@@ -419,7 +461,7 @@ function cam(){
 stage.addEventListener("contextmenu", e => e.preventDefault());
 stage.addEventListener("pointerdown", e => { orb.down = e.button !== 2; orb.pan = e.button === 2; orb.phT = null; orb.thT = null; orb.lx = e.clientX; orb.ly = e.clientY; orb.idle = 0; stage.setPointerCapture(e.pointerId); });
 stage.addEventListener("pointermove", e => { mouse.x = (e.clientX - stage.getBoundingClientRect().left)/stage.clientWidth*2 - 1; mouse.y = -((e.clientY - stage.getBoundingClientRect().top)/stage.clientHeight)*2 + 1;
-  if (orb.pan){ const dx = e.clientX - orb.lx, dy = e.clientY - orb.ly; orb.lx = e.clientX; orb.ly = e.clientY; const k = orb.r*orb.zoom*.0014, m = camera.matrixWorld.elements;
+  if (orb.pan){ const dx = e.clientX - orb.lx, dy = e.clientY - orb.ly; orb.lx = e.clientX; orb.ly = e.clientY; const k = orb.r*orb.zoom*.00045, m = camera.matrixWorld.elements;
     orb.px += (-dx*m[0] + dy*m[4])*k; orb.py += (-dx*m[1] + dy*m[5])*k; orb.pz += (-dx*m[2] + dy*m[6])*k; return; }
   if (!orb.down) return; orb.vth = (e.clientX - orb.lx)*.006; orb.vph = (e.clientY - orb.ly)*.006; orb.lx = e.clientX; orb.ly = e.clientY; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); orb.moved = (orb.moved || 0) + Math.abs(orb.vth) + Math.abs(orb.vph); });
 stage.addEventListener("pointerup", () => { orb.down = false; orb.pan = false; });
@@ -462,7 +504,7 @@ function setSelected(p, fromList){
   selected = p; liftK = 0; selectedCap = null; orb.phT = p && p.ph ? p.ph : null; orb.thT = p && p.th != null ? p.th : null; orb.zoom = 1; orb.px = orb.py = orb.pz = 0;
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
-    card.innerHTML = `<span class="n">${p.n} / 09</span><h3>${p.name}</h3><span class="spec">${p.spec}</span><p>${p.text}</p><div class="inside">${p.subs.map(x => `<span><img src="${SUBICON[x[0]] || ICON[p.id]}" alt="" />${x[0]}</span>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><img src="${ICON[p.id]}" alt="" />${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
+    card.innerHTML = `<span class="n">${p.n} / 09</span><h3>${p.name}</h3><p>${p.text}</p><div class="inside">${p.subs.map(x => `<span><img src="${SUBICON[x[0]] || ICON[p.id]}" alt="" />${x[0]}</span>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><img src="assets/parts/shield.png" alt="" />${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
 
     card.classList.add("on"); wireCard();
     if (explodeTarget < .5 && !tour) setExplode(.72);
@@ -500,9 +542,9 @@ function selectCap(o){
   selectedCap = o; animCap = o; selected = byId("capsules"); liftK = 0;
   for (const li of list.children) li.classList.toggle("on", li.dataset.id === "capsules");
   const num = o.name.replace("capsule_", "");
-  card.innerHTML = `<span class="n">Capsule #${num}</span><h3>Custom NFC capsule</h3><span class="spec">50 mm shell, any prize</span>
+  card.innerHTML = `<span class="n">Capsule #${num}</span><h3>Custom NFC capsule</h3>
     <p>NTAG215 inside, factory UID. The prize is whatever the project loads: an SPL token, an NFT, a tokenized stock, merch, an off chain code. Mapped to the UID in the published inventory.</p>
-    <div class="inside"><span><img src="assets/sub/token.png" alt="" />SPL token</span><span><img src="assets/sub/nft.png" alt="" />NFT</span><span><img src="assets/sub/chart.png" alt="" />Tokenized stock</span><span><img src="assets/sub/para.png" alt="" />Merch</span><span><img src="assets/sub/quest.png" alt="" />Off chain code</span><span><img src="assets/sub/vault.png" alt="" />Anything else</span></div>
+    <div class="inside"><span><img src="assets/sub/token.png" alt="" />SPL token</span><span><img src="assets/parts/nft.png" alt="" />NFT</span><span><img src="assets/parts/stock.png" alt="" />Tokenized stock</span><span><img src="assets/parts/merch.png" alt="" />Merch</span><span><img src="assets/parts/voucher.png" alt="" />Off chain code</span><span><img src="assets/parts/gift.png" alt="" />Anything else</span></div>
     <a class="proof" href="https://solana.com" target="_blank" rel="noopener"><img src="assets/chains/solana.jpg" alt="" />UID published in the inventory</a><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
   wireCard(); card.classList.add("on");
 }
