@@ -486,3 +486,13 @@
   .lab-go{align-items:center}
   .lab-go b{font-size:30px}
 }
+
+/* physics lab card: title, then the partners on their own row, all inside the card */
+.lab-card{flex-direction:column;align-items:flex-start;gap:12px}
+.lab-card .lab-pwr{padding:12px 0 0;border-left:0;border-top:1px solid rgba(180,186,255,.14);width:100%}
+.lab-dsk{display:none;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-top:4px}
+@media(max-width:620px){
+  .lab-card{display:flex;align-items:center;padding:18px 16px 14px;text-align:center}
+  .lab-card .lab-pwr{position:static;justify-content:center;padding-top:12px;border-top:1px solid rgba(180,186,255,.14);font-size:8.5px}
+  .lab-dsk{display:block}
+}

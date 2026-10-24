@@ -23,8 +23,8 @@
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
 <link rel="stylesheet" href="styles.css?v=20261020w1" />
 <link rel="stylesheet" href="pages.css?v=20261024s6" />
-<link rel="stylesheet" href="sub.css?v=37" />
-<link rel="stylesheet" href="lab.css?v=15" />
+<link rel="stylesheet" href="sub.css?v=44" />
+<link rel="stylesheet" href="lab.css?v=17" />
 </head>
 <body data-page="lab">
 <div class="loader" id="loader" aria-hidden="true">
@@ -37,11 +37,10 @@
   <!-- HERO -->
   <section class="ph">
     <div class="ph-copy">
-      <span class="eyebrow reveal">Physics lab</span>
+      <div class="lab-top reveal"><span class="eyebrow">Physics lab</span><a class="lab-by" href="https://codecflow.ai" target="_blank" rel="noopener">Powered by<img src="assets/brand/partners/codecflow-white.svg" alt="" />CodecFlow</a></div>
       <h1 class="reveal d1"><span class="line">Real physics,</span><span class="line"><span class="hl">Same claw.</span></span></h1>
       <p class="sub reveal d2">Our machine, rebuilt in MuJoCo.<br>Drive it yourself in SimArena.</p>
       <div class="acts reveal d3"><a href="#lab" class="btn btn-primary big" data-lab-load>Open the lab</a><a href="participate.html#simulate" class="btn btn-ghost big">Quick simulator</a></div>
-      <div class="lab-specs reveal d3"><a class="pwr" href="https://codecflow.ai" target="_blank" rel="noopener"><img src="assets/brand/partners/codecflow-dark.svg" alt="" />Powered by CodecFlow</a></div>
     </div>
     <div class="ph-art reveal d2">
       <div class="lab-machine studio">
@@ -57,7 +56,7 @@
       <div class="sh c"><span class="k reveal">Live in your browser</span><h2 class="reveal d1">Drive the <span class="hl">real claw.</span></h2></div>
       <div class="lab-frame glass reveal" id="labFrame">
         <div class="lab-cover" id="labCover">
-          <img src="assets/fmt/holder.jpg?v=4" alt="" />
+          <img src="assets/lab-simarena-cover.webp?v=1" alt="The Grablab claw machine in the SimArena editor" />
           <div class="lab-cta">
             <button class="lab-play" type="button" data-lab-load aria-label="Load the physics lab"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></button>
             <b>Load the lab</b>
@@ -74,14 +73,14 @@
   <!-- FOUR CONTROLS -->
   <section class="blk" id="controls">
     <div class="blk-in">
-      <div class="sh c"><span class="k reveal">Run, Scene tab, click claw, Controls</span><h2 class="reveal d1">Arrows and <span class="hl">two sliders.</span></h2></div>
+      <div class="sh c"><span class="k reveal">Run, Scene tab, click claw, Controls</span><h2 class="reveal d1">Arrows and<br><span class="hl">two sliders.</span></h2></div>
       <div class="lab-ctrl">
         <div class="card glass glass-hover reveal"><div class="top"><img class="ico" src="assets/icons/joystick.png" alt="" /><span class="lab-slot">&larr; &rarr;</span></div><h3>Left, right</h3><p>Arrow keys move the claw</p></div>
         <div class="card glass glass-hover reveal d1"><div class="top"><img class="ico" src="assets/icons/joystick.png" alt="" /><span class="lab-slot">&uarr; &darr;</span></div><h3>Back, front</h3><p>The chute is front right</p></div>
         <div class="card glass glass-hover reveal d2"><div class="top"><img class="ico" src="assets/icons/claw.png" alt="" /><span class="lab-slot">lift</span></div><h3>Lower, raise</h3><p>Left lowers it, right raises it</p></div>
         <div class="card glass glass-hover reveal d3"><div class="top"><img class="ico" src="assets/icons/gauge.png" alt="" /><span class="lab-slot">grip</span></div><h3>Open, grab</h3><p>Left opens it, centre grabs at 70%</p></div>
       </div>
-      <p class="lab-credit reveal">Physics by <a class="lc-logo" href="https://mujoco.org" target="_blank" rel="noopener" aria-label="MuJoCo"><img class="mj" src="assets/brand/partners/mujoco-white.svg" alt="MuJoCo" /></a> <i class="sep"></i> Editor by <a class="lc-logo" href="https://app.simarena.ai" target="_blank" rel="noopener"><img src="assets/brand/partners/simarena-white.svg" alt="" />SimArena</a> from <a class="lc-logo" href="https://codecflow.ai" target="_blank" rel="noopener"><img src="assets/brand/partners/codecflow-white.svg" alt="" />CodecFlow</a></p>
+      <div class="lab-credit reveal"><span class="lcr"><span class="lck">Physics by</span><a class="lc-logo" href="https://mujoco.org" target="_blank" rel="noopener" aria-label="MuJoCo"><img class="mj" src="assets/brand/partners/mujoco-white.svg" alt="MuJoCo" /></a></span><i class="sep"></i><span class="lcr"><span class="lck">Editor by</span><a class="lc-logo" href="https://app.simarena.ai" target="_blank" rel="noopener"><img src="assets/brand/partners/simarena-white.svg" alt="" />SimArena</a><span class="lck">from</span><a class="lc-logo" href="https://codecflow.ai" target="_blank" rel="noopener"><img src="assets/brand/partners/codecflow-white.svg" alt="" />CodecFlow</a></span></div>
     </div>
   </section>
 
@@ -94,6 +93,6 @@
 <script src="site.js?v=20261020w3"></script>
 <script src="consent.js?v=9"></script>
 <script src="sub.js?v=7"></script>
-<script src="lab.js?v=5"></script>
+<script src="lab.js?v=6"></script>
 </body>
 </html>

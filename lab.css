@@ -84,3 +84,24 @@
 @media(max-width:560px){.lab-credit{border-radius:18px;padding:12px 16px}}
 /* laptop heights: the lab window never grows taller than the screen (keeps 16:9, centred) */
 @media (min-width:621px){ .lab-frame{width:min(100%,calc((100vh - 110px) * 16 / 9));margin-left:auto;margin-right:auto} }
+
+/* phones: the note under the cover stays visible */
+html.lab-touch .lab-cta small{display:block}
+html.lab-touch .lab-cta b{font-size:22px}
+
+/* hero: the eyebrow and a small powered by, on one line */
+.lab-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;max-width:560px}
+.lab-top .eyebrow{margin:0}
+.lab-by{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;transition:color .2s}
+.lab-by img{height:13px;width:auto;margin-left:4px}
+.lab-by:hover{color:var(--ink)}
+/* the lab cover is our machine in SimArena */
+.lab-cover img{filter:brightness(.62) saturate(1.05)}
+/* credits: two clean rows on phones */
+.lab-credit .lcr{display:inline-flex;align-items:center;gap:8px}
+@media(max-width:620px){
+  .lab-top{max-width:none;margin-bottom:14px}
+  .lab-credit{flex-direction:column;gap:10px;border-radius:18px;padding:14px 18px}
+  .lab-credit i.sep{width:40px;height:1px}
+  .lab-credit .lcr{flex-wrap:wrap;justify-content:center}
+}
