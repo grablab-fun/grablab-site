@@ -289,12 +289,14 @@ if (nav){
   /* scroll-linked morph: target follows the first 260px of scroll, the drawn value eases toward it every frame (smooth, never a jump) */
   const isl = nav.querySelector(".islands"), RANGE = 260;
   let target = 0, shown = -1, raf = 0;
+  /* the pill width: measured in the condensed state itself, whatever the scroll position, so the button never spills out */
   function measure(){
-    const kids = [...isl.children]; let w = 0;
-    kids.forEach(k => { const prev = k.style.flex; k.style.flex = "none"; w += k.getBoundingClientRect().width; k.style.flex = prev; });
-    w += 18 * (kids.length - 1) + 20 + 16 + 2 + 8;
-    const home = isl.querySelector(".nav-home"); if (home) w -= home.scrollWidth + (parseFloat(getComputedStyle(home.parentElement).columnGap) || 0); /* HOME folds away once condensed */
-    isl.style.setProperty("--pillw", Math.min(w, innerWidth - 24) + "px");
+    const np = nav.style.getPropertyValue("--np"), sc = nav.classList.contains("scrolled");
+    nav.classList.add("measuring", "scrolled"); nav.style.setProperty("--np", "1");
+    const prevW = isl.style.width; isl.style.width = "max-content";
+    const w = isl.getBoundingClientRect().width;
+    isl.style.width = prevW; nav.style.setProperty("--np", np || "0"); nav.classList.toggle("scrolled", sc); nav.classList.remove("measuring");
+    isl.style.setProperty("--pillw", Math.min(Math.ceil(w) + 4, innerWidth - 24) + "px");
   }
   function frame(){
     shown = shown < 0 ? target : shown + (target - shown) * 0.12;

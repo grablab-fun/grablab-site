@@ -497,3 +497,6 @@ html.wl-open,html.wl-open body{overflow:hidden;overscroll-behavior:none}
   .wallet-mail .wm-ic{width:32px;height:32px}
   .wallet-mail button{height:40px}
 }
+
+/* while the nav measures its pill, nothing animates */
+.nav.measuring *,.nav.measuring{transition:none!important}
