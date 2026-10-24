@@ -232,7 +232,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   M.push({name:"move_y", transform:{pos:[0, 0, BZ]}, physics:{type:"rigid", motion:"dynamic", mass:.8},
     joint:{type:"slide", axis:[0,1,0], range:[-.35,.44], damping:4, drive:vel(-.12,.12)}, geoms:BEAM, collider:{}});
   M.push({name:"lift", relation:{parent:"move_y"}, transform:{pos:[0,0,0]}, gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.05},
-    joint:{type:"slide", axis:[0,0,1], range:[-SEG, 0], damping:2, frictionLoss:3, drive:{mode:"velocity", damping:3000, forceLimit:300, ctrlrange:[r4(-.12/K), r4(.12/K)]}}, geoms:[], collider:{}});
+    joint:{type:"slide", axis:[0,0,1], range:[-SEG, 0], damping:2, frictionLoss:3, drive:{mode:"velocity", damping:900, forceLimit:12, ctrlrange:[r4(-.12/K), r4(.12/K)]}}, geoms:[], collider:{}});
   /* carriage 90 x 90 x 75 with the Z winch: block on the rail, top plate, body in front of the beam, spool, pancake motor */
   const CAR = [ghost(BB(-.0227, -.0135, .023, .0227, .0135, .033, "block")), BB(-.045, -.075, .033, .045, .02, .038, "plastic"),
     BB(-.045, -.075, -.03, .045, -.012, .033, "plastic"),

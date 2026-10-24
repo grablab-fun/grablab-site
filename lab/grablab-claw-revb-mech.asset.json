@@ -793,8 +793,8 @@
     "frictionLoss": 3,
     "drive": {
      "mode": "velocity",
-     "damping": 3000,
-     "forceLimit": 300,
+     "damping": 900,
+     "forceLimit": 12,
      "ctrlrange": [
       -0.015,
       0.015
