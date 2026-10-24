@@ -132,10 +132,10 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
     CB.push(ghost(Bh(mod, .0005, mod, -.349 + (c + .5)*mod, BY0 - .0037, QZ + .025 - (r + .5)*mod, "qr_k")));
   /* GRABLAB wordmark, glowing white, drawn from strokes on a 4 x 6 grid per letter */
   const GLY = {
-    G:[[0,5,4,6],[0,0,1,6],[0,0,4,1],[3,0,4,3],[2,2,4,3]], R:[[0,0,1,6],[0,5,4,6],[3,3,4,6],[0,2.6,4,3.6],[2.6,0,3.6,2.6]],
-    A:[[0,0,1,6],[3,0,4,6],[0,5,4,6],[0,2.6,4,3.6]], B:[[0,0,1,6],[0,5,3.3,6],[0,0,3.3,1],[0,2.6,3.3,3.6],[3,.6,4,2.8],[3,3.3,4,5.4]],
-    L:[[0,0,1,6],[0,0,4,1]] };
-  const U = .0075, LW = 4*U, GAP = .45*4*U, WORD = "GRABLAB", W0 = -.02 - (WORD.length*LW + (WORD.length - 1)*GAP)/2, LZ = QZ - 3*U;
+    G:[[0,4.6,4,6],[0,0,1.4,6],[0,0,4,1.4],[2.6,0,4,3.2],[2,1.9,4,3.2]], R:[[0,0,1.4,6],[0,4.6,4,6],[2.6,3,4,6],[0,2.4,4,3.7],[2.5,0,3.9,2.6]],
+    A:[[0,0,1.4,6],[2.6,0,4,6],[0,4.6,4,6],[0,2.4,4,3.7]], B:[[0,0,1.4,6],[0,4.6,3.4,6],[0,0,3.4,1.4],[0,2.4,3.4,3.6],[2.6,.5,4,2.9],[2.6,3.2,4,5.5]],
+    L:[[0,0,1.4,6],[0,0,4,1.4]] };
+  const U = .0095, LW = 4*U, GAP = .3*4*U, WORD = "GRABLAB", W0 = -.02 - (WORD.length*LW + (WORD.length - 1)*GAP)/2, LZ = QZ - 3*U;
   [...WORD].forEach((ch, i) => GLY[ch].forEach(([x0, y0, x1, y1]) =>
     CB.push(ghost(BB(W0 + i*(LW + GAP) + x0*U, BY0 - .0035, LZ + y0*U, W0 + i*(LW + GAP) + x1*U, BY0 - .0005, LZ + y1*U, "logo")))));
   fixed("base_box", CB);
