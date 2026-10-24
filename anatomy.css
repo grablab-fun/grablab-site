@@ -359,3 +359,12 @@ html.rec,html.rec body{background:transparent!important}
 html.rec body > *:not(main),html.rec .page-atmosphere,html.rec .grain,html.rec main > *:not(.an),html.rec .an > *:not(.an-stage),html.rec .an-stage > *:not(#view){display:none!important}
 html.rec .an{height:100vh!important;min-height:0!important}
 html.rec .an-stage{position:fixed!important;inset:0!important;height:100vh!important;max-height:none!important;min-height:0!important}
+
+/* the no 3D notice: a clear card, steps aligned on the left */
+.an-err{text-align:left;max-width:min(420px,calc(100vw - 32px));width:100%;box-sizing:border-box;padding:24px 26px;font-size:14px;line-height:1.5}
+.an-err .ek{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#9cc0ff;margin-bottom:8px}
+.an-err b{display:block;font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:24px;line-height:1.05;margin-bottom:14px}
+.an-err ol{margin:0 0 18px;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+.an-err li{counter-increment:s;display:grid;grid-template-columns:22px 1fr;gap:8px;color:var(--ink-2)}
+.an-err li::before{content:counter(s, decimal-leading-zero);font-family:var(--mono);font-size:11px;color:#9cc0ff;padding-top:2px}
+.an-err .btn{display:inline-flex}

@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="styles.css?v=20261020w1" />
 <link rel="stylesheet" href="pages.css?v=20261024s6" />
 <link rel="stylesheet" href="sub.css?v=37" />
-<link rel="stylesheet" href="anatomy.css?v=40" />
+<link rel="stylesheet" href="anatomy.css?v=41" />
 </head>
 <body data-page="anatomy">
 <div class="loader" id="loader" aria-hidden="true">
@@ -41,7 +41,9 @@
       <svg class="an-lines" id="lines" aria-hidden="true"></svg>
       <div class="an-labels" id="labels" aria-hidden="true"></div>
       <div class="an-boot glass"><img src="assets/brand/mark-chrome-256.png" alt="" /><b>Building the machine</b><small>Ten parts from the parts list</small><i><em></em></i></div>
-      <div class="an-err"><b>3D is blocked in this browser.</b><br>Brave Shields set to strict fingerprinting, or hardware acceleration off, turns WebGL off.<br>Allow it for this site or open the page in Chrome. The <a href="lab.html">physics lab</a> still works.</div>
+      <div class="an-err glass"><span class="ek">3D is off</span><b>This browser blocks WebGL.</b>
+        <ol><li>In Brave, set Shields to standard for this site.</li><li>Check that hardware acceleration is on.</li><li>Restart the browser, it clears a blocked graphics card.</li></ol>
+        <a class="btn btn-ghost" href="lab.html">Open the physics lab</a></div>
     </div>
 
     <div class="an-head">
