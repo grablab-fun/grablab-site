@@ -2,7 +2,7 @@
    The machine is modelled part by part from the bill of materials and the build tutorial (anatomy-model.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-model.js?v=21";
+import { buildMachine } from "./anatomy-model.js?v=23";
 
 const $ = s => document.querySelector(s);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
@@ -226,8 +226,10 @@ function measure(){
   const rect = el => el && el.offsetParent !== null ? el.getBoundingClientRect() : null;
   const nav = rect(document.querySelector("#site-header, .nav")), bar = rect(document.querySelector(".an-bar")), rail = rect(list), cd = card.classList.contains("on") ? rect(card) : null;
   const top = Math.max(12, (nav ? nav.bottom - sr.top : 70) + 10), bottom = (bar ? bar.top - sr.top : H - 90) - 14;
-  const h1 = rect(document.querySelector(".an-head h1")), left = cd ? cd.right - sr.left + 24 : Math.max(W*.22, (h1 ? h1.right - sr.left : W*.3)*.82), right = (rail ? rail.left - sr.left : W - 300) - 24;
-  view.cx = (left + right)/2; view.cy = (top + bottom)/2; view.fx = Math.max(.2, (right - left)/W); view.fy = Math.max(.3, (bottom - top)/H);
+  const hd = rect(document.querySelector(".an-head")), left = cd ? cd.right - sr.left + 24 : (hd ? hd.right - sr.left + 24 : W*.25), right = (rail ? rail.left - sr.left : W - 300) - 24;
+  /* with no card open the machine stands on the middle of the screen, sized to the narrower side */
+  if (cd){ view.cx = (left + right)/2; view.fx = Math.max(.2, (right - left)/W); } else { view.cx = W/2; view.fx = Math.max(.2, 2*Math.min(W/2 - left, right - W/2)/W); }
+  view.cy = (top + bottom)/2; view.fy = Math.max(.3, (bottom - top)/H);
 }
 /* distance that keeps a box inside the free part of the view */
 function fit(b, minR, margin){
@@ -446,7 +448,7 @@ $("#reset").onclick = () => { setSelected(null); setExplode(0); orb.px = orb.py 
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
 /* ---------- loop ---------- */
-let last = performance.now(), trapG = null, trapT = 0;
+let last = performance.now(), trapG = null, trapT = 0; const linkA = new THREE.Vector3(), linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), XAX = new THREE.Vector3(1, 0, 0), YAX = new THREE.Vector3(0, 1, 0);
 function frame(now){
   const dt = Math.min(.05, (now - last)/1000); last = now;
   if (tour) tourStep(dt); else { orb.idle += dt; if (false) orb.th += dt*.08; if (!orb.down){ orb.vth *= .9; orb.vph *= .9; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); } }
@@ -455,7 +457,13 @@ function frame(now){
   /* the trapdoor swings open and shut while its card item is picked */
   if (!trapG) root.traverse(o => { if (o.userData.trap) trapG = o; });
   if (trapG){ const on = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]); trapT = on ? trapT + dt : 0;
-    const want = on ? -1.1*(.5 - .5*Math.cos(trapT*2.2)) : 0; trapG.rotation.x += (want - trapG.rotation.x)*Math.min(1, dt*10); }
+    const want = on ? -1.1*(.5 - .5*Math.cos(trapT*2.2)) : 0; trapG.rotation.x += (want - trapG.rotation.x)*Math.min(1, dt*10);
+    /* the servo horn turns with the trapdoor and the pushrod follows both ends */
+    const L = trapG.userData.link; if (L){ const th = trapG.rotation.x; L.horn.rotation.x = th;
+      const A = linkA.set(L.rx, L.horn.position.y - .0115*Math.sin(th), L.horn.position.z + .0115*Math.cos(th));
+      const B = linkB.copy(L.lever).applyAxisAngle(XAX, th).add(trapG.position); B.x = L.rx;
+      L.rod.position.copy(A).add(B).multiplyScalar(.5); linkD.copy(B).sub(A); L.rod.scale.y = linkD.length(); L.rod.quaternion.setFromUnitVectors(YAX, linkD.normalize());
+      L.pins[0].position.set(L.rx - .0015, A.y, A.z); L.pins[1].position.set(L.rx - .0015, B.y, B.z); } }
   if (!estop.ms.length) root.traverse(o => { if (/^panel_estop_(mushroom|rim)/.test(o.name)){ o.userData.y0 = o.position.y; estop.ms.push(o); } });
   estop.k += ((estop.on ? 1 : 0) - estop.k)*Math.min(1, dt*14); for (const o of estop.ms) o.position.y = o.userData.y0 - .007*estop.k;
   if (toastT > 0 && (toastT -= dt) <= 0) toast.classList.remove("on");
@@ -481,5 +489,5 @@ function makeThumbs(){
   }
   renderer.setRenderTarget(null); for (const [, m] of matCache) m.visible = m.opacity > .01; catcher.visible = catcherWas; renderer.toneMappingExposure = expWas; rt2.dispose();
 }
-load().then(() => { resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
+load().then(() => { resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, overlap:(pre) => { root.updateMatrixWorld(true); const all = []; root.traverse(o => { if (o.isMesh){ o.geometry.computeBoundingBox(); all.push([o, o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld).expandByScalar(-.0006)]); } }); const out = []; for (const [a, ba] of all) if (a.name.startsWith(pre)) for (const [c, bc] of all) if (c !== a && !c.name.startsWith(pre) && ba.intersectsBox(bc)) out.push(a.name + ' x ' + c.name); return out; }, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
   .catch(e => { console.error(e); $("#stage").classList.add("err"); });

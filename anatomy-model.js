@@ -334,7 +334,9 @@ export function buildMachine(THREE, api){
   const pla = () => m("pla", { color:0x34373f, roughness:.48, metalness:.05 });
   rb(X0, Y0, CB, X0 + .004, Y1, CZ0, pla, "chute_cradle", .002); rb(X1 - .004, Y0, CB, X1, Y1, CZ0, pla, "chute_cradle", .002);
   rb(X0, Y0, CB, X1, Y0 + .004, CZ0, pla, "chute_cradle", .002); rb(X0, Y1 - .004, CB, X1, Y1, CZ0, pla, "chute_cradle", .002);
-  rb(X0 - .004, Y0 - .004, CZ0 - .004, X1 + .004, Y1 + .004, CZ0, pla, "chute_cradle_flange", .003);
+  /* an open flange around the top, screwed under the chute walls: the capsule falls straight through it */
+  rb(X0 - .004, Y0 - .004, CZ0 - .004, X1 + .004, Y0 + .004, CZ0, pla, "chute_cradle_flange", .002); rb(X0 - .004, Y1 - .004, CZ0 - .004, X1 + .004, Y1 + .004, CZ0, pla, "chute_cradle_flange", .002);
+  rb(X0 - .004, Y0 - .004, CZ0 - .004, X0 + .004, Y1 + .004, CZ0, pla, "chute_cradle_flange", .002); rb(X1 - .004, Y0 - .004, CZ0 - .004, X1 + .004, Y1 + .004, CZ0, pla, "chute_cradle_flange", .002);
   /* the reader stands on the outside of the back wall and reads the capsule through 4 mm of plastic */
   rb(.291, Y1, CB - .01, .389, Y1 + .011, CB + .055, m("acr", { color:0x141518, roughness:.42 }), "chute_acr122u", .005);
   const acrl = label("acr", .06, .04, (g, w, h) => { g.fillStyle = "#141518"; g.fillRect(0, 0, w, h); g.strokeStyle = "rgba(150,185,255,.6)"; g.lineWidth = h*.022;
@@ -363,10 +365,17 @@ export function buildMachine(THREE, api){
   const shY = SY - .0055;
   add(cylX(.0058, .003, 24), m("mg90"), SX0 - .0015, shY, SZ0, 0, 0, 0, "chute_mg90s_boss");
   add(cylX(.0022, .004, 12), m("gearM", { color:0xc9a35a, roughness:.3, metalness:1 }), SX0 - .004, shY, SZ0, 0, 0, 0, "chute_mg90s_shaft");
-  rb(SX0 - .0062, shY - .003, SZ0 - .003, SX0 - .0048, shY + .003, SZ0 + .0155, m("horn", { color:0xf2f2f4, roughness:.5 }), "chute_horn", .0025);
-  for (const dz of [.006, .0115]) add(cylX(.0007, .0016, 8), dark, SX0 - .0055, shY, SZ0 + dz, 0, 0, 0, "chute_horn_hole");
-  /* pushrod with its Z bends, horn tip to lever tip */
-  harness([[SX0 - .0056, shY, SZ0 + .0115], [SX0 - .0068, shY - .002, SZ0 + .0118], [X1 + .0055, AY + .005, AXZ + .0178], [X1 + .003, AY + .001, AXZ + .018]], .0008, steel, "chute_pushrod");
+  /* the horn turns on the servo shaft; the page turns it with the trapdoor */
+  const hornP = new THREE.Group(); hornP.name = "chute_horn_pivot"; hornP.position.set(SX0 - .0055, shY, SZ0); G("chute").add(hornP);
+  add(rbox(.0014, .006, .0185, .0025), m("horn", { color:0xf2f2f4, roughness:.5 }), 0, 0, .00625, 0, 0, 0, "chute_horn", hornP);
+  for (const dz of [.006, .0115]) add(cylX(.0007, .0016, 8), dark, 0, 0, dz, 0, 0, 0, "chute_horn_hole", hornP);
+  /* pushrod: a straight steel link on the outer faces, a pin into the horn hole and one into the lever hole */
+  const rod = add(new THREE.CylinderGeometry(.0008, .0008, 1, 10), steel, 0, 0, 0, 0, 0, 0, "chute_pushrod");
+  const pins = [0, 1].map(() => add(cylX(.0007, .004, 8), steel, 0, 0, 0, 0, 0, 0, "chute_pushrod_pin"));
+  trap.userData.link = { rod, pins, horn:hornP, lever:new THREE.Vector3(X1 + .003, .001, .018), rx:X1 + .0052 };
+  { const L = trap.userData.link, A = new THREE.Vector3(L.rx, shY, SZ0 + .0115), B = new THREE.Vector3(L.rx, AY + .001, AXZ + .018), d = B.clone().sub(A);
+    rod.position.copy(A).add(B).multiplyScalar(.5); rod.scale.y = d.length(); rod.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize());
+    pins[0].position.set(L.rx - .0015, A.y, A.z); pins[1].position.set(L.rx - .0015, B.y, B.z); }
   /* the prize bin: about 30 litres under the chute side of the cabinet, emptied through the side door */
   const binM = () => m("binM", { color:0x2b2e36, roughness:.5, metalness:.05 }), QBX0 = .16, QBX1 = .494, QBY0 = -.455, QBY1 = .2, QBZ0 = .04, QBZ1 = .2;
   rb(QBX0, QBY0, QBZ0, QBX1, QBY1, QBZ0 + .005, binM, "chute_bin", .012);

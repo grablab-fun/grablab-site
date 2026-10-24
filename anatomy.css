@@ -221,3 +221,18 @@ body.ready .an-rail{opacity:1}
 }
 
 @media (min-width:981px) and (max-width:1180px){ .an-rail{width:224px} .pt{padding:9px 10px;gap:8px;grid-template-columns:28px 1fr} .pt .nm{font-size:13px} .an-card{width:min(400px,38vw)} }
+
+/* the title block sits on the vertical middle too, mirroring the parts list */
+@media (min-width:981px){ .an-head,body.ui-min .an-head{top:50%;transform:translateY(-50%)} }
+
+/* symmetric layout: two mirrored glass panels, same width, same height, same margin, both on the vertical middle */
+@media (min-width:981px){
+  :root{--side-w:clamp(236px,17vw,310px);--side-h:min(500px,calc(100vh - 300px));--side-m:clamp(20px,3vw,56px)}
+  .an-head,body.ui-min .an-head{left:var(--side-m);top:50%;transform:translateY(-50%);width:var(--side-w);max-width:none;height:var(--side-h);box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;padding:26px 24px;border-radius:22px;background:rgba(5,9,24,.55);border:1px solid rgba(180,186,255,.2);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2)}
+  .an-head .eyebrow{margin:0;font-size:11px}
+  .an-head h1{font-size:clamp(34px,2.9vw,54px);line-height:.95;margin:0}
+  .an-head p{font-size:clamp(13.5px,.95vw,16px);line-height:1.5;margin:0}
+  .an-rail,body.ui-min .an-rail{right:var(--side-m);top:50%;transform:translateY(-50%);width:var(--side-w);height:var(--side-h);max-height:none;box-sizing:border-box;padding:12px 10px;justify-content:space-between}
+  .an-rail .pt{flex:1;padding-top:0;padding-bottom:0}
+  .an-card,body.ui-min .an-card{left:var(--side-m)}
+}
