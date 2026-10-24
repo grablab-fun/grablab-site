@@ -330,7 +330,8 @@ export function buildMachine(THREE, api){
   add(cylZ(.0022, .0008, 16), led(0x52d96b), .375, -.365, CB + .0164, 0, 0, 0, "chute_acr122u_led");
   /* flap: a printed plate over the reader, hinged at the front edge */
   const AXZ = CB + .0215, AY = -.395;
-  rb(.285, AY, AXZ - .0015, .395, -.285, AXZ + .0015, pla, "chute_flap", .004);
+  const flapM = m("flapM", { color:0x3c4049, roughness:.45, metalness:.05 }); flapM.userData.xray = .3;     // see-through when the chute is open, so the reader shows
+  rb(.285, AY, AXZ - .0015, .395, -.285, AXZ + .0015, flapM, "chute_flap", .004);
   add(cylX(.0032, .11, 20), pla, .34, AY, AXZ, 0, 0, 0, "chute_flap_hinge");
   add(cylX(.0015, X1 - X0 + .012, 12), steel, .34, AY, AXZ, 0, 0, 0, "chute_axle");
   for (const x of [X0 + .004, X1 - .012]) rb(x, AY - .006, AXZ - .008, x + .008, AY + .006, AXZ + .006, pla, "chute_axle_block", .002);
@@ -372,9 +373,22 @@ export function buildMachine(THREE, api){
   /* C960 clipped to the rear wall at the top, 250 above the flap, looking down at it; its cable leaves through a grommet */
   box(HX0 + .005, HY1 - .004, CZ1 - .045, HX0 + .055, HY1, CZ1 - .01, dark, "chute_c960_clip");
   const cam = new THREE.Group(); cam.position.set(HX0 + .03, HY1 - .014, CZ1 - .028); cam.rotation.set(-1.82, 0, 0); G("chute").add(cam);
-  add(BOX(.07, .02, .026), m("c960", { color:0x16171b, roughness:.45 }), 0, 0, 0, 0, 0, 0, "chute_c960", cam);
-  add(cylY(.0085, .003, 32), m("ring", { color:0xa8adb7, roughness:.3, metalness:1 }), 0, .0115, 0, 0, 0, 0, "chute_c960_lens_ring", cam);
-  add(cylY(.007, .004, 24), lens, 0, .012, 0, 0, 0, 0, "chute_c960_lens", cam);
+  add(rbox(.064, .02, .024, .009), m("c960", { color:0x121317, roughness:.35, metalness:.2 }), 0, 0, 0, Math.PI/2, 0, 0, "chute_c960", cam);
+  add(rbox(.05, .002, .017, .007), m("c960face", { color:0x050507, roughness:.08, metalness:.3, clearcoat:1 }, true), 0, .0105, 0, Math.PI/2, 0, 0, "chute_c960_face", cam);
+  add(cylY(.0075, .004, 32), m("ring", { color:0xa8adb7, roughness:.3, metalness:1 }), 0, .0125, 0, 0, 0, 0, "chute_c960_lens_ring", cam);
+  add(cylY(.006, .0045, 32), lens, 0, .013, 0, 0, 0, 0, "chute_c960_lens", cam);
+  add(cylY(.0036, .001, 24), m("glass", { color:0x2a3f8c, roughness:.02, metalness:.9, emissive:0x1a2a66, emissiveIntensity:.4 }), 0, .0156, 0, 0, 0, 0, "chute_c960_glass", cam);
+  add(cylY(.001, .001, 10), led(0x52d96b), .018, .0112, 0, 0, 0, 0, "chute_c960_led", cam);
+  /* what it sees: a faint cone from the lens to the flap */
+  cam.updateMatrixWorld(true); const apex = new THREE.Vector3(0, .016, 0).applyMatrix4(cam.matrixWorld);
+  { const P = [[.287, -.393], [.393, -.393], [.393, -.287], [.287, -.287]].map(([x, y]) => new THREE.Vector3(x, y, AXZ + .002)), pos = [];
+    for (let i = 0; i < 4; i++){ const a = P[i], b = P[(i + 1) % 4]; pos.push(apex.x, apex.y, apex.z, a.x, a.y, a.z, b.x, b.y, b.z); }
+    const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals();
+    const cone = m("viewcone", { color:0x7fb0ff, emissive:0x3b7bff, emissiveIntensity:.8, transparent:true, opacity:.07, depthWrite:false, side:THREE.DoubleSide, toneMapped:false, blending:THREE.AdditiveBlending }); cone.userData.noPick = true;
+    add(g, cone, 0, 0, 0, 0, 0, 0, "chute_c960_view");
+    const lp = []; for (const c of P) lp.push(apex.x, apex.y, apex.z, c.x, c.y, c.z);
+    const lg = new THREE.BufferGeometry(); lg.setAttribute("position", new THREE.Float32BufferAttribute(lp, 3));
+    const ln = new THREE.LineSegments(lg, m("viewline", { color:0x9cc0ff, emissive:0x3b7bff, emissiveIntensity:1, transparent:true, opacity:.35, depthWrite:false, toneMapped:false })); ln.userData.part = "chute"; ln.name = "chute_c960_view"; G("chute").add(ln); }
   for (const y of [HY1 - .0005, HY1 + WT + .0005]) add(new THREE.TorusGeometry(.0042, .0015, 10, 24), m("grommet", { color:0x0d0d0f, roughness:.7 }), HX0 + .07, y, CZ1 - .02, Math.PI/2, 0, 0, "chute_grommet");
   long(() => harness([[HX0 + .055, HY1 - .002, CZ1 - .02], [HX0 + .07, HY1 - .004, CZ1 - .02], [HX0 + .07, HY1 + .03, CZ1 - .02], [HX0 + .07, .41, CZ1 - .02], [.072, .41, CZ1 - .02], [.072, .41, .137], [.072, IN - .0378, .137]], .0022, wireK, "chute_c960_cable"));
   for (const x of [X0 - .0005, X0 + .0045]) add(new THREE.TorusGeometry(.0038, .0014, 10, 24), m("grommet", { color:0x0d0d0f, roughness:.7 }), x, -.34, CB + .0105, 0, Math.PI/2, 0, "chute_grommet");

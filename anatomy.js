@@ -2,7 +2,7 @@
    The machine is modelled part by part from the bill of materials and the build tutorial (anatomy-model.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-model.js?v=13";
+import { buildMachine } from "./anatomy-model.js?v=15";
 
 const $ = s => document.querySelector(s);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
@@ -20,8 +20,8 @@ const PARTS = [
     text:"Power, a motion controller with its stepper drivers, a driver for the claw and a 5 V supply, all on the back of the front panel. The Raspberry Pi runs the play and the stream. The OPTIGA Trust M signs every event, and its key never leaves the chip.",
     subs:[["OPTIGA Trust M", ["el_optiga"]], ["Raspberry Pi", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Pi case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
   { id:"chute", n:"05", name:"Chute and cup", spec:"MDF chute, printed cradle", ph:1.22, th:.4, anchor:[.412,-.34,.3], ex:[.32,-.36,0],
-    text:"A closed MDF chute under the hole. A light beam sees the capsule fall, a camera watches it land, an NFC reader takes its UID. Only then a servo tips the flap, and the capsule rolls into the cup, emptied through the door at the back.",
-    subs:[["Chute", ["chute_wall"]], ["Drop sensor, laser beam", ["chute_e3jk", "chute_sensor"]], ["Cup camera", ["chute_c960", "chute_grommet"]], ["NFC reader", ["chute_acr122u", "chute_cradle"]], ["Flap and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Ramp and cup", ["chute_ramp", "chute_cup"]]], proof:"Seen twice: beam and camera" },
+    text:"A closed MDF chute under the hole. A red light beam sees the capsule fall. A small camera on the back wall films it landing on the flap, a second proof next to the play camera. The NFC reader under the flap takes its UID. Only then a servo tips the flap, and the capsule rolls into the cup, emptied through the door at the back.",
+    subs:[["Chute", ["chute_wall"]], ["Drop sensor, laser beam", ["chute_e3jk", "chute_sensor"]], ["Landing camera", ["chute_c960"]], ["NFC reader", ["chute_acr122u"]], ["Printed cradle", ["chute_cradle", "chute_axle_block"]], ["Flap and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Ramp and cup", ["chute_ramp", "chute_cup"]]], proof:"Seen twice: beam and camera" },
   { id:"capsules", n:"06", name:"Capsules", spec:"Clear plastic, NFC sticker", ph:1.0, th:-1.2, anchor:[.2,.2,.44], ex:[0,0,.42],
     text:"Clear two piece shells with an NFC sticker, factory UID, read only. The size is not fixed yet: first we test what the claw can lift and hold, then the shells are bought or printed to fit that grip. Click one.",
     subs:[["Clear two piece shell", []], ["NFC sticker", []], ["Size set by the grip test", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
@@ -46,7 +46,7 @@ const SUBICON = {
   "Emergency stop":"assets/parts/estop.png", "Scan to play":"assets/parts/qr.png", "GRABLAB plate":"assets/brand/mark-chrome-256.png", "MDF panel":"assets/parts/mdf.png",
   "OPTIGA Trust M":"assets/parts/optiga.png", "Raspberry Pi":"assets/parts/pi.png", "Pi case and fan":"assets/parts/fan.png", "Power supply":"assets/parts/psu.png", "Motion controller":"assets/parts/motionboard.png",
   "Claw driver":"assets/parts/clawdriver.png", "5 V supply":"assets/parts/relay.png", "Power splitters":"assets/parts/wago.png", "Wiring":"assets/parts/coil.png",
-  "Chute":"assets/parts/funnel.png", "Drop sensor, laser beam":"assets/parts/beam.png", "Cup camera":"assets/parts/webcam.png", "NFC reader":"assets/parts/nfcreader.png", "Flap and servo":"assets/parts/servo.png", "Refill door":"assets/parts/drawer.png", "Ramp and cup":"assets/parts/ramp.png",
+  "Chute":"assets/parts/funnel.png", "Drop sensor, laser beam":"assets/parts/beam.png", "Landing camera":"assets/parts/webcam.png", "NFC reader":"assets/parts/nfcreader.png", "Printed cradle":"assets/parts/bracket.png", "Flap and servo":"assets/parts/servo.png", "Refill door":"assets/parts/drawer.png", "Ramp and cup":"assets/parts/ramp.png",
   "Clear two piece shell":"assets/parts/capsule.png", "NFC sticker":"assets/parts/nfcsticker.png", "Size set by the grip test":"assets/parts/capsuleopen.png",
   "Y rails":"assets/parts/rail.png", "X beam":"assets/parts/beam2040.png", "Carriages":"assets/parts/bracket.png", "Motors":"assets/parts/nema17.png", "Belts and pulleys":"assets/parts/belt.png", "End stops":"assets/parts/endstop.png", "Drag chain":"assets/parts/dragchain.png",
   "Carriage":"assets/parts/rail.png", "Winch motor":"assets/parts/nema17.png", "Spool and line":"assets/parts/spool.png", "Top end stop":"assets/parts/endstop.png", "Cable joints":"assets/parts/wago.png", "Belt clip":"assets/parts/belt.png",
