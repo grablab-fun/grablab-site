@@ -503,3 +503,6 @@
 .ph-cta .lab-go{width:100%}
 .ph-cta .lab-go b{display:flex;align-items:center;justify-content:space-between;gap:16px}
 @media(max-width:620px){ .ph-cta{display:grid} .ph-cta .lab-go b{justify-content:center} }
+
+/* line breaks that only apply on phones */
+@media(min-width:901px){ br.mbr{display:none} }
