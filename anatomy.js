@@ -13,7 +13,7 @@ const PARTS = [
     text:"Two Y rails on the top beams carry a 2040 X beam on linear blocks. One GT2 belt loop, both motors fixed to the frame, so the moving mass stays light.", proof:"Position known by step count" },
   { id:"winch", n:"03", name:"Carriage and winch", spec:"pancake NEMA 17, printed spool", ents:["move_x"], ex:[0,0,-.12],
     text:"Rides the X rail. A 30 mm spool with a helical groove winds 2 mm Dyneema. Top from the Z end stop, bottom from stall detection.", proof:"Same depth every play" },
-  { id:"claw", n:"04", name:"Claw", spec:"3 fingers, 12 V linear actuator", ents:["seg_1"], ex:[0,0,-.22],
+  { id:"claw", n:"04", name:"Claw", spec:"3 fingers, 12 V linear actuator", ents:["seg_1"], focus:["seg_8"], ex:[0,0,-.22],
     text:"Three printed fingers on a 30 mm linear actuator, fed by the 6 core coiled cable. A spring closes it: that force is the grip we promise.", proof:"Grip measured, published before you play" },
   { id:"capsules", n:"05", name:"Capsules", spec:"50 mm shells, NTAG215 inside", ents:["capsules"], ex:[0,0,.14],
     text:"Every capsule carries an NFC sticker with a factory UID that cannot be rewritten. The UID maps to the prize in the published inventory.", proof:"Inventory on chain" },
@@ -33,19 +33,24 @@ const stage = $("#stage"), canvas = $("#view");
 let renderer;
 try {
   const probe = document.createElement("canvas"); if (!(probe.getContext("webgl2") || probe.getContext("webgl"))) throw new Error("no webgl");
-  renderer = new THREE.WebGLRenderer({ canvas, antialias:false, powerPreference:"high-performance" });
+  renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, powerPreference:"high-performance" });
 } catch (e){
   /* WebGL off (Brave Shields "strict" fingerprinting, hardware acceleration off, old GPU): say so instead of spinning forever */
   stage.classList.add("err"); throw e;
 }
-renderer.setPixelRatio(1); renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NoToneMapping;
-const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0a0c1a);
+renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene(); scene.background = null; const PIXBG = new THREE.Color(0x0a0c1a);
 const camera = new THREE.PerspectiveCamera(32, 1, .05, 40);
 const root = new THREE.Group(); root.rotation.x = -Math.PI/2; scene.add(root);   // z-up scene into y-up three
 
 /* ---------- lights ---------- */
 scene.add(new THREE.HemisphereLight(0xc3caff, 0x141830, 1.3));
-const key = new THREE.DirectionalLight(0xfff1dc, 3.0); key.position.set(-1.4, 2.6, 2.2); scene.add(key);
+const key = new THREE.DirectionalLight(0xf3f5ff, 2.5); key.position.set(-1.4, 2.6, 2.2); scene.add(key);
+key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -.0004; key.shadow.normalBias = .02;
+Object.assign(key.shadow.camera, { left:-1.7, right:1.7, top:1.9, bottom:-1.3, near:.5, far:8 });
+/* shadow catcher under the machine: the only thing the floor does */
+const catcher = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.ShadowMaterial({ opacity:.55 })); catcher.receiveShadow = true; catcher.rotation.x = -Math.PI/2; catcher.position.y = .004; scene.add(catcher);
 const rim = new THREE.DirectionalLight(0x6f8dff, 2.4); rim.position.set(2.2, 1.4, -2.4); scene.add(rim);
 const fill = new THREE.PointLight(0xffb877, 2.0, 3.5); fill.position.set(.1, 1.0, .1); scene.add(fill);
 
@@ -55,24 +60,26 @@ const fill = new THREE.PointLight(0xffb877, 2.0, 3.5); fill.position.set(.1, 1.0
   for (let f = 0; f < 6; f++){
     const cv = document.createElement("canvas"); cv.width = cv.height = N; const g = cv.getContext("2d");
     const grad = g.createLinearGradient(0, 0, 0, N);
-    if (f === 2){ grad.addColorStop(0, "#fff4e4"); grad.addColorStop(1, "#8d93c8"); }                 // +y: warm ceiling light
+    if (f === 2){ grad.addColorStop(0, "#e9eeff"); grad.addColorStop(1, "#7d86c8"); }                 // +y: warm ceiling light
     else if (f === 3){ grad.addColorStop(0, "#0b0d1c"); grad.addColorStop(1, "#05060e"); }            // -y: dark floor
     else { grad.addColorStop(0, "#6f78c4"); grad.addColorStop(.55, "#1c2048"); grad.addColorStop(1, "#07081a"); }
     g.fillStyle = grad; g.fillRect(0, 0, N, N);
-    if (f === 0 || f === 4){ g.fillStyle = "rgba(255,246,228,.85)"; g.fillRect(N*.3, N*.08, N*.4, N*.34); }   // two softboxes
+    if (f === 0 || f === 4){ g.fillStyle = "rgba(236,242,255,.8)"; g.fillRect(N*.3, N*.08, N*.4, N*.34); }   // two softboxes
     if (f === 1){ g.fillStyle = "rgba(120,160,255,.7)"; g.fillRect(N*.1, N*.15, N*.25, N*.5); }               // a blue rim
     faces.push(cv);
   }
   const ct = new THREE.CubeTexture(faces); ct.colorSpace = THREE.SRGBColorSpace; ct.needsUpdate = true;
-  scene.environment = ct; scene.environmentIntensity = .9;
+  scene.environment = ct; scene.environmentIntensity = .55;
 })();
 
 /* ---------- scene loader: SimArena json -> three meshes, grouped by entity ---------- */
 const matCache = new Map(), ents = new Map(), partOf = new Map();
 function material(mats, name, part){
   const k = part + "|" + name; if (matCache.has(k)) return matCache.get(k);
-  const d = mats[name] || { rgba:[.5,.5,.5,1] }, c = d.rgba;
-  const m = new THREE.MeshStandardMaterial({ color:new THREE.Color(c[0], c[1], c[2]), metalness:d.metalness ?? .2, roughness:d.roughness ?? .6,
+  const OVR = { tray:[.045,.047,.055,1], base:[.04,.042,.05,1], alu:[.02,.02,.025,1], cap_gold:[1,.62,.16,1], cap_violet:[.52,.42,1,1] };
+  const d = mats[name] || { rgba:[.5,.5,.5,1] }, c = OVR[name] || d.rgba;
+  const m = name.startsWith("cap_") ? new THREE.MeshPhysicalMaterial({ color:new THREE.Color(c[0]*.85, c[1]*.85, c[2]*.85), metalness:.08, roughness:.32, clearcoat:1, clearcoatRoughness:.1, emissive:new THREE.Color(c[0], c[1], c[2]), emissiveIntensity:.03 })
+    : new THREE.MeshStandardMaterial({ color:new THREE.Color(c[0], c[1], c[2]), metalness:d.metalness ?? .2, roughness:d.roughness ?? .6,
     transparent:c[3] < 1, opacity:c[3] < 1 ? Math.max(.12, c[3]*1.6) : 1, emissive:new THREE.Color(c[0], c[1], c[2]), emissiveIntensity:d.emission || 0 });
   if (c[3] < 1) m.depthWrite = false;
   m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity }; matCache.set(k, m); return m;
@@ -87,11 +94,11 @@ function geometry(g){
 }
 function addGeoms(obj, geoms, mats, part){
   for (const g of geoms){
-    if (g.material === "invis" || g.type === "plane") continue;
+    if (g.material === "invis" || g.material === "logo" || g.type === "plane") continue;
     const geo = geometry(g); if (!geo) continue;
     const m = new THREE.Mesh(geo, material(mats, g.material, part));
     if (g.pos) m.position.set(...g.pos); if (g.quat) m.quaternion.set(g.quat[1], g.quat[2], g.quat[3], g.quat[0]);
-    m.userData.part = part; obj.add(m);
+    m.userData.part = part; m.castShadow = true; m.receiveShadow = true; obj.add(m);
   }
 }
 function entityObj(e, mats, part){
@@ -116,6 +123,14 @@ async function load(){
     }
     root.add(entityObj(e, sc.material, partFor(e.name)));
   }
+  /* GRABLAB wordmark: real type on a thin emissive plane on the front panel */
+  (function wordmark(){
+    const cv = document.createElement("canvas"); cv.width = 1024; cv.height = 220; const g = cv.getContext("2d");
+    g.fillStyle = "#fff"; g.font = "700 150px Anton, 'Clash Display', Impact, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; try { g.letterSpacing = "6px"; } catch (e) {} g.fillText("GRABLAB", 512, 118);
+    const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 8;
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(.30, .064), new THREE.MeshBasicMaterial({ map:tx, transparent:true, toneMapped:false }));
+    m.rotation.x = Math.PI/2; m.position.set(-.02, -.4845, .116); m.userData.part = "base"; ents.get("base_box").add(m);
+  })();
   /* part roots: the objects that get the explode offset */
   for (const p of PARTS){ p.objs = p.ents.map(n => ents.get(n)).filter(Boolean); p.objs.forEach(o => { o.userData.home = o.position.clone(); }); }
   /* capsules spread a little outward when exploded */
@@ -153,26 +168,33 @@ const post = new THREE.ShaderMaterial({
     }`
 });
 const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), post), postScene = new THREE.Scene(), postCam = new THREE.Camera(); postScene.add(quad);
-let pixel = true, PX = 3;
+let pixel = false, PX = 3;
 function resize(){
-  const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
+  const w = stage.clientWidth, h = stage.clientHeight; renderer.setPixelRatio(pixel ? 1 : Math.min(2, devicePixelRatio || 1)); renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
   const rw = Math.max(240, Math.round(w/PX)), rh = Math.max(135, Math.round(h/PX)); rt.setSize(rw, rh); post.uniforms.px.value.set(1/rw, 1/rh);
 }
 addEventListener("resize", resize);
 
 /* ---------- orbit: drag, wheel, inertia, idle auto spin ---------- */
-const orb = { th:-.95, ph:1.12, r:3.4, tx:0, ty:.52, vth:0, vph:0, down:false, lx:0, ly:0, idle:0 };
+const orb = { th:-.95, ph:1.12, r:3.0, tx:0, ty:.52, tz:0, vth:0, vph:0, down:false, lx:0, ly:0, idle:0, zoom:1 };
 const tgt = new THREE.Vector3();
 function cam(){
-  const sp = Math.sin(orb.ph), c = Math.cos(orb.ph), r = orb.r*(1 + .42*explode), ty = orb.ty + .1*explode;
-  camera.position.set(orb.tx + r*sp*Math.cos(orb.th), ty + r*c, r*sp*Math.sin(orb.th));
-  tgt.set(orb.tx, ty, 0); camera.lookAt(tgt);
+  const sp = Math.sin(orb.ph), c = Math.cos(orb.ph), r = orb.r*orb.zoom;
+  camera.position.set(orb.tx + r*sp*Math.cos(orb.th), orb.ty + r*c, orb.tz + r*sp*Math.sin(orb.th));
+  tgt.set(orb.tx, orb.ty, orb.tz); camera.lookAt(tgt);
 }
 stage.addEventListener("pointerdown", e => { orb.down = true; orb.lx = e.clientX; orb.ly = e.clientY; orb.idle = 0; stage.setPointerCapture(e.pointerId); });
 stage.addEventListener("pointermove", e => { mouse.x = (e.clientX - stage.getBoundingClientRect().left)/stage.clientWidth*2 - 1; mouse.y = -((e.clientY - stage.getBoundingClientRect().top)/stage.clientHeight)*2 + 1;
   if (!orb.down) return; orb.vth = (e.clientX - orb.lx)*.006; orb.vph = (e.clientY - orb.ly)*.006; orb.lx = e.clientX; orb.ly = e.clientY; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); orb.moved = (orb.moved || 0) + Math.abs(orb.vth) + Math.abs(orb.vph); });
 stage.addEventListener("pointerup", () => { orb.down = false; });
-stage.addEventListener("wheel", e => { e.preventDefault(); orb.r = Math.min(7, Math.max(1.6, orb.r*(1 + Math.sign(e.deltaY)*.08))); orb.idle = 0; }, { passive:false });
+stage.addEventListener("wheel", e => { e.preventDefault(); orb.zoom = Math.min(2.4, Math.max(.45, orb.zoom*(1 + Math.sign(e.deltaY)*.08))); orb.idle = 0; }, { passive:false });
+/* where the camera wants to be: the whole machine, or the selected part framed */
+const sph = new THREE.Sphere();
+function goal(){
+  if (selected){ box.makeEmpty(); for (const o of (selected.focus ? selected.focus.map(n => ents.get(n)) : selected.objs)) box.expandByObject(o); if (!box.isEmpty()){ box.getBoundingSphere(sph); return { tx:sph.center.x, ty:sph.center.y, tz:sph.center.z, r:Math.max(1.15, sph.radius*3.1) }; } }
+  return { tx:0, ty:.52 + .12*explode, tz:0, r:3.0*(1 + .45*explode) };
+}
+function easeCam(dt){ const g = goal(), k = Math.min(1, dt*3.2); orb.tx += (g.tx - orb.tx)*k; orb.ty += (g.ty - orb.ty)*k; orb.tz += (g.tz - orb.tz)*k; orb.r += (g.r - orb.r)*k; }
 
 /* ---------- explode, selection, labels ---------- */
 let explode = 0, explodeTarget = 0, selected = null, hovered = null, tour = null;
@@ -184,7 +206,7 @@ function applyExplode(){
   const E = explode;
   for (const p of PARTS) for (const o of p.objs){ o.position.copy(o.userData.home); o.position.x += p.ex[0]*E; o.position.y += p.ex[1]*E; o.position.z += p.ex[2]*E; }
   /* selected part lifts a little more, others step back */
-  if (selected) for (const o of selected.objs) o.position.z += .06*liftK;
+  if (selected) for (const o of selected.objs) o.position.z += .09*liftK;
   for (const c of capsules){ c.position.copy(c.userData.home).addScaledVector(c.userData.spread, E); }
 }
 let liftK = 0;
@@ -232,7 +254,7 @@ function placeLabels(){
     if (box.isEmpty()){ d.style.display = "none"; continue; }
     box.getCenter(ctr);
     const s = ctr.clone().project(camera); const sx = (s.x*.5 + .5)*W, sy = (-s.y*.5 + .5)*H;
-    const vis = show && s.z < 1 && (explode > .35 || (selected && selected.id === p.id) || (hovered && hovered.id === p.id));
+    const vis = show && s.z < 1 && (selected ? selected.id === p.id : (explode > .35 || (hovered && hovered.id === p.id)));
     d.style.display = vis ? "" : "none"; if (!vis) continue;
     const sideW = document.body.classList.contains("ui-min") || W < 980 ? 0 : 330, side = sx > W*.58 ? -1 : 1;
     let lx = sx + side*(W*.12), ly = Math.min(H - 110, Math.max(70, sy - 26 - (p.ex[2] > 0 ? 10 : 0)));
@@ -284,10 +306,10 @@ function tourStep(dt){
 }
 
 /* ---------- ui bits ---------- */
-$("#pix").onclick = e => { pixel = !pixel; e.currentTarget.classList.toggle("on", pixel); post.uniforms.pixel.value = pixel ? 1 : 0; };
-$("#pix").classList.add("on");
-$("#reset").onclick = () => { setSelected(null); setExplode(0); orb.th = -.95; orb.ph = 1.12; orb.r = 3.4; if (tour) stopTour(); };
 const q = new URLSearchParams(location.search);
+$("#pix").onclick = e => { pixel = !pixel; e.currentTarget.classList.toggle("on", pixel); document.body.classList.toggle("pix", pixel); post.uniforms.pixel.value = pixel ? 1 : 0; scene.background = pixel ? PIXBG : null; resize(); };
+if (q.get("pixel") === "1") $("#pix").click();
+$("#reset").onclick = () => { setSelected(null); setExplode(0); orb.th = -.95; orb.ph = 1.12; orb.zoom = 1; if (tour) stopTour(); };
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
 /* ---------- loop ---------- */
@@ -297,8 +319,9 @@ function frame(now){
   if (tour) tourStep(dt); else { orb.idle += dt; if (!orb.down && orb.idle > 2.5) orb.th += dt*.08; if (!orb.down){ orb.vth *= .9; orb.vph *= .9; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); } }
   explode += (explodeTarget - explode)*Math.min(1, dt*4.5); liftK += ((selected ? 1 : 0) - liftK)*Math.min(1, dt*5);
   if (!orb.down && !tour){ const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; stage.style.cursor = p ? "pointer" : "grab"; }
-  cam(); applyExplode(); clawCycle(dt); shade();
-  renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); post.uniforms.t.value = now/1000; renderer.render(postScene, postCam);
+  applyExplode(); clawCycle(dt); shade(); easeCam(dt); cam();
+  if (pixel){ renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); post.uniforms.t.value = now/1000; renderer.render(postScene, postCam); }
+  else renderer.render(scene, camera);
   placeLabels();
   requestAnimationFrame(frame);
 }

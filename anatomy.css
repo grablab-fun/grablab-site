@@ -1,8 +1,10 @@
 /* ============ ANATOMY : full-bleed exploded machine ============ */
-.an{position:relative;height:100vh;min-height:640px;overflow:hidden;background:#05060e}
+.an{position:relative;height:100vh;min-height:640px;overflow:hidden;background:radial-gradient(ellipse 70% 60% at 50% 58%,#171b3a 0%,#0b0d1f 55%,#05060e 100%)}
+.an::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 60%,rgba(3,4,10,.55) 100%);z-index:1}
 .an-stage{position:absolute;inset:0;cursor:grab;touch-action:none}
 .an-stage:active{cursor:grabbing}
-#view{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+#view{display:block;width:100%;height:100%}
+body.pix #view{image-rendering:pixelated;image-rendering:crisp-edges}
 .an-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;stroke:rgba(201,191,255,.45);stroke-width:1;fill:rgba(201,191,255,.9)}
 .an-labels{position:absolute;inset:0;pointer-events:none}
 .an-labels .lab{position:absolute;left:0;top:0;pointer-events:auto;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
