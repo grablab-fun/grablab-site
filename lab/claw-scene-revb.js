@@ -176,6 +176,15 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   CHU.push(ghost(Bh(.012, .01, .01, cx0 + .008, cy0 + .03, zf0 - .012, "plastic")), ghost(Bh(.012, .01, .01, cx1 - .008, cy1 - .03, zf0 - .012, "plastic")));
   CHU.push(ghost(Bh(.003, .003, .003, cx0 + .015, cy0 + .03, zf0 - .012, "led_red")));
   CHU.push(ghost(Bh(.025, .004, .024, .38, cy1 - .006, zf0 - .012, "pcb")), ghost(Bh(.006, .001, .006, .4, cy1 - .009, zf0 - .012, "led_chute")));
+  /* glass guard round the chute: acrylic panels on its left, back and right, black aluminium edge frame on top and
+     in the corners, so capsules stay on the tray and the slot reads as the prize door */
+  const GX0 = CH[0] - .02, GX1 = .466, GY0 = -.468, GY1 = CH[3] + .02, GH = .12, gt = .004, fr = .006;
+  CHU.push(BB(GX0 - gt/2, GY0, FZ, GX0 + gt/2, GY1, FZ + GH, "acrylic"), BB(GX0, GY1 - gt/2, FZ, GX1, GY1 + gt/2, FZ + GH, "acrylic"),
+           BB(GX1 - gt/2, GY0, FZ, GX1 + gt/2, GY1, FZ + GH, "acrylic"));
+  CHU.push(ghost(BB(GX0 - fr, GY0, FZ + GH - fr, GX0 + fr, GY1 + fr, FZ + GH + fr, "alu")), ghost(BB(GX0 - fr, GY1 - fr, FZ + GH - fr, GX1 + fr, GY1 + fr, FZ + GH + fr, "alu")),
+           ghost(BB(GX1 - fr, GY0, FZ + GH - fr, GX1 + fr, GY1 + fr, FZ + GH + fr, "alu")));
+  [[GX0, GY1], [GX1, GY1], [GX0, GY0 + fr], [GX1, GY0 + fr]].forEach(([x, y]) => CHU.push(ghost(BB(x - fr, y - fr, FZ, x + fr, y + fr, FZ + GH + fr, "alu"))));
+  CHU.push(ghost(BB(GX0 - fr, GY1 - fr, FZ, GX1 + fr, GY1 + fr, FZ + .008, "alu")), ghost(BB(GX0 - fr, GY0, FZ, GX0 + fr, GY1, FZ + .008, "alu")));
   fixed("chute", CHU);
 
   /* ---------------- static gantry parts: Y rails on the top beams, belts, Y motors, drag chain shelf ---------------- */
