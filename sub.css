@@ -506,3 +506,5 @@
 
 /* line breaks that only apply on phones */
 @media(min-width:901px){ br.mbr{display:none} }
+/* the lab title fills the card from edge to edge */
+@media(min-width:621px){ .ph-cta .lab-go b{justify-content:flex-start;gap:.3em;font-size:var(--labfs,40px);white-space:nowrap} }
