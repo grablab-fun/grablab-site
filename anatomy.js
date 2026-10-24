@@ -2,7 +2,7 @@
    The machine is modelled part by part from the bill of materials and the build tutorial (anatomy-model.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-model.js?v=12";
+import { buildMachine } from "./anatomy-model.js?v=13";
 
 const $ = s => document.querySelector(s);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
@@ -278,7 +278,11 @@ for (const p of PARTS){
   li.onclick = () => { setSelected(selected === p ? null : p, true); if (tour) stopTour(); };
   list.appendChild(li);
 }
-stage.addEventListener("click", () => { if (orb.moved > .02){ orb.moved = 0; return; } orb.moved = 0; const p = pick(); if (tour) stopTour();
+/* the emergency stop can be pressed: it latches down, a second click twists it back out */
+const estop = { ms:[], k:0, on:false }, toast = document.createElement("div"); toast.className = "an-tip an-toast"; labels.appendChild(toast); let toastT = 0;
+function estopHit(){ ray.setFromCamera(mouse, camera); for (const h of ray.intersectObjects(root.children, true)){ const o = h.object; if (!o.visible || !o.material || !o.material.visible || o.material.userData.noPick) continue; return /^panel_estop_(mushroom|rim)/.test(o.name); } return false; }
+function pressEstop(){ estop.on = !estop.on; toast.innerHTML = estop.on ? "<b>E-STOP</b>Pressed. Motors and claw lose power" : "<b>E-STOP</b>Released. The machine can run again"; toast.classList.add("on"); toastT = 2.6; }
+stage.addEventListener("click", () => { if (orb.moved > .02){ orb.moved = 0; return; } orb.moved = 0; if (estopHit()){ pressEstop(); return; } const p = pick(); if (tour) stopTour();
   if (p && p.id === "capsules" && lastHitCap){ if (lastHitCap === selectedCap) setSelected(null); else selectCap(lastHitCap); return; }
   if (!p){ if (selected) setSelected(null); return; }
   if (p !== selected) setSelected(p); });
@@ -430,7 +434,10 @@ function frame(now){
   const dt = Math.min(.05, (now - last)/1000); last = now;
   if (tour) tourStep(dt); else { orb.idle += dt; if (false) orb.th += dt*.08; if (!orb.down){ orb.vth *= .9; orb.vph *= .9; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); } }
   explode += (explodeTarget - explode)*Math.min(1, dt*4.5);
-  if (!orb.down && !orb.pan && !tour){ const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p ? "pointer" : "grab"; }
+  if (!orb.down && !orb.pan && !tour){ const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p || estopHit() ? "pointer" : "grab"; }
+  if (!estop.ms.length) root.traverse(o => { if (/^panel_estop_(mushroom|rim)/.test(o.name)){ o.userData.y0 = o.position.y; estop.ms.push(o); } });
+  estop.k += ((estop.on ? 1 : 0) - estop.k)*Math.min(1, dt*14); for (const o of estop.ms) o.position.y = o.userData.y0 - .007*estop.k;
+  if (toastT > 0 && (toastT -= dt) <= 0) toast.classList.remove("on");
   applyExplode(); clawCycle(dt); shade(); capAnim(dt); easeCam(dt); cam();
   renderer.toneMappingExposure += ((selected ? 1.08 : 1.0) - renderer.toneMappingExposure)*Math.min(1, dt*4);
   if (pixel){ renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); post.uniforms.t.value = now/1000; renderer.render(postScene, postCam); }

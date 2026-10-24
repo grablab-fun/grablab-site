@@ -117,3 +117,7 @@ body.ui-min .an-card{bottom:56px}
 .an-tip{position:absolute;left:0;top:0;pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:rgba(5,9,24,.62);border:1px solid rgba(180,186,255,.22);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);border-radius:10px;padding:7px 11px;white-space:nowrap;opacity:0;transition:opacity .15s}
 .an-tip.on{opacity:1}
 .an-tip b{font-weight:500;color:#9cc0ff;margin-right:8px}
+
+/* e-stop feedback, above the bar */
+.an-tip.an-toast{left:50%;top:auto;bottom:118px;transform:translateX(-50%)!important;border-color:rgba(255,90,90,.45)}
+.an-tip.an-toast b{color:#ff8080}
