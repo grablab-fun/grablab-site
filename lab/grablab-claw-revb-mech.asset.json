@@ -8903,12 +8903,12 @@
     },
     {
      "type": "cylinder",
-     "radius": 0.017,
-     "height": 0.006,
+     "radius": 0.014,
+     "height": 0.005,
      "pos": [
       0,
       0,
-      -0.014
+      -0.0145
      ],
      "material": "chrome_dk",
      "contype": 0,
@@ -8916,38 +8916,25 @@
     },
     {
      "type": "cylinder",
+     "radius": 0.0235,
+     "height": 0.017,
+     "pos": [
+      0,
+      0,
+      -0.0255
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
      "radius": 0.024,
-     "height": 0.004,
+     "height": 0.002,
      "pos": [
       0,
       0,
-      -0.018
-     ],
-     "material": "chrome",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.027,
-     "height": 0.03,
-     "pos": [
-      0,
-      0,
-      -0.035
-     ],
-     "material": "chrome",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "cylinder",
-     "radius": 0.0275,
-     "height": 0.0025,
-     "pos": [
-      0,
-      0,
-      -0.027
+      -0.0215
      ],
      "material": "chip",
      "contype": 0,
@@ -8955,12 +8942,12 @@
     },
     {
      "type": "cylinder",
-     "radius": 0.0275,
-     "height": 0.0025,
+     "radius": 0.024,
+     "height": 0.002,
      "pos": [
       0,
       0,
-      -0.043
+      -0.0305
      ],
      "material": "chip",
      "contype": 0,
@@ -8968,12 +8955,12 @@
     },
     {
      "type": "cylinder",
-     "radius": 0.0285,
+     "radius": 0.025,
      "height": 0.005,
      "pos": [
       0,
       0,
-      -0.0505
+      -0.0365
      ],
      "material": "blue",
      "contype": 0,
@@ -8981,12 +8968,12 @@
     },
     {
      "type": "cylinder",
-     "radius": 0.022,
-     "height": 0.01,
+     "radius": 0.0215,
+     "height": 0.009,
      "pos": [
       0,
       0,
-      -0.058
+      -0.0435
      ],
      "material": "chrome_dk",
      "contype": 0,
@@ -8994,24 +8981,12 @@
     },
     {
      "type": "cylinder",
-     "radius": 0.012,
-     "height": 0.026,
+     "radius": 0.009,
+     "height": 0.006,
      "pos": [
       0,
       0,
-      -0.072
-     ],
-     "material": "plastic2",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.012,
-     "pos": [
-      0,
-      0,
-      -0.085
+      -0.051
      ],
      "material": "plastic2",
      "contype": 0,
@@ -9020,21 +8995,21 @@
     {
      "type": "box",
      "size": [
-      0.006,
-      0.006,
-      0.006
+      0.009,
+      0.0075,
+      0.011
      ],
      "pos": [
-      0.0125,
-      0.0217,
-      -0.03
+      0.0195,
+      0,
+      -0.0445
      ],
-     "material": "steel",
+     "material": "chrome_dk",
      "quat": [
-      0.866,
+      1,
       0,
       0,
-      0.5
+      0
      ],
      "contype": 0,
      "conaffinity": 0
@@ -9042,21 +9017,21 @@
     {
      "type": "box",
      "size": [
-      0.006,
-      0.006,
-      0.006
+      0.009,
+      0.0075,
+      0.011
      ],
      "pos": [
-      -0.025,
-      0,
-      -0.03
+      -0.0097,
+      0.0169,
+      -0.0445
      ],
-     "material": "steel",
+     "material": "chrome_dk",
      "quat": [
+      0.5,
       0,
       0,
-      0,
-      1
+      0.866
      ],
      "contype": 0,
      "conaffinity": 0
@@ -9064,21 +9039,21 @@
     {
      "type": "box",
      "size": [
-      0.006,
-      0.006,
-      0.006
+      0.009,
+      0.0075,
+      0.011
      ],
      "pos": [
-      0.0125,
-      -0.0217,
-      -0.03
+      -0.0098,
+      -0.0169,
+      -0.0445
      ],
-     "material": "steel",
+     "material": "chrome_dk",
      "quat": [
-      -0.866,
+      -0.5,
       0,
       0,
-      0.5
+      0.866
      ],
      "contype": 0,
      "conaffinity": 0
@@ -9182,491 +9157,317 @@
      "friction": 1.6
     },
     {
-     "type": "box",
-     "size": [
-      0.0068,
-      0.0145,
-      0.0151
-     ],
+     "type": "capsule",
+     "radius": 0.0046,
+     "height": 0.0082,
      "pos": [
-      0.0002,
+      0.0001,
       0,
-      -0.0064
+      -0.0041
      ],
-     "material": "chrome",
      "quat": [
-      0.0164,
+      0.0168,
       0,
       0.9999,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0085,
-      0.0127
-     ],
+     "type": "capsule",
+     "radius": 0.0045,
+     "height": 0.0077,
      "pos": [
       0.0002,
       0,
-      -0.0064
+      -0.0121
      ],
-     "material": "chip",
      "quat": [
-      0.0164,
-      0,
-      0.9999,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0066,
-      0.0139,
-      0.0139
-     ],
-     "pos": [
-      0.0001,
-      0,
-      -0.0184
-     ],
-     "material": "chrome",
-     "quat": [
-      0.0311,
-      0,
-      -0.9995,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0079,
-      0.0115
-     ],
-     "pos": [
-      0.0001,
-      0,
-      -0.0184
-     ],
-     "material": "chip",
-     "quat": [
-      0.0311,
-      0,
-      -0.9995,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0064,
-      0.0133,
-      0.0127
-     ],
-     "pos": [
-      -0.0012,
-      0,
-      -0.0292
-     ],
-     "material": "chrome",
-     "quat": [
-      0.0895,
-      0,
-      -0.996,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0073,
-      0.0103
-     ],
-     "pos": [
-      -0.0012,
-      0,
-      -0.0292
-     ],
-     "material": "chip",
-     "quat": [
-      0.0895,
-      0,
-      -0.996,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0062,
-      0.0127,
-      0.0118
-     ],
-     "pos": [
-      -0.0036,
-      0,
-      -0.0387
-     ],
-     "material": "chrome",
-     "quat": [
-      0.1606,
-      0,
-      -0.987,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0067,
-      0.0094
-     ],
-     "pos": [
-      -0.0036,
-      0,
-      -0.0387
-     ],
-     "material": "chip",
-     "quat": [
-      0.1606,
-      0,
-      -0.987,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.006,
-      0.0121,
-      0.011
-     ],
-     "pos": [
-      -0.0071,
-      0,
-      -0.047
-     ],
-     "material": "chrome",
-     "quat": [
-      0.2446,
-      0,
-      -0.9696,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0061,
-      0.0086
-     ],
-     "pos": [
-      -0.0071,
-      0,
-      -0.047
-     ],
-     "material": "chip",
-     "quat": [
-      0.2446,
-      0,
-      -0.9696,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0058,
-      0.0115,
-      0.0106
-     ],
-     "pos": [
-      -0.0118,
-      0,
-      -0.0539
-     ],
-     "material": "chrome",
-     "quat": [
-      0.3385,
-      0,
-      -0.941,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0055,
-      0.0082
-     ],
-     "pos": [
-      -0.0118,
-      0,
-      -0.0539
-     ],
-     "material": "chip",
-     "quat": [
-      0.3385,
-      0,
-      -0.941,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0056,
-      0.0109,
-      0.0105
-     ],
-     "pos": [
-      -0.0176,
-      0,
-      -0.0596
-     ],
-     "material": "chrome",
-     "quat": [
-      0.4348,
-      0,
-      -0.9005,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0049,
-      0.0081
-     ],
-     "pos": [
-      -0.0176,
-      0,
-      -0.0596
-     ],
-     "material": "chip",
-     "quat": [
-      0.4348,
-      0,
-      -0.9005,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0054,
-      0.0103,
-      0.0108
-     ],
-     "pos": [
-      -0.0245,
-      0,
-      -0.064
-     ],
-     "material": "chrome",
-     "quat": [
-      0.5246,
-      0,
-      -0.8514,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0043,
-      0.0084
-     ],
-     "pos": [
-      -0.0245,
-      0,
-      -0.064
-     ],
-     "material": "chip",
-     "quat": [
-      0.5246,
-      0,
-      -0.8514,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0052,
       0.0097,
-      0.0114
-     ],
-     "pos": [
-      -0.0325,
       0,
-      -0.0671
+      -1,
+      0
      ],
      "material": "chrome",
-     "quat": [
-      0.601,
-      0,
-      -0.7992,
-      0
-     ],
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0037,
-      0.009
-     ],
+     "type": "capsule",
+     "radius": 0.0044,
+     "height": 0.0072,
      "pos": [
-      -0.0325,
+      -0.0002,
       0,
-      -0.0671
+      -0.0195
      ],
-     "material": "chip",
      "quat": [
-      0.601,
+      0.0399,
       0,
-      -0.7992,
+      -0.9992,
       0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.005,
-      0.0091,
-      0.0122
-     ],
-     "pos": [
-      -0.0417,
-      0,
-      -0.069
      ],
      "material": "chrome",
-     "quat": [
-      0.6621,
-      0,
-      -0.7494,
-      0
-     ],
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0031,
-      0.0098
-     ],
+     "type": "capsule",
+     "radius": 0.0043,
+     "height": 0.0067,
      "pos": [
-      -0.0417,
+      -0.0009,
       0,
-      -0.069
+      -0.0264
      ],
-     "material": "chip",
      "quat": [
-      0.6621,
+      0.0743,
       0,
-      -0.7494,
+      -0.9972,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
-     "radius": 0.0062,
-     "height": 0.019,
+     "type": "capsule",
+     "radius": 0.0042,
+     "height": 0.0063,
      "pos": [
+      -0.0022,
       0,
-      0,
-      0
+      -0.0328
      ],
-     "material": "chrome_dk",
      "quat": [
-      0.7071,
-      0.7071,
+      0.1135,
       0,
+      -0.9935,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
-     "radius": 0.0028,
-     "height": 0.023,
+     "type": "capsule",
+     "radius": 0.0041,
+     "height": 0.0059,
      "pos": [
+      -0.0038,
       0,
-      0,
-      0
+      -0.0387
      ],
-     "material": "steel",
      "quat": [
-      0.7071,
-      0.7071,
+      0.1578,
       0,
+      -0.9875,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
+     "type": "capsule",
+     "radius": 0.004,
+     "height": 0.0056,
+     "pos": [
+      -0.0059,
+      0,
+      -0.0441
+     ],
+     "quat": [
+      0.2074,
+      0,
+      -0.9783,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0039,
+     "height": 0.0053,
+     "pos": [
+      -0.0083,
+      0,
+      -0.049
+     ],
+     "quat": [
+      0.2619,
+      0,
+      -0.9651,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0038,
+     "height": 0.0051,
+     "pos": [
+      -0.0113,
+      0,
+      -0.0533
+     ],
+     "quat": [
+      0.3203,
+      0,
+      -0.9473,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0037,
+     "height": 0.005,
+     "pos": [
+      -0.0146,
+      0,
+      -0.0572
+     ],
+     "quat": [
+      0.3808,
+      0,
+      -0.9246,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0036,
+     "height": 0.005,
+     "pos": [
+      -0.0184,
+      0,
+      -0.0605
+     ],
+     "quat": [
+      0.4413,
+      0,
+      -0.8973,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0035,
+     "height": 0.0051,
+     "pos": [
+      -0.0225,
+      0,
+      -0.0633
+     ],
+     "quat": [
+      0.4994,
+      0,
+      -0.8664,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
      "radius": 0.0034,
-     "height": 0.017,
+     "height": 0.0052,
      "pos": [
-      -0.0092,
+      -0.0272,
       0,
-      -0.0508
+      -0.0656
+     ],
+     "quat": [
+      0.553,
+      0,
+      -0.8332,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0033,
+     "height": 0.0055,
+     "pos": [
+      -0.0322,
+      0,
+      -0.0673
+     ],
+     "quat": [
+      0.6009,
+      0,
+      -0.7993,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0032,
+     "height": 0.0058,
+     "pos": [
+      -0.0376,
+      0,
+      -0.0686
+     ],
+     "quat": [
+      0.6426,
+      0,
+      -0.7662,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0031,
+     "height": 0.0061,
+     "pos": [
+      -0.0435,
+      0,
+      -0.0693
+     ],
+     "quat": [
+      0.6783,
+      0,
+      -0.7348,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0022,
+     "height": 0.013,
+     "pos": [
+      0,
+      0,
+      0
      ],
      "material": "steel",
      "quat": [
@@ -9680,17 +9481,17 @@
     },
     {
      "type": "capsule",
-     "radius": 0.0042,
-     "height": 0.012,
+     "radius": 0.0036,
+     "height": 0.009,
      "pos": [
-      -0.0486,
+      -0.0496,
       0,
-      -0.0666
+      -0.0699
      ],
      "quat": [
-      0.67,
+      0.6682,
       0,
-      -0.7423,
+      -0.744,
       0
      ],
      "material": "rubber",
@@ -9777,491 +9578,317 @@
      "friction": 1.6
     },
     {
-     "type": "box",
-     "size": [
-      0.0068,
-      0.0145,
-      0.0151
-     ],
+     "type": "capsule",
+     "radius": 0.0046,
+     "height": 0.0082,
      "pos": [
-      0.0002,
+      0.0001,
       0,
-      -0.0064
+      -0.0041
      ],
-     "material": "chrome",
      "quat": [
-      0.0164,
+      0.0168,
       0,
       0.9999,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0085,
-      0.0127
-     ],
+     "type": "capsule",
+     "radius": 0.0045,
+     "height": 0.0077,
      "pos": [
       0.0002,
       0,
-      -0.0064
+      -0.0121
      ],
-     "material": "chip",
      "quat": [
-      0.0164,
-      0,
-      0.9999,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0066,
-      0.0139,
-      0.0139
-     ],
-     "pos": [
-      0.0001,
-      0,
-      -0.0184
-     ],
-     "material": "chrome",
-     "quat": [
-      0.0311,
-      0,
-      -0.9995,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0079,
-      0.0115
-     ],
-     "pos": [
-      0.0001,
-      0,
-      -0.0184
-     ],
-     "material": "chip",
-     "quat": [
-      0.0311,
-      0,
-      -0.9995,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0064,
-      0.0133,
-      0.0127
-     ],
-     "pos": [
-      -0.0012,
-      0,
-      -0.0292
-     ],
-     "material": "chrome",
-     "quat": [
-      0.0895,
-      0,
-      -0.996,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0073,
-      0.0103
-     ],
-     "pos": [
-      -0.0012,
-      0,
-      -0.0292
-     ],
-     "material": "chip",
-     "quat": [
-      0.0895,
-      0,
-      -0.996,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0062,
-      0.0127,
-      0.0118
-     ],
-     "pos": [
-      -0.0036,
-      0,
-      -0.0387
-     ],
-     "material": "chrome",
-     "quat": [
-      0.1606,
-      0,
-      -0.987,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0067,
-      0.0094
-     ],
-     "pos": [
-      -0.0036,
-      0,
-      -0.0387
-     ],
-     "material": "chip",
-     "quat": [
-      0.1606,
-      0,
-      -0.987,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.006,
-      0.0121,
-      0.011
-     ],
-     "pos": [
-      -0.0071,
-      0,
-      -0.047
-     ],
-     "material": "chrome",
-     "quat": [
-      0.2446,
-      0,
-      -0.9696,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0061,
-      0.0086
-     ],
-     "pos": [
-      -0.0071,
-      0,
-      -0.047
-     ],
-     "material": "chip",
-     "quat": [
-      0.2446,
-      0,
-      -0.9696,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0058,
-      0.0115,
-      0.0106
-     ],
-     "pos": [
-      -0.0118,
-      0,
-      -0.0539
-     ],
-     "material": "chrome",
-     "quat": [
-      0.3385,
-      0,
-      -0.941,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0055,
-      0.0082
-     ],
-     "pos": [
-      -0.0118,
-      0,
-      -0.0539
-     ],
-     "material": "chip",
-     "quat": [
-      0.3385,
-      0,
-      -0.941,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0056,
-      0.0109,
-      0.0105
-     ],
-     "pos": [
-      -0.0176,
-      0,
-      -0.0596
-     ],
-     "material": "chrome",
-     "quat": [
-      0.4348,
-      0,
-      -0.9005,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0049,
-      0.0081
-     ],
-     "pos": [
-      -0.0176,
-      0,
-      -0.0596
-     ],
-     "material": "chip",
-     "quat": [
-      0.4348,
-      0,
-      -0.9005,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0054,
-      0.0103,
-      0.0108
-     ],
-     "pos": [
-      -0.0245,
-      0,
-      -0.064
-     ],
-     "material": "chrome",
-     "quat": [
-      0.5246,
-      0,
-      -0.8514,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0043,
-      0.0084
-     ],
-     "pos": [
-      -0.0245,
-      0,
-      -0.064
-     ],
-     "material": "chip",
-     "quat": [
-      0.5246,
-      0,
-      -0.8514,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0052,
       0.0097,
-      0.0114
-     ],
-     "pos": [
-      -0.0325,
       0,
-      -0.0671
+      -1,
+      0
      ],
      "material": "chrome",
-     "quat": [
-      0.601,
-      0,
-      -0.7992,
-      0
-     ],
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0037,
-      0.009
-     ],
+     "type": "capsule",
+     "radius": 0.0044,
+     "height": 0.0072,
      "pos": [
-      -0.0325,
+      -0.0002,
       0,
-      -0.0671
+      -0.0195
      ],
-     "material": "chip",
      "quat": [
-      0.601,
+      0.0399,
       0,
-      -0.7992,
+      -0.9992,
       0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.005,
-      0.0091,
-      0.0122
-     ],
-     "pos": [
-      -0.0417,
-      0,
-      -0.069
      ],
      "material": "chrome",
-     "quat": [
-      0.6621,
-      0,
-      -0.7494,
-      0
-     ],
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0031,
-      0.0098
-     ],
+     "type": "capsule",
+     "radius": 0.0043,
+     "height": 0.0067,
      "pos": [
-      -0.0417,
+      -0.0009,
       0,
-      -0.069
+      -0.0264
      ],
-     "material": "chip",
      "quat": [
-      0.6621,
+      0.0743,
       0,
-      -0.7494,
+      -0.9972,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
-     "radius": 0.0062,
-     "height": 0.019,
+     "type": "capsule",
+     "radius": 0.0042,
+     "height": 0.0063,
      "pos": [
+      -0.0022,
       0,
-      0,
-      0
+      -0.0328
      ],
-     "material": "chrome_dk",
      "quat": [
-      0.7071,
-      0.7071,
+      0.1135,
       0,
+      -0.9935,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
-     "radius": 0.0028,
-     "height": 0.023,
+     "type": "capsule",
+     "radius": 0.0041,
+     "height": 0.0059,
      "pos": [
+      -0.0038,
       0,
-      0,
-      0
+      -0.0387
      ],
-     "material": "steel",
      "quat": [
-      0.7071,
-      0.7071,
+      0.1578,
       0,
+      -0.9875,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
+     "type": "capsule",
+     "radius": 0.004,
+     "height": 0.0056,
+     "pos": [
+      -0.0059,
+      0,
+      -0.0441
+     ],
+     "quat": [
+      0.2074,
+      0,
+      -0.9783,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0039,
+     "height": 0.0053,
+     "pos": [
+      -0.0083,
+      0,
+      -0.049
+     ],
+     "quat": [
+      0.2619,
+      0,
+      -0.9651,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0038,
+     "height": 0.0051,
+     "pos": [
+      -0.0113,
+      0,
+      -0.0533
+     ],
+     "quat": [
+      0.3203,
+      0,
+      -0.9473,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0037,
+     "height": 0.005,
+     "pos": [
+      -0.0146,
+      0,
+      -0.0572
+     ],
+     "quat": [
+      0.3808,
+      0,
+      -0.9246,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0036,
+     "height": 0.005,
+     "pos": [
+      -0.0184,
+      0,
+      -0.0605
+     ],
+     "quat": [
+      0.4413,
+      0,
+      -0.8973,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0035,
+     "height": 0.0051,
+     "pos": [
+      -0.0225,
+      0,
+      -0.0633
+     ],
+     "quat": [
+      0.4994,
+      0,
+      -0.8664,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
      "radius": 0.0034,
-     "height": 0.017,
+     "height": 0.0052,
      "pos": [
-      -0.0092,
+      -0.0272,
       0,
-      -0.0508
+      -0.0656
+     ],
+     "quat": [
+      0.553,
+      0,
+      -0.8332,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0033,
+     "height": 0.0055,
+     "pos": [
+      -0.0322,
+      0,
+      -0.0673
+     ],
+     "quat": [
+      0.6009,
+      0,
+      -0.7993,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0032,
+     "height": 0.0058,
+     "pos": [
+      -0.0376,
+      0,
+      -0.0686
+     ],
+     "quat": [
+      0.6426,
+      0,
+      -0.7662,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0031,
+     "height": 0.0061,
+     "pos": [
+      -0.0435,
+      0,
+      -0.0693
+     ],
+     "quat": [
+      0.6783,
+      0,
+      -0.7348,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0022,
+     "height": 0.013,
+     "pos": [
+      0,
+      0,
+      0
      ],
      "material": "steel",
      "quat": [
@@ -10275,17 +9902,17 @@
     },
     {
      "type": "capsule",
-     "radius": 0.0042,
-     "height": 0.012,
+     "radius": 0.0036,
+     "height": 0.009,
      "pos": [
-      -0.0486,
+      -0.0496,
       0,
-      -0.0666
+      -0.0699
      ],
      "quat": [
-      0.67,
+      0.6682,
       0,
-      -0.7423,
+      -0.744,
       0
      ],
      "material": "rubber",
@@ -10372,491 +9999,317 @@
      "friction": 1.6
     },
     {
-     "type": "box",
-     "size": [
-      0.0068,
-      0.0145,
-      0.0151
-     ],
+     "type": "capsule",
+     "radius": 0.0046,
+     "height": 0.0082,
      "pos": [
-      0.0002,
+      0.0001,
       0,
-      -0.0064
+      -0.0041
      ],
-     "material": "chrome",
      "quat": [
-      0.0164,
+      0.0168,
       0,
       0.9999,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0085,
-      0.0127
-     ],
+     "type": "capsule",
+     "radius": 0.0045,
+     "height": 0.0077,
      "pos": [
       0.0002,
       0,
-      -0.0064
+      -0.0121
      ],
-     "material": "chip",
      "quat": [
-      0.0164,
-      0,
-      0.9999,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0066,
-      0.0139,
-      0.0139
-     ],
-     "pos": [
-      0.0001,
-      0,
-      -0.0184
-     ],
-     "material": "chrome",
-     "quat": [
-      0.0311,
-      0,
-      -0.9995,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0079,
-      0.0115
-     ],
-     "pos": [
-      0.0001,
-      0,
-      -0.0184
-     ],
-     "material": "chip",
-     "quat": [
-      0.0311,
-      0,
-      -0.9995,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0064,
-      0.0133,
-      0.0127
-     ],
-     "pos": [
-      -0.0012,
-      0,
-      -0.0292
-     ],
-     "material": "chrome",
-     "quat": [
-      0.0895,
-      0,
-      -0.996,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0073,
-      0.0103
-     ],
-     "pos": [
-      -0.0012,
-      0,
-      -0.0292
-     ],
-     "material": "chip",
-     "quat": [
-      0.0895,
-      0,
-      -0.996,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0062,
-      0.0127,
-      0.0118
-     ],
-     "pos": [
-      -0.0036,
-      0,
-      -0.0387
-     ],
-     "material": "chrome",
-     "quat": [
-      0.1606,
-      0,
-      -0.987,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0067,
-      0.0094
-     ],
-     "pos": [
-      -0.0036,
-      0,
-      -0.0387
-     ],
-     "material": "chip",
-     "quat": [
-      0.1606,
-      0,
-      -0.987,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.006,
-      0.0121,
-      0.011
-     ],
-     "pos": [
-      -0.0071,
-      0,
-      -0.047
-     ],
-     "material": "chrome",
-     "quat": [
-      0.2446,
-      0,
-      -0.9696,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0061,
-      0.0086
-     ],
-     "pos": [
-      -0.0071,
-      0,
-      -0.047
-     ],
-     "material": "chip",
-     "quat": [
-      0.2446,
-      0,
-      -0.9696,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0058,
-      0.0115,
-      0.0106
-     ],
-     "pos": [
-      -0.0118,
-      0,
-      -0.0539
-     ],
-     "material": "chrome",
-     "quat": [
-      0.3385,
-      0,
-      -0.941,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0055,
-      0.0082
-     ],
-     "pos": [
-      -0.0118,
-      0,
-      -0.0539
-     ],
-     "material": "chip",
-     "quat": [
-      0.3385,
-      0,
-      -0.941,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0056,
-      0.0109,
-      0.0105
-     ],
-     "pos": [
-      -0.0176,
-      0,
-      -0.0596
-     ],
-     "material": "chrome",
-     "quat": [
-      0.4348,
-      0,
-      -0.9005,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0049,
-      0.0081
-     ],
-     "pos": [
-      -0.0176,
-      0,
-      -0.0596
-     ],
-     "material": "chip",
-     "quat": [
-      0.4348,
-      0,
-      -0.9005,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0054,
-      0.0103,
-      0.0108
-     ],
-     "pos": [
-      -0.0245,
-      0,
-      -0.064
-     ],
-     "material": "chrome",
-     "quat": [
-      0.5246,
-      0,
-      -0.8514,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0043,
-      0.0084
-     ],
-     "pos": [
-      -0.0245,
-      0,
-      -0.064
-     ],
-     "material": "chip",
-     "quat": [
-      0.5246,
-      0,
-      -0.8514,
-      0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.0052,
       0.0097,
-      0.0114
-     ],
-     "pos": [
-      -0.0325,
       0,
-      -0.0671
+      -1,
+      0
      ],
      "material": "chrome",
-     "quat": [
-      0.601,
-      0,
-      -0.7992,
-      0
-     ],
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0037,
-      0.009
-     ],
+     "type": "capsule",
+     "radius": 0.0044,
+     "height": 0.0072,
      "pos": [
-      -0.0325,
+      -0.0002,
       0,
-      -0.0671
+      -0.0195
      ],
-     "material": "chip",
      "quat": [
-      0.601,
+      0.0399,
       0,
-      -0.7992,
+      -0.9992,
       0
-     ],
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.005,
-      0.0091,
-      0.0122
-     ],
-     "pos": [
-      -0.0417,
-      0,
-      -0.069
      ],
      "material": "chrome",
-     "quat": [
-      0.6621,
-      0,
-      -0.7494,
-      0
-     ],
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "box",
-     "size": [
-      0.0024,
-      0.0031,
-      0.0098
-     ],
+     "type": "capsule",
+     "radius": 0.0043,
+     "height": 0.0067,
      "pos": [
-      -0.0417,
+      -0.0009,
       0,
-      -0.069
+      -0.0264
      ],
-     "material": "chip",
      "quat": [
-      0.6621,
+      0.0743,
       0,
-      -0.7494,
+      -0.9972,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
-     "radius": 0.0062,
-     "height": 0.019,
+     "type": "capsule",
+     "radius": 0.0042,
+     "height": 0.0063,
      "pos": [
+      -0.0022,
       0,
-      0,
-      0
+      -0.0328
      ],
-     "material": "chrome_dk",
      "quat": [
-      0.7071,
-      0.7071,
+      0.1135,
       0,
+      -0.9935,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
-     "radius": 0.0028,
-     "height": 0.023,
+     "type": "capsule",
+     "radius": 0.0041,
+     "height": 0.0059,
      "pos": [
+      -0.0038,
       0,
-      0,
-      0
+      -0.0387
      ],
-     "material": "steel",
      "quat": [
-      0.7071,
-      0.7071,
+      0.1578,
       0,
+      -0.9875,
       0
      ],
+     "material": "chrome",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
+     "type": "capsule",
+     "radius": 0.004,
+     "height": 0.0056,
+     "pos": [
+      -0.0059,
+      0,
+      -0.0441
+     ],
+     "quat": [
+      0.2074,
+      0,
+      -0.9783,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0039,
+     "height": 0.0053,
+     "pos": [
+      -0.0083,
+      0,
+      -0.049
+     ],
+     "quat": [
+      0.2619,
+      0,
+      -0.9651,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0038,
+     "height": 0.0051,
+     "pos": [
+      -0.0113,
+      0,
+      -0.0533
+     ],
+     "quat": [
+      0.3203,
+      0,
+      -0.9473,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0037,
+     "height": 0.005,
+     "pos": [
+      -0.0146,
+      0,
+      -0.0572
+     ],
+     "quat": [
+      0.3808,
+      0,
+      -0.9246,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0036,
+     "height": 0.005,
+     "pos": [
+      -0.0184,
+      0,
+      -0.0605
+     ],
+     "quat": [
+      0.4413,
+      0,
+      -0.8973,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0035,
+     "height": 0.0051,
+     "pos": [
+      -0.0225,
+      0,
+      -0.0633
+     ],
+     "quat": [
+      0.4994,
+      0,
+      -0.8664,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
      "radius": 0.0034,
-     "height": 0.017,
+     "height": 0.0052,
      "pos": [
-      -0.0092,
+      -0.0272,
       0,
-      -0.0508
+      -0.0656
+     ],
+     "quat": [
+      0.553,
+      0,
+      -0.8332,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0033,
+     "height": 0.0055,
+     "pos": [
+      -0.0322,
+      0,
+      -0.0673
+     ],
+     "quat": [
+      0.6009,
+      0,
+      -0.7993,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0032,
+     "height": 0.0058,
+     "pos": [
+      -0.0376,
+      0,
+      -0.0686
+     ],
+     "quat": [
+      0.6426,
+      0,
+      -0.7662,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "capsule",
+     "radius": 0.0031,
+     "height": 0.0061,
+     "pos": [
+      -0.0435,
+      0,
+      -0.0693
+     ],
+     "quat": [
+      0.6783,
+      0,
+      -0.7348,
+      0
+     ],
+     "material": "chrome",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0022,
+     "height": 0.013,
+     "pos": [
+      0,
+      0,
+      0
      ],
      "material": "steel",
      "quat": [
@@ -10870,17 +10323,17 @@
     },
     {
      "type": "capsule",
-     "radius": 0.0042,
-     "height": 0.012,
+     "radius": 0.0036,
+     "height": 0.009,
      "pos": [
-      -0.0486,
+      -0.0496,
       0,
-      -0.0666
+      -0.0699
      ],
      "quat": [
-      0.67,
+      0.6682,
       0,
-      -0.7423,
+      -0.744,
       0
      ],
      "material": "rubber",

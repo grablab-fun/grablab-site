@@ -33,10 +33,21 @@ const PARTS = [
     subs:[["MGN12 block", 0,0,1.061], ["Winch spool, 30 mm", 0,-.045,.985], ["Pancake NEMA 17", .042,-.045,.985], ["POV camera", -.048,-.045,.975], ["Z end stop", .03,-.06,1.076], ["Cable gland", .024,-.049,1.003]], proof:"Same depth every play" },
   { id:"claw", n:"09", name:"Claw", spec:"3 fingers, 12 V linear actuator", ph:1.08, th:0.95, ents:["seg_1"], focus:["seg_8"], chain:["gantry","winch"], ex:[0,0,-.42],
     text:"Three printed fingers. A 30 mm linear actuator opens them, a spring closes them. That closing force is the grip we publish. A 6 core coiled cable brings the 12 V down.",
-    subs:[["Swivel on Dyneema", 0,-.045,.972], ["Coil cable, 6 core", .028,-.045,.95], ["Hub, 12 V actuator", 0,-.045,.915], ["Chrome collar", .024,-.045,.893], ["3 printed fingers", .035,-.045,.86], ["Rubber tips", .04,-.045,.825]], proof:"Grip measured before you play" }
+    subs:[["Swivel on Dyneema", 0,-.045,.972], ["Coil cable, 6 core", .028,-.045,.95], ["Hub, 12 V actuator", 0,-.045,.92], ["Blue collar", .025,-.045,.908], ["3 printed fingers", .04,-.045,.875], ["Rubber tips", .045,-.045,.835]], proof:"Grip measured before you play" }
 ];
 const KEEP = new Set(["frame","floor_mdf","base_box","electronics","chute","gantry_static","claw"]);
 const byId = id => PARTS.find(p => p.id === id);
+const ICON = { base:"assets/icons/cabinet.png", electronics:"assets/icons/chip.png", tray:"assets/sub/inventory.png", chute:"assets/sub/v-beam.png", capsules:"assets/sub/cap.png", frame:"assets/icons/cabinet.png", gantry:"assets/icons/joystick.png", winch:"assets/icons/gauge.png", claw:"assets/icons/claw.png" };
+const SUBICON = {
+  "E-stop, 22 mm":"assets/icons/proof.png", "QR plate":"assets/sub/quest.png", "Wordmark":"assets/brand/mark-chrome-256.png", "Fan + grille":"assets/icons/gauge.png", "Power inlet":"assets/icons/chip.png", "Prize drawer":"assets/sub/vault.png",
+  "Raspberry Pi":"assets/icons/chip.png", "OPTIGA Trust M shield":"assets/sub/v-sign.png", "Motion board":"assets/icons/chip.png", "12 V supply":"assets/icons/gauge.png", "Claw driver":"assets/icons/claw.png", "WAGO terminals":"assets/icons/chip.png", "Beam relay":"assets/sub/v-beam.png",
+  "MDF floor, black":"assets/sub/inventory.png", "Rim, 45 mm":"assets/icons/cabinet.png", "Chute opening, 160 mm":"assets/sub/v-settled.png",
+  "Guard glass + frame":"assets/icons/cabinet.png", "Break beam pair":"assets/sub/v-beam.png", "Chute camera + LED":"assets/sub/v-camera.png", "Funnel, 160 to 90":"assets/sub/v-settled.png", "Ramp":"assets/sub/v-settled.png", "NFC cradle, PN532":"assets/sub/nft.png", "Servo flap, MG90S":"assets/icons/gauge.png", "Chute camera":"assets/sub/camera.png",
+  "50 mm shell":"assets/sub/cap.png", "NTAG215 sticker inside":"assets/sub/nft.png", "Gold or violet halves":"assets/sub/token.png",
+  "4 posts, 1000 mm":"assets/icons/cabinet.png", "Top ring":"assets/icons/cabinet.png", "Floor ring, 150 mm":"assets/icons/cabinet.png", "Corner brackets":"assets/icons/proof.png", "Rubber feet":"assets/sub/v-settled.png",
+  "Y rail, left":"assets/icons/joystick.png", "Y rail, right":"assets/icons/joystick.png", "X beam, 2040":"assets/icons/joystick.png", "Y motors, NEMA 17":"assets/icons/gauge.png", "GT2 belt":"assets/icons/gauge.png", "Drag chain":"assets/icons/chip.png", "Play camera":"assets/sub/camera.png",
+  "MGN12 block":"assets/icons/gauge.png", "Winch spool, 30 mm":"assets/icons/gauge.png", "Pancake NEMA 17":"assets/icons/gauge.png", "POV camera":"assets/sub/camera.png", "Z end stop":"assets/icons/proof.png", "Cable gland":"assets/icons/chip.png",
+  "Swivel on Dyneema":"assets/icons/claw.png", "Coil cable, 6 core":"assets/icons/chip.png", "Hub, 12 V actuator":"assets/icons/claw.png", "Blue collar":"assets/icons/claw.png", "3 printed fingers":"assets/icons/claw.png", "Rubber tips":"assets/sub/v-settled.png" };
 const PAL = [[.047,.051,.098],[.094,.09,.188],[.192,.161,.31],[.33,.27,.42],[.545,.475,.576],[.855,.843,.847],[1,.824,.478],[.788,.714,1],[.231,.482,1],[.122,.31,.82]];
 
 const stage = $("#stage"), canvas = $("#view");
@@ -149,7 +160,7 @@ function buildCapsule(e, mats){
   ents.set(e.name, o); partOf.set(e.name, "capsules"); return o;
 }
 async function load(){
-  const [sc, as] = await Promise.all([fetch("lab/grablab-claw-revb.scene.json?v=15").then(r => r.json()), fetch("lab/grablab-claw-revb-mech.asset.json?v=15").then(r => r.json())]);
+  const [sc, as] = await Promise.all([fetch("lab/grablab-claw-revb.scene.json?v=16").then(r => r.json()), fetch("lab/grablab-claw-revb-mech.asset.json?v=16").then(r => r.json())]);
   const capsGroup = new THREE.Group(); capsGroup.name = "capsules"; root.add(capsGroup); ents.set("capsules", capsGroup);
   for (const e of sc.entities){
     if (/^capsule_/.test(e.name)){ const o = buildCapsule(e, sc.material); capsGroup.add(o); o.userData.home = o.position.clone(); capsules.push(o); continue; }
@@ -282,12 +293,11 @@ async function load(){
     wire("winch", w, cable, [.048, -.045, -.05], [.03, -.03, -.01], .002);
     put("winch", w, B(.012, .012, .012), white, .05, -.07, -.03);                                    // winch motor connector
 
-    /* 09 claw: actuator rod, hex nut on the eye, hub gland, three push rods */
+    /* 09 claw: hex nut on the eye, cable gland on the housing */
     cur("claw");
     const cl = "seg_8";
-    put("claw", cl, C(.003, .03, 10), steel, 0, 0, -.1); put("claw", cl, C(.0045, .004, 6), steel, 0, 0, -.015);
-    put("claw", cl, Cx(.004, .01, 10), black, .024, 0, -.03);
-    for (let k = 0; k < 3; k++){ const a = k*2*Math.PI/3 + Math.PI/3; put("claw", cl, C(.0015, .028, 8), steel, .012*Math.cos(a), .012*Math.sin(a), -.078); }
+    put("claw", cl, C(.0045, .004, 6), steel, 0, 0, -.012);
+    put("claw", cl, Cx(.0035, .008, 10), black, .021, 0, -.026);
   })();
   /* GRABLAB wordmark: real type on a thin emissive plane on the front panel */
   (function wordmark(){
@@ -398,7 +408,7 @@ function setSelected(p, fromList){
   selected = p; liftK = 0; selectedCap = null; orb.phT = p && p.ph ? p.ph : null; orb.thT = p && p.th != null ? p.th : null; orb.zoom = 1; orb.px = orb.py = orb.pz = 0;
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
-    card.innerHTML = `<span class="n">${p.n} / 09</span><h3>${p.name}</h3><span class="spec">${p.spec}</span><p>${p.text}</p><div class="inside">${p.subs.map(x => `<span>${x[0]}</span>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><i></i>${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
+    card.innerHTML = `<span class="n">${p.n} / 09</span><h3>${p.name}</h3><span class="spec">${p.spec}</span><p>${p.text}</p><div class="inside">${p.subs.map(x => `<span><img src="${SUBICON[x[0]] || ICON[p.id]}" alt="" />${x[0]}</span>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><img src="${ICON[p.id]}" alt="" />${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
 
     card.classList.add("on"); wireCard();
     if (explodeTarget < .5 && !tour) setExplode(.72);
@@ -438,7 +448,7 @@ function selectCap(o){
   const num = o.name.replace("capsule_", "");
   card.innerHTML = `<span class="n">Capsule #${num}</span><h3>Custom NFC capsule</h3><span class="spec">50 mm shell, any prize</span>
     <p>NTAG215 inside, factory UID. The prize is whatever the project loads: an SPL token, an NFT, a tokenized stock, merch, an off chain code. Mapped to the UID in the published inventory.</p>
-    <div class="inside"><span>SPL token</span><span>NFT</span><span>Tokenized stock</span><span>Merch</span><span>Off chain code</span><span>Anything else</span></div>
+    <div class="inside"><span><img src="assets/sub/token.png" alt="" />SPL token</span><span><img src="assets/sub/nft.png" alt="" />NFT</span><span><img src="assets/sub/chart.png" alt="" />Tokenized stock</span><span><img src="assets/sub/para.png" alt="" />Merch</span><span><img src="assets/sub/quest.png" alt="" />Off chain code</span><span><img src="assets/sub/vault.png" alt="" />Anything else</span></div>
     <a class="proof" href="https://solana.com" target="_blank" rel="noopener"><img src="assets/chains/solana.jpg" alt="" />UID published in the inventory</a><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
   wireCard(); card.classList.add("on");
 }

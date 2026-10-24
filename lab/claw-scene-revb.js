@@ -283,15 +283,17 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
       geoms.push(ghost({type:"capsule", radius:.0021, height:r4(Math.hypot(...d)), pos:[0,1,2].map(i => r4((p0[i] + p1[i])/2)), quat:qz(d), material:"cable"}));
     }
     if (s === K){
-      /* the claw itself: swivel, eye, hub, blue collar, actuator body (Aethelark module look) */
+      /* the claw itself: swivel and eye on the line, a short cap, the chrome motor housing, the blue collar right above the
+         hinge ring, then the hinge ring the three fingers pivot in (their pivots sit at r .019, z -.0448) */
       geoms.push(ghost({type:"sphere", radius:.004, pos:[0,0,-.002], material:"steel"}), ghost(cyl(.0025, .01, [0,0,-.008], "steel")),
         cyl(.026*S/.79, .04, [0,0,-HUB], "invis"),
-        /* Aethelark claw module: top cap, chrome body with grooves, blue collar, hinge lugs, actuator housing */
-        ghost(cyl(.017, .006, [0,0,-.014], "chrome_dk")), ghost(cyl(.024, .004, [0,0,-.018], "chrome")),
-        ghost(cyl(.027, .03, [0,0,-.035], "chrome")), ghost(cyl(.0275, .0025, [0,0,-.027], "chip")), ghost(cyl(.0275, .0025, [0,0,-.043], "chip")),
-        ghost(cyl(.0285, .005, [0,0,-.0505], "blue")), ghost(cyl(.022, .01, [0,0,-.058], "chrome_dk")),
-        ghost(cyl(.012, .026, [0,0,-.072], "plastic2")), ghost({type:"sphere", radius:.012, pos:[0,0,-.085], material:"plastic2"}),
-        ...[0,1,2].map(k => { const a = k*2*Math.PI/3 + Math.PI/3; return ghost(Object.assign(Bh(.006, .006, .006, .025*Math.cos(a), .025*Math.sin(a), -.03, "steel"), {quat:q([0,0,1], a)})); }));
+        ghost(cyl(.014, .005, [0,0,-.0145], "chrome_dk")),                         // cap
+        ghost(cyl(.0235, .017, [0,0,-.0255], "chrome")),                            // housing
+        ghost(cyl(.024, .002, [0,0,-.0215], "chip")), ghost(cyl(.024, .002, [0,0,-.0305], "chip")),   // two grooves
+        ghost(cyl(.025, .005, [0,0,-.0365], "blue")),                               // blue collar
+        ghost(cyl(.0215, .009, [0,0,-.0435], "chrome_dk")),                         // hinge ring, the pivots sit in its rim
+        ghost(cyl(.009, .006, [0,0,-.051], "plastic2")),                            // actuator nose, short, stays inside the finger root
+        ...[0,1,2].map(k => { const a = k*2*Math.PI/3; return ghost(Object.assign(Bh(.009, .0075, .011, .0195*Math.cos(a), .0195*Math.sin(a), -.0445, "chrome_dk"), {quat:q([0,0,1], a)})); }));   // knuckle lugs round each pivot
       /* the coil cable's lower end ties into the hub */
       geoms.push(ghost(cyl(.0035, .01, [.012, 0, -.002], "plastic2", {quat:QY90})));
     }
@@ -306,17 +308,18 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
      with a hinge boss, knuckle pin, a dark inner rib and a rubber tip pad */
   function armVis(){
     const P0 = [0, 0], P1 = [Math.sin(TILT)*UP, -Math.cos(TILT)*UP], P2 = [P1[0] + Math.sin(TIP)*TL, P1[1] - Math.cos(TIP)*TL];
-    const C = [P1[0] + .012, P1[1] + .004], N = 10, G = [], pt = t => [0,1].map(i => (1-t)*(1-t)*P0[i] + 2*(1-t)*t*C[i] + t*t*P2[i]);
+    const C = [P1[0] + .011, P1[1] + .003], N = 16, G = [], pt = t => [0,1].map(i => (1-t)*(1-t)*P0[i] + 2*(1-t)*t*C[i] + t*t*P2[i]);
+    /* the arm: overlapping capsules along a bezier from the pivot to the tip, so there are no seams or gaps */
     for (let i = 0; i < N; i++){
-      const a = pt(i/N), b = pt((i + 1)/N), m = [(a[0] + b[0])/2, (a[1] + b[1])/2], d = [b[0] - a[0], 0, b[1] - a[1]], L = Math.hypot(d[0], d[2]);
-      const w = .0145 - .006*i/N, th = .0068 - .002*i/N, Q = qz(d);
-      G.push(ghost(Object.assign(B([th/2, w/2, L/2 + .0012], [m[0], 0, m[1]], "chrome"), {quat:Q})));
-      G.push(ghost(Object.assign(B([.0012, w/2 - .003, L/2], [m[0] - th/2*Math.cos(Math.atan2(d[2], d[0]) + Math.PI/2)*0, 0, m[1]], "chip"), {quat:Q})));
+      const a = pt(i/N), b = pt((i + 1)/N), d = [b[0] - a[0], 0, b[1] - a[1]], L = Math.hypot(d[0], d[2]);
+      const r = .0046 - .0016*i/N;
+      G.push(ghost({type:"capsule", radius:r4(r), height:r4(L), pos:[r4((a[0] + b[0])/2), 0, r4((a[1] + b[1])/2)], quat:qz(d), material:"chrome"}));
     }
-    G.push(ghost(cyl(.0062, .019, [0, 0, 0], "chrome_dk", {quat:QX90})), ghost(cyl(.0028, .023, [0, 0, 0], "steel", {quat:QX90})));
-    const k = pt(.5); G.push(ghost(cyl(.0034, .017, [k[0], 0, k[1]], "steel", {quat:QX90})));
-    const e = pt(.93), f = pt(1), dd = [f[0] - e[0], 0, f[1] - e[1]];
-    G.push(ghost({type:"capsule", radius:.0042, height:.012, pos:[r4(f[0] - .002), 0, r4(f[1] + .003)], quat:qz(dd), material:"rubber"}));
+    /* pivot pin through the knuckle lug */
+    G.push(ghost(cyl(.0022, .013, [0, 0, 0], "steel", {quat:QX90})));
+    /* rubber tip: a short pad on the arm's end, same direction as the last segment */
+    const e = pt(.9), f = pt(1), dd = [f[0] - e[0], 0, f[1] - e[1]], n = Math.hypot(dd[0], dd[2]);
+    G.push(ghost({type:"capsule", radius:.0036, height:.009, pos:[r4(f[0] + dd[0]/n*.003), 0, r4(f[1] + dd[2]/n*.003)], quat:qz(dd), material:"rubber"}));
     return G;
   }
   for (let k = 0; k < 3; k++){
