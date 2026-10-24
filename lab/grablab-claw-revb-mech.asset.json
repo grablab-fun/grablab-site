@@ -790,11 +790,11 @@
      0
     ],
     "damping": 2,
-    "frictionLoss": 3,
+    "frictionLoss": 1,
     "drive": {
      "mode": "velocity",
      "damping": 900,
-     "forceLimit": 12,
+     "forceLimit": 15,
      "ctrlrange": [
       -0.015,
       0.015
@@ -1217,8 +1217,7 @@
      -0.087,
      0
     ],
-    "damping": 0.5,
-    "frictionLoss": 0.4
+    "damping": 0.5
    },
    "geoms": [
     {
@@ -1570,8 +1569,7 @@
      -0.087,
      0
     ],
-    "damping": 0.5,
-    "frictionLoss": 0.4
+    "damping": 0.5
    },
    "geoms": [
     {
@@ -1923,8 +1921,7 @@
      -0.087,
      0
     ],
-    "damping": 0.5,
-    "frictionLoss": 0.4
+    "damping": 0.5
    },
    "geoms": [
     {
@@ -2276,8 +2273,7 @@
      -0.087,
      0
     ],
-    "damping": 0.5,
-    "frictionLoss": 0.4
+    "damping": 0.5
    },
    "geoms": [
     {
@@ -2629,8 +2625,7 @@
      -0.087,
      0
     ],
-    "damping": 0.5,
-    "frictionLoss": 0.4
+    "damping": 0.5
    },
    "geoms": [
     {
@@ -2982,8 +2977,7 @@
      -0.087,
      0
     ],
-    "damping": 0.5,
-    "frictionLoss": 0.4
+    "damping": 0.5
    },
    "geoms": [
     {
@@ -3335,8 +3329,7 @@
      -0.087,
      0
     ],
-    "damping": 0.5,
-    "frictionLoss": 0.4
+    "damping": 0.5
    },
    "geoms": [
     {
@@ -3688,8 +3681,7 @@
      -0.087,
      0
     ],
-    "damping": 0.5,
-    "frictionLoss": 0.4
+    "damping": 0.5
    },
    "geoms": [
     {
