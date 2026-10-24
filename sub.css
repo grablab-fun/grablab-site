@@ -436,3 +436,28 @@
 .lab-pwr .cf-ic img{width:16px;height:16px;display:block}
 .lab-pwr .sa-ic{width:20px;height:20px;display:block}
 .lab-pwr i{font-style:normal;color:var(--ink-3);font-size:12px}
+
+/* provably fair on phones: the title on two lines, the subtitle on two, the five proofs in one aligned column */
+@media (max-width:900px){
+  .ph h1{font-size:clamp(34px,10.4vw,60px)!important}
+  .ph h1 .line.l2,.ph h1 .line.l3{display:inline;width:auto;white-space:nowrap}
+  .ph .sub{font-size:10.5px!important;letter-spacing:.06em!important}
+  .ph .sub .sl{white-space:nowrap}
+  .cd-stage{align-items:stretch}
+  .cd-s{display:grid!important;grid-template-columns:72px 1fr;align-items:center;gap:16px}
+  .cd-s img{width:72px!important;height:72px!important;object-fit:contain;justify-self:center}
+}
+
+/* rent: the seventh row, your own format, full width under the six */
+.fm-own{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr 1fr auto;align-items:center;gap:28px;padding:26px 30px}
+.fm-own .fm-b{padding:0}
+.fm-own-ico{width:88px;height:88px;display:grid;place-items:center;border-radius:20px;background:rgba(243,244,251,.05);border:1px solid rgba(180,186,255,.18)}
+.fm-own-ico img{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5))}
+.fm-k{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#9cc0ff;margin-bottom:10px}
+.fm-own .fm-how{margin:0}
+.fm-rules{padding-left:28px;border-left:1px solid rgba(180,186,255,.14)}
+.fm-rules ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.fm-rules li{padding-left:12px;border-left:2px solid rgba(143,184,255,.35);color:var(--ink-2);font-size:13.5px;line-height:1.35}
+.fm-cta{white-space:nowrap}
+@media(max-width:1000px){ .fm-own{grid-template-columns:auto 1fr;gap:20px 22px} .fm-rules{grid-column:1/-1;padding-left:0;border-left:0;padding-top:16px;border-top:1px solid rgba(180,186,255,.12)} .fm-cta{grid-column:1/-1;justify-self:start} }
+@media(max-width:620px){ .fm-own{grid-template-columns:1fr;padding:22px} .fm-own-ico{width:72px;height:72px} .fm-own-ico img{width:52px;height:52px} .fm-cta{justify-self:stretch;text-align:center} }
