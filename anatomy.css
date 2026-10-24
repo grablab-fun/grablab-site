@@ -251,8 +251,8 @@ body.ready .an-rail{opacity:1}
 
 /* side panels: no boxes, the title on the left, the parts list in the display face on the right (Marquee) */
 @media (min-width:981px){
-  .an-head, .an-rail{background:none;border:0;border-radius:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0;height:auto}
-  .an-head{width:auto;max-width:30vw;gap:18px;justify-content:center}
+  .an-head, .an-rail, body.ui-min .an-head{background:none;border:0;border-radius:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0;height:auto}
+  .an-head, body.ui-min .an-head{width:auto;max-width:30vw;gap:18px;justify-content:center}
   .an-head h1{font-size:clamp(34px,2.9vw,58px)}
   .an-head h1, .an-head p, .pt{text-shadow:0 2px 22px rgba(5,9,24,.85)}
   .pt + .pt{box-shadow:none}
