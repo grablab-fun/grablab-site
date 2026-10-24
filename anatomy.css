@@ -239,3 +239,8 @@ body.ready .an-rail{opacity:1}
 
 /* the title on two lines in its panel */
 @media (min-width:981px){ .an-head h1{font-size:clamp(24px,2vw,40px)} .an-head h1 .l1,.an-head h1 .hl{display:block;white-space:nowrap} }
+
+/* card text: one idea per line, aligned on a thin rule */
+.an-card .lines{display:flex;flex-direction:column;gap:9px;margin:0 0 16px}
+.an-card .lines p{margin:0;padding-left:14px;border-left:2px solid rgba(143,184,255,.32);font-size:14px;line-height:1.5;color:var(--ink-2)}
+.an-card .lines p:first-child{color:var(--ink);border-left-color:#7fa8ff}
