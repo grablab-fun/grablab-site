@@ -30,7 +30,14 @@ const KEEP = new Set(["frame","floor_mdf","base_box","electronics","chute","gant
 const PAL = [[.047,.051,.098],[.094,.09,.188],[.192,.161,.31],[.33,.27,.42],[.545,.475,.576],[.855,.843,.847],[1,.824,.478],[.788,.714,1],[.231,.482,1],[.122,.31,.82]];
 
 const stage = $("#stage"), canvas = $("#view");
-const renderer = new THREE.WebGLRenderer({ canvas, antialias:false, powerPreference:"high-performance" });
+let renderer;
+try {
+  const probe = document.createElement("canvas"); if (!(probe.getContext("webgl2") || probe.getContext("webgl"))) throw new Error("no webgl");
+  renderer = new THREE.WebGLRenderer({ canvas, antialias:false, powerPreference:"high-performance" });
+} catch (e){
+  /* WebGL off (Brave Shields "strict" fingerprinting, hardware acceleration off, old GPU): say so instead of spinning forever */
+  stage.classList.add("err"); throw e;
+}
 renderer.setPixelRatio(1); renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NoToneMapping;
 const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0a0c1a);
 const camera = new THREE.PerspectiveCamera(32, 1, .05, 40);

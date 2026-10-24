@@ -13,7 +13,8 @@
 .an-boot span{width:10px;height:10px;border-radius:50%;background:var(--accent);animation:anpulse 1s ease-in-out infinite}
 @keyframes anpulse{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
 body.ready .an-boot{opacity:0;pointer-events:none}
-.an-err{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--ink-2);font-size:15px;text-align:center}
+.an-err{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--ink-2);font-size:15px;line-height:1.6;text-align:center;max-width:46ch;padding:22px 26px;border-radius:16px;background:rgba(7,9,18,.7);border:1px solid rgba(201,191,255,.2)}
+.an-err b{color:var(--ink);font-weight:700}
 .an-stage.err .an-err{display:block}.an-stage.err .an-boot{display:none}
 .an-err a{color:var(--accent-2)}
 
