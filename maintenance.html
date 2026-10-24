@@ -55,9 +55,35 @@
 
   p{margin-top:clamp(18px,3vh,28px);font-size:clamp(15px,1.5vw,18px);line-height:1.6;color:#d3d8ec}
   br.m{display:none}
-  a.mail{display:inline-flex;margin-top:clamp(22px,3.6vh,32px);padding:13px 26px;border-radius:999px;font-weight:700;font-size:14.5px;color:#0a1030;text-decoration:none;
-    background:linear-gradient(176deg,#fff 0%,#d6e4ff 38%,#8fb2ff 62%,#e8f0ff 100%);box-shadow:0 10px 34px rgba(59,123,255,.32),inset 0 1px 0 #fff;transition:transform .2s,box-shadow .2s}
-  a.mail:hover{transform:translateY(-1px);box-shadow:0 14px 40px rgba(59,123,255,.45),inset 0 1px 0 #fff}
+  .cta{margin-top:clamp(22px,3.6vh,32px);appearance:none;border:0;cursor:pointer;padding:15px 34px 13px;border-radius:999px;
+    font-family:'Anton',Impact,sans-serif;font-size:clamp(20px,1.9vw,26px);letter-spacing:.06em;text-transform:uppercase;color:#0b1a5c;
+    background:linear-gradient(180deg,#ffffff 0%,#eef3ff 16%,#b9cdf7 36%,#6d92ea 50%,#e6eeff 62%,#ffffff 70%,#9db7ee 88%,#d6e4ff 100%);
+    box-shadow:0 0 0 2px #0b1a5c,0 0 0 3px rgba(214,228,255,.35),0 14px 40px rgba(59,123,255,.38),inset 0 1px 0 #fff,inset 0 -2px 4px rgba(11,26,92,.35);
+    text-shadow:0 1px 0 rgba(255,255,255,.6);transition:transform .2s,box-shadow .2s}
+  .cta:hover{transform:translateY(-2px);box-shadow:0 0 0 2px #0b1a5c,0 0 0 3px rgba(214,228,255,.5),0 18px 48px rgba(59,123,255,.5),inset 0 1px 0 #fff,inset 0 -2px 4px rgba(11,26,92,.35)}
+  .cta:focus-visible{outline:2px solid #d6e4ff;outline-offset:4px}
+
+  /* inquiry sheet */
+  .sheet{position:fixed;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(2,4,14,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s}
+  .sheet.on{opacity:1;pointer-events:auto}
+  .sheet form{position:relative;width:min(480px,100%);max-height:calc(100dvh - 32px);overflow:auto;text-align:left;padding:28px 26px 24px;border-radius:22px;background:rgba(9,14,40,.92);border:1px solid rgba(180,186,255,.22);box-shadow:0 30px 80px rgba(0,0,0,.5);transform:translateY(12px) scale(.98);transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+  .sheet.on form{transform:none}
+  .sheet h2{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:34px;text-transform:uppercase;letter-spacing:.01em;margin-bottom:4px;
+    background:linear-gradient(180deg,#fff 0%,#d6e4ff 40%,#7f9fe4 60%,#e6eeff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sheet .sub{font-size:14px;color:var(--ink-2);margin:0 0 18px}
+  .sheet label{display:block;font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aab3d6;margin:12px 0 6px}
+  .sheet input,.sheet select,.sheet textarea{width:100%;font:500 15px/1.4 'Satoshi',system-ui,sans-serif;color:var(--ink);background:rgba(5,9,24,.7);border:1px solid rgba(180,186,255,.2);border-radius:12px;padding:11px 13px;outline:none;transition:border-color .2s}
+  .sheet textarea{min-height:110px;resize:vertical}
+  .sheet select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#aab3d6 50%),linear-gradient(135deg,#aab3d6 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+  .sheet select option{background:#0a1030}
+  .sheet input:focus,.sheet select:focus,.sheet textarea:focus{border-color:#8fb2ff}
+  .sheet .row{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+  .sheet .hp{position:absolute;left:-9999px}
+  .sheet .send{width:100%;margin-top:20px}
+  .sheet .x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(180,186,255,.2);background:transparent;color:var(--ink-2);font-size:18px;cursor:pointer}
+  .sheet .msg{margin-top:12px;font-size:14px;color:var(--ink-2);min-height:1.4em;text-align:center}
+  .sheet .msg.ok{color:#9fe6b8}.sheet .msg.err{color:#ffb4a8}
+  @media(max-width:520px){.sheet .row{grid-template-columns:1fr}}
 
   .cred{position:fixed;left:0;right:0;bottom:clamp(18px,4vh,36px);z-index:1;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px 22px;padding:0 16px;
     font-weight:800;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#aab3d6}
@@ -103,8 +129,51 @@
     <div class="h in d2"><h1 class="cast" aria-hidden="true">Tuning the claw.</h1><h1 class="fill">Tuning the claw.</h1></div>
     <span class="k k2 in d3">Every grab on the record</span>
     <p class="in d4">We are polishing the machine and the site.<br class="m" /> Grablab is back online shortly.</p>
-    <a class="mail in d5" href="mailto:contact@grablab.fun">contact@grablab.fun</a>
+    <button class="cta in d5" type="button" id="open">Contact us</button>
   </main>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+    <form id="inq" novalidate>
+      <button class="x" type="button" id="close" aria-label="Close">&times;</button>
+      <h2 id="sh-t">Send an inquiry</h2>
+      <p class="sub">Partnerships, launch nights, press or anything else. We read every one.</p>
+      <div class="row">
+        <div><label for="f-name">Name</label><input id="f-name" name="name" required maxlength="80" autocomplete="name" /></div>
+        <div><label for="f-mail">Email</label><input id="f-mail" name="email" type="email" required maxlength="120" autocomplete="email" /></div>
+      </div>
+      <label for="f-topic">Topic</label>
+      <select id="f-topic" name="topic"><option>Partnership</option><option>Rent the claw</option><option>Press</option><option>Something else</option></select>
+      <label for="f-msg">Message</label>
+      <textarea id="f-msg" name="message" required maxlength="4000"></textarea>
+      <input class="hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button class="cta send" type="submit">Send</button>
+      <p class="msg" id="msg" aria-live="polite"></p>
+    </form>
+  </div>
+  <script>
+  (function(){
+    var sh = document.getElementById("sheet"), f = document.getElementById("inq"), msg = document.getElementById("msg");
+    var open = function(){ sh.classList.add("on"); setTimeout(function(){ document.getElementById("f-name").focus(); }, 60); };
+    var close = function(){ sh.classList.remove("on"); };
+    document.getElementById("open").onclick = open;
+    document.getElementById("close").onclick = close;
+    sh.addEventListener("click", function(e){ if (e.target === sh) close(); });
+    addEventListener("keydown", function(e){ if (e.key === "Escape") close(); });
+    f.addEventListener("submit", function(e){
+      e.preventDefault(); msg.className = "msg";
+      if (!f.checkValidity()){ msg.className = "msg err"; msg.textContent = "Add your name, a valid email and a message."; return; }
+      var d = Object.fromEntries(new FormData(f)), btn = f.querySelector(".send"); btn.disabled = true; msg.textContent = "Sending...";
+      fetch("/api/inquiry", { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(d) })
+        .then(function(r){ if (!r.ok) throw r; msg.className = "msg ok"; msg.textContent = "Sent. We will get back to you soon."; f.reset(); })
+        .catch(function(){
+          /* no mail service yet: open the visitor's mail app with the inquiry filled in */
+          var to = ["contact", "grablab.fun"].join("@");
+          location.href = "mailto:" + to + "?subject=" + encodeURIComponent("[" + d.topic + "] Inquiry from " + d.name) + "&body=" + encodeURIComponent(d.message + "\n\n" + d.name + " (" + d.email + ")");
+          msg.textContent = "Your mail app has the inquiry ready. Press send there.";
+        })
+        .finally(function(){ btn.disabled = false; });
+    });
+  })();
+  </script>
   <div class="cred in d5">
     <span class="g">Built on <a href="https://machine.fun" target="_blank" rel="noopener"><img src="/assets/brand/partners/machinefun-white.svg" alt="" />machine.fun</a></span>
     <span class="g">Powered by <a href="https://codecflow.ai" target="_blank" rel="noopener"><img src="/assets/brand/partners/codecflow-white.svg" alt="" />CodecFlow</a><i>+</i><a href="https://peaq.xyz" target="_blank" rel="noopener" aria-label="peaq"><img class="pq" src="/assets/brand/partners/peaq-white.svg" alt="peaq" /></a></span>
