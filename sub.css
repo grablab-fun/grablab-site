@@ -468,3 +468,21 @@
 .pill.live::before{content:none}
 .dr-bar{grid-column:1/-1;display:block;height:3px;border-radius:3px;background:rgba(180,186,255,.14);overflow:hidden;margin-top:2px}
 .dr-bar i{display:block;height:100%;width:calc(var(--f) * 100%);border-radius:3px;background:var(--blue-bar,linear-gradient(90deg,#7fa8ff,#3b7bff))}
+
+/* participate hero: the physics lab and its partners in one card */
+.lab-card{display:flex;align-items:center;gap:22px;margin-top:22px;padding:14px 20px;border-radius:18px;width:max-content;max-width:100%}
+.lab-go{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--ink)}
+.lab-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:#9cc0ff}
+.lab-go b{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:22px;line-height:1;letter-spacing:.01em;transition:color .2s}
+.lab-go b span{display:inline-block;transition:transform .25s}
+.lab-go:hover b span{transform:translateX(4px)}
+.lab-card .lab-pwr{margin:0;padding-left:22px;border-left:1px solid rgba(180,186,255,.18);font-size:9.5px;gap:8px}
+.lab-card .lab-pwr a{font-size:14px}
+@media(max-width:620px){
+  .lab-card{position:relative;display:block;width:auto;padding:34px 16px 16px;text-align:center}
+  .lab-card .lab-pwr{position:absolute;top:10px;right:12px;padding:0;border:0;font-size:8px;gap:5px;letter-spacing:.12em}
+  .lab-card .lab-pwr a{font-size:11px;gap:5px}
+  .lab-card .lab-pwr .cf-ic{width:16px;height:16px;border-radius:4px} .lab-card .lab-pwr .cf-ic img{width:11px;height:11px} .lab-card .lab-pwr .sa-ic{width:14px;height:14px}
+  .lab-go{align-items:center}
+  .lab-go b{font-size:30px}
+}
