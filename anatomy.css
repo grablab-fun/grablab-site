@@ -121,3 +121,26 @@ body.ui-min .an-card{bottom:56px}
 /* e-stop feedback, above the bar */
 .an-tip.an-toast{left:50%;top:auto;bottom:118px;transform:translateX(-50%)!important;border-color:rgba(255,90,90,.45)}
 .an-tip.an-toast b{color:#ff8080}
+
+/* parts index: number and name only, editorial list in glass */
+.an-rail{width:min(250px,22vw);padding:14px 10px;gap:0;opacity:0;transition:opacity .6s .2s}
+body.ready .an-rail{opacity:1}
+.pt{grid-template-columns:30px 1fr;gap:10px;padding:11px 14px;border-radius:12px;border:1px solid transparent}
+.pt + .pt{box-shadow:0 -1px 0 rgba(180,186,255,.08)}
+.pt .dot{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3);transition:color .2s}
+.pt .nm{display:block;font-family:var(--font);font-size:14.5px;font-weight:600;letter-spacing:-.005em;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .2s,transform .25s}
+.pt:hover{background:rgba(255,255,255,.04);border-color:transparent}
+.pt:hover .nm{color:var(--ink);transform:translateX(3px)}
+.pt.on{background:linear-gradient(90deg,rgba(59,123,255,.16),rgba(59,123,255,0) 85%);border-color:rgba(120,170,255,.22);box-shadow:none}
+.pt.on .nm{background:linear-gradient(176deg,#fff 10%,#d6e4ff 40%,#7fa8ff 75%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pt.on .dot{color:#9cc0ff}
+/* loading card */
+.an-boot{flex-direction:column;gap:10px;padding:26px 34px 24px;border-radius:22px;background:rgba(5,9,24,.55);border:1px solid rgba(180,186,255,.2);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);text-transform:none;letter-spacing:0;min-width:260px}
+.an-boot img{width:46px;height:46px;filter:drop-shadow(0 0 18px rgba(59,123,255,.55));animation:anboot 2.4s ease-in-out infinite}
+.an-boot b{font-family:var(--display);font-size:22px;letter-spacing:.01em;text-transform:uppercase;color:var(--ink)}
+.an-boot small{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+.an-boot i{display:block;width:100%;height:2px;margin-top:6px;border-radius:2px;background:rgba(180,186,255,.14);overflow:hidden}
+.an-boot i em{display:block;width:40%;height:100%;background:linear-gradient(90deg,transparent,#9cc0ff,#3b7bff,transparent);animation:anbar 1.3s ease-in-out infinite}
+@keyframes anboot{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes anbar{0%{transform:translateX(-110%)}100%{transform:translateX(260%)}}
+@media (max-width:980px){ .pt{grid-template-columns:auto auto;padding:8px 12px} .pt .nm{display:block;font-size:13px} }

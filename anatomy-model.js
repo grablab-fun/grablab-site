@@ -297,7 +297,7 @@ export function buildMachine(THREE, api){
 
   /* =========================================================================================== chute, tray, cup */
   use("chute");
-  const CZ0 = .15, CZ1 = FZ, WT = .012;
+  const CZ0 = .25, CZ1 = FZ, WT = .012;                                  // a 150 deep chute, so the prize bin fits under it
   const wall = m("wall", { color:0x17181c, roughness:.9, metalness:0 }); wall.userData.xray = .28;      // see-through when the chute is isolated
   box(HX0 - WT, HY0 - WT, CZ0, HX1 + WT, HY0, CZ1, wall, "chute_wall"); box(HX0 - WT, HY1, CZ0, HX1 + WT, HY1 + WT, CZ1, wall, "chute_wall");
   box(HX0 - WT, HY0, CZ0, HX0, HY1, CZ1, wall, "chute_wall"); box(HX1, HY0, CZ0, HX1 + WT, HY1, CZ1, wall, "chute_wall");
@@ -350,25 +350,26 @@ export function buildMachine(THREE, api){
   for (const dz of [.006, .0115]) add(cylX(.0007, .0016, 8), dark, SX0 - .0055, shY, SZ0 + dz, 0, 0, 0, "chute_horn_hole");
   /* pushrod with its Z bends, horn tip to lever tip */
   harness([[SX0 - .0056, shY, SZ0 + .0115], [SX0 - .0068, shY - .002, SZ0 + .0118], [X1 + .0055, AY + .005, AXZ + .0148], [X1 + .003, AY + .001, AXZ + .015]], .0008, steel, "chute_pushrod");
-  /* exit ramp from the low front lip into the cup */
+  /* exit ramp from the low front lip down into the prize bin */
   const ra = Math.atan2(.017, .036);
-  for (const [dx, h] of [[0, .003], [-.048, .012], [.048, .012]]){ const o = add(rbox(dx ? .003 : .1, .04, h, .0012), pla, .34 + dx, Y0 - .0175, CB + .002 + (dx ? .004 : 0), ra, 0, 0, "chute_ramp"); }
-  /* the cup: a printed tub on the cabinet floor, behind the refill door */
-  const cup = () => m("cupM", { color:0x2b2e36, roughness:.5, metalness:.05 });
-  rb(.27, -.492, .04, .43, -.40, .044, cup, "chute_cup", .01);
-  rb(.27, -.492, .044, .273, -.40, .098, cup, "chute_cup", .0012); rb(.427, -.492, .044, .43, -.40, .098, cup, "chute_cup", .0012);
-  rb(.27, -.403, .044, .43, -.40, .098, cup, "chute_cup", .0012); rb(.27, -.492, .044, .43, -.489, .07, cup, "chute_cup", .0012);
-  /* the cabinet under the floor: MDF sides and a back wall with the refill door, so the operator can empty the cup */
+  for (const [dx, h] of [[0, .003], [-.048, .012], [.048, .012]]) add(rbox(dx ? .003 : .1, .04, h, .0012), pla, .34 + dx, Y0 - .0175, CB + .002 + (dx ? .004 : 0), ra, 0, 0, "chute_ramp");
+  /* the prize bin: about 30 litres under the chute side of the cabinet, emptied through the side door */
+  const binM = () => m("binM", { color:0x2b2e36, roughness:.5, metalness:.05 }), QBX0 = .16, QBX1 = .494, QBY0 = -.455, QBY1 = .2, QBZ0 = .04, QBZ1 = .2;
+  rb(QBX0, QBY0, QBZ0, QBX1, QBY1, QBZ0 + .005, binM, "chute_bin", .012);
+  rb(QBX0, QBY0, QBZ0 + .005, QBX0 + .005, QBY1, QBZ1, binM, "chute_bin", .002); rb(QBX1 - .005, QBY0, QBZ0 + .005, QBX1, QBY1, QBZ1, binM, "chute_bin", .002);
+  rb(QBX0, QBY0, QBZ0 + .005, QBX1, QBY0 + .005, QBZ1, binM, "chute_bin", .002); rb(QBX0, QBY1 - .005, QBZ0 + .005, QBX1, QBY1, QBZ1, binM, "chute_bin", .002);
+  rb(QBX1, -.16, .15, QBX1 + .004, -.08, .17, binM, "chute_bin_handle", .002);
+  /* the cabinet under the floor: MDF sides, back and floor, with a side door to the prize bin */
   use("cage");
   const cab = m("mdf", { color:0x17181c, roughness:.9, metalness:0 });
-  for (const s of [-1, 1]) box(s*.5, -.512, .02, s*.512, .512, FZ, cab, "cage_cabinet_side");
-  box(-.5, -.512, .02, .16, -.5, FZ, cab, "cage_cabinet_back"); box(.46, -.512, .02, .5, -.5, FZ, cab, "cage_cabinet_back");
-  box(.16, -.512, .02, .46, -.5, .10, cab, "cage_cabinet_back"); box(.16, -.512, .35, .46, -.5, FZ, cab, "cage_cabinet_back");
-  box(.162, -.511, .102, .458, -.501, .348, cab, "cage_door");
+  box(-.512, -.512, .02, -.5, .512, FZ, cab, "cage_cabinet_side");
+  box(.5, -.512, .02, .512, -.45, FZ, cab, "cage_cabinet_side"); box(.5, .18, .02, .512, .512, FZ, cab, "cage_cabinet_side");
+  box(.5, -.45, .02, .512, .18, .05, cab, "cage_cabinet_side"); box(.5, -.45, .34, .512, .18, FZ, cab, "cage_cabinet_side");
+  box(-.5, -.512, .02, .5, -.5, FZ, cab, "cage_cabinet_back");
   box(-.46, -.5, .028, .46, .456, .04, cab, "cage_cabinet_floor");
-  for (const z of [.13, .3]){ box(.452, -.5135, z, .466, -.5, z + .03, steel, "cage_door_hinge"); add(cylZ(.0018, .03, 10), steel, .4635, -.5135, z + .015, 0, 0, 0, "cage_door_hinge_pin"); }
-  box(.17, -.5, .35, .2, -.47, .37, cab, "cage_door_catch"); box(.175, -.501, .338, .195, -.5, .35, dark, "cage_door_magnet");
-  box(.18, -.5175, .215, .2, -.511, .235, steel, "cage_door_knob");
+  box(.5005, -.448, .052, .5115, .178, .338, cab, "cage_door");
+  for (const z of [.08, .28]){ box(.5, .168, z, .5135, .184, z + .03, steel, "cage_door_hinge"); add(cylZ(.0018, .03, 10), steel, .5135, .18, z + .015, 0, 0, 0, "cage_door_hinge_pin"); }
+  box(.5115, -.43, .18, .5175, -.41, .21, steel, "cage_door_knob");
   use("chute");
   /* C960 clipped to the rear wall at the top, 250 above the flap, looking down at it; its cable leaves through a grommet */
   box(HX0 + .005, HY1 - .004, CZ1 - .045, HX0 + .055, HY1, CZ1 - .01, dark, "chute_c960_clip");
@@ -392,8 +393,8 @@ export function buildMachine(THREE, api){
   for (const y of [HY1 - .0005, HY1 + WT + .0005]) add(new THREE.TorusGeometry(.0042, .0015, 10, 24), m("grommet", { color:0x0d0d0f, roughness:.7 }), HX0 + .07, y, CZ1 - .02, Math.PI/2, 0, 0, "chute_grommet");
   long(() => harness([[HX0 + .055, HY1 - .002, CZ1 - .02], [HX0 + .07, HY1 - .004, CZ1 - .02], [HX0 + .07, HY1 + .03, CZ1 - .02], [HX0 + .07, .41, CZ1 - .02], [.072, .41, CZ1 - .02], [.072, .41, .137], [.072, IN - .0378, .137]], .0022, wireK, "chute_c960_cable"));
   for (const x of [X0 - .0005, X0 + .0045]) add(new THREE.TorusGeometry(.0038, .0014, 10, 24), m("grommet", { color:0x0d0d0f, roughness:.7 }), x, -.34, CB + .0105, 0, Math.PI/2, 0, "chute_grommet");
-  long(() => harness([[.2912, -.34, CB + .0105], [.255, -.34, CB + .0105], [.24, -.34, .118], [.24, .40, .118], [.062, .40, .118], [.062, .40, .137], [.062, IN - .0378, .137]], .0024, wireK, "chute_acr_usb"));
-  long(() => harness([[SX0 + .0224, SY + .007, SZ0], [.452, SY + .007, SZ0], [.452, .42, .125], [-.195, .42, .125], [-.195, .42, .1], [-.195, IN - .0217, .1]], .0012, wireK, "chute_servo_cable"));
+  long(() => harness([[.2912, -.34, CB + .0105], [.255, -.34, CB + .0105], [.24, -.34, .3], [.24, .40, .3], [.062, .40, .3], [.062, .40, .137], [.062, IN - .0378, .137]], .0024, wireK, "chute_acr_usb"));
+  long(() => harness([[SX0 + .0224, SY + .007, SZ0], [.452, SY + .007, SZ0], [.452, SY + .007, .3], [.452, .42, .3], [-.195, .42, .3], [-.195, .42, .1], [-.195, IN - .0217, .1]], .0012, wireK, "chute_servo_cable"));
 
   /* =========================================================================================== capsules: clear, one colour, size not fixed */
   use("capsules");
