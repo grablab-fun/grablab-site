@@ -959,3 +959,6 @@ body.sim-lock{overflow:hidden}
 .sv[data-v="play"],.sv[data-v="play"] *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .sv[data-v="play"] .ctrl{touch-action:none}
 @media(min-width:621px){ br.mbr2{display:none} }
+.pc-chain{white-space:nowrap;flex:none}
+/* phones: the name keeps one line, the chain chip sits under it, never cut */
+@media (max-width:620px){ .pc .pc-t{flex-wrap:wrap;row-gap:8px} .pc .pc-t .pc-chain{margin-left:0;flex-basis:auto} .pc .pc-t b{white-space:nowrap} }

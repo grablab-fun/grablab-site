@@ -250,7 +250,7 @@ function bookingHTML(){
   function place(i){ if (i === spot) return; spot = i; const s = SPOTS[i]; q(".ld-pct").forEach(p => { p.style.left = s.left; p.style.top = s.top; p.style.transform = s.t; }); }
   place(0);
   let d = 0; const dots = setInterval(() => { d = (d+1)%4; q(".dots").forEach(x => x.textContent = ".".repeat(d)); }, 260);
-  const t0 = performance.now(), MIN = 2200, MAX = 7000;
+  const t0 = performance.now(), MIN = 1100, MAX = 4000;
   const tasks = [];
   if (document.fonts && document.fonts.ready) tasks.push(document.fonts.ready);
   tasks.push(new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", r, { once:true })));
@@ -358,8 +358,19 @@ window.glBack = (function(){
     if (samePage) return;
     e.preventDefault();
     document.body.classList.add("page-out");
-    setTimeout(()=> { location.href = href; }, 420);
+    setTimeout(()=> { location.href = href; }, 140);
   });
+  /* the next page is fetched as soon as the pointer or a finger reaches its link, so the click opens it instantly */
+  const warmed = new Set();
+  const warm = a => { const href = a && a.getAttribute("href"); if (!href || warmed.has(href) || a.target === "_blank" || /^(https?:|mailto:|#)/.test(href)) return;
+    warmed.add(href); const l = document.createElement("link"); l.rel = "prefetch"; l.href = href; document.head.appendChild(l); };
+  ["pointerover", "touchstart", "focusin"].forEach(ev => document.addEventListener(ev, e => warm(e.target.closest && e.target.closest("a")), { passive:true }));
+  /* Chrome: prerender the page you hover, so it is already rendered on click */
+  if (HTMLScriptElement.supports && HTMLScriptElement.supports("speculationrules")){
+    const sr = document.createElement("script"); sr.type = "speculationrules";
+    sr.textContent = JSON.stringify({ prerender:[{ where:{ and:[{ href_matches:"/*" }, { not:{ selector_matches:"[target=_blank]" } }] }, eagerness:"moderate" }] });
+    document.head.appendChild(sr);
+  }
 })();
 
 /* ---------------- lite mode: if the first second of frames is slow, drop the expensive glass and glows ---------------- */
@@ -389,7 +400,7 @@ window.glBack = (function(){
   const els = document.querySelectorAll(".reveal");
   if (!els.length) return;
   if (!("IntersectionObserver" in window)){ els.forEach(e=>e.classList.add("in")); return; }
-  const io = new IntersectionObserver((es)=> es.forEach(en=>{ if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } }), { rootMargin:"0px 0px -12% 0px" });
+  const io = new IntersectionObserver((es)=> es.forEach(en=>{ if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } }), { rootMargin:"0px 0px -4% 0px" });
   els.forEach(e=>io.observe(e));
 })();
 

@@ -1000,3 +1000,11 @@ body.is-loading{overflow:hidden}
 @media (max-width:700px){ .section-head h2.two span{display:block;white-space:nowrap} .section-head h2.two{font-size:min(9.4vw,44px)} }
 /* phones: the inside video takes the full column, above the five steps */
 @media (max-width:900px){ .inside-show .inside-grid{height:auto} .inside-video{width:100%;max-width:460px;justify-self:center;aspect-ratio:4/5!important;height:auto!important} }
+
+/* ===== snappy: short, cheap transitions everywhere (no blur filters in motion) ===== */
+.page-wipe{transition:opacity .14s ease!important}
+body.page-out .page-wipe{backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important;background:rgba(7,9,18,.5)}
+main,.hero{transition:opacity .25s ease,transform .3s cubic-bezier(.2,.8,.2,1)!important}
+body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
+.reveal{filter:none!important;transform:translateY(14px);transition:opacity .45s cubic-bezier(.2,.8,.2,1),transform .45s cubic-bezier(.2,.8,.2,1)!important}
+.reveal.d1{transition-delay:.04s!important}.reveal.d2{transition-delay:.08s!important}.reveal.d3{transition-delay:.12s!important}.reveal.d4{transition-delay:.16s!important}
