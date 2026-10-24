@@ -7,8 +7,8 @@ import { buildMachine } from "./anatomy-model.js?v=25";
 const $ = s => document.querySelector(s);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
 const PARTS = [
-  { id:"frame", n:"01", name:"Frame", spec:"40 x 40 timber, painted black", ph:1.15, th:-1.2, anchor:[-.48,-.48,.7], ex:[0,0,0],
-    text:"Four posts, 1200 mm, and two squares of 40 x 40 timber, painted matte black. Two floor rails carry the play floor. Steel angle brackets in the corners, rubber feet under the posts.",
+  { id:"frame", n:"01", name:"Frame", spec:"40 x 40 profile, matte black", ph:1.15, th:-1.2, anchor:[-.48,-.48,.7], ex:[0,0,0],
+    text:"Four posts, 1200 mm, and two squares of 40 x 40 profile, matte black. Two floor rails carry the play floor. Steel angle brackets in the corners, rubber feet under the posts.",
     subs:[["Posts", ["frame_post"]], ["Rails", ["frame_rail", "frame_floor_rail"]], ["Angle brackets", ["frame_bracket"]], ["Rubber feet", ["frame_foot"], { ph:1.42, one:true }]], proof:"Built from the parts list" },
   { id:"cage", n:"02", name:"Floor and walls", spec:"12 mm MDF, 3 mm acrylic", ph:1.0, th:-1.2, anchor:[-.3,-.3,.412], ex:[0,0,.2],
     text:"A 12 mm MDF floor with one square hole where prizes drop, fenced by a low clear guard so capsules only fall in when the claw lets go. Clear acrylic on all four sides, so the cameras and the players see everything. Under the floor, a closed MDF cabinet with a side door to the prize bin.",
