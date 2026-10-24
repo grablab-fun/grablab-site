@@ -596,7 +596,7 @@
     } else {
       $("#winK", root).textContent = game.why || "No grab this time";
       P.textContent = "So close."; P.className = "win-prize";
-      $("#winS", root).textContent = "The capsule stays in the machine. Every grab is on the record.";
+      $("#winS", root).innerHTML = "The capsule stays in the machine.<br>Every grab is on the record.";
       $("#rc4t", root).textContent = "Result"; $("#rc4", root).textContent = "no prize";
     }
     const rows = [...root.querySelectorAll(".rc-r")]; rows.forEach(r => r.classList.remove("on"));

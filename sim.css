@@ -941,3 +941,4 @@ body.sim-lock{overflow:hidden}
 @media(max-width:620px){ .rm-pips{width:calc(100% - 28px);right:14px} .rm-pip span{font-size:7.5px} }
 .rm-stream .rm-queue{top:48px;bottom:auto;left:auto;right:14px}
 @media(max-width:620px){ .rm-pips{width:58%;right:10px;bottom:10px;gap:6px} .rm-pip{border-radius:8px} }
+@media(max-width:620px){ .sv[data-v="claim"] .sv-head h2{font-size:min(30px,7.4vw);white-space:nowrap} }
