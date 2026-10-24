@@ -157,16 +157,18 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   CHU.push(fun([cx1, cy1, zf0], [cx0, cy1, zf0], [ix1, iy1, zf1], [ix0, iy1, zf1]));
   CHU.push(fun([cx0, cy1, zf0], [cx0, cy0, zf0], [ix0, iy1, zf1], [ix0, iy0, zf1]));
   CHU.push(fun([cx1, cy0, zf0], [cx1, cy1, zf0], [ix1, iy0, zf1], [ix1, iy1, zf1]));
-  const zt0 = .06;
+  /* a short 90 mm throat under the funnel (the 60 mm capsule needs the room below it to roll out) */
+  const zt0 = .088;
   CHU.push(BB(ix0, iy0, zt0, ix1, iy0 + t, zf1, "acrylic"), BB(ix0, iy1 - t, zt0, ix1, iy1, zf1, "acrylic"),
            BB(ix0, iy0, zt0, ix0 + t, iy1, zf1, "acrylic"), BB(ix1 - t, iy0, zt0, ix1, iy1, zf1, "acrylic"));
   /* ramp from the tube exit down toward the cradle at the back, then the cradle cup over the PN532 */
-  CHU.push(Object.assign(Bh(.09, .075, .004, .38, -.38, .05, "plastic"), {quat:q([1,0,0], -.21)}));
-  const CUPX = .38, CUPY = -.325, CUPR = .037;
-  CHU.push(cyl(CUPR + .004, .003, [CUPX, CUPY, .024], "plastic"));
-  for (let k = 0; k < 12; k++){ const a = k*Math.PI/6; CHU.push(Object.assign(Bh(.02, .004, .016, CUPX + (CUPR + .002)*Math.cos(a), CUPY + (CUPR + .002)*Math.sin(a), .032, "plastic"), {quat:q([0,0,1], a + Math.PI/2)})); }
+  CHU.push(Object.assign(Bh(.09, .08, .004, .38, -.392, .025, "plastic"), {quat:q([1,0,0], -.09)}));
+  const CUPX = .38, CUPY = -.312, CUPR = .037;
+  CHU.push(ghost(cyl(CUPR + .004, .002, [CUPX, CUPY, .024], "plastic")));
+  for (let k = 0; k < 12; k++){ const a = k*Math.PI/6; if (Math.sin(a) < -.4) continue;   /* open toward the ramp */
+    CHU.push(Object.assign(Bh(.02, .004, .016, CUPX + (CUPR + .002)*Math.cos(a), CUPY + (CUPR + .002)*Math.sin(a), .029, "plastic"), {quat:q([0,0,1], a + Math.PI/2)})); }
   CHU.push(ghost(Bh(.042, .04, .0016, CUPX, CUPY, .0215, "pcb_blue")), ghost(Bh(.034, .032, .0004, CUPX, CUPY, .0226, "gold")));
-  CHU.push(ghost(Object.assign(Bh(.04, .03, .002, .338, CUPY, .056, "plastic2"), {quat:q([0,1,0], -1.05)})), ghost(Bh(.012, .023, .029, .338, CUPY + .022, .045, "plastic")));
+  CHU.push(ghost(Object.assign(Bh(.04, .03, .002, .333, CUPY, .05, "plastic2"), {quat:q([0,1,0], -1.05)})), ghost(Bh(.012, .023, .029, .333, CUPY + .03, .045, "plastic")));
   /* break beam pair on the collar diagonal, chute camera + LED on the back collar wall */
   CHU.push(ghost(Bh(.012, .01, .01, cx0 + .008, cy0 + .03, LIP - .03, "plastic")), ghost(Bh(.012, .01, .01, cx1 - .008, cy1 - .03, LIP - .03, "plastic")));
   CHU.push(ghost(Bh(.003, .003, .003, cx0 + .015, cy0 + .03, LIP - .03, "led_red")));
@@ -230,7 +232,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   M.push({name:"move_y", transform:{pos:[0, 0, BZ]}, physics:{type:"rigid", motion:"dynamic", mass:.8},
     joint:{type:"slide", axis:[0,1,0], range:[-.35,.44], damping:4, drive:vel(-.12,.12)}, geoms:BEAM, collider:{}});
   M.push({name:"lift", relation:{parent:"move_y"}, transform:{pos:[0,0,0]}, gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:.05},
-    joint:{type:"slide", axis:[0,0,1], range:[-SEG, 0], damping:2, drive:vel(r4(-.12/K), r4(.12/K), 120)}, geoms:[], collider:{}});
+    joint:{type:"slide", axis:[0,0,1], range:[-SEG, 0], damping:2, frictionLoss:3, drive:{mode:"velocity", damping:3000, forceLimit:300, ctrlrange:[r4(-.12/K), r4(.12/K)]}}, geoms:[], collider:{}});
   /* carriage 90 x 90 x 75 with the Z winch: block on the rail, top plate, body in front of the beam, spool, pancake motor */
   const CAR = [ghost(BB(-.0227, -.0135, .023, .0227, .0135, .033, "block")), BB(-.045, -.075, .033, .045, .02, .038, "plastic"),
     BB(-.045, -.075, -.03, .045, -.012, .033, "plastic"),
@@ -263,8 +265,8 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
       geoms.push(ghost(cyl(.0035, .01, [.012, 0, -.002], "plastic2", {quat:QY90})));
     }
     M.push({name:"seg_" + s, relation:{parent:s === 1 ? "move_x" : "seg_" + (s - 1)}, transform:{pos:[0, s === 1 ? LINE_Y : 0, s === 1 ? r4(LINE_TOP) : 0]},
-      gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:s === K ? .06 : .01},
-      joint:{type:"slide", axis:[0,0,1], range:[-SEG, 0], damping:1.5}, geoms, collider:{}});
+      gravcomp:1, physics:{type:"rigid", motion:"dynamic", mass:s === K ? .03 : .003},
+      joint:{type:"slide", axis:[0,0,1], range:[-SEG, 0], damping:.5, frictionLoss:.4}, geoms, collider:{}});
     constraint["hoist_" + s] = {type:"equal_joints", joint1:"seg_" + s, joint2:"lift"};
   }
   /* three spring-closed fingers, the tuned v1 profile scaled by S (opens to ~4.3 cm, tip under the capsule) */
@@ -357,7 +359,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   E.push({name:"led_light_l", transform:{pos:[-.3,0,.95]}, light:{type:"point", color:"#ffb877", intensity:1, range:1.1}});
   E.push({name:"led_light_r", transform:{pos:[.3,0,.95]}, light:{type:"point", color:"#ffb877", intensity:1, range:1.1}});
   E.push({name:"back_glow", transform:{pos:[0, 2.0, 2.2]}, light:{type:"point", color:"#7d84ff", intensity:2, range:4.5}});
-  E.push({name:"chute_glow", transform:{pos:[.38, -.39, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.6, range:.35}});
+  E.push({name:"chute_glow", transform:{pos:[.38, -.39, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.12, range:.3}});
 
   const task = { instruction:"Grablab Prototype 01 Rev B. Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the gantry. Lift left lowers the claw on its line, grip left opens it, grip back to the centre closes it on the spring grip, lift right raises it. Carry the capsule to the chute in the front right corner and open the grip: it drops through the beam into the NFC cradle." };
   return { scene:{ _format:"simarena/scene@1.0", name:"Grablab Prototype 01 Rev B", sim:{timestep:.002, gravity:[0,0,-9.81]}, material, task, entities:E }, asset };
