@@ -2,7 +2,7 @@
    The machine is modelled part by part from the bill of materials and the build tutorial (anatomy-model.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-model.js?v=26";
+import { buildMachine } from "./anatomy-model.js?v=27";
 
 const $ = s => document.querySelector(s);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
@@ -125,7 +125,7 @@ async function load(){
 function check(tol = .0015){
   const prevE = explodeTarget; explode = explodeTarget = 0; applyExplode(); root.updateMatrixWorld(true);
   const items = [];
-  root.traverse(o => { if (!o.isMesh) return;
+  root.traverse(o => { if (!o.isMesh || o.isInstancedMesh) return;
     const g = o.geometry; let boxes;
     if (g.type === "TubeGeometry"){ const P = g.parameters.path, r = g.parameters.radius, L = P.getLength(), k = Math.max(4, Math.ceil(L/.01)); boxes = [];
       for (let i = 0; i <= k; i++){ const v = P.getPointAt(i/k).applyMatrix4(o.matrixWorld); boxes.push(new THREE.Box3().setFromCenterAndSize(v, new THREE.Vector3(2*r, 2*r, 2*r))); } }
@@ -170,7 +170,9 @@ const post = new THREE.ShaderMaterial({
       for (int k = 0; k < 16; k++) if (k == i) return m[k]/16.; return 0.; }
     void main(){
       /* the target holds linear light: tone map and gamma here, the renderer only does that for the screen */
-      vec3 c = pow(aces(texture2D(tex, v).rgb*1.1), vec3(1./2.2));
+      vec4 src = texture2D(tex, v); if (src.a < .02) discard;   /* empty pixels let the page sky through */
+      if (src.a < .6){ gl_FragColor = vec4(pow(src.rgb*1.4, vec3(1./2.2))*src.a, src.a); return; }   /* ghosts stay see-through */
+      vec3 c = pow(aces(src.rgb*1.1), vec3(1./2.2));
       if (pixel < .5){ gl_FragColor = vec4(c, 1.); return; }
       float d = lin(texture2D(dep, v).r);
       float e = 0.; vec2 o[4]; o[0] = vec2(px.x, 0.); o[1] = vec2(-px.x, 0.); o[2] = vec2(0., px.y); o[3] = vec2(0., -px.y);
@@ -183,13 +185,13 @@ const post = new THREE.ShaderMaterial({
       for (int i = 0; i < 10; i++){ vec3 p = vec3(pal[i*3], pal[i*3+1], pal[i*3+2]); float dd = distance(p, q); if (dd < best){ best = dd; pc = p; } }
       vec3 outc = mix(q, pc, .22);
       outc = mix(outc, vec3(.04,.045,.09), edge*.7);
-      gl_FragColor = vec4(outc, 1.);
+      gl_FragColor = vec4(outc, 1.);   /* solid, so the outline and the dither stay crisp */
     }`
 });
 const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), post), postScene = new THREE.Scene(), postCam = new THREE.Camera(); postScene.add(quad);
-let pixel = false, PX = 3;
+let pixel = false, PX = 2;
 function resize(){
-  const w = stage.clientWidth, h = stage.clientHeight; renderer.setPixelRatio(pixel ? 1 : Math.min(2, devicePixelRatio || 1)); renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
+  const w = stage.clientWidth, h = stage.clientHeight; renderer.setPixelRatio(pixel ? 1 : Math.min(prCap, devicePixelRatio || 1)); renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
   const rw = Math.max(240, Math.round(w/PX)), rh = Math.max(135, Math.round(h/PX)); rt.setSize(rw, rh); post.uniforms.px.value.set(1/rw, 1/rh);
 }
 addEventListener("resize", resize);
@@ -257,7 +259,7 @@ function easeCam(dt){ measure(); const g = goal(), k = Math.min(1, dt*3.2); if (
 let explode = 0, explodeTarget = 0, selected = null, hovered = null, tour = null, selectedCap = null, animCap = null, openK = 0, capHover = null, lastHitCap = null, subFocus = null;
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(-2, -2);
 const card = $("#card"), list = $("#parts"), labels = $("#labels"), lines = $("#lines");
-function setExplode(v){ explodeTarget = v; const b = document.getElementById("explode"); if (b){ b.classList.toggle("on", v > .5);  } }
+function setExplode(v){ wake(3500); explodeTarget = v; const b = document.getElementById("explode"); if (b){ b.classList.toggle("on", v > .5);  } }
 document.getElementById("explode").onclick = () => { subFocus = null; const on = explodeTarget < .5; setExplode(on ? 1 : 0); if (!selected){ orb.thT = on ? -.9 : -1.57; orb.phT = on ? 1.1 : 1.28; } if (tour) stopTour(); };
 function applyExplode(){
   const E = explode;
@@ -269,7 +271,7 @@ let liftK = 0;
 /* the meshes of the selected part whose names start with one of the prefixes of a card item */
 function subMeshes(p, pre){ const out = []; if (!pre || !pre.length) return out;
   for (const o of p.objs) o.traverse(m => { if (m.isMesh && m.userData.part === p.id && pre.some(s => m.name.startsWith(s))) out.push(m); }); return out; }
-function setSub(i){
+function setSub(i){ wake(3500);
   if (!selected) return; const sd = selected.subs[i];
   if (!sd || (subFocus && subFocus.i === i)){ subFocus = null; }
   else { let ms = subMeshes(selected, sd[1]); if (sd[2] && sd[2].one) ms = ms.filter(m => m.position.distanceTo(ms[0].position) < .03); if (!ms.length){ subFocus = null; } else {
@@ -277,7 +279,7 @@ function setSub(i){
     subFocus = { i, meshes:ms, box:b }; if (sd[2] && sd[2].ph) orb.phT = sd[2].ph; } }
   card.querySelectorAll(".inside button").forEach((b, k) => b.classList.toggle("on", !!subFocus && subFocus.i === k));
 }
-function setSelected(p, fromList){
+function setSelected(p, fromList){ wake(3500);
   selected = p; selectedCap = null; subFocus = null; orb.phT = p && p.ph ? p.ph : null; orb.thT = p && p.th != null ? p.th : null; orb.zoom = 1; orb.px = orb.py = orb.pz = 0;
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
@@ -292,7 +294,6 @@ function mobileFocus(p){
   if (innerWidth >= 980 || tour) return;
   const nav = document.querySelector("#site-header, .nav"), nh = nav ? nav.getBoundingClientRect().height : 60, y = stage.getBoundingClientRect().top + scrollY - nh;
   if (Math.abs(scrollY - y) > 8) scrollTo({ top:y, behavior:"smooth" });
-  const li = p && list.querySelector(`[data-id="${p.id}"]`); if (li) list.scrollTo({ left:li.offsetLeft - (list.clientWidth - li.offsetWidth)/2, behavior:"smooth" });
 }
 function wireCard(){
   card.querySelector(".x").onclick = () => setSelected(null);
@@ -318,19 +319,21 @@ stage.addEventListener("click", e => { setMouse(e); if (orb.moved > .02){ orb.mo
 /* the selected part wins over a ghost in front of it; acrylic and smoked lids never catch the click */
 function pick(){
   ray.setFromCamera(mouse, camera); const hits = ray.intersectObjects(root.children, true); lastHitCap = null;
-  let first = null;
+  let first = null, glassHit = null;
   for (const h of hits){
-    const o = h.object, m = o.material; if (!o.isMesh || !o.visible || !m || !m.visible || m.userData.noPick) continue;   // lines and cones never catch the pointer
+    const o = h.object, m = o.material; if (!o.isMesh || !o.visible || !m || !m.visible) continue;
+    if (m.userData.noPick){ if (!glassHit && o.userData.part === "cage" && !selected) glassHit = byId("cage"); continue; }   /* glass lets the click through; lines and cones never catch it */
     let g = o; while (g && g.visible) g = g.parent; if (g) continue;
     const id = o.userData.part; const p = PARTS.find(q => q.id === id); if (!p) continue;
     if (selected && p !== selected) continue;            // ghosts never answer the pointer
-    if (id === "capsules"){ let c = o; while (c && !c.userData.cap) c = c.parent; lastHitCap = c || null; }
+    if (id === "capsules"){ if (o.isInstancedMesh) lastHitCap = capsules[h.instanceId] || null; else { let c = o; while (c && !c.userData.cap) c = c.parent; lastHitCap = c || null; } }
     return p;
   }
+  if (!first && glassHit) return glassHit;
   if (first){ if (first.p.id === "capsules"){ let c = first.o; while (c && !c.userData.cap) c = c.parent; lastHitCap = c || null; } return first.p; }
   return null;
 }
-function selectCap(o){
+function selectCap(o){ wake(3500);
   selectedCap = o; animCap = o; selected = byId("capsules"); subFocus = null;
   for (const li of list.children) li.classList.toggle("on", li.dataset.id === "capsules");
   const num = o.name.replace("capsule_", "");
@@ -378,6 +381,25 @@ function shade(){
   }
 }
 /* capsule open: the shell turns its sticker to you and the lid swings back */
+/* capsules: 330 shells drawn as three instanced meshes; the one you hover or open switches to its real meshes */
+const inst = { ims:[], hide:new THREE.Matrix4().makeTranslation(0, 0, -50).scale(new THREE.Vector3(1e-4, 1e-4, 1e-4)), m:new THREE.Matrix4() };
+function buildInstances(){
+  const c0 = capsules[0]; if (!c0) return; const host = c0.parent, src = [];
+  c0.traverse(o => { if (o.isMesh) src.push(o); });
+  for (const o of src){ const im = new THREE.InstancedMesh(o.geometry, o.material, capsules.length); im.name = "capsule_inst"; im.userData.part = "capsules"; im.userData.local = o.matrix.clone(); im.userData.inLid = o.parent !== c0; im.frustumCulled = false; host.add(im); inst.ims.push(im); }
+  for (const c of capsules){ c.userData.meshes = []; c.traverse(o => { if (o.isMesh){ c.userData.meshes.push(o); o.visible = false; const rc = o.raycast; o.raycast = function(r, i){ if (this.visible) rc.call(this, r, i); }; } }); }
+}
+function syncInstances(){
+  if (!inst.ims.length) return;
+  for (const im of inst.ims) im.visible = !selectedCap;
+  capsules.forEach((c, i) => {
+    const live = c === selectedCap || c === animCap || c === capHover;
+    for (const o of c.userData.meshes) o.visible = live;
+    c.updateMatrix();
+    for (const im of inst.ims) im.setMatrixAt(i, live ? inst.hide : inst.m.multiplyMatrices(c.matrix, im.userData.local));
+  });
+  for (const im of inst.ims){ im.instanceMatrix.needsUpdate = true; im.computeBoundingSphere(); }
+}
 function capAnim(dt){
   openK += ((selectedCap ? 1 : 0) - openK)*Math.min(1, dt*4);
   for (const c of capsules){
@@ -389,6 +411,7 @@ function capAnim(dt){
     c.userData.lid.position.set(0, -.012*openK, .01*openK); c.userData.lid.rotation.x = 1.15*openK;
   }
   if (!selectedCap && openK < .01) animCap = null;
+  syncInstances();
 }
 const IDQ = new THREE.Quaternion(), YQ = new THREE.Quaternion(), ZAX = new THREE.Vector3(0, 0, 1);
 const box = new THREE.Box3(), ctr = new THREE.Vector3(), tmpV = new THREE.Vector3();
@@ -450,19 +473,30 @@ function tourStep(dt){
 
 /* ---------- ui bits ---------- */
 const q = new URLSearchParams(location.search);
-$("#pix").onclick = e => { pixel = !pixel; e.currentTarget.classList.toggle("on", pixel); document.body.classList.toggle("pix", pixel); post.uniforms.pixel.value = pixel ? 1 : 0; scene.background = pixel ? PIXBG : null; resize(); };
+$("#pix").onclick = e => { pixel = !pixel; e.currentTarget.classList.toggle("on", pixel); document.body.classList.toggle("pix", pixel); post.uniforms.pixel.value = pixel ? 1 : 0; scene.background = null; resize(); };
 if (q.get("pixel") === "1") $("#pix").click();
 if (q.get("motion") === "1") motionOn = true;
 $("#reset").onclick = () => { setSelected(null); setExplode(0); orb.px = orb.py = orb.pz = 0; orb.thT = -1.57; orb.phT = 1.28; orb.zoom = 1; if (tour) stopTour(); };
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
-/* ---------- loop ---------- */
+/* ---------- loop: render only while something moves; phones get a lower, self adjusting resolution ---------- */
+let prCap = innerWidth < 980 ? 1.5 : 2, activeUntil = 0, mouseMoved = false, slow = 0, fast = 0;
+const wake = (ms = 2500) => { activeUntil = Math.max(activeUntil, performance.now() + ms); };
+for (const ev of ["pointermove", "pointerdown", "pointerup", "wheel", "keydown", "scroll", "touchmove"]) addEventListener(ev, () => wake(), { passive:true });
+addEventListener("resize", () => wake());
+stage.addEventListener("pointermove", () => { mouseMoved = true; });
 let last = performance.now(), trapG = null, trapT = 0; const linkA = new THREE.Vector3(), linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), XAX = new THREE.Vector3(1, 0, 0), YAX = new THREE.Vector3(0, 1, 0);
 function frame(now){
-  const dt = Math.min(.05, (now - last)/1000); last = now;
+  const raw = now - last, dt = Math.min(.05, raw/1000); last = now;
+  const trapOn = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]);
+  if (!(now < activeUntil || tour || trapOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0 || estop.k > .001 && estop.k < .999)){ requestAnimationFrame(frame); return; }
+  /* frame time watchdog: drop the resolution a step if the device cannot keep up, raise it back when it can */
+  if (raw > 28) slow++; else if (raw < 18) fast++;
+  if (slow > 40 && prCap > 1){ prCap = Math.max(1, prCap - .25); slow = fast = 0; resize(); }
+  else if (fast > 240 && prCap < (innerWidth < 980 ? 1.5 : 2)){ prCap = Math.min(innerWidth < 980 ? 1.5 : 2, prCap + .25); slow = fast = 0; resize(); }
   if (tour) tourStep(dt); else { orb.idle += dt; if (false) orb.th += dt*.08; if (!orb.down){ orb.vth *= .9; orb.vph *= .9; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); } }
   explode += (explodeTarget - explode)*Math.min(1, dt*4.5);
-  if (!orb.down && !orb.pan && !tour){ const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p || estopHit() ? "pointer" : "grab"; }
+  if (!orb.down && !orb.pan && !tour && mouseMoved){ mouseMoved = false; const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p || estopHit() ? "pointer" : "grab"; }
   /* the trapdoor swings open and shut while its card item is picked */
   if (!trapG) root.traverse(o => { if (o.userData.trap) trapG = o; });
   if (trapG){ const on = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]); trapT = on ? trapT + dt : 0;
@@ -478,7 +512,7 @@ function frame(now){
   if (toastT > 0 && (toastT -= dt) <= 0) toast.classList.remove("on");
   applyExplode(); clawCycle(dt); shade(); capAnim(dt); easeCam(dt); cam();
   renderer.toneMappingExposure += ((selected ? 1.08 : 1.0) - renderer.toneMappingExposure)*Math.min(1, dt*4);
-  if (pixel){ renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); post.uniforms.t.value = now/1000; renderer.render(postScene, postCam); }
+  if (pixel){ renderer.setRenderTarget(rt); renderer.setClearColor(0x000000, 0); renderer.clear(); renderer.render(scene, camera); renderer.setRenderTarget(null); post.uniforms.t.value = now/1000; renderer.render(postScene, postCam); }
   else { renderer.render(scene, camera); if (outlinePass()){ renderer.autoClear = false; renderer.render(outlineScene, camera); renderer.autoClear = true; } }
   placeLabels();
   requestAnimationFrame(frame);
@@ -498,5 +532,9 @@ function makeThumbs(){
   }
   renderer.setRenderTarget(null); for (const [, m] of matCache) m.visible = m.opacity > .01; catcher.visible = catcherWas; renderer.toneMappingExposure = expWas; rt2.dispose();
 }
-load().then(() => { resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, overlap:(pre) => { root.updateMatrixWorld(true); const all = []; root.traverse(o => { if (o.isMesh){ o.geometry.computeBoundingBox(); all.push([o, o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld).expandByScalar(-.0006)]); } }); const out = []; for (const [a, ba] of all) if (a.name.startsWith(pre)) for (const [c, bc] of all) if (c !== a && !c.name.startsWith(pre) && ba.intersectsBox(bc)) out.push(a.name + ' x ' + c.name); return out; }, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
+load().then(() => {
+  root.traverse(o => { if (o.isMesh && !/pushrod|estop/.test(o.name)){ o.updateMatrix(); o.matrixAutoUpdate = false; } });
+  if (innerWidth < 980){ const sh = matCache.get("capsules|shell"); if (sh){ sh.side = THREE.FrontSide; sh.clearcoat = 0; sh.needsUpdate = true; } }
+  buildInstances(); syncInstances();
+  wake(4000); resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, stats:() => { const by = {}, nm = {}; root.traverse(o => { if (o.isMesh){ by[o.userData.part] = (by[o.userData.part] || 0) + 1; const k = o.userData.part === "capsules" ? "capsule" : o.name; nm[k] = (nm[k] || 0) + 1; } }); return { by, top:Object.entries(nm).sort((a, b) => b[1] - a[1]).slice(0, 25) }; }, overlap:(pre) => { root.updateMatrixWorld(true); const all = []; root.traverse(o => { if (o.isMesh){ o.geometry.computeBoundingBox(); all.push([o, o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld).expandByScalar(-.0006)]); } }); const out = []; for (const [a, ba] of all) if (a.name.startsWith(pre)) for (const [c, bc] of all) if (c !== a && !c.name.startsWith(pre) && ba.intersectsBox(bc)) out.push(a.name + ' x ' + c.name); return out; }, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
   .catch(e => { console.error(e); $("#stage").classList.add("err"); });

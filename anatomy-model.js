@@ -431,7 +431,7 @@ export function buildMachine(THREE, api){
   const capsules = [], CR = .025;
   const shell = m("shell", { color:0xeef3ff, roughness:.03, metalness:0, clearcoat:1, clearcoatRoughness:.03, transparent:true, opacity:.2, specularIntensity:1, depthWrite:false, side:THREE.DoubleSide }, true);
   const tagT = new THREE.TextureLoader().load("assets/nfc-tag.png?v=1"); tagT.colorSpace = THREE.SRGBColorSpace; tagT.anisotropy = 8;
-  const tagM = m("tag", { map:tagT, transparent:true, roughness:.6, metalness:0 });
+  const tagM = m("tag", { map:tagT, alphaTest:.4, roughness:.6, metalness:0 });
   const gTop = new THREE.SphereGeometry(CR, 28, 12, 0, Math.PI*2, 0, Math.PI/2).rotateX(Math.PI/2), gBot = new THREE.SphereGeometry(CR, 28, 12, 0, Math.PI*2, Math.PI/2, Math.PI/2).rotateX(Math.PI/2);
   const gTag = new THREE.CircleGeometry(.0105, 32);
   let seed = 11; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
@@ -452,7 +452,7 @@ export function buildMachine(THREE, api){
     const t = new THREE.Mesh(gTop, shell), b = new THREE.Mesh(gBot, shell);
     lidG.add(t);
     /* NFC sticker on the outside of the lower half, on the side that turns to you when the capsule opens */
-    const tg = new THREE.Mesh(gTag, tagM); tg.position.set(0, CR*.995*1.012, -CR*.1*1.012); tg.lookAt(0, CR*1.99, -CR*.2);
+    const tg = new THREE.Mesh(gTag, tagM); tg.position.set(0, 0, -CR*.55);                     // lying on the inside floor of the lower half
     [t, b, tg].forEach(mm => { mm.userData.part = "capsules"; mm.name = o.name; });
     o.add(b, tg); o.userData.lid = lidG; o.userData.q0 = o.quaternion.clone(); o.userData.cap = true; o.userData.part = "capsules";
     G("capsules").add(o); capsules.push(o);
