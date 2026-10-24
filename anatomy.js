@@ -208,11 +208,13 @@ function cam(){
 }
 /* left button orbits, right button pans the view */
 stage.addEventListener("contextmenu", e => e.preventDefault());
-stage.addEventListener("pointerdown", e => { orb.down = e.button !== 2; orb.pan = e.button === 2; orb.phT = null; orb.thT = null; orb.lx = e.clientX; orb.ly = e.clientY; orb.idle = 0; stage.setPointerCapture(e.pointerId); });
+const setMouse = e => { const r = stage.getBoundingClientRect(); mouse.x = (e.clientX - r.left)/r.width*2 - 1; mouse.y = -((e.clientY - r.top)/r.height)*2 + 1; };
+stage.addEventListener("pointercancel", () => { orb.down = false; orb.pan = false; });
+stage.addEventListener("pointerdown", e => { setMouse(e); orb.down = e.button !== 2; orb.pan = e.button === 2; orb.phT = null; orb.thT = null; orb.lx = e.clientX; orb.ly = e.clientY; orb.idle = 0; stage.setPointerCapture(e.pointerId); });
 stage.addEventListener("pointermove", e => { mouse.x = (e.clientX - stage.getBoundingClientRect().left)/stage.clientWidth*2 - 1; mouse.y = -((e.clientY - stage.getBoundingClientRect().top)/stage.clientHeight)*2 + 1;
   if (orb.pan){ const dx = e.clientX - orb.lx, dy = e.clientY - orb.ly; orb.lx = e.clientX; orb.ly = e.clientY; const k = orb.r*orb.zoom*.00045, m = camera.matrixWorld.elements;
     orb.px += (-dx*m[0] + dy*m[4])*k; orb.py += (-dx*m[1] + dy*m[5])*k; orb.pz += (-dx*m[2] + dy*m[6])*k; return; }
-  if (!orb.down) return; orb.vth = (e.clientX - orb.lx)*.006; orb.vph = (e.clientY - orb.ly)*.006; orb.lx = e.clientX; orb.ly = e.clientY; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); orb.moved = (orb.moved || 0) + Math.abs(orb.vth) + Math.abs(orb.vph); });
+  if (!orb.down) return; orb.vth = (e.clientX - orb.lx)*.006; orb.vph = e.pointerType === "touch" ? 0 : (e.clientY - orb.ly)*.006; orb.lx = e.clientX; orb.ly = e.clientY; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); orb.moved = (orb.moved || 0) + Math.abs(orb.vth) + Math.abs(orb.vph); });
 stage.addEventListener("pointerup", () => { orb.down = false; orb.pan = false; });
 stage.addEventListener("wheel", e => { e.preventDefault(); orb.zoom = Math.min(2.4, Math.max(.45, orb.zoom*(1 + Math.sign(e.deltaY)*.08))); orb.idle = 0; }, { passive:false });
 /* where the camera wants to be: the whole machine, or the selected part framed */
@@ -221,7 +223,7 @@ const sph = new THREE.Sphere(), whole = new THREE.Box3(), pb = new THREE.Box3();
 const view = { cx:0, cy:0, fx:1, fy:1 };
 function measure(){
   const W = stage.clientWidth, H = stage.clientHeight, sr = stage.getBoundingClientRect();
-  if (W < 980){ const c = card.classList.contains("on") ? card.getBoundingClientRect() : null, n = document.querySelector("#site-header, .nav"), nb = n ? n.getBoundingClientRect().bottom - sr.top : 64;
+  if (W < 980){ const c = card.classList.contains("on") ? card.getBoundingClientRect() : null, n = document.querySelector("#site-header, .nav"), nb = Math.max(14, n ? n.getBoundingClientRect().bottom - sr.top + 8 : 14);
     const bot = c ? c.top - sr.top - 10 : H*.92; view.cx = W/2; view.cy = (nb + bot)/2; view.fx = .9; view.fy = Math.max(.25, (bot - nb)/H); return; }
   const rect = el => el && el.offsetParent !== null ? el.getBoundingClientRect() : null;
   const nav = rect(document.querySelector("#site-header, .nav")), bar = rect(document.querySelector(".an-bar")), rail = rect(list), cd = card.classList.contains("on") ? rect(card) : null;
@@ -280,10 +282,17 @@ function setSelected(p, fromList){
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
     card.innerHTML = `<span class="n">${p.n} / ${String(PARTS.length).padStart(2, "0")}</span><h3>${p.name}</h3><div class="lines">${p.text.map(t => `<p>${t}</p>`).join("")}</div><div class="inside">${p.subs.map((x, i) => `<button type="button" data-i="${i}"${x[1] && x[1].length ? "" : " disabled"}><img src="${SUBICON[x[0]] || ICON[p.id]}" alt="" />${x[0]}</button>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><img src="assets/parts/shield.png" alt="" />${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
-    card.classList.add("on"); document.body.classList.add("card-on"); wireCard();
+    card.classList.add("on"); document.body.classList.add("card-on"); wireCard(); mobileFocus(p);
     card.querySelectorAll(".inside button").forEach(b => { b.onclick = () => setSub(+b.dataset.i); });
   } else { card.classList.remove("on"); document.body.classList.remove("card-on"); }
   if (!fromList && !tour) orb.idle = 0;
+}
+/* phones: bring the 3D view under the nav and the picked chip into view */
+function mobileFocus(p){
+  if (innerWidth >= 980 || tour) return;
+  const nav = document.querySelector("#site-header, .nav"), nh = nav ? nav.getBoundingClientRect().height : 60, y = stage.getBoundingClientRect().top + scrollY - nh;
+  if (Math.abs(scrollY - y) > 8) scrollTo({ top:y, behavior:"smooth" });
+  const li = p && list.querySelector(`[data-id="${p.id}"]`); if (li) list.scrollTo({ left:li.offsetLeft - (list.clientWidth - li.offsetWidth)/2, behavior:"smooth" });
 }
 function wireCard(){
   card.querySelector(".x").onclick = () => setSelected(null);
@@ -302,7 +311,7 @@ for (const p of PARTS){
 const estop = { ms:[], k:0, on:false }, toast = document.createElement("div"); toast.className = "an-tip an-toast"; labels.appendChild(toast); let toastT = 0;
 function estopHit(){ ray.setFromCamera(mouse, camera); for (const h of ray.intersectObjects(root.children, true)){ const o = h.object; if (!o.isMesh || !o.visible || !o.material || !o.material.visible || o.material.userData.noPick) continue; return /^panel_estop_(mushroom|rim)/.test(o.name); } return false; }
 function pressEstop(){ estop.on = !estop.on; toast.innerHTML = estop.on ? "<b>E-STOP</b>Pressed. Motors and claw lose power" : "<b>E-STOP</b>Released. The machine can run again"; toast.classList.add("on"); toastT = 2.6; }
-stage.addEventListener("click", () => { if (orb.moved > .02){ orb.moved = 0; return; } orb.moved = 0; if (estopHit()){ pressEstop(); return; } const p = pick(); if (tour) stopTour();
+stage.addEventListener("click", e => { setMouse(e); if (orb.moved > .02){ orb.moved = 0; return; } orb.moved = 0; if (estopHit()){ pressEstop(); return; } const p = pick(); if (tour) stopTour();
   if (p && p.id === "capsules" && lastHitCap){ if (lastHitCap === selectedCap) setSelected(null); else selectCap(lastHitCap); return; }
   if (!p){ if (selected) setSelected(null); return; }
   if (p !== selected) setSelected(p); });
@@ -329,7 +338,7 @@ function selectCap(o){
     <div class="lines"><p>A clear shell with an NFC sticker, factory UID.</p><p>The prize is whatever the project loads.</p><p>A token, an NFT, a stock, merch or a code.</p><p>Mapped to the UID in the published inventory.</p></div>
     <div class="inside"><button type="button" disabled><img src="assets/sub/token-silver.png" alt="" />Token</button><button type="button" disabled><img src="assets/parts/nft.png" alt="" />NFT</button><button type="button" disabled><img src="assets/parts/stock.png" alt="" />Tokenized stock</button><button type="button" disabled><img src="assets/parts/merch.png" alt="" />Merch</button><button type="button" disabled><img src="assets/parts/voucher.png" alt="" />Off chain code</button><button type="button" disabled><img src="assets/parts/gift.png" alt="" />Anything else</button></div>
     <a class="proof" href="https://solana.com" target="_blank" rel="noopener"><img src="assets/chains/solana.jpg" alt="" />UID published in the inventory</a><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
-  wireCard(); card.classList.add("on"); document.body.classList.add("card-on");
+  wireCard(); card.classList.add("on"); document.body.classList.add("card-on"); mobileFocus(byId("capsules"));
 }
 /* outline: a thin chrome blue rim around the hovered part, or around the card item you picked; never on glass */
 const outlineMat = new THREE.MeshBasicMaterial({ color:0x8fb8ff, side:THREE.BackSide, toneMapped:false, transparent:true, opacity:.9 });
