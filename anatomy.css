@@ -24,10 +24,10 @@ body.ready .an-boot{opacity:0;pointer-events:none}
 .an-stage.err .an-err{display:block}.an-stage.err .an-boot{display:none}
 .an-err a{color:var(--accent-2)}
 
-.an-head{position:absolute;left:clamp(20px,4vw,56px);top:calc(var(--nav-h,72px) + clamp(20px,4vh,44px));z-index:2;max-width:min(44vw,520px);pointer-events:none}
-.an-head .eyebrow{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#9cc0ff;margin-bottom:16px}
-.an-head h1{font-size:clamp(34px,4.6vw,66px);line-height:.98;margin:0 0 14px}
-.an-head p{color:var(--ink-2);font-size:clamp(14px,1.4vw,17px);margin:0;max-width:34ch}
+.an-head{position:absolute;left:clamp(20px,4vw,56px);top:calc(var(--nav-h,72px) + clamp(20px,4vh,44px));z-index:2;max-width:min(48vw,760px);pointer-events:none}
+.an-head .eyebrow{display:block;font-family:var(--mono);font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:#9cc0ff;margin-bottom:18px}
+.an-head h1{font-size:clamp(44px,6.6vw,104px);line-height:.94;margin:0 0 18px}
+.an-head p{color:var(--ink-2);font-size:clamp(16px,1.6vw,22px);margin:0;max-width:34ch}
 
 /* parts rail: numbered dots on a line, names slide in on hover, the active one is chrome */
 .an-rail{position:absolute;right:clamp(22px,3.4vw,54px);top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:9px;align-items:flex-end;padding:6px 0}
