@@ -234,7 +234,7 @@ async function load(){
     put("electronics", el, B(.009, .006, .004), steel, -.165, -.35, .036); put("electronics", el, B(.011, .002, .012), black, -.255, -.347, .04);   // board USB + SD slot
     for (let i = 0; i < 5; i++) put("electronics", el, B(.008, .006, .004), M("lever", { color:0xe8731c, roughness:.5 }), -.1 + i*.014, -.297, .043);   // WAGO levers
     for (let i = 0; i < 3; i++) put("electronics", el, B(.005, .006, .006), M("term", { color:0x2f9a4a, roughness:.5 }), -.112 + i*.006, -.325, .037);   // relay terminals
-    put("electronics", el, B(.6, .018, .024), plastic, -.2, -.283, .041); for (let i = 0; i < 24; i++) put("electronics", el, B(.004, .019, .016), dark, -.49 + i*.025, -.283, .045);   // slotted cable duct
+    put("electronics", el, B(.6, .016, .018), M("duct", { color:0x4a4d58, metalness:.1, roughness:.6 }), -.2, -.283, .038); for (let i = 0; i < 20; i++) put("electronics", el, B(.003, .0166, .011), M("slot", { color:0x1b1c22, roughness:.8 }), -.485 + i*.03, -.283, .0405);   // slotted cable duct
     /* printed labels on the boards */
     const tag = (txt, w, h, x, y, z, bg, fg, size) => { const cv = document.createElement("canvas"); cv.width = 512; cv.height = Math.round(512*h/w); const g = cv.getContext("2d"); g.fillStyle = bg; g.fillRect(0, 0, cv.width, cv.height);
       g.fillStyle = fg; g.font = `700 ${size || 64}px Satoshi, system-ui, sans-serif`; g.textAlign = "center"; g.textBaseline = "middle"; txt.split("\n").forEach((t, i, a) => g.fillText(t, 256, cv.height/2 + (i - (a.length - 1)/2)*(size || 64)*1.15));
