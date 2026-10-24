@@ -496,3 +496,10 @@
   .lab-card .lab-pwr{position:static;justify-content:center;padding-top:12px;border-top:1px solid rgba(180,186,255,.14);font-size:8.5px}
   .lab-dsk{display:block}
 }
+
+/* participate hero: the lab card takes the full width of the two buttons above it */
+.ph-cta{display:inline-grid;grid-template-columns:minmax(0,1fr);max-width:100%}
+.ph-cta .lab-card{width:auto;box-sizing:border-box}
+.ph-cta .lab-go{width:100%}
+.ph-cta .lab-go b{display:flex;align-items:center;justify-content:space-between;gap:16px}
+@media(max-width:620px){ .ph-cta{display:grid} .ph-cta .lab-go b{justify-content:center} }

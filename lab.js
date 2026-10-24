@@ -29,6 +29,13 @@
     if (frame.classList.contains("on")) return;
     const f = document.createElement("iframe");
     f.src = labUrl; f.title = "Grablab claw in SimArena"; f.allow = "fullscreen; clipboard-write"; f.loading = "eager";
+    /* SimArena takes a while to start its physics engine: say so, and offer the direct link if it takes too long */
+    let ld = frame.querySelector(".lab-loading");
+    if (!ld){ ld = document.createElement("div"); ld.className = "lab-loading"; ld.innerHTML = '<b>Loading the lab</b><i></i><small>Starting the physics engine, about 9 MB. This takes 10 to 30 seconds.</small>'; frame.appendChild(ld); }
+    frame.classList.add("loading");
+    const done = () => setTimeout(() => frame.classList.remove("loading"), 6000);
+    f.addEventListener("load", done, { once:true });
+    setTimeout(() => { if (frame.classList.contains("loading")) ld.querySelector("small").innerHTML = 'Still loading. <a href="' + labUrl + '" target="_blank" rel="noopener" style="color:#fff;border-bottom:1px solid rgba(180,186,255,.5)">Open it in a new tab</a>'; }, 30000);
     frame.appendChild(f); frame.classList.add("on");
     if (touch){ const fit = () => { const w = frame.clientWidth, VW = 960, VH = 1240, k = w/VW; f.style.width = VW + "px"; f.style.height = VH + "px"; f.style.transform = `scale(${k})`; f.style.transformOrigin = "0 0"; frame.style.height = Math.round(VH*k) + "px"; };
       fit(); addEventListener("resize", fit); }
@@ -38,7 +45,7 @@
     frame.scrollIntoView({ behavior: "smooth", block: "center" });
     if (local){ note.textContent = "The lab loads from the live site. Locally, open SimArena and load the scene files."; return; }
     if (allowed()) return mount();
-    if (asked){ GLConsent.set({ embeds:true }); return; }   /* second click on the same button = consent given here */
+    if (asked){ GLConsent.set({ embeds:true }); if (allowed()) mount(); return; }   /* second click on the same button = consent given here */
     asked = true;
     if (play) play.textContent = "Allow & load";
     note.innerHTML = 'The lab runs on SimArena (app.simarena.ai), which may store data in your browser. Click again to allow embedded content. <a href="cookies.html" style="color:#f3f4fb;border-bottom:1px solid rgba(180,186,255,.4)">Cookie policy</a>';
