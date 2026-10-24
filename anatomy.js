@@ -33,7 +33,7 @@ const PARTS = [
     subs:[["MGN12 block", 0,0,1.061], ["Winch spool, 30 mm", 0,-.045,.985], ["Pancake NEMA 17", .042,-.045,.985], ["POV camera", -.048,-.045,.975], ["Z end stop", .03,-.06,1.076], ["Cable gland", .024,-.049,1.003]], proof:"Same depth every play" },
   { id:"claw", n:"09", name:"Claw", spec:"3 fingers, 12 V linear actuator", ph:1.08, th:0.95, ents:["seg_1"], focus:["seg_8"], chain:["gantry","winch"], ex:[0,0,-.42],
     text:"Three printed fingers. A 30 mm linear actuator opens them, a spring closes them. That closing force is the grip we publish. A 6 core coiled cable brings the 12 V down.",
-    subs:[["Swivel on Dyneema", 0,-.045,.972], ["Coil cable, 6 core", .028,-.045,.95], ["Hub, 12 V actuator", 0,-.045,.92], ["Blue collar", .025,-.045,.908], ["3 printed fingers", .04,-.045,.875], ["Rubber tips", .045,-.045,.835]], proof:"Grip measured before you play" }
+    subs:[["Swivel on Dyneema", 0,-.045,.968], ["Coil cable, 6 core", .031,-.045,.99], ["Hub, 12 V actuator", .022,-.045,.942], ["Blue collar", .024,-.045,.93], ["3 printed fingers", .037,-.045,.896], ["Rubber tips", .016,-.045,.86]], proof:"Grip measured before you play" }
 ];
 const KEEP = new Set(["frame","floor_mdf","base_box","electronics","chute","gantry_static","claw"]);
 const byId = id => PARTS.find(p => p.id === id);
@@ -298,6 +298,60 @@ async function load(){
     const cl = "seg_8";
     put("claw", cl, C(.0045, .004, 6), steel, 0, 0, -.012);
     put("claw", cl, Cx(.0035, .008, 10), black, .021, 0, -.026);
+  })();
+  /* the claw, designed for the page: the physics claw's fingers are collision shapes, so its look is replaced here.
+     seg_8 frame: line end at z 0, hub below. Three identical arms in their own planes, never crossing the axis. */
+  (function designedClaw(){
+    const host = ents.get("seg_8"); if (!host) return;
+    const kill = o => { const dead = []; o.traverse(m => { if (m.isMesh) dead.push(m); }); dead.forEach(m => m.parent.remove(m)); };
+    for (let k = 1; k <= 3; k++){ const f = ents.get("finger_" + k); if (f) kill(f); }
+    kill(host);
+    const cableMat = matCache.get("claw|cable");
+    for (let i = 1; i <= 8; i++){ const sg = ents.get("seg_" + i); if (!sg) continue; const dead = []; sg.children.forEach(m => { if (m.isMesh && m.material === cableMat) dead.push(m); }); dead.forEach(m => sg.remove(m)); }
+    const mk = (k, o, phys) => { const m = phys ? new THREE.MeshPhysicalMaterial(o) : new THREE.MeshStandardMaterial(o); m.userData.base = { opacity:1, ei:m.emissiveIntensity || 0 }; matCache.set("claw|dc_" + k, m); return m; };
+    const chrome = mk("chrome", { color:0xe6e9f0, metalness:1, roughness:.16, clearcoat:.5 }, true), steel = mk("steel", { color:0xb4b8c2, metalness:1, roughness:.3 });
+    const dark = mk("dark", { color:0x2a2c33, metalness:.6, roughness:.35 }), blue = mk("blue", { color:0x3b7bff, metalness:.85, roughness:.22, emissive:0x1f4fd1, emissiveIntensity:.15 });
+    const rubber = mk("rubber", { color:0x16171b, roughness:.85 }), cable = mk("cable", { color:0x101114, metalness:.2, roughness:.4 });
+    const add = (geo, mat, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0) => { const o = new THREE.Mesh(geo, mat); o.position.set(x, y, z); o.rotation.set(rx, ry, rz); o.userData.part = "claw"; host.add(o); return o; };
+    const cylZ = (r, h, seg = 40) => new THREE.CylinderGeometry(r, r, h, seg).rotateX(Math.PI/2);
+    /* line end: swivel, eye, nut */
+    add(new THREE.SphereGeometry(.0042, 24, 16), steel, 0, 0, -.002); add(cylZ(.0024, .008, 16), steel, 0, 0, -.008); add(cylZ(.0048, .004, 6), steel, 0, 0, -.0115);
+    /* body: cap, housing with two grooves, blue collar, hinge ring */
+    add(cylZ(.013, .005), chrome, 0, 0, -.0155);
+    add(new THREE.CylinderGeometry(.0215, .0225, .02, 48).rotateX(Math.PI/2), chrome, 0, 0, -.028);
+    [-.023, -.031].forEach(z => add(new THREE.TorusGeometry(.0222, .0007, 8, 64), dark, 0, 0, z));
+    add(cylZ(.0238, .0045), blue, 0, 0, -.0405);
+    add(new THREE.CylinderGeometry(.0205, .016, .008, 48).rotateX(Math.PI/2), chrome, 0, 0, -.0465);
+    /* cable gland on the housing and the coiled cable running up beside the line */
+    add(new THREE.CylinderGeometry(.0034, .0034, .008, 16).rotateZ(Math.PI/2), dark, .0245, 0, -.024);
+    const coil = []; const turns = 7, H = .07;
+    for (let i = 0; i <= turns*24; i++){ const t = i/(turns*24), a = t*turns*2*Math.PI; coil.push(new THREE.Vector3(.031 + .0065*Math.cos(a), .0065*Math.sin(a), -.024 + t*H + .006)); }
+    coil.unshift(new THREE.Vector3(.0285, 0, -.024)); add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(coil), 400, .0019, 10), cable);
+    /* actuator nose under the hub */
+    add(cylZ(.0055, .012, 24), dark, 0, 0, -.0565);
+    for (let k = 0; k < 3; k++){
+      const a = k*2*Math.PI/3, c = Math.cos(a), sn = Math.sin(a), P = (r, z) => new THREE.Vector3(r*c, r*sn, z);
+      /* knuckle: a yoke on the ring, a pin through it */
+      const yoke = add(new THREE.BoxGeometry(.008, .0075, .009), chrome, 0, 0, 0); yoke.position.copy(P(.0205, -.0475)); yoke.rotation.z = a;
+      const pin = add(new THREE.CylinderGeometry(.0016, .0016, .0105, 12), steel); pin.position.copy(P(.0215, -.048)); pin.rotation.z = a;
+      /* the arm: out, down, then a gentle curl in, ending outside the axis */
+      const pts = [P(.0215, -.048), P(.031, -.058), P(.037, -.074), P(.034, -.091), P(.024, -.104), P(.016, -.111)];
+      const curve = new THREE.CatmullRomCurve3(pts);
+      const arm = new THREE.TubeGeometry(curve, 64, .0034, 14);
+      /* taper toward the tip */
+      const pa = arm.attributes.position, tmp = new THREE.Vector3();
+      for (let i = 0; i < pa.count; i++){
+        const ring = Math.floor(i/15), t = Math.min(1, ring/64), ctr = curve.getPointAt(t); tmp.fromBufferAttribute(pa, i).sub(ctr).multiplyScalar(1 - .38*t).add(ctr); pa.setXYZ(i, tmp.x, tmp.y, tmp.z);
+      }
+      arm.computeVertexNormals(); add(arm, chrome);
+      /* rubber tip on the arm end, pointing along it */
+      const end = curve.getPointAt(1), dir = curve.getTangentAt(1);
+      const tip = add(new THREE.CapsuleGeometry(.0028, .007, 6, 12), rubber); tip.position.copy(end).addScaledVector(dir, .0035); tip.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+      /* push rod from the actuator to the arm's shoulder */
+      const r0 = new THREE.Vector3(.004*c, .004*sn, -.058), r1 = curve.getPointAt(.22), d = r1.clone().sub(r0);
+      const rod = add(new THREE.CylinderGeometry(.0012, .0012, d.length(), 10), steel); rod.position.copy(r0).add(r1).multiplyScalar(.5); rod.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize());
+    }
+    host.traverse(m => { if (m.isMesh){ m.castShadow = m.receiveShadow = true; } });
   })();
   /* GRABLAB wordmark: real type on a thin emissive plane on the front panel */
   (function wordmark(){
@@ -575,7 +629,7 @@ const ease = x => x < .5 ? 2*x*x : 1 - Math.pow(-2*x + 2, 2)/2;
 let motionOn = false;
 function clawCycle(dt){
   if (!mech.move_y) return;
-  if (!motionOn){ for (let k = 1; k <= 3; k++) mech["finger_" + k].o.rotation.y = -1.05; return; } CY.t = (CY.t + dt) % 22;
+  if (!motionOn) return; CY.t = (CY.t + dt) % 22;
   const t = CY.t; let x = 0, y = 0, lift = 0, open = 0, hold = false;
   const seg = (a, b) => t >= a && t < b ? ease((t - a)/(b - a)) : (t >= b ? 1 : 0);
   /* 0-3 travel to pick, 3-6 lower, 6-7 close, 7-10 raise, 10-14 travel to chute, 14-15 open, 15-17 hold open, 17-20 home, 20-22 rest */
