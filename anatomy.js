@@ -139,9 +139,11 @@ const fill = new THREE.PointLight(0xffb877, 2.0, 3.5); fill.position.set(.1, 1.0
 const matCache = new Map(), ents = new Map(), partOf = new Map();
 function material(mats, name, part){
   const k = part + "|" + name; if (matCache.has(k)) return matCache.get(k);
-  const OVR = { tray:[.045,.047,.055,1], base:[.04,.042,.05,1], alu:[.02,.02,.025,1], cap_gold:[1,.62,.16,1], cap_violet:[.52,.42,1,1], pcb:[.05,.36,.16,1], pcb_red:[.55,.08,.08,1], pcb_blue:[.08,.18,.7,1], psu:[.72,.73,.76,1] };
+  const GLOSS = new Set(["base", "tray"]);
+const OVR = { tray:[.032,.034,.04,1], base:[.028,.03,.036,1], panel:[.05,.055,.075,1], alu:[.02,.02,.025,1], cap_gold:[1,.62,.16,1], cap_violet:[.52,.42,1,1], pcb:[.05,.36,.16,1], pcb_red:[.55,.08,.08,1], pcb_blue:[.08,.18,.7,1], psu:[.72,.73,.76,1] };
   const d = mats[name] || { rgba:[.5,.5,.5,1] }, c = OVR[name] || d.rgba;
-  const m = name.startsWith("cap_") ? new THREE.MeshPhysicalMaterial({ side:THREE.DoubleSide, color:new THREE.Color(c[0]*.85, c[1]*.85, c[2]*.85), metalness:.08, roughness:.32, clearcoat:1, clearcoatRoughness:.1, emissive:new THREE.Color(c[0], c[1], c[2]), emissiveIntensity:.03 })
+  const m = name.startsWith("cap_") ? new THREE.MeshPhysicalMaterial({ side:THREE.DoubleSide, color:new THREE.Color(c[0], c[1], c[2]), metalness:0, roughness:.06, transmission:.55, thickness:.012, ior:1.46, clearcoat:1, clearcoatRoughness:.04, specularIntensity:1, emissive:new THREE.Color(c[0], c[1], c[2]), emissiveIntensity:.05 })
+    : GLOSS.has(name) ? new THREE.MeshPhysicalMaterial({ color:new THREE.Color(c[0], c[1], c[2]), metalness:.35, roughness:.32, clearcoat:.8, clearcoatRoughness:.18 })
     : new THREE.MeshStandardMaterial({ color:new THREE.Color(c[0], c[1], c[2]), metalness:d.metalness ?? .2, roughness:d.roughness ?? .6,
     transparent:c[3] < 1, opacity:c[3] < 1 ? Math.max(.12, c[3]*1.6) : 1, emissive:new THREE.Color(c[0], c[1], c[2]), emissiveIntensity:d.emission || 0 });
   if (c[3] < 1) m.depthWrite = false;
@@ -258,11 +260,11 @@ async function load(){
     cur("base");
     const bb = "base_box";
     put("base", bb, B(.15, .19, .062), dark, .2, -.385, .056);                                  // drawer body
-    put("base", bb, B(.17, .05, .075), black, .2, -.51, .062);                                   // drawer face, pulled 30 mm
-    put("base", bb, B(.06, .006, .006), steel, .2, -.537, .085);                                 // handle
+    put("base", bb, B(.17, .004, .07), black, .2, -.4822, .062);                                 // drawer face, flush
+    put("base", bb, B(.07, .003, .004), steel, .2, -.4848, .088);                               // recessed handle
     [.122, .278].forEach(x => put("base", bb, B(.004, .19, .012), steel, x, -.385, .03));        // slides
-    put("base", bb, C(.021, .01), black, .34, -.468, .072); put("base", bb, C(.006, .012), dark, .34, -.462, .072);   // fan + hub
-    for (let i = 0; i < 5; i++) put("base", bb, B(.036, .002, .003), plastic, .34, -.466, .072, [0, i*Math.PI/5, 0]);  // blades
+    put("base", bb, C(.021, .01), black, .34, -.47, .13); put("base", bb, C(.006, .012), dark, .34, -.466, .13);   // fan + hub behind the grille
+    for (let i = 0; i < 5; i++) put("base", bb, B(.036, .002, .003), plastic, .34, -.468, .13, [0, i*Math.PI/5, 0]);  // blades
     put("base", bb, B(.03, .018, .024), black, .28, .488, .07); put("base", bb, B(.012, .006, .016), red, .33, .49, .07); put("base", bb, C(.005, .012), plastic, .36, .49, .07);  // IEC inlet, rocker, fuse
     [[-.455, .035], [-.455, .185], [0, .035], [0, .185], [.455, .035], [.455, .185]].forEach(([x, z]) => put("base", bb, C(.0035, .002, 12), black, x, -.4855, z));   // panel screws
     put("base", bb, C(.009, .02), black, -.44, .49, .11); wire("base", bb, cable, [-.44, .5, .11], [-.44, .5, .19], .004);  // gland + sleeve up the rear post
@@ -397,12 +399,31 @@ async function load(){
   })();
   /* GRABLAB wordmark: real type on a thin emissive plane on the front panel */
   (function wordmark(){
-    const cv = document.createElement("canvas"); cv.width = 1024; cv.height = 220; const g = cv.getContext("2d");
-    g.fillStyle = "#fff"; g.font = "700 150px Anton, 'Clash Display', Impact, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; try { g.letterSpacing = "6px"; } catch (e) {} g.fillText("GRABLAB", 512, 118);
-    const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 8;
+    const draw = () => {
+      const cv = document.createElement("canvas"); cv.width = 2048; cv.height = 560; const g = cv.getContext("2d");
+      g.textAlign = "center"; g.textBaseline = "middle";
+      g.shadowColor = "rgba(200,215,255,.85)"; g.shadowBlur = 38; g.fillStyle = "#f6f7ff";
+      g.font = "700 250px 'Clash Display', 'Satoshi', sans-serif"; try { g.letterSpacing = "10px"; } catch (e) {}
+      g.fillText("GRABLAB", 1024, 230); g.shadowBlur = 0; g.fillText("GRABLAB", 1024, 230);
+      g.font = "500 40px 'Satoshi', sans-serif"; try { g.letterSpacing = "14px"; } catch (e) {} g.fillStyle = "rgba(220,226,245,.75)";
+      g.fillText("PROVABLY FAIR CLAW", 1024, 420); g.font = "500 30px 'Satoshi', sans-serif"; g.fillStyle = "rgba(220,226,245,.5)"; g.fillText("PROTOTYPE 01  /  REV B", 1024, 480);
+      return cv;
+    };
+    const tx = new THREE.CanvasTexture(draw()); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 8;
     const wm = new THREE.MeshBasicMaterial({ map:tx, transparent:true, toneMapped:false }); wm.userData.base = { opacity:1, ei:0 }; matCache.set("base|wordmark", wm);
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(.30, .064), wm);
-    m.rotation.x = Math.PI/2; m.position.set(-.02, -.4845, .116); m.userData.part = "base"; ents.get("base_box").add(m);
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(.34, .093), wm);
+    m.rotation.x = Math.PI/2; m.position.set(-.02, -.4845, .112); m.userData.part = "base"; ents.get("base_box").add(m);
+    document.fonts.load("700 100px 'Clash Display'").then(() => document.fonts.load("500 40px 'Satoshi'")).then(() => { tx.image = draw(); tx.needsUpdate = true; });
+    /* QR label */
+    const lc = document.createElement("canvas"); lc.width = 512; lc.height = 128; const lg = lc.getContext("2d"); lg.textAlign = "center"; lg.textBaseline = "middle";
+    const lt = new THREE.CanvasTexture(lc); lt.colorSpace = THREE.SRGBColorSpace;
+    const drawL = () => { lg.clearRect(0, 0, 512, 128); lg.fillStyle = "#f2f3fa"; lg.font = "700 54px 'Satoshi', sans-serif"; lg.fillText("SCAN TO PLAY", 256, 52); lg.font = "500 34px 'Satoshi', sans-serif"; lg.fillStyle = "rgba(220,226,245,.6)"; lg.fillText("grablab.fun", 256, 104); lt.needsUpdate = true; };
+    drawL(); document.fonts.load("700 54px 'Satoshi'").then(drawL);
+    const lm = new THREE.MeshBasicMaterial({ map:lt, transparent:true, toneMapped:false }); lm.userData.base = { opacity:1, ei:0 }; matCache.set("base|qrlabel", lm);
+    const l = new THREE.Mesh(new THREE.PlaneGeometry(.08, .02), lm); l.rotation.x = Math.PI/2; l.position.set(-.324, -.4845, .061); l.userData.part = "base"; ents.get("base_box").add(l);
+    /* thin bright trim along the top edge of the front panel */
+    const tm = new THREE.MeshStandardMaterial({ color:0x9aa3c4, metalness:1, roughness:.25 }); tm.userData.base = { opacity:1, ei:0 }; matCache.set("base|trim", tm);
+    const t = new THREE.Mesh(new THREE.BoxGeometry(.96, .002, .0025), tm); t.position.set(0, -.4835, .199); t.userData.part = "base"; ents.get("base_box").add(t);
   })();
   /* part roots: the objects that get the explode offset */
   for (const p of PARTS){ p.objs = p.ents.map(n => ents.get(n)).filter(Boolean); p.objs.forEach(o => { o.userData.home = o.position.clone(); }); }
