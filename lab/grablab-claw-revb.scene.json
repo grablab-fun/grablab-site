@@ -272,13 +272,13 @@
   },
   "acrylic": {
    "rgba": [
-    0.8,
-    0.86,
-    1,
-    0.16
+    0.75,
+    0.82,
+    0.95,
+    0.07
    ],
-   "metalness": 0.1,
-   "roughness": 0.04
+   "metalness": 0.3,
+   "roughness": 0.02
   },
   "panel": {
    "rgba": [
@@ -7206,6 +7206,86 @@
       0.224
      ],
      "material": "alu",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.188,
+      0.006,
+      0.006
+     ],
+     "pos": [
+      0.38,
+      -0.469,
+      0.223
+     ],
+     "material": "chrome_dk",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.188,
+      0.018,
+      0.006
+     ],
+     "pos": [
+      0.38,
+      -0.305,
+      0.223
+     ],
+     "material": "chrome_dk",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.018,
+      0.16,
+      0.006
+     ],
+     "pos": [
+      0.295,
+      -0.39,
+      0.223
+     ],
+     "material": "chrome_dk",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.018,
+      0.16,
+      0.006
+     ],
+     "pos": [
+      0.465,
+      -0.39,
+      0.223
+     ],
+     "material": "chrome_dk",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.152,
+      0.002,
+      0.004
+     ],
+     "pos": [
+      0.38,
+      -0.315,
+      0.22
+     ],
+     "material": "blue",
      "contype": 0,
      "conaffinity": 0
     }
@@ -14704,8 +14784,8 @@
    "light": {
     "type": "point",
     "color": "#ffd6a8",
-    "intensity": 0.12,
-    "range": 0.3
+    "intensity": 0.04,
+    "range": 0.22
    }
   }
  ]

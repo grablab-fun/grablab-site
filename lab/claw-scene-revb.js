@@ -35,7 +35,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
     blue:{rgba:[.23,.48,1,1],metalness:1,roughness:.14},                // blue chrome accent (coil cable, collar, LED walls, handle)
     line:{rgba:[.92,.92,.9,1],metalness:0,roughness:.55},               // Dyneema
     orange:{rgba:[.9,.25,.03,1],metalness:.1,roughness:.35},            // claw tips
-    acrylic:{rgba:[.8,.86,1,.16],metalness:.1,roughness:.04},
+    acrylic:{rgba:[.75,.82,.95,.07],metalness:.3,roughness:.02},
     panel:{rgba:[.05,.06,.09,.62],metalness:.3,roughness:.2},           // smoked front panel: the electronics show through
     shell:{rgba:[.88,.92,1,.26],metalness:.2,roughness:.04},            // capsule glass
     gold:{rgba:[1,.72,.3,1],metalness:1,roughness:.25,emission:.25}, silver:{rgba:[.85,.85,.88,1],metalness:1,roughness:.22,emission:.15},
@@ -185,6 +185,11 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
            ghost(BB(GX1 - fr, GY0, FZ + GH - fr, GX1 + fr, GY1 + fr, FZ + GH + fr, "alu")));
   [[GX0, GY1], [GX1, GY1], [GX0, GY0 + fr], [GX1, GY0 + fr]].forEach(([x, y]) => CHU.push(ghost(BB(x - fr, y - fr, FZ, x + fr, y + fr, FZ + GH + fr, "alu"))));
   CHU.push(ghost(BB(GX0 - fr, GY1 - fr, FZ, GX1 + fr, GY1 + fr, FZ + .008, "alu")), ghost(BB(GX0 - fr, GY0, FZ, GX0 + fr, GY1, FZ + .008, "alu")));
+  /* bezel round the opening: the slot is a finished prize door, not a hole cut in the tray */
+  const bz = .014, bh = .006;
+  CHU.push(ghost(BB(cx0 - bz, cy0 - .002, FZ, cx1 + bz, cy0 + .004, FZ + bh, "chrome_dk")), ghost(BB(cx0 - bz, cy1 - .004, FZ, cx1 + bz, cy1 + bz, FZ + bh, "chrome_dk")),
+           ghost(BB(cx0 - bz, cy0, FZ, cx0 + .004, cy1, FZ + bh, "chrome_dk")), ghost(BB(cx1 - .004, cy0, FZ, cx1 + bz, cy1, FZ + bh, "chrome_dk")));
+  CHU.push(ghost(BB(cx0 + .004, cy1 - .006, FZ - .002, cx1 - .004, cy1 - .004, FZ + .002, "blue")));   // thin blue accent on the back edge
   fixed("chute", CHU);
 
   /* ---------------- static gantry parts: Y rails on the top beams, belts, Y motors, drag chain shelf ---------------- */
@@ -382,7 +387,7 @@ function buildRevBScene(assetUrl = "grablab-claw-revb-mech.asset.json"){
   E.push({name:"fill_light", transform:{pos:[-2.0,-.6,.9]}, light:{type:"point", color:"#d8e2ff", intensity:1.4, range:4}});
   E.push({name:"top_light", transform:{pos:[0,-.1,1.6]}, light:{type:"point", color:"#e6ecff", intensity:1.6, range:2.2}});
   E.push({name:"back_glow", transform:{pos:[0, 2.0, 2.2]}, light:{type:"point", color:"#7d84ff", intensity:2, range:4.5}});
-  E.push({name:"chute_glow", transform:{pos:[.38, -.39, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.12, range:.3}});
+  E.push({name:"chute_glow", transform:{pos:[.38, -.39, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.04, range:.22}});
 
   const task = { instruction:"Grablab Prototype 01 Rev B. Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the gantry. Lift left lowers the claw on its line, grip left opens it, grip back to the centre closes it on the spring grip, lift right raises it. Carry the capsule to the chute in the front right corner and open the grip: it drops through the beam into the NFC cradle." };
   return { scene:{ _format:"simarena/scene@1.0", name:"Grablab Prototype 01 Rev B", sim:{timestep:.002, gravity:[0,0,-9.81], sleep:true}, material, task, entities:E }, asset };
