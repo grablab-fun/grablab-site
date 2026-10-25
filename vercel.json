@@ -1,7 +1,7 @@
 {
   "cleanUrls": true,
   "redirects": [
-    { "source": "/stickers", "destination": "https://t.me/addstickers/grablab_by_Grablab_news_bot", "permanent": false },
+    { "source": "/stickers", "destination": "https://t.me/addstickers/grablab_stickers_by_Grablab_news_bot", "permanent": false },
     { "source": "/emoji", "destination": "https://t.me/addemoji/grablab_emoji_by_Grablab_news_bot", "permanent": false },
     {
       "source": "/((?!maintenance|assets/|api/).*)",
