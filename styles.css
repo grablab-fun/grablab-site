@@ -509,3 +509,10 @@ html.lite .glass,html.lite .isl,html.lite .islands,html.lite .an-card,html.lite 
 
 
 html.lite .page-atmosphere{transform:none!important;filter:none!important}
+
+/* footer: Telegram community button under the brand */
+.foot-tg{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;margin-top:6px;padding:11px 18px 11px 14px;border-radius:999px;
+  font-weight:700;font-size:14px;color:#f3f4fb;background:rgba(255,255,255,.06);border:1px solid rgba(180,186,255,.3);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .2s,border-color .2s,transform .2s}
+.foot-tg svg{width:18px;height:18px;color:#8fb2ff}
+.foot-tg:hover{background:rgba(255,255,255,.11);border-color:rgba(180,186,255,.55);transform:translateY(-1px)}

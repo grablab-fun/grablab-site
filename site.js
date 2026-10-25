@@ -111,6 +111,7 @@ function footHTML(){
     <div class="foot-brand">
       <a class="brand" href="index.html"><img class="brand-mark" src="assets/brand/mark-chrome-256.png?v=20261013b" alt="" /><span class="brand-name">GRABLAB</span></a>
       <p data-i18n="foot.tagline">${t("foot.tagline")}</p>
+      <a class="foot-tg" href="https://t.me/grablabfun" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 4.3 18.6 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L6 13.6l-4.9-1.5c-1.1-.3-1.1-1.1.2-1.6L20.5 3c.9-.3 1.7.2 1.4 1.3Z"/></svg>Join the Telegram</a>
     </div>
     <div class="foot-col">
       <h5 data-i18n="foot.explore">${t("foot.explore")}</h5>
@@ -127,6 +128,7 @@ function footHTML(){
     <div class="foot-col">
       <h5 data-i18n="foot.connect">${t("foot.connect")}</h5>
       <a href="https://x.com/grablabfun" target="_blank" rel="noopener">X / Twitter</a>
+      <a href="https://t.me/grablabfun" target="_blank" rel="noopener">Telegram</a>
       <a href="https://machine.fun" target="_blank" rel="noopener">machine.fun</a>
       <a href="https://peaq.xyz" target="_blank" rel="noopener">peaq</a>
       <a href="mailto:contact@grablab.fun">contact@grablab.fun</a>
