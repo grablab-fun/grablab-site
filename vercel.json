@@ -6,7 +6,7 @@
     { "source": "/tg", "destination": "https://t.me/grablabfun", "permanent": false },
     { "source": "/telegram", "destination": "https://t.me/grablabfun", "permanent": false },
     {
-      "source": "/((?!maintenance|assets/|api/).*)",
+      "source": "/((?!maintenance|assets/|api/|docs/).*)",
       "destination": "/maintenance",
       "permanent": false
     }
