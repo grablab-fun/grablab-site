@@ -367,7 +367,7 @@ function selectCap(o){ wake(3500);
 }
 /* outline: a thin chrome blue rim around the hovered part, or around the card item you picked; never on glass */
 const outlineMat = new THREE.MeshBasicMaterial({ color:0x8fb8ff, side:THREE.BackSide, toneMapped:false, transparent:true, opacity:.9 });
-const outlineScene = new THREE.Scene(); const outlineMeshes = new Map(); const kv = new THREE.Vector3();
+const outlineScene = new THREE.Scene(); const outlineMeshes = new Map(); const kv = new THREE.Vector3(); const oC = new THREE.Vector3(), oM1 = new THREE.Matrix4(), oM2 = new THREE.Matrix4(), oM3 = new THREE.Matrix4();
 function outlinePass(){
   let want = null;
   if (subFocus) want = subFocus.meshes;
@@ -381,7 +381,8 @@ function outlinePass(){
     const e = m.matrixWorld.elements, sx = Math.hypot(e[0], e[1], e[2]) || 1;
     const bb = m.geometry.boundingBox || (m.geometry.computeBoundingBox(), m.geometry.boundingBox); const sz = bb.getSize(tmpV);
     kv.set(1 + .0016/Math.max(.002, sz.x*sx), 1 + .0016/Math.max(.002, sz.y*sx), 1 + .0016/Math.max(.002, sz.z*sx));
-    o.matrix.scale(kv); o.matrixWorld.copy(o.matrix);
+    /* inflate about the mesh's own centre: many geometries carry absolute coordinates, so a scale about the origin would throw thin parts across the room */
+    bb.getCenter(oC); o.matrix.multiply(oM1.makeTranslation(oC.x, oC.y, oC.z)).multiply(oM2.makeScale(kv.x, kv.y, kv.z)).multiply(oM3.makeTranslation(-oC.x, -oC.y, -oC.z)); o.matrixWorld.copy(o.matrix);
   }
   return true;
 }
