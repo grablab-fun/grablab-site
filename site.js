@@ -177,6 +177,7 @@ function bookingHTML(){
           <button type="button" class="bk-chip on" data-val="Airdrop claw"><b>Airdrop claw</b><small>holders play free</small></button>
           <button type="button" class="bk-chip" data-val="Paid play"><b>Paid play</b><small>pay per grab</small></button>
           <button type="button" class="bk-chip" data-val="Mixed"><b>Mixed</b><small>both</small></button>
+          <button type="button" class="bk-chip" data-val="Mint night"><b>Mint night</b><small>grab to mint</small></button>
         </div>
       </div>
       <div class="bk-choice">

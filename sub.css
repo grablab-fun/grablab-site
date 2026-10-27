@@ -34,6 +34,9 @@
 
 /* ---- cards ---- */
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cards.four{grid-template-columns:repeat(4,1fr)}
+.mint-note{max-width:760px;margin:26px auto 0;text-align:center;color:var(--ink-2);font-size:14.5px;line-height:1.55}
+@media(max-width:1000px){.cards.four{grid-template-columns:repeat(2,1fr)}}
 .card{padding:28px 26px 26px;display:flex;flex-direction:column;gap:14px;border-radius:20px}
 .card .top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;min-height:96px}
 .card h3{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(22px,1.9vw,30px);line-height:1;letter-spacing:.01em;margin:0}
@@ -223,7 +226,7 @@
   .ph .sub{font-size:11px}
   .ph-art{min-height:0;order:2}
   .phone{height:66vh}
-  .cards,.cases,.steps3{grid-template-columns:1fr}
+  .cards,.cards.four,.cases,.steps3{grid-template-columns:1fr}
   .vfy,.check2{grid-template-columns:1fr}
   .rcpt-wrap .claw{display:none}
   .shelf.three{grid-template-columns:1fr}
