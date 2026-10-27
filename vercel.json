@@ -1,14 +1,36 @@
 {
   "cleanUrls": true,
   "redirects": [
-    { "source": "/stickers", "destination": "https://t.me/addstickers/grablab_stickers_by_Grablab_news_bot", "permanent": false },
-    { "source": "/emoji", "destination": "https://t.me/addemoji/grablab_emoji_by_Grablab_news_bot", "permanent": false },
-    { "source": "/tg", "destination": "https://t.me/grablabfun", "permanent": false },
-    { "source": "/telegram", "destination": "https://t.me/grablabfun", "permanent": false },
     {
-      "source": "/((?!maintenance|assets/|api/|docs/).*)",
-      "destination": "/maintenance",
+      "source": "/stickers",
+      "destination": "https://t.me/addstickers/grablab_stickers_by_Grablab_news_bot",
       "permanent": false
+    },
+    {
+      "source": "/emoji",
+      "destination": "https://t.me/addemoji/grablab_emoji_by_Grablab_news_bot",
+      "permanent": false
+    },
+    {
+      "source": "/tg",
+      "destination": "https://t.me/grablabfun",
+      "permanent": false
+    },
+    {
+      "source": "/telegram",
+      "destination": "https://t.me/grablabfun",
+      "permanent": false
+    },
+    {
+      "source": "/((?!maintenance|assets/|api/|docs/|preview).*)",
+      "destination": "/maintenance",
+      "permanent": false,
+      "missing": [
+        {
+          "type": "cookie",
+          "key": "gl_preview"
+        }
+      ]
     }
   ],
   "headers": [
@@ -73,6 +95,12 @@
           "value": "public, max-age=600, stale-while-revalidate=86400"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/preview",
+      "destination": "/api/preview"
     }
   ]
 }
