@@ -53,7 +53,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 18px 40px rgba(0,0,0,.4);transition:background .3s,border-color .3s}
 .brand-isl{display:flex;align-items:center;padding:0 0 0 4px}
 .brand{display:flex;align-items:center;gap:11px;flex:none;color:var(--ink)}
-.brand-mark{width:28px;height:28px;object-fit:contain}
+.brand-mark{width:36px;height:36px;object-fit:contain}
 .brand-name{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:.1em}
 .nav-links{display:flex;gap:calc(6px + (1 - var(--np,0)) * 22px);flex:none;transition:none}
 .nav-links a{position:relative;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:calc(.1em + (1 - var(--np,0)) * .06em);color:var(--ink-2);padding:9px 16px;border-radius:9px;white-space:nowrap;transition:color .2s,background .2s}
@@ -263,7 +263,7 @@ html{font-synthesis-weight:none;font-synthesis:none}
 h1,h2,h3,h4{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.008em;line-height:.94}
 
 
-.brand-name{font-weight:400;letter-spacing:.09em;font-size:18px}
+.brand-name{font-weight:400;letter-spacing:.09em;font-size:21px}
 
 
 /* ============ NAV : one continuous morph, driven by scroll (--np 0 at top -> 1 as a pill) ============ */
@@ -505,7 +505,9 @@ html.wl-open,html.wl-open body{overflow:hidden;overscroll-behavior:none}
 .page-atmosphere{animation:none!important;transition:none!important}
 /* lite mode, switched on for slow graphics: glass becomes solid, glows stop, the parallax stops */
 html.lite *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-html.lite .glass,html.lite .isl,html.lite .islands,html.lite .an-card,html.lite .an-bar,html.lite .an-tip,html.lite .lab-card,html.lite [class*="sheet"]{background-color:rgba(9,13,32,.94)!important}
+html.lite .glass,html.lite .isl,html.lite .an-card,html.lite .an-bar,html.lite .an-tip,html.lite .lab-card,html.lite [class*="sheet"]{background-color:rgba(9,13,32,.94)!important}
+/* lite: the nav bar stays see-through at the top of the page and only fills in as it condenses on scroll */
+html.lite .islands{background-color:rgba(9,13,32,calc(var(--np) * .94))!important}
 
 
 html.lite .page-atmosphere{transform:none!important;filter:none!important}
