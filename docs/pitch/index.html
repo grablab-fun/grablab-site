@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Grablab pitch: the claw that can't cheat you</title>
+<meta name="description" content="Grablab in 20 slides: a real claw machine with on-chain prizes, played from the browser, proven fair on Solana. For projects, partners and investors." />
+<meta name="robots" content="noindex" />
+<meta property="og:title" content="Grablab pitch" />
+<meta property="og:description" content="A real claw machine with on-chain prizes. Played from the browser, proven fair on Solana, rented by projects for launch nights." />
+<meta property="og:image" content="https://grablab.fun/assets/og-share.jpg?v=3" />
+<link rel="icon" type="image/png" href="/assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="stylesheet" href="/assets/fonts/fonts.css?v=1" />
+<style>
+:root{--bg:#050918;--bg-2:#0a1030;--ink:#f3f4fb;--ink-2:#a7b0cc;--ink-3:#69739a;--accent:#7d84ff;--accent-2:#b4baff;--gold:#ffb24a;--gold-soft:#ffd99a;
+--chrome:linear-gradient(176deg,#ffffff 0%,#eef1f8 38%,#aab4cf 54%,#f6f8fc 72%,#c7cfe2 100%);
+--blue-chrome:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);
+--display:'Anton',Impact,sans-serif;--font:'Satoshi',system-ui,-apple-system,sans-serif;--mono:ui-monospace,'SFMono-Regular',Menlo,monospace;
+--pad:clamp(24px,6vw,120px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);height:100%}
+body{height:100%;color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;overflow:hidden;background:transparent}
+a{color:inherit;text-decoration:none}
+/* the same sky and grain as grablab.fun */
+.sky{position:fixed;inset:0;z-index:0;background:url(/assets/bg-sky.webp) center 100%/cover no-repeat;filter:saturate(1.15)}
+.sky::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,9,24,.9) 0%,rgba(5,9,24,.7) 45%,rgba(5,9,24,.45) 100%)}
+.grain{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.14;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.deck{position:relative;z-index:2;height:100%;width:100%}
+.slide{position:absolute;inset:0;padding:clamp(70px,11vh,120px) var(--pad) clamp(64px,10vh,100px);display:flex;flex-direction:column;justify-content:center;opacity:0;visibility:hidden;transform:translateX(36px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s .6s}
+.slide.on{opacity:1;visibility:visible;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s}
+.slide.back{transform:translateX(-36px)}
+.k{font-family:var(--mono);font-size:clamp(10px,1vw,12px);letter-spacing:.24em;text-transform:uppercase;color:var(--accent-2);opacity:.85;margin-bottom:clamp(10px,2vh,20px)}
+.k.gold{color:var(--gold-soft)}
+h1,h2{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.94;letter-spacing:.004em;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 30px rgba(5,9,24,.7))}
+h1{font-size:clamp(56px,9.6vw,172px)}
+h2{font-size:clamp(40px,6.2vw,106px);margin-bottom:clamp(18px,3.4vh,40px)}
+.hl{background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(19px,1.9vw,30px);line-height:1;letter-spacing:.01em;color:var(--ink)}
+p,li{font-size:clamp(15px,1.4vw,22px);line-height:1.45;color:var(--ink-2)}
+b{color:var(--ink);font-weight:700}
+.lead{font-size:clamp(17px,1.9vw,30px);line-height:1.4;max-width:30ch;color:var(--ink)}
+.lead.w{max-width:46ch}
+.cols{display:grid;gap:clamp(12px,1.5vw,24px)}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}.c5{grid-template-columns:repeat(5,1fr)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4.5vw,80px);align-items:center}
+.card{background:rgba(8,13,40,.74);border:1px solid rgba(180,186,255,.16);border-radius:22px;padding:clamp(18px,2.2vw,32px);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 18px 44px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:10px}
+.card.gold{border-color:rgba(255,178,74,.5);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 18px 44px rgba(0,0,0,.4),0 0 44px rgba(255,178,74,.14)}
+.card.blue{border-color:rgba(120,170,255,.5);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 18px 44px rgba(0,0,0,.4),0 0 44px rgba(59,123,255,.2)}
+.num{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+.num.gold{color:var(--gold)}
+.big{font-family:var(--display);font-size:clamp(44px,6vw,104px);line-height:1;background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+.shot{width:100%;border-radius:22px;border:1px solid rgba(180,186,255,.22);box-shadow:0 30px 80px rgba(0,0,0,.55);display:block;object-fit:cover}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--mono);font-size:clamp(10px,.95vw,12px);letter-spacing:.14em;text-transform:uppercase;padding:9px 14px;border-radius:999px;border:1px solid rgba(180,186,255,.25);background:rgba(10,16,48,.62);color:var(--ink)}
+.chip.gold{border-color:rgba(255,178,74,.6);color:var(--gold-soft)}
+table{width:100%;border-collapse:collapse;font-size:clamp(13px,1.2vw,19px)}
+th,td{text-align:left;padding:clamp(9px,1.2vw,16px) clamp(8px,1vw,16px);border-bottom:1px solid rgba(180,186,255,.14);color:var(--ink-2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:400}
+td b{color:var(--ink)}
+.steps{display:flex;flex-direction:column;gap:clamp(6px,1vh,10px)}
+.step{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px;padding:clamp(10px,1.4vh,16px) clamp(14px,1.6vw,22px);background:rgba(8,13,40,.74);border:1px solid rgba(180,186,255,.16);border-radius:16px}
+.step .n{font-family:var(--display);font-size:clamp(20px,2vw,30px);background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent;min-width:2ch}
+.step p{font-size:clamp(14px,1.3vw,20px)}
+.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:10px;align-items:stretch}
+.arrow{align-self:center;font-family:var(--display);font-size:clamp(22px,3vw,52px);color:var(--gold);line-height:1;text-align:center}
+.foot{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-top:clamp(14px,2.4vh,30px)}
+/* reveals */
+.slide .r{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.slide.on .r{opacity:1;transform:none}
+.slide.on .d1{transition-delay:.08s}.slide.on .d2{transition-delay:.2s}.slide.on .d3{transition-delay:.32s}.slide.on .d4{transition-delay:.44s}.slide.on .d5{transition-delay:.56s}.slide.on .d6{transition-delay:.68s}
+/* cover */
+.cover{padding:0}
+.cover video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8}
+.cover .scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,9,24,.96) 0%,rgba(5,9,24,.72) 42%,rgba(5,9,24,.1) 100%)}
+.cover .in{position:relative;padding:clamp(28px,6vh,72px) var(--pad);display:flex;flex-direction:column;justify-content:flex-end;gap:clamp(16px,3vh,30px);height:100%;padding-bottom:clamp(70px,12vh,120px)}
+.hint{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3)}
+.hint i{display:inline-block;font-style:normal;animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(8px)}}
+/* 3D slide */
+.three{padding:0}
+.three iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent}
+.three .over{position:absolute;left:var(--pad);top:clamp(70px,11vh,120px);width:min(560px,40vw);pointer-events:none}
+.three .over .chips{pointer-events:auto}
+.three .over h2{font-size:clamp(40px,5.6vw,96px)}
+.three .fb{display:none}
+/* chart */
+.chart{display:grid;grid-template-columns:1fr;gap:clamp(8px,1.3vh,14px)}
+.row{display:grid;grid-template-columns:clamp(100px,12vw,180px) 1fr auto;align-items:center;gap:16px}
+.row .lab{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
+.row .bar{height:clamp(26px,4vh,44px);border-radius:999px;background:rgba(8,13,40,.74);border:1px solid rgba(180,186,255,.16);overflow:hidden}
+.row .bar i{display:block;height:100%;width:0;border-radius:999px;background:var(--blue-chrome);box-shadow:0 0 30px rgba(59,123,255,.45);transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.row .bar i.g{background:linear-gradient(176deg,#fff6e6 0%,#ffd99a 35%,#ffb24a 55%,#fff1d6 70%,#d98a1f 100%);box-shadow:0 0 30px rgba(255,178,74,.4)}
+.slide.on .row .bar i{width:var(--w)}
+.row .val{font-family:var(--display);font-size:clamp(22px,2.4vw,40px);line-height:1;min-width:5ch;text-align:right;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* chrome */
+.bar-top{position:fixed;left:0;top:0;height:3px;background:var(--blue-chrome);z-index:5;transition:width .5s ease}
+.nav{position:fixed;right:clamp(14px,2vw,28px);bottom:clamp(14px,2.2vh,24px);z-index:5;display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ink-3)}
+.nav button{background:rgba(10,16,48,.7);border:1px solid rgba(180,186,255,.25);color:var(--ink);width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;backdrop-filter:blur(12px)}
+.nav button:hover{border-color:#fff}
+.sec{position:fixed;left:50%;transform:translateX(-50%);bottom:clamp(14px,2.2vh,24px);z-index:5;display:flex;gap:4px;padding:5px;border-radius:999px;background:rgba(5,9,24,.7);border:1px solid rgba(180,186,255,.18);backdrop-filter:blur(14px)}
+.sec a{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);padding:8px 13px;border-radius:999px}
+.sec a.on{color:#071029;background:var(--blue-chrome)}
+.fold{position:fixed;top:clamp(14px,2.2vh,24px);left:var(--pad);z-index:5;display:flex;align-items:center;gap:10px;font-family:'Clash Display',var(--font);font-weight:700;letter-spacing:.12em;font-size:14px}
+.fold img{width:28px;height:28px}
+/* calculator */
+.calc{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr;gap:clamp(12px,1.5vw,24px)}
+input[type=range]{width:100%;accent-color:#3b7bff}
+.rng{display:flex;flex-direction:column;gap:12px;background:rgba(8,13,40,.74);border:1px solid rgba(180,186,255,.16);border-radius:22px;padding:clamp(18px,2.2vw,32px);justify-content:center}
+.rng label{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-2);display:flex;justify-content:space-between}
+.rng label b{color:var(--ink);font-family:var(--display);font-size:18px;letter-spacing:0}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 26px;border-radius:999px;font-weight:700;font-size:15px;border:1px solid rgba(180,186,255,.3);background:rgba(10,16,48,.7)}
+.btn.p{color:#071029;background:var(--blue-chrome);border-color:transparent;box-shadow:0 6px 18px rgba(59,123,255,.35)}
+@media(max-width:900px){
+  .split,.c2,.c3,.c4,.c5,.calc{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}
+  .slide{justify-content:flex-start;overflow:auto;padding-top:70px;padding-bottom:90px}
+  .sec{display:none}
+  .shot{max-height:34vh}
+  .lead{max-width:none}
+  .three iframe{display:none}.three .fb{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+  .three .over{width:auto;right:var(--pad)}
+}
+@media(max-height:720px){.shot{max-height:50vh}}
+</style>
+</head>
+<body>
+<div class="sky"></div><div class="grain" aria-hidden="true"></div>
+<div class="bar-top" id="bar"></div>
+<a class="fold" href="https://grablab.fun"><img src="/assets/brand/mark-chrome-256.png?v=20261014g" alt="" />GRABLAB</a>
+<div class="deck" id="deck">
+
+<!-- 1 cover -->
+<section class="slide cover" data-sec="intro">
+  <video autoplay muted loop playsinline poster="/assets/claw-grab-poster.jpg"><source src="/assets/claw-grab.mp4" type="video/mp4" /></video>
+  <div class="scrim"></div>
+  <div class="in">
+    <p class="k r d1">Pitch, prototype 01, October 2026</p>
+    <h1 class="r d2">The claw that<br>can’t <span class="hl">cheat you.</span></h1>
+    <p class="lead w r d3">A real claw machine with on-chain prizes. Played from the browser, proven fair on Solana, rented by projects for launch nights.</p>
+    <p class="hint r d4">Arrow keys, space or tap <i>→</i></p>
+  </div>
+</section>
+
+<!-- 2 problem -->
+<section class="slide" data-sec="intro">
+  <p class="k r">The problem</p>
+  <h2 class="r d1">Two rigged games.<br><span class="hl">One fix.</span></h2>
+  <div class="cols c2">
+    <div class="card r d2"><span class="num">01</span><h3>Claw machines are rigged</h3><p>The operator sets the grip. Nobody can check it.</p></div>
+    <div class="card r d3"><span class="num">02</span><h3>Airdrops are invisible</h3><p>A snapshot and a transfer. No moment, no clip, no reason to hold.</p></div>
+  </div>
+  <p class="lead w r d4" style="margin-top:clamp(18px,3.4vh,40px)">One machine fixes both: a claw whose grip is promised on-chain, filled with the prizes a project gives away.</p>
+</section>
+
+<!-- 3 product -->
+<section class="slide" data-sec="intro">
+  <div class="split">
+    <div>
+      <p class="k r">What we built</p>
+      <h2 class="r d1">Every capsule<br><span class="hl">is a coin.</span></h2>
+      <div class="steps r d2">
+        <div class="step"><span class="n">01</span><p><b>A real claw machine,</b> driven from your browser.</p></div>
+        <div class="step"><span class="n">02</span><p><b>Every capsule holds a prize:</b> tokens, NFTs, allowlists, merch, stocks.</p></div>
+        <div class="step"><span class="n">03</span><p><b>Every play settles on Solana,</b> with public proofs.</p></div>
+        <div class="step"><span class="n">04</span><p><b>Projects rent the machine</b> for a night, live on stream.</p></div>
+      </div>
+    </div>
+    <img class="shot r d2" src="img/home.jpg" alt="grablab.fun" />
+  </div>
+</section>
+
+<!-- 4 a play -->
+<section class="slide" data-sec="how">
+  <div class="split">
+    <div>
+      <p class="k r">How a play works</p>
+      <h2 class="r d1">Thirty seconds.<br><span class="hl">Five receipts.</span></h2>
+      <div class="steps r d2">
+        <div class="step"><span class="n">01</span><p><b>Connect.</b> Any Solana wallet, or one made on the spot.</p></div>
+        <div class="step"><span class="n">02</span><p><b>Grip promised.</b> Written on-chain before you touch the controls.</p></div>
+        <div class="step"><span class="n">03</span><p><b>Drive.</b> Live video, four buttons, drop. Every move signed.</p></div>
+        <div class="step"><span class="n">04</span><p><b>Drop seen twice.</b> Light beam and camera. NFC reads the tag.</p></div>
+        <div class="step"><span class="n">05</span><p><b>Paid in seconds.</b> From escrow to your wallet, or refunded.</p></div>
+      </div>
+    </div>
+    <video class="shot r d2" autoplay muted loop playsinline poster="/assets/play-live.jpg?v=5"><source src="/assets/play-live.mp4" type="video/mp4" /></video>
+  </div>
+</section>
+
+<!-- 5 proofs -->
+<section class="slide" data-sec="how">
+  <div class="split">
+    <img class="shot r d1" src="img/proofs.jpg" alt="Every play leaves a receipt" />
+    <div>
+      <p class="k r">Provably fair</p>
+      <h2 class="r d1">Five proofs<br><span class="hl">per play.</span></h2>
+      <table class="r d2">
+        <tr><td><b>Inventory sealed</b></td><td>Hashed on-chain before the night. Revealed when grabbed.</td></tr>
+        <tr><td><b>Grip promised</b></td><td>Locked before the play, then measured.</td></tr>
+        <tr><td><b>The machine signs</b></td><td>Every event signed by the OPTIGA chip inside.</td></tr>
+        <tr><td><b>Drop seen twice</b></td><td>Beam and camera clip, hashed together.</td></tr>
+        <tr><td><b>Paid from escrow</b></td><td>The prize moves, or the play is refunded.</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6 sealed -->
+<section class="slide" data-sec="how">
+  <p class="k r">Inventory sealed</p>
+  <h2 class="r d1">The pool is public.<br><span class="hl">The capsule is a secret.</span></h2>
+  <div class="cols c3">
+    <div class="card r d2"><span class="num">Before the night</span><h3>Seal</h3><p>Every capsule and prize hashed into one on-chain commitment, with the pool total. Nothing can change after.</p></div>
+    <div class="card gold r d3"><span class="num gold">At every grab</span><h3>Reveal</h3><p>The capsule drops, the prize appears, with proof it was in the seal.</p></div>
+    <div class="card r d4"><span class="num">After the night</span><h3>Open</h3><p>The full list goes public. Totals match, or they don’t.</p></div>
+  </div>
+  <p class="foot r d5">Suspense until the last capsule. Big prizes gone early? A sealed restock batch keeps the night alive.</p>
+</section>
+
+<!-- 7 machine, live 3D -->
+<section class="slide three" data-sec="how">
+  <img class="fb" src="img/anatomy.jpg" alt="Prototype 01" />
+  <iframe data-src="anatomy.html?tour=1" title="Prototype 01 in 3D" loading="lazy"></iframe>
+  <div class="over">
+    <p class="k r">The machine, live in 3D</p>
+    <h2 class="r d1">Prototype <span class="hl">01.</span></h2>
+    <p class="r d2" style="max-width:32ch">Ten parts, straight from the parts list. Off the shelf, so the second machine costs the same as the first.</p>
+    <div class="chips r d3" style="margin-top:16px"><span class="chip">Raspberry Pi 4</span><span class="chip gold">OPTIGA secure chip</span><span class="chip">12 V claw</span><span class="chip">Light beam</span><span class="chip">NFC</span><span class="chip">Two cameras</span></div>
+  </div>
+</section>
+
+<!-- 8 three times -->
+<section class="slide" data-sec="how">
+  <p class="k r">One parts list, built three times</p>
+  <h2 class="r d1">In physics. In metal. <span class="hl">On chain.</span></h2>
+  <div class="cols c3">
+    <div class="card r d2" style="padding:0;overflow:hidden"><img src="img/sim.jpg" alt="The claw in SimArena" style="width:100%;aspect-ratio:16/9;object-fit:cover" /><div style="padding:18px 22px 22px;display:flex;flex-direction:column;gap:8px"><h3>In physics</h3><p>Real MuJoCo physics in SimArena by CodecFlow. Grab rates tested before any metal was cut.</p></div></div>
+    <div class="card r d3" style="padding:0;overflow:hidden"><img src="img/anatomy-sel.jpg" alt="The claw" style="width:100%;aspect-ratio:16/9;object-fit:cover" /><div style="padding:18px 22px 22px;display:flex;flex-direction:column;gap:8px"><h3>In metal</h3><p>Prototype 01 in the workshop. Parts list final, electrical build under way.</p></div></div>
+    <div class="card r d4" style="padding:0;overflow:hidden"><img src="img/proofs.jpg" alt="On-chain receipt" style="width:100%;aspect-ratio:16/9;object-fit:cover;object-position:right center" /><div style="padding:18px 22px 22px;display:flex;flex-direction:column;gap:8px"><h3>On chain</h3><p>Escrow, grip promise, signed events, payouts on Solana. Identity through peaq.</p></div></div>
+  </div>
+</section>
+
+<!-- 9 modes -->
+<section class="slide" data-sec="projects">
+  <p class="k gold r">For projects: rent the claw</p>
+  <h2 class="r d1">Your airdrop,<br><span class="hl">live on stream.</span></h2>
+  <div class="cols c4">
+    <div class="card blue r d2"><span class="num">Recommended</span><h3>Airdrop claw</h3><p>Holders play free. The airdrop becomes a show.</p></div>
+    <div class="card r d3"><span class="num">02</span><h3>Play to grab</h3><p>Players pay per play. You earn on every try.</p></div>
+    <div class="card r d4"><span class="num">03</span><h3>Community claw</h3><p>A KOL or a DAO fills the machine for a week.</p></div>
+    <div class="card r d5"><span class="num">04</span><h3>Mint night</h3><p>A collection minted one grab at a time.</p></div>
+  </div>
+  <p class="foot r d6">You bring the prizes. We run the machine, the stream, the proofs and the report.</p>
+</section>
+
+<!-- 10 loop -->
+<section class="slide" data-sec="projects">
+  <p class="k gold r">The marketing loop</p>
+  <h2 class="r d1">Quests buy attention<br><span class="hl">before the night.</span></h2>
+  <div class="flow">
+    <div class="card r d2"><span class="num">1</span><h3>Quest</h3><p>Follow, join, invite, hold. Each one is a free play.</p></div>
+    <div class="arrow r d2">→</div>
+    <div class="card r d3"><span class="num">2</span><h3>Hold</h3><p>Tiers unlock more plays. Sell early, lose your turn.</p></div>
+    <div class="arrow r d3">→</div>
+    <div class="card gold r d4"><span class="num gold">3</span><h3>Grab</h3><p>Thirty seconds of drama, your logo on the capsule.</p></div>
+    <div class="arrow r d4">→</div>
+    <div class="card r d5"><span class="num">4</span><h3>Share</h3><p>Winners post the clip. New people start at quest one.</p></div>
+  </div>
+  <p class="foot r d6">A campaign, not a giveaway: weeks of quests, one night of content, a public report after.</p>
+</section>
+
+<!-- 11 calculator -->
+<section class="slide" data-sec="projects">
+  <p class="k gold r">What a night returns</p>
+  <h2 class="r d1">Move the sliders.<br><span class="hl">Count the content.</span></h2>
+  <div class="calc">
+    <div class="rng r d2"><label>Hours live <b id="vH">4</b></label><input type="range" id="rH" min="1" max="8" value="4" /><label>Quests per player <b id="vQ">4</b></label><input type="range" id="rQ" min="1" max="8" value="4" /><label>Days of quests <b id="vD">10</b></label><input type="range" id="rD" min="3" max="21" value="10" /></div>
+    <div class="card r d3"><span class="num">Plays, one machine</span><span class="big" id="oPlays">400</span><p>Each one a 30 second clip with your logo on it.</p></div>
+    <div class="card r d4"><span class="num">Minutes of live content</span><span class="big" id="oMin">200</span><p>Cut into shorts by the winners themselves.</p></div>
+    <div class="card gold r d5"><span class="num gold">Quest actions</span><span class="big" id="oQ">1,600</span><p>Follows, joins, invites and holds, over <b id="oD">10</b> days, before anyone touches the claw.</p></div>
+  </div>
+  <p class="foot r d6">Illustrative. 100 plays an hour per machine, every slot filled.</p>
+</section>
+
+<!-- 12 potential -->
+<section class="slide" data-sec="projects">
+  <div class="split" style="grid-template-columns:1fr 1.25fr">
+    <div>
+      <p class="k gold r">The potential</p>
+      <h2 class="r d1">Every machine<br><span class="hl">adds a stage.</span></h2>
+      <p class="r d2" style="max-width:34ch">Same parts list, same proofs, one more city. Four nights a month per machine. Plays per month:</p>
+      <p class="foot r d3">Capacity math, not a forecast. 100 plays an hour, four hours a night.</p>
+    </div>
+    <div class="chart r d2">
+      <div class="row"><span class="lab">1 machine</span><div class="bar"><i style="--w:8%"></i></div><span class="val">1,600</span></div>
+      <div class="row"><span class="lab">3 machines</span><div class="bar"><i style="--w:20%"></i></div><span class="val">4,800</span></div>
+      <div class="row"><span class="lab">10 machines</span><div class="bar"><i style="--w:48%"></i></div><span class="val">16,000</span></div>
+      <div class="row"><span class="lab">25 machines</span><div class="bar"><i class="g" style="--w:100%"></i></div><span class="val">40,000</span></div>
+      <div class="row" style="margin-top:clamp(8px,1.4vh,16px)"><span class="lab">Clips a month</span><div class="bar"><i class="g" style="--w:100%"></i></div><span class="val">40,000</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 trust -->
+<section class="slide" data-sec="projects">
+  <div class="split">
+    <div>
+      <p class="k gold r">Trust as marketing</p>
+      <h2 class="r d1">Prove you<br><span class="hl">can’t cheat them.</span></h2>
+      <div class="steps r d2">
+        <div class="step"><span class="n">01</span><p><b>To your community:</b> the drop was fair. Here is the proof.</p></div>
+        <div class="step"><span class="n">02</span><p><b>To your investors:</b> tokens went to real holders, on a public dashboard.</p></div>
+        <div class="step"><span class="n">03</span><p><b>To everyone else:</b> a team willing to be verified has nothing to hide.</p></div>
+      </div>
+      <p class="foot r d3">The receipt is the marketing asset. A rug cannot produce one.</p>
+    </div>
+    <img class="shot r d2" src="img/proofs.jpg" alt="A play receipt" style="object-position:right center" />
+  </div>
+</section>
+
+<!-- 14 formats -->
+<section class="slide" data-sec="projects">
+  <p class="k gold r">Formats</p>
+  <h2 class="r d1">The machine stays.<br><span class="hl">The tenant changes.</span></h2>
+  <div class="cols c5">
+    <div class="card r d2"><h3>Launch night</h3><p>Holders grab the token live.</p></div>
+    <div class="card r d2"><h3>Claw battles</h3><p>Two communities, one leaderboard.</p></div>
+    <div class="card r d3"><h3>KOL claw</h3><p>A creator hosts for a week.</p></div>
+    <div class="card r d3"><h3>Holder drop</h3><p>Only holders can play.</p></div>
+    <div class="card r d4"><h3>Conference units</h3><p>A machine at your booth.</p></div>
+    <div class="card r d4"><h3>Whitelist claw</h3><p>Capsules hold allowlist spots.</p></div>
+    <div class="card r d5"><h3>Burn to play</h3><p>Burn a token, get a play.</p></div>
+    <div class="card r d5"><h3>Season</h3><p>One month, one big prize.</p></div>
+    <div class="card r d6"><h3>Charity claw</h3><p>Plays fund a cause.</p></div>
+    <div class="card gold r d6"><h3>Your format</h3><p>Bring the idea.</p></div>
+  </div>
+</section>
+
+<!-- 15 capsules -->
+<section class="slide" data-sec="projects">
+  <div class="split">
+    <div>
+      <p class="k gold r">Inside the capsules</p>
+      <h2 class="r d1">Anything<br><span class="hl">on-chain.</span></h2>
+      <table class="r d2">
+        <tr><td><b>Your token</b></td><td>From escrow, in seconds</td></tr>
+        <tr><td><b>NFTs and allowlists</b></td><td>To the wallet that played</td></tr>
+        <tr><td><b>Merch</b></td><td>Claimed on-chain, shipped</td></tr>
+        <tr><td><b>Tokenized stocks</b></td><td>TSLAx, NVDAx, AAPLx, with identity checks</td></tr>
+        <tr><td><b>Partner quests</b></td><td>A capsule can carry another project</td></tr>
+      </table>
+    </div>
+    <img class="shot r d2" src="/assets/fmt/holder.jpg?v=4" alt="Capsules with gold and violet coins" />
+  </div>
+</section>
+
+<!-- 16 model -->
+<section class="slide" data-sec="investors">
+  <p class="k r">For investors: business model</p>
+  <h2 class="r d1">Claw as<br><span class="hl">a service.</span></h2>
+  <div class="cols c4">
+    <div class="card r d2"><span class="num">Night rental</span><h3>Flat fee</h3><p>Per night or week. The project brings the prizes.</p><span class="big" style="font-size:clamp(24px,2.6vw,44px)">[€__]</span></div>
+    <div class="card r d3"><span class="num">Revenue share</span><h3>Paid plays</h3><p>A cut of every play, settled with the payout.</p><span class="big" style="font-size:clamp(24px,2.6vw,44px)">[__ %]</span></div>
+    <div class="card r d4"><span class="num">Sponsored capsules</span><h3>A prize in any night</h3><p>Issuers and brands place a stock, a device, a ticket.</p><span class="big" style="font-size:clamp(24px,2.6vw,44px)">[€__]</span></div>
+    <div class="card r d5"><span class="num">Packages</span><h3>Seasons, events</h3><p>Leaderboards, conference units.</p><span class="big" style="font-size:clamp(24px,2.6vw,44px)">[€__]</span></div>
+  </div>
+  <p class="foot r d6">Fixed bill of materials per machine. Every unit adds 100 plays an hour. [BOM €__]</p>
+</section>
+
+<!-- 17 why now -->
+<section class="slide" data-sec="investors">
+  <p class="k r">Why now</p>
+  <h2 class="r d1">Four things<br><span class="hl">lined up.</span></h2>
+  <div class="cols c2">
+    <div class="card r d2"><h3>Solana settles in seconds</h3><p>The payout is the show.</p></div>
+    <div class="card r d3"><h3>Tokenized stocks exist</h3><p>A stock in a capsule is a transfer, not a legal project.</p></div>
+    <div class="card r d4"><h3>Machines sign for themselves</h3><p>Secure chips and peaq identity. A physical machine with a wallet.</p></div>
+    <div class="card r d5"><h3>Launches need a stage</h3><p>Hundreds of tokens a day, none with a moment. machine.fun is the launchpad. We are its first show.</p></div>
+  </div>
+</section>
+
+<!-- 18 legal -->
+<section class="slide" data-sec="investors">
+  <p class="k r">Legal posture</p>
+  <h2 class="r d1">Skill first. Free first.<br><span class="hl">Country by country.</span></h2>
+  <div class="cols c3">
+    <div class="card r d2"><h3>The test</h3><p>Gambling is a stake, plus chance, plus a prize. Every country runs its own version of that test.</p></div>
+    <div class="card blue r d3"><h3>How we are built</h3><p>Airdrop claw is free: no stake. The grip is public: skill, not luck. Paid modes show the prize before the play and refund a miss.</p></div>
+    <div class="card r d4"><h3>What we commit to</h3><p>Legal review where the machine stands before the first paid night. Free modes launch first.</p></div>
+  </div>
+  <p class="foot r d5">Design choices, not legal advice.</p>
+</section>
+
+<!-- 19 where we are -->
+<section class="slide" data-sec="investors">
+  <p class="k r">Where we are, what comes next</p>
+  <h2 class="r d1">Built in public,<br><span class="hl">before launch.</span></h2>
+  <div class="cols c4">
+    <div class="card gold r d2"><span class="num gold">Now</span><h3>Prototype 01 plays</h3><p>Parts final, wiring delivered, physics twin running. Site, wallet, simulator, community live.</p></div>
+    <div class="card r d3"><span class="num">Stage 2</span><h3>First launch night</h3><p>One tenant, airdrop mode, mainnet escrow, public report. <b>Looking for this tenant now.</b></p></div>
+    <div class="card r d4"><span class="num">Stage 3</span><h3>Prizes beyond tokens</h3><p>Tokenized stocks, mint nights, merch. Legal review for paid modes.</p></div>
+    <div class="card r d5"><span class="num">Stage 4</span><h3>More machines</h3><p>Second unit, conference units, seasons.</p></div>
+  </div>
+  <p class="foot r d6">On board: machine.fun, peaq, CodecFlow, Privy, Jupiter. Dates set stage by stage.</p>
+</section>
+
+<!-- 20 doors + contact -->
+<section class="slide" data-sec="collab">
+  <p class="k gold r">Three doors in</p>
+  <h2 class="r d1">Rent it. Build into it.<br><span class="hl">Fill it.</span></h2>
+  <div class="cols c3">
+    <div class="card r d2"><span class="num">Projects</span><h3>Rent a night</h3><p>Pick a mode, bring the prizes, run quests.</p><p><b>Ask: be the first tenant.</b></p></div>
+    <div class="card r d3"><span class="num">Infra and partners</span><h3>Plug a piece in</h3><p>Escrow, RPC, proof storage, video, identity, merch claims.</p><p><b>Ask: a startup tier, a case study at launch.</b></p></div>
+    <div class="card r d4"><span class="num">Issuers and brands</span><h3>Fill a capsule</h3><p>Your product won live on stream, in any night.</p><p><b>Ask: one sponsored capsule.</b></p></div>
+  </div>
+  <div class="btns r d5" style="margin-top:clamp(18px,3.4vh,40px)">
+    <a class="btn p" href="mailto:contact@grablab.fun?subject=Grablab%20pitch">contact@grablab.fun</a>
+    <a class="btn" href="https://x.com/grablabfun" target="_blank" rel="noopener">@grablabfun</a>
+    <a class="btn" href="https://t.me/grablabfun" target="_blank" rel="noopener">Telegram</a>
+    <a class="btn" href="https://grablab.fun" target="_blank" rel="noopener">grablab.fun</a>
+  </div>
+</section>
+
+</div>
+
+<div class="sec" id="sec">
+  <a href="#1" data-sec="intro">Intro</a><a href="#4" data-sec="how">How it works</a><a href="#9" data-sec="projects">For projects</a><a href="#16" data-sec="investors">For investors</a><a href="#20" data-sec="collab">Collaborate</a>
+</div>
+<div class="nav"><span id="cnt">1 / 20</span><button id="prev" aria-label="Previous">‹</button><button id="next" aria-label="Next">›</button></div>
+
+<script>
+(function(){
+  const slides=[...document.querySelectorAll('.slide')], n=slides.length;
+  const bar=document.getElementById('bar'), cnt=document.getElementById('cnt'), secs=[...document.querySelectorAll('#sec a')];
+  let i=Math.min(n-1,Math.max(0,(parseInt(location.hash.slice(1))||1)-1)), first=true;
+  function show(k){
+    k=Math.max(0,Math.min(n-1,k)); if(k===i&&!first) return; first=false;
+    slides.forEach((s,j)=>{ s.classList.toggle('on',j===k); s.classList.toggle('back',j<k); });
+    i=k; history.replaceState(null,'','#'+(k+1));
+    bar.style.width=((k+1)/n*100)+'%'; cnt.textContent=(k+1)+' / '+n;
+    const sec=slides[k].dataset.sec; secs.forEach(a=>a.classList.toggle('on',a.dataset.sec===sec));
+    slides.forEach((s,j)=>s.querySelectorAll('video').forEach(v=>{ if(j===k) v.play().catch(()=>{}); else v.pause(); }));
+    /* the 3D viewer loads when its slide is one step away, and is dropped when far, so it never fights the rest of the deck */
+    slides.forEach((s,j)=>s.querySelectorAll('iframe[data-src]').forEach(f=>{ const near=Math.abs(j-k)<=1; if(near&&!f.src) f.src=f.dataset.src; if(!near&&f.src&&Math.abs(j-k)>3) f.removeAttribute('src'); }));
+  }
+  const next=()=>show(i+1), back=()=>show(i-1);
+  document.getElementById('next').onclick=next; document.getElementById('prev').onclick=back;
+  addEventListener('keydown',e=>{ if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();next();} if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();back();} if(e.key==='Home')show(0); if(e.key==='End')show(n-1); });
+  let sx=0,sy=0; addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+  addEventListener('touchend',e=>{ const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy; if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)) (dx<0?next():back()); });
+  let wl=0; addEventListener('wheel',e=>{ if(innerWidth<=900) return; const t=Date.now(); if(t-wl<900||Math.abs(e.deltaY)<30) return; wl=t; e.deltaY>0?next():back(); },{passive:true});
+  document.getElementById('deck').addEventListener('click',e=>{ if(innerWidth<=900||e.target.closest('a,button,input,label,.rng,iframe')) return; e.clientX>innerWidth*.3?next():back(); });
+  secs.forEach(a=>a.onclick=e=>{e.preventDefault();show(parseInt(a.getAttribute('href').slice(1))-1);});
+  addEventListener('hashchange',()=>{ const k=(parseInt(location.hash.slice(1))||1)-1; if(k!==i) show(k); });
+  show(i);
+  const rH=document.getElementById('rH'), rQ=document.getElementById('rQ'), rD=document.getElementById('rD');
+  const fmt=x=>x.toLocaleString('en-US');
+  function calc(){ const h=+rH.value,q=+rQ.value,d=+rD.value, plays=h*100; document.getElementById('vH').textContent=h; document.getElementById('vQ').textContent=q; document.getElementById('vD').textContent=d; document.getElementById('oPlays').textContent=fmt(plays); document.getElementById('oMin').textContent=fmt(plays*30/60); document.getElementById('oQ').textContent=fmt(plays*q); document.getElementById('oD').textContent=d; }
+  [rH,rQ,rD].forEach(r=>r.addEventListener('input',calc)); calc();
+})();
+</script>
+</body>
+</html>
