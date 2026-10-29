@@ -137,10 +137,14 @@ export function buildMachine(THREE, api){
   const SD = api.scene, MP = SD.params;
   const b64 = (s, T) => { const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return new T(u.buffer); };
   const toM = p => { for (let i = 0; i < p.length; i += 3){ p[i] = p[i]/1000 - .5; p[i + 1] = p[i + 1]/1000 - .5; p[i + 2] = (p[i + 2] + 1130)/1000; } };
-  const mgeo = n => { const d = SD.meshes[n]; if (!d) return null; const g = new THREE.BufferGeometry();
+  /* keep: optional test on each triangle's centre (mm), to leave parts of a mesh out */
+  const mgeo = (n, keep) => { const d = SD.meshes[n]; if (!d) return null; const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(b64(d.v, Float32Array), 3)); g.setIndex(new THREE.BufferAttribute(b64(d.i, d.i32 ? Uint32Array : Uint16Array), 1));
-    const f = g.toNonIndexed(); g.dispose(); toM(f.attributes.position.array); f.computeVertexNormals(); return f; };
-  const sm = (n, mt, name, parent) => { const g = mgeo(n); return g ? add(g, mt, 0, 0, 0, 0, 0, 0, name, parent) : null; };
+    let f = g.toNonIndexed(); g.dispose();
+    if (keep){ const P = f.attributes.position.array, out = []; for (let i = 0; i < P.length; i += 9) if (keep((P[i] + P[i + 3] + P[i + 6])/3, (P[i + 1] + P[i + 4] + P[i + 7])/3, (P[i + 2] + P[i + 5] + P[i + 8])/3)) for (let k = 0; k < 9; k++) out.push(P[i + k]);
+      f.dispose(); f = new THREE.BufferGeometry(); f.setAttribute("position", new THREE.Float32BufferAttribute(out, 3)); }
+    toM(f.attributes.position.array); f.computeVertexNormals(); return f; };
+  const sm = (n, mt, name, parent, keep) => { const g = mgeo(n, keep); return g ? add(g, mt, 0, 0, 0, 0, 0, 0, name, parent) : null; };
   const SM = (list, mt, name) => list.forEach(n => sm(n, mt, name));
   const LR = a => a.flatMap(n => [n + "_L", n + "_R"]);
   const mm = v => v/1000 - .5, mz = z => (z + 1130)/1000;
@@ -364,7 +368,8 @@ export function buildMachine(THREE, api){
   sm("box_back_cage", pvc, "cage_showcase");
   sm("box_left_cage", acrylic, "cage_window");
   SM(["box_glass_F", "box_glass_R"], acrylic, "cage_window");
-  SM(["boxhw_floor", "boxhw_skins", "boxhw_glass"], rivetM, "cage_rivet");
+  SM(["boxhw_floor", "boxhw_glass"], rivetM, "cage_rivet");
+  sm("boxhw_skins", rivetM, "cage_rivet", null, (x, y, z) => z < -920 || z > -870);     // no row on the floor ring: it read as specks in the middle of the base panels
 
   /* =========================================================================================== chute, cradle, prize cup */
   use("chute");
