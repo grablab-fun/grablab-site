@@ -195,7 +195,7 @@ export function buildMachine(THREE, api){
   use("electronics");
   /* one plate on the inside of the back tubes, between the ground and the floor ring */
   { const g = new THREE.Group(); g.name = "el_board"; g.position.set(0, -.025, -.02); G("electronics").add(g); SUBP.electronics = g; }
-  box(-.47, IN - .003, .045, .13, IN, .235, pvc, "el_plate");
+  box(-.47, IN - .0025, .045, .13, IN, .235, pvc, "el_plate");                 // front face 0.5 mm behind the carrier and the case back, so no two faces share a plane
   /* ---- board details: PCB faces drawn on canvas (copper traces, vias, pads, silkscreen), real parts on top ---- */
   const pcbFace = (key, w, h, base, ink, extra) => label(key, w, h, (g, W, H) => {
     g.fillStyle = base; g.fillRect(0, 0, W, H);
@@ -238,7 +238,7 @@ export function buildMachine(THREE, api){
       add(cylY(.0034, .0018, 20), m("brass2", { color:0xcfa64e, roughness:.28, metalness:1 }), -.2735, IN - .0538, z, 0, 0, 0, "el_psu_screw"); add(BOX(.0048, .0005, .0007), dark, -.2735, IN - .0548, z, 0, 0, 0, "el_psu_screw_slot"); }
     box(-.293, IN - .061, .04, -.257, IN - .0595, .128, np(m("guard", { color:0xdfe7ff, roughness:.05, transparent:true, opacity:.16, depthWrite:false })), "el_psu_guard");
     const tl = label("psuterm", .012, .084, (g, W, H) => { g.fillStyle = "#e9ebef"; g.fillRect(0, 0, W, H); g.fillStyle = "#1d1f24"; g.textAlign = "center";
-      ["+V", "+V", "-V", "-V", "⏚", "N", "L"].forEach((t, i) => txt(g, t, W/2, H*(1 - (i + .5)/7), H*.05, 800)); });
+      ["L", "N", "⏚", "-V", "-V", "+V", "+V"].forEach((t, i) => txt(g, t, W/2, H*(1 - (i + .5)/7), H*.05, 800)); });
     onFace(tl, .012, .084, -.2985, F - .0002, .0845, "el_psu_label");
     add(cylY(.0026, .002, 16), m("trim", { color:0xe8e9ec, roughness:.4 }), -.3085, F - .001, .052, 0, 0, 0, "el_psu_trim"); add(BOX(.0034, .0004, .0006), dark, -.3085, F - .0021, .052, 0, 0, 0, "el_psu_trim");
     add(cylY(.0016, .0016, 12), led(0x52d96b), -.3085, F - .0008, .064, 0, 0, 0, "el_psu_led");
@@ -300,7 +300,7 @@ export function buildMachine(THREE, api){
 
   /* computer case 100 x 70 x 35: dark anodised aluminium, the board on posts, the secure chip on its own 2 posts, smoked lid with the 30 mm fan */
   const px0 = 0, pz0 = .12, pib = IN - .008, caseM = () => m("picase", { color:0x1d1f26, roughness:.32, metalness:.8 });
-  box(px0, IN - .0025, pz0, px0 + .1, IN, pz0 + .07, caseM, "el_picase_back");
+  box(px0, IN - .0031, pz0, px0 + .1, IN - .0025, pz0 + .07, caseM, "el_picase_back");
   box(px0, IN - .035, pz0, px0 + .0025, IN - .0025, pz0 + .07, caseM, "el_picase_wall"); box(px0 + .0975, IN - .035, pz0, px0 + .1, IN - .0025, pz0 + .07, caseM, "el_picase_wall");
   box(px0, IN - .035, pz0, px0 + .1, IN - .0025, pz0 + .0025, caseM, "el_picase_wall"); box(px0, IN - .035, pz0 + .0675, px0 + .1, IN - .0025, pz0 + .07, caseM, "el_picase_wall");
   for (let i = 0; i < 9; i++) box(px0 + .012 + i*.0085, IN - .0352, pz0 + .0675, px0 + .0165 + i*.0085, IN - .0348, pz0 + .07, dark, "el_picase_vent");
@@ -343,7 +343,7 @@ export function buildMachine(THREE, api){
   const R = (pts, nm) => harness(pts, .0015, wireR, nm), K = (pts, nm) => harness(pts, .0015, wireK, nm);
   const wr = i => -.32 + .0055 + .009*i, wk = i => -.27 + .0055 + .009*i, WB = .2395;
   R([[-.2735, IN - .052, .108], [-.2475, IN - .052, .108], [-.2475, IN - .004, .108], [-.2475, IN - .004, .215], [wr(0), IN - .004, .215], [wr(0), IN - .009, WB]], "el_wire_psu_wago");
-  K([[-.2735, IN - .052, .073], [-.2435, IN - .052, .073], [-.2435, IN - .013, .073], [-.2435, IN - .013, .225], [wk(4), IN - .013, .225], [wk(4), IN - .009, WB]], "el_wire_psu_gnd");
+  K([[-.2735, IN - .052, .0845], [-.2435, IN - .052, .0845], [-.2435, IN - .013, .0845], [-.2435, IN - .013, .225], [wk(4), IN - .013, .225], [wk(4), IN - .009, WB]], "el_wire_psu_gnd");
   R([[wr(1), IN - .009, WB], [wr(1), IN - .004, .19], [-.182, IN - .004, .19], [-.182, IN - .004, .16], [-.182, IN - .026, .1465]], "el_wire_shield");
   K([[wk(0), IN - .009, WB], [wk(0), IN - .0085, .185], [-.174, IN - .0085, .185], [-.174, IN - .0085, .16], [-.174, IN - .026, .1465]], "el_wire_shield");
   R([[wr(2), IN - .009, WB], [wr(2), IN - .004, .182], [-.143, IN - .004, .182], [-.143, IN - .008, .175], [-.143, IN - .008, .0995]], "el_wire_l298n");
