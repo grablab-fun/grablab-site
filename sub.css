@@ -133,8 +133,6 @@
 .stk-id b{display:block;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:27px;letter-spacing:.02em;line-height:1;color:var(--ink)}
 .stk-id span{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-2)}
 .stk-chart{flex:1;height:50px;min-width:0;overflow:visible}
-.stk-chart .line{fill:none;stroke:#7db0ff;stroke-width:2;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 6px rgba(59,123,255,.5))}
-.stk-chart .area{fill:rgba(59,123,255,.13);stroke:none}
 @media(max-width:620px){.stk{gap:14px;padding:14px 16px}.stk-id{width:auto}.stk-chart{display:none}}
 
 /* chips row */
@@ -278,9 +276,6 @@
 .stk-px b{display:block;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:24px;letter-spacing:.02em;line-height:1.05;color:var(--ink)}
 .stk-px span{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
 .stk-px span.up{color:#4ade80}.stk-px span.dn{color:#ff6b81}
-.stk-chart .line.dn{stroke:#ff8a9a;filter:drop-shadow(0 0 6px rgba(255,107,129,.45))}
-.stk-chart .area.dn{fill:rgba(255,107,129,.1)}
-.stk-chart .dot{fill:#fff;filter:drop-shadow(0 0 6px rgba(125,176,255,.9))}
 @media(max-width:620px){.stk-px{width:auto;margin-left:auto}}
 .stk-px b{transition:color .6s}
 .stk-px b.tick-up{animation:pxUp 1.2s ease-out}.stk-px b.tick-dn{animation:pxDn 1.2s ease-out}
@@ -290,7 +285,8 @@
 /* ---- formats (rent) : picture + how it runs + who it's for + reach ---- */
 .fmts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .fm{padding:0;overflow:hidden;border-radius:20px;display:flex;flex-direction:column}
-.fm-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-bottom:1px solid rgba(180,186,255,.14)}
+.fm-ph{position:relative;overflow:hidden;aspect-ratio:4/3;border-bottom:1px solid rgba(180,186,255,.14)}
+.fm-img{width:100%;height:100%;object-fit:cover;display:block}
 .fm-b{padding:20px 22px 22px}
 .fm h3{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:26px;line-height:1;margin:0 0 8px}
 .fm-how{color:var(--ink);font-size:14.5px;margin:0 0 14px}
@@ -511,3 +507,50 @@
 @media(min-width:901px){ br.mbr{display:none} }
 /* the lab title fills the card from edge to edge */
 @media(min-width:621px){ .ph-cta .lab-go b{justify-content:flex-start;gap:.3em;font-size:var(--labfs,40px);white-space:nowrap} }
+
+/* ---- stock charts: real last session, dashed line = previous close, live ping while the market is open ---- */
+.stk-chart .line{fill:none;stroke:#7db0ff;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 6px rgba(59,123,255,.55))}
+.stk-chart .g0{stop-color:#3b7bff;stop-opacity:.34}.stk-chart .g1{stop-color:#3b7bff;stop-opacity:0}
+.stk-chart.dn .line{stroke:#ff8a9a;filter:drop-shadow(0 0 6px rgba(255,107,129,.45))}
+.stk-chart.dn .g0,.stk-chart.dn .g1{stop-color:#ff6b81}
+.stk-chart .base{stroke:rgba(214,228,255,.28);stroke-width:1;stroke-dasharray:2 4;vector-effect:non-scaling-stroke}
+.stk-chart .dot{fill:#fff;filter:drop-shadow(0 0 6px rgba(125,176,255,.9))}
+.stk-chart.closed .dot{fill:rgba(214,228,255,.55);filter:none}
+.stk-chart .ping{fill:none;stroke:#7db0ff;stroke-width:1.5;transform-box:fill-box;transform-origin:center;animation:stkPing 1.8s cubic-bezier(.2,.8,.2,1) infinite}
+.stk-chart.dn .ping{stroke:#ff8a9a}
+@keyframes stkPing{0%{transform:scale(1);opacity:.9}100%{transform:scale(3.4);opacity:0}}
+.stk-chart .hov{opacity:0;transition:opacity .15s}
+.stk-chart.on .hov{opacity:1}
+.stk-chart .xh{stroke:rgba(214,228,255,.45);stroke-width:1;vector-effect:non-scaling-stroke}
+.stk-chart .hd{fill:#fff;stroke:#3b7bff;stroke-width:2;vector-effect:non-scaling-stroke}
+.stk-chart.dn .hd{stroke:#ff6b81}
+.stk-chart.on{-webkit-mask-image:linear-gradient(90deg,#000 var(--cut,100%),rgba(0,0,0,.28) var(--cut,100%));mask-image:linear-gradient(90deg,#000 var(--cut,100%),rgba(0,0,0,.28) var(--cut,100%))}
+.stk-id span{display:inline-flex;align-items:center;gap:6px;margin-top:6px;white-space:nowrap;color:var(--ink-3)}
+.stk-id span .live{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:stkLive 1.6s ease-in-out infinite}
+@keyframes stkLive{50%{opacity:.35}}
+/* row hover: lifts, the border takes the chart's color */
+.stocks .stk.in{cursor:crosshair;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s!important;transition-delay:0s!important}
+.stocks .stk.in:hover{transform:translateY(-3px);border-color:rgba(125,176,255,.5);box-shadow:0 18px 44px rgba(0,0,0,.4),0 0 34px rgba(59,123,255,.2),inset 0 1px 0 rgba(255,255,255,.12)}
+.stocks .stk.in:has(.stk-chart.dn):hover{border-color:rgba(255,138,154,.45);box-shadow:0 18px 44px rgba(0,0,0,.4),0 0 34px rgba(255,107,129,.16),inset 0 1px 0 rgba(255,255,255,.12)}
+.stk .lg{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.stk:hover .lg{transform:scale(1.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 22px rgba(125,176,255,.35)}
+
+/* ---- format cards: tilt toward the cursor, photo zooms and drifts, a spotlight and a glint follow the pointer ---- */
+.fmts{perspective:1100px}
+.fmts .fm.in{position:relative;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s!important;transition-delay:0s!important}
+.fmts .fm.in:hover{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-8px);transition:transform .14s ease-out,border-color .35s,box-shadow .35s!important;
+  border-color:rgba(125,176,255,.5);box-shadow:0 34px 80px rgba(0,0,0,.55),0 0 50px rgba(59,123,255,.2),inset 0 1px 0 rgba(255,255,255,.2)}
+.fm .fm-img{transition:transform 1s cubic-bezier(.2,.8,.2,1),filter .5s}
+.fm:hover .fm-img{transform:scale(1.08) translate(var(--px,0px),var(--py,0px));filter:saturate(1.15) brightness(1.08)}
+.fm-ph::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(214,228,255,.22) 50%,transparent 65%);transform:translateX(-120%)}
+.fm:hover .fm-ph::after{transform:translateX(120%);transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+.fm::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(125,176,255,.16),transparent 60%)}
+.fm:hover::after{opacity:1}
+.fm h3{transition:color .3s,text-shadow .3s}
+.fm:hover h3{color:#fff;text-shadow:0 0 22px rgba(125,176,255,.55)}
+.fm dl{transition:border-color .35s}.fm:hover dl{border-color:rgba(125,176,255,.3)}
+@media(hover:none){.fmts .fm.in:hover{transform:none}.fm:hover .fm-img{transform:none}}
+.kp{margin-left:-.11em}
+.stk-px span{white-space:nowrap}
+@media(min-width:621px){.stk-px{width:150px}}

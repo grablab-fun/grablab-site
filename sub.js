@@ -90,41 +90,141 @@
   setInterval(() => { t = t > 0 ? t - 1 : 2*3600 + 14*60 + 9; const p = n => String(n).padStart(2,"0"); el.textContent = `${p(Math.floor(t/3600))}:${p(Math.floor(t%3600/60))}:${p(t%60)}`; }, 1000);
 })();
 
-/* tokenized stocks: live xStocks prices (Jupiter price API, one request every 5 s); the chart keeps scrolling with every new tick */
+/* tokenized stocks: real intraday charts of the last US session (GeckoTerminal 5 min candles of each xStock's main pool),
+   the live dot follows Jupiter's price every 5 s while the market is open; closed market = the full last session, no flat tail */
 (function(){
   const rows = [...document.querySelectorAll(".stk[data-mint]")]; if (!rows.length) return;
-  const W = 340, H = 64, N = 60, ids = rows.map(r => r.dataset.mint).join(",");
-  const state = new Map();
-  function seeded(seed){ let x = seed; return () => (x = (x * 9301 + 49297) % 233280) / 233280; }
-  function seed(price, ch, key){ /* the first frame: a 24h-shaped path that ends at the live price */
-    const start = price / (1 + ch/100), rnd = seeded(key.length * 97 + Math.round(price)), pts = []; let v = start;
-    for (let i = 0; i < N; i++){ const t = start + (price - start) * (i/(N-1)); v = t + (v - t) * .55 + (rnd() - .5) * price * .005; pts.push(i === N-1 ? price : v); }
-    return pts;
-  }
+  const H = 50, GT = "https://api.geckoterminal.com/api/v2/networks/solana/", BUCKET = 300;
+  const HOLIDAYS = new Set(["2026-01-01","2026-01-19","2026-02-16","2026-04-03","2026-05-25","2026-06-19","2026-07-03","2026-09-07","2026-11-26","2026-12-25",
+    "2027-01-01","2027-01-18","2027-02-15","2027-03-26","2027-05-31","2027-06-18","2027-07-05","2027-09-06","2027-11-25","2027-12-24"]);
   const fmt = p => "$" + p.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
-  function draw(row, st){
-    const pts = st.pts, lo = Math.min(...pts), hi = Math.max(...pts), pad = (hi - lo) * .15 || 1;
-    const xy = pts.map((p,i) => [i/(pts.length-1)*W, H - 6 - (p - lo + pad) / (hi - lo + 2*pad) * (H - 12)]);
-    const d = xy.map((q,i) => (i ? "L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1)).join("");
-    const dn = st.ch < 0 ? " dn" : "", last = xy[xy.length-1];
-    row.querySelector(".stk-chart").innerHTML = `<path class="area${dn}" d="${d}L${W} ${H}L0 ${H}Z"/><path class="line${dn}" d="${d}"/><circle class="dot" cx="${last[0]}" cy="${last[1]}" r="3.2"/>`;
-    const px = row.querySelector(".stk-px"), b = px.querySelector("b"), s = px.querySelector("span");
-    const prev = st.shown; b.textContent = fmt(st.price); st.shown = st.price;
-    if (prev != null && prev !== st.price){ b.classList.remove("tick-up","tick-dn"); void b.offsetWidth; b.classList.add(st.price > prev ? "tick-up" : "tick-dn"); }
-    s.className = st.ch < 0 ? "dn" : "up"; s.textContent = (st.ch < 0 ? "▼ " : "▲ ") + Math.abs(st.ch).toFixed(2) + "% 24h";
+  const hhmm = s => new Date(s*1000).toLocaleTimeString("en-US", { hour:"numeric", minute:"2-digit", timeZone:"America/New_York" }) + " ET";
+
+  /* New York session clock: 9:30 to 16:00 ET, weekdays, minus exchange holidays */
+  function etOffset(ms){ const z = new Intl.DateTimeFormat("en-US", { timeZone:"America/New_York", timeZoneName:"shortOffset" }).formatToParts(new Date(ms)).find(p => p.type === "timeZoneName").value.match(/GMT([+-]\d+)/); return z ? +z[1] : -5; }
+  function etDay(ms){ const p = new Intl.DateTimeFormat("en-CA", { timeZone:"America/New_York", year:"numeric", month:"2-digit", day:"2-digit" }).format(new Date(ms)).split("-"); return Date.UTC(+p[0], p[1]-1, +p[2]); }
+  function trading(day){ const w = new Date(day).getUTCDay(); return w > 0 && w < 6 && !HOLIDAYS.has(new Date(day).toISOString().slice(0,10)); }
+  function bounds(day){ const off = etOffset(day + 17*3600e3); return [(day + (9.5 - off)*3600e3)/1000, (day + (16 - off)*3600e3)/1000]; }
+  function sessions(){
+    const now = Date.now()/1000, out = []; let day = etDay(Date.now());
+    for (let k = 0; k < 12 && out.length < 2; k++, day -= 864e5){ if (!trading(day)) continue; const b = bounds(day); if (b[0] <= now) out.push(b); }
+    return { cur: out[0], prev: out[1], open: !!out[0] && now < out[0][1] };
   }
-  async function poll(){
+
+  const cache = (k, v) => { try{ if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } };
+  async function pool(mint, known){
+    if (known) return known;
+    const key = "gl-pool-" + mint, hit = cache(key); if (hit) return hit;
+    const j = await get(GT + "tokens/" + mint + "/pools?page=1");
+    const best = (j.data || []).sort((a,b) => (+b.attributes.reserve_in_usd) - (+a.attributes.reserve_in_usd))[0];
+    if (!best) throw 0; cache(key, best.attributes.address); return best.attributes.address;
+  }
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  async function get(url){ /* the free API rate limits bursts: back off and retry */
+    for (let k = 0; k < 4; k++){ try{ const r = await fetch(url, { cache:"no-store" }); if (r.ok) return await r.json(); }catch(e){} await wait(2500 * (k + 1)); }
+    throw 0;
+  }
+  const memo = (k, v) => { try{ if (v === undefined) return JSON.parse(sessionStorage.getItem(k)); sessionStorage.setItem(k, JSON.stringify(v)); }catch(e){ return null; } };
+  async function candles(mint, known){ /* a closed session never changes, so it is fetched once per visit */
+    const key = "gl-c2-" + mint + "-" + ses.cur[0], hit = !ses.open && memo(key); if (hit) return hit;
+    const addr = await pool(mint, known);
+    const j = await get(GT + "pools/" + addr + "/ohlcv/minute?aggregate=5&limit=1000&currency=usd&token=base");
+    const list = clean(((j.data && j.data.attributes.ohlcv_list) || []).map(c => [c[0], c[4]]).sort((a,b) => a[0] - b[0]));
+    if (!ses.open && list.length) memo(key, list);
+    return list;
+  }
+  const med = a => a.slice().sort((x,y) => x-y)[a.length >> 1];
+  function clean(list){ /* a stray swap in a thin pool prints a candle far off the market: drop anything 3% away from its neighbours */
+    return list.filter((c,i) => { const w = list.slice(Math.max(0,i-4), i+5).map(q => q[1]); return Math.abs(c[1] / med(w) - 1) < .03; });
+  }
+  function smooth(pts){ /* pool trades bounce between bid and ask: a median of 3 then a mean of 3, ends kept exact */
+    if (pts.length < 5) return pts;
+    const v = pts.map(p => p[1]), m = v.map((x,i) => i && i < v.length-1 ? [v[i-1], x, v[i+1]].sort((a,b) => a-b)[1] : x);
+    return pts.map((p,i) => [p[0], i && i < v.length-1 ? (m[i-1] + m[i] + m[i+1]) / 3 : v[i]]);
+  }
+
+  const state = new Map(); let ses = sessions();
+  function build(st, list){
+    const [s0, s1] = ses.cur, pts = list.filter(c => c[0] >= s0 && c[0] < s1);
+    const before = ses.prev ? list.filter(c => c[0] >= ses.prev[0] && c[0] < ses.prev[1]) : [];
+    st.pts = smooth(pts); st.base = before.length ? med(before.slice(-5).map(c => c[1])) : (pts[0] ? pts[0][1] : null);
+  }
+  function draw(row, st){
+    const svg = row.querySelector(".stk-chart"), W = Math.max(120, Math.round(svg.getBoundingClientRect().width)), id = svg.dataset.g || (svg.dataset.g = "sg" + Math.random().toString(36).slice(2,7));
+    const [s0, s1] = ses.cur, pts = st.pts; if (!pts.length || st.base == null) return;
+    const sv = pts.map(p => p[1]), sLo = Math.min(...sv), sHi = Math.max(...sv), far = st.base < sLo - (sHi - sLo) || st.base > sHi + (sHi - sLo); /* a gap day: keep the session readable, drop the previous close line */
+    const vals = far ? sv : sv.concat(st.base), lo = Math.min(...vals), hi = Math.max(...vals), pad = (hi - lo) * .12 || st.base * .002;
+    const X = t => (t - s0) / (s1 - s0) * W, Y = v => 4 + (1 - (v - lo + pad) / (hi - lo + 2*pad)) * (H - 8);
+    const xy = pts.map(p => [X(p[0]), Y(p[1])]), last = pts[pts.length-1][1], dn = last < st.base, by = Y(st.base).toFixed(1);
+    const d = xy.map((q,i) => (i ? "L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1)).join(""), e = xy[xy.length-1];
+    st.geo = { W, X, Y, xy };
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("preserveAspectRatio", "none");
+    svg.classList.toggle("dn", dn); svg.classList.toggle("closed", !ses.open);
+    svg.innerHTML = `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></linearGradient></defs>`
+      + (far ? "" : `<line class="base" x1="0" x2="${W}" y1="${by}" y2="${by}"/>`)
+      + `<path class="area" fill="url(#${id})" d="${d}L${e[0].toFixed(1)} ${H}L${xy[0][0].toFixed(1)} ${H}Z"/><path class="line" d="${d}"/>`
+      + (ses.open ? `<circle class="ping" cx="${e[0]}" cy="${e[1]}" r="3"/>` : "") + `<circle class="dot" cx="${e[0]}" cy="${e[1]}" r="3"/>`
+      + `<g class="hov"><line class="xh" y1="0" y2="${H}"/><circle class="hd" r="3.6"/></g>`;
+    price(row, st, last, null);
+    row.querySelector(".stk-id span").innerHTML = ses.open ? `<i class="live"></i>Live` : "Market closed";
+  }
+  function price(row, st, v, t){
+    const px = row.querySelector(".stk-px"), b = px.querySelector("b"), s = px.querySelector("span"), ch = (v - st.base) / st.base * 100;
+    const prev = st.shown; b.textContent = fmt(v); st.shown = v;
+    if (t == null && prev != null && Math.abs(prev - v) > 1e-9){ b.classList.remove("tick-up","tick-dn"); void b.offsetWidth; b.classList.add(v > prev ? "tick-up" : "tick-dn"); }
+    s.className = ch < 0 ? "dn" : "up"; s.textContent = (ch < 0 ? "▼ " : "▲ ") + Math.abs(ch).toFixed(2) + "% " + (t != null ? hhmm(t) : ses.open ? "today" : "at close");
+  }
+
+  /* hover: crosshair snaps to the nearest candle, the price block shows that moment */
+  rows.forEach(row => {
+    const svg = row.querySelector(".stk-chart");
+    row.addEventListener("pointermove", ev => {
+      const st = state.get(row); if (!st || !st.geo) return;
+      const r = svg.getBoundingClientRect(), mx = (ev.clientX - r.left) / r.width * st.geo.W; if (mx < -20 || mx > st.geo.W + 20) return leave();
+      let i = 0, best = 1e9; st.geo.xy.forEach((q,k) => { const dd = Math.abs(q[0] - mx); if (dd < best){ best = dd; i = k; } });
+      const q = st.geo.xy[i], g = svg.querySelector(".hov"); svg.classList.add("on");
+      g.querySelector(".xh").setAttribute("x1", q[0]); g.querySelector(".xh").setAttribute("x2", q[0]);
+      g.querySelector(".hd").setAttribute("cx", q[0]); g.querySelector(".hd").setAttribute("cy", q[1]);
+      svg.style.setProperty("--cut", (q[0] / st.geo.W * 100).toFixed(2) + "%");
+      price(row, st, st.pts[i][1], st.pts[i][0]);
+    });
+    const leave = () => { const st = state.get(row); svg.classList.remove("on"); if (st && st.pts && st.pts.length) price(row, st, st.pts[st.pts.length-1][1], null); };
+    row.addEventListener("pointerleave", leave);
+  });
+
+  async function load(){
+    ses = sessions(); if (!ses.cur) return;
+    for (const row of rows){
+      try{ const list = await candles(row.dataset.mint, row.dataset.pool), st = state.get(row) || {}; build(st, list); state.set(row, st); draw(row, st); }catch(e){}
+    }
+  }
+  async function tick(){ /* the open session: Jupiter's live price moves the newest 5 min point */
+    if (!ses.open) return;
     try{
-      const j = await (await fetch("https://lite-api.jup.ag/price/v3?ids=" + ids, { cache:"no-store" })).json();
+      const j = await (await fetch("https://lite-api.jup.ag/price/v3?ids=" + rows.map(r => r.dataset.mint).join(","), { cache:"no-store" })).json();
+      const now = Math.floor(Date.now()/1000), t = now - now % BUCKET;
       rows.forEach(row => {
-        const t = j && j[row.dataset.mint]; if (!t) return;
-        const price = (t.stockData && t.stockData.price) || t.usdPrice, ch = t.priceChange24h || 0; if (!price) return;
-        let st = state.get(row);
-        if (!st){ st = { pts: seed(price, ch, row.dataset.mint), price, ch, shown:null }; state.set(row, st); }
-        else { st.pts.push(price); st.pts.shift(); st.price = price; st.ch = ch; }
-        draw(row, st);
+        const st = state.get(row), p = j && j[row.dataset.mint] && j[row.dataset.mint].usdPrice; if (!st || !st.pts || !p) return;
+        const L = st.pts[st.pts.length-1]; if (L && L[0] === t) L[1] = p; else st.pts.push([t, p]);
+        if (!row.querySelector(".stk-chart.on")) draw(row, st);
       });
     }catch(e){}
   }
-  poll(); setInterval(() => { if (!document.hidden) poll(); }, 5000);
+  load(); setInterval(() => { if (!document.hidden) tick(); }, 5000);
+  setInterval(() => { if (!document.hidden && (ses.open || sessions().open)) load(); }, 5*60e3);
+  let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => rows.forEach(r => { const st = state.get(r); if (st && st.pts) draw(r, st); }), 150); });
+})();
+
+/* format cards: tilt and spotlight follow the pointer */
+(function(){
+  if (matchMedia("(hover:none)").matches) return;
+  document.querySelectorAll(".fmts .fm").forEach(c => {
+    c.addEventListener("pointermove", e => {
+      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      c.style.setProperty("--rx", ((.5 - y) * 7).toFixed(2) + "deg"); c.style.setProperty("--ry", ((x - .5) * 9).toFixed(2) + "deg");
+      c.style.setProperty("--mx", (x * 100).toFixed(1) + "%"); c.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+      c.style.setProperty("--px", ((.5 - x) * 10).toFixed(1) + "px"); c.style.setProperty("--py", ((.5 - y) * 8).toFixed(1) + "px");
+    });
+    c.addEventListener("pointerleave", () => ["--rx","--ry","--px","--py"].forEach(k => c.style.removeProperty(k)));
+  });
 })();

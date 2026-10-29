@@ -867,6 +867,7 @@ body.is-loading{overflow:hidden}
 .bk-chips{display:flex;gap:8px;flex-wrap:wrap}
 .bk-chip{flex:1;min-width:132px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:11px 14px;border-radius:12px;border:1px solid rgba(180,186,255,.2);background:rgba(255,255,255,.02);color:var(--ink-2);font-family:var(--font);cursor:pointer;transition:.18s;text-align:left}
 .bk-chips-s .bk-chip{min-width:88px;align-items:center;text-align:center}
+.bk-chips:not(.bk-chips-s) .bk-chip:nth-child(4){align-items:center;text-align:center}
 .bk-chip b{font-weight:600;font-size:13.5px}
 .bk-chip small{font-family:var(--mono);font-weight:400;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
 .bk-chip:hover{border-color:rgba(180,186,255,.42);color:var(--ink)}
