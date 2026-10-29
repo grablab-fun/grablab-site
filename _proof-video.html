@@ -1,0 +1,74 @@
+<!doctype html>
+<!-- Local only (not linked, not committed): the peaqOS proof segment of the anatomy video, drawn frame by frame by window.frameAt(t). -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="assets/fonts/fonts.css?v=1">
+<style>
+:root{--bg:#050918;--ink:#f3f4fb;--ink-2:#a7b0cc;--ink-3:#69739a;--accent:#7d84ff;--accent-2:#b4baff;
+  --blue-chrome:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);
+  --glass:rgba(5,9,24,.55);--line:rgba(180,186,255,.2);--mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Satoshi',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.sky{position:absolute;inset:0;background:url("assets/bg-sky-dark.webp") center/cover;opacity:.9}
+.vig{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 45%,transparent 40%,rgba(3,5,14,.75) 100%)}
+.k{position:absolute;left:150px;top:150px;font-family:var(--mono);font-size:18px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-2)}
+h1{position:absolute;left:150px;top:190px;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:104px;line-height:1.02;letter-spacing:.005em;text-transform:uppercase}
+h1 span{display:block}
+.hl{background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 24px rgba(5,9,24,.6))}
+.card{position:absolute;left:150px;top:450px;width:860px;padding:34px 40px 30px;border-radius:22px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(16px);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.card .h{display:flex;justify-content:space-between;font-family:var(--mono);font-size:17px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px}
+.row{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-size:29px;line-height:1;padding:15px 0;border-top:1px solid rgba(180,186,255,.1)}
+.row b{font-weight:400;color:var(--ink-2)} .row i{font-style:normal;color:var(--ink)}
+.hash{margin-top:20px;display:flex;align-items:center;gap:18px;font-family:var(--mono);font-size:26px}
+.chip{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(125,132,255,.14);color:var(--accent-2);font-size:16px;letter-spacing:.14em;text-transform:uppercase}
+.hash i{font-style:normal;background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
+.steps{position:absolute;left:1070px;top:450px;width:740px}
+.st{display:flex;align-items:center;gap:26px;padding:22px 30px;margin-bottom:18px;border-radius:20px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(16px)}
+.st img{width:72px;height:72px;object-fit:contain;flex:none}
+.st .t{font-size:36px;font-weight:700;line-height:1.15}.st .s{font-size:25px;color:var(--ink-2);margin-top:6px}
+.st.on{border-color:rgba(125,160,255,.65);box-shadow:0 0 0 1px rgba(125,160,255,.25),0 20px 60px rgba(59,123,255,.18)}
+.end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px}
+.end img{width:150px}.end .w{font-family:'Anton',Impact,sans-serif;font-size:120px;letter-spacing:.06em}
+.end .s{font-size:30px;color:var(--ink-2);text-align:center;line-height:1.45}
+.grain{position:absolute;inset:-50%;opacity:.07;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>")}
+.fx{opacity:0}
+</style></head><body>
+<div class="sky"></div><div class="vig"></div>
+<div class="k fx" id="k">Proof of one play</div>
+<h1 class="fx" id="h"><span>Every drop</span><span class="hl">leaves a receipt.</span></h1>
+<div class="card fx" id="card">
+  <div class="h"><span>Play receipt</span><span>signed event</span></div>
+  <div class="row fx"><b>play</b><i>#000427</i></div>
+  <div class="row fx"><b>beam_t0</b><i>1760600000.123</i></div>
+  <div class="row fx"><b>frames_sha256</b><i>9f2c41b7&hellip;e41a</i></div>
+  <div class="row fx"><b>nfc_uid</b><i>04A37F2C915E80</i></div>
+  <div class="row fx"><b>capsule_id</b><i>GL-0427</i></div>
+  <div class="row fx"><b>grip_n</b><i>31.4</i></div>
+  <div class="hash fx" id="hash"><span class="chip">keccak256</span><i id="hv"></i></div>
+</div>
+<div class="steps">
+  <div class="st fx" id="s1"><img src="assets/icons/chip.webp" alt=""><div><div class="t">Signed inside the OPTIGA chip.</div><div class="s">Its key never leaves the machine.</div></div></div>
+  <div class="st fx" id="s2"><img src="assets/brand/partners/peaq-white.svg" alt=""><div><div class="t">Anchored on peaq.</div><div class="s">One event per drop, from a verified machine.</div></div></div>
+  <div class="st fx" id="s3"><img src="assets/chains/solana.jpg" alt="" style="border-radius:14px"><div><div class="t">Prize released on Solana.</div><div class="s">Only after the proof checks out.</div></div></div>
+  <div class="st fx" id="s4"><img src="assets/icons/proof.webp" alt=""><div><div class="t">Anyone can check it.</div><div class="s">Recompute the hash, compare it on chain.</div></div></div>
+</div>
+<div class="end fx" id="end"><img src="assets/brand/mark-chrome-256.png" alt=""><div class="w">GRABLAB</div><div class="s">The claw that can't cheat you.<br>Prototype 01, tested in simulation before it was built.</div></div>
+<div class="grain" id="grain"></div>
+<script>
+const HASH = "0x7d4e9a03c1f8b62e5a19d0c4e7f3a2b8c21b";
+const $ = s => document.querySelector(s), rows = [...document.querySelectorAll(".row")];
+const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
+const show = (el, t, a, d = .5, dy = 22) => { const k = ease((t - a)/d); el.style.opacity = k; el.style.transform = `translateY(${(1 - k)*dy}px)`; return k; };
+window.frameAt = t => {
+  const out = t > 12.0 ? ease((t - 12.0)/.6) : 0;           // the receipt scene fades before the end card
+  show($("#k"), t, .2); show($("#h"), t, .35, .7, 30); show($("#card"), t, .8, .6);
+  rows.forEach((r, i) => show(r, t, 1.3 + i*.38, .4, 10));
+  show($("#hash"), t, 4.0, .4, 10);
+  const n = Math.round(Math.min(1, Math.max(0, (t - 4.3)/.9))*HASH.length); $("#hv").textContent = HASH.slice(0, n) + (n && n < HASH.length ? "_" : "");
+  const S = [["#s1", 5.6], ["#s2", 7.0], ["#s3", 8.4], ["#s4", 9.8]];
+  S.forEach(([id, a], i) => { show($(id), t, a, .55, 26); const nx = S[i + 1] ? S[i + 1][1] : 12; $(id).classList.toggle("on", t >= a && t < nx); });
+  for (const el of [$("#k"), $("#h"), $("#card"), ...S.map(s => $(s[0]))]) el.style.opacity = +el.style.opacity*(1 - out);
+  const ke = ease((t - 12.4)/.8); $("#end").style.opacity = ke; $("#end").style.transform = `scale(${.96 + .04*ke})`;
+  $("#grain").style.transform = `translate(${(Math.sin(t*91.7)*37)|0}px,${(Math.cos(t*73.3)*41)|0}px)`;
+};
+window.T_END = 15.0;
+document.fonts.ready.then(() => { window.frameAt(0); window.ready = true; });
+</script></body></html>

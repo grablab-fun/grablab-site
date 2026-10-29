@@ -1165,7 +1165,7 @@
       },
       stop(){ running = false; cancelAnimationFrame(raf); keys = {}; joyV = { x:0, z:0 }; }
     };
-    if (!o.auto) window.__sim = { get st(){ return st; }, get caps(){ return caps; }, grab, step: dt => step(dt) };
+    if (!o.auto) window.__sim = { get st(){ return st; }, get caps(){ return caps; }, get chute(){ return CHUTE; }, get m3(){ return M3; }, grab, step: dt => step(dt) };
     api.isRunning = () => running;
     return api;
   }

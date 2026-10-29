@@ -22,7 +22,7 @@
       "permanent": false
     },
     {
-      "source": "/((?!maintenance|assets/|api/|docs/|preview).*)",
+      "source": "/((?!maintenance|assets/|api/|docs/|lab/|preview).*)",
       "destination": "/maintenance",
       "permanent": false,
       "missing": [

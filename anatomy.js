@@ -7,6 +7,8 @@ import { buildMachine } from "./anatomy-model.js?v=27";
 const $ = s => document.querySelector(s);
 /* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
 const REC = /[?&]rec=1/.test(location.search); if (REC) document.documentElement.classList.add("rec");
+/* ?story=1 (with rec=1): the moving parts stay unmerged so a recorder can drive a full play, frame by frame */
+const STORY = REC && /[?&]story=1/.test(location.search);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
 const PARTS = [
   { id:"frame", n:"01", name:"Frame", spec:"40 x 40 profile, matte black", ph:1.15, th:-1.2, anchor:[-.48,-.48,.7], ex:[0,0,0],
@@ -116,7 +118,7 @@ async function load(){
   for (const [id, g] of Object.entries(M.parts)){ root.add(g); ents.set(id, g); }
   /* draw calls: siblings with the same material and the same name become one mesh, so a weak GPU draws ~hundreds, not ~1900.
      Names survive (card items pick meshes by name); anything that moves on its own is left alone. */
-  const KEEP = /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view/;
+  const KEEP = STORY ? /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view|gantry|winch|claw/ : /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view/;
   (function mergeAll(o){
     for (const c of [...o.children]) if (c.children.length && !c.isMesh) mergeAll(c);
     const groups = new Map();
@@ -521,5 +523,5 @@ load().then(() => {
   buildInstances(); syncInstances();
   wake(4000); resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, recFrame:(t, T) => { const k = t/T, ease = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2;
     explodeTarget = explode = k < .16 ? 0 : k < .42 ? ease((k - .16)/.26) : k < .6 ? 1 : k < .86 ? 1 - ease((k - .6)/.26) : 0;
-    orb.th = -1.2 + .42*Math.sin(2*Math.PI*k); orb.ph = 1.16; orb.vth = orb.vph = 0; activeUntil = 1e15; frame(performance.now()); return renderer.domElement.toDataURL("image/png"); }, hover:p => { hovered = p; }, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
+    orb.th = -1.2 + .42*Math.sin(2*Math.PI*k); orb.ph = 1.16; orb.vth = orb.vph = 0; activeUntil = 1e15; frame(performance.now()); return renderer.domElement.toDataURL("image/png"); }, hover:p => { hovered = p; }, story:STORY ? { THREE, scene, root, camera, renderer, matCache, capsules, ents, shade, syncInstances, view, setAnimCap:c => { animCap = c; }, setSel:id => { selected = id ? PARTS.find(p => p.id === id) : null; } } : null, dbg:() => ({ openK, animCap:animCap && animCap.name, selectedCap:selectedCap && selectedCap.name, lid:animCap && animCap.userData.lid.rotation.x }) }; })
   .catch(e => { console.error(e); $("#stage").classList.add("err"); });
