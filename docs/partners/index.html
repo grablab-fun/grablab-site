@@ -41,12 +41,14 @@ p{color:var(--ink-2);line-height:1.5}
 section{margin-top:clamp(56px,10vh,110px)}
 
 /* top intros */
-.top{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:8px}
-.top a{display:flex;gap:14px;align-items:baseline;padding:16px 18px;border-radius:16px;border:1px solid rgba(255,178,74,.28);background:linear-gradient(160deg,rgba(255,178,74,.10),rgba(10,16,48,.62));transition:border-color .2s,transform .2s}
+.top{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:8px}
+.top a{display:grid;grid-template-columns:44px 1fr;grid-template-rows:auto 1fr;column-gap:14px;row-gap:12px;padding:18px;border-radius:18px;border:1px solid rgba(255,178,74,.28);background:linear-gradient(160deg,rgba(255,178,74,.10),rgba(10,16,48,.62));transition:border-color .2s,transform .2s}
 .top a:hover{border-color:rgba(255,178,74,.6);transform:translateY(-2px)}
-.top .n{font-family:var(--display);font-size:26px;line-height:1;background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent;min-width:2ch}
-.top b{font-weight:700;font-size:17px}
-.top small{display:block;color:var(--ink-2);font-size:13px;margin-top:3px}
+.top .lg{width:44px;height:44px;border-radius:12px}
+.top .t{align-self:center;min-width:0}
+.top .n{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold-soft)}
+.top b{display:block;font-weight:700;font-size:17px;line-height:1.15;margin-top:3px}
+.top small{grid-column:1/-1;color:var(--ink-2);font-size:14px;line-height:1.45}
 
 /* legend + filters */
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 26px}
@@ -55,41 +57,47 @@ section{margin-top:clamp(56px,10vh,110px)}
 .chip.on{color:var(--bg);background:var(--ink);border-color:var(--ink)}
 .copy{margin-left:auto;border-color:rgba(255,178,74,.4);color:var(--gold-soft)}
 .copy:hover{border-color:var(--gold);color:var(--gold)}
-.legend{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:1px}
+/* phases */
+.phase{margin-top:48px}
+.phase:first-child{margin-top:0}
+.ph{display:flex;align-items:baseline;gap:16px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(180,186,255,.14)}
+.ph b{font-family:var(--display);font-weight:400;font-size:clamp(24px,2.6vw,36px);text-transform:uppercase;letter-spacing:.01em;line-height:1}
+.ph span{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+.ph.p1 b{background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* cards */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.card{position:relative;display:flex;flex-direction:column;gap:12px;padding:22px 22px 20px;border-radius:20px;border:1px solid rgba(180,186,255,.16);background:linear-gradient(170deg,rgba(18,26,70,.72),rgba(8,12,36,.78));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.card{position:relative;display:flex;flex-direction:column;gap:14px;padding:22px 24px;border-radius:20px;border:1px solid rgba(180,186,255,.16);background:linear-gradient(170deg,rgba(18,26,70,.72),rgba(8,12,36,.78));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .card.p1{border-color:rgba(255,178,74,.32)}
-.card .hd{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.card h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:26px;line-height:1;letter-spacing:.01em}
+.card .hd{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:14px;align-items:center}
+.lg{width:48px;height:48px;border-radius:13px;object-fit:cover;background:#0a1030;border:1px solid rgba(180,186,255,.18)}
+.lg.mono{display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--gold-soft)}
+.lg.svg{padding:9px;object-fit:contain}
+.card h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:24px;line-height:1;letter-spacing:.01em;margin-top:3px}
 .card .h{font-family:var(--mono);font-size:12px;color:var(--accent-2);margin-top:6px;display:inline-block}
 .card .h:hover{color:var(--ink)}
 .cat{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
-.st{flex:none;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:999px;white-space:nowrap}
-.st.int{color:var(--green);background:rgba(126,240,180,.1);border:1px solid rgba(126,240,180,.3)}
-.st.dm{color:var(--accent-2);background:rgba(125,132,255,.1);border:1px solid rgba(125,132,255,.3)}
-.st.new{color:var(--gold-soft);background:rgba(255,178,74,.1);border:1px solid rgba(255,178,74,.3)}
+.st{align-self:start;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:999px;white-space:nowrap;color:var(--ink-2);border:1px solid rgba(180,186,255,.25)}
+.card.p1 .st{color:var(--gold-soft);border-color:rgba(255,178,74,.4);background:rgba(255,178,74,.08)}
 .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
 .lbl.g{color:var(--gold-soft)}
 .card ul{list-style:none;display:flex;flex-direction:column;gap:3px}
 .card li{font-size:15px;line-height:1.45;color:var(--ink-2)}
 .card li:first-child{color:var(--ink)}
-.pri{position:absolute;right:22px;bottom:18px;font-family:var(--display);font-size:14px;letter-spacing:.06em;color:var(--ink-3)}
-.card.p1 .pri{color:var(--gold)}
 
 /* skip list */
 .skip{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.skip div{padding:18px 20px;border-radius:16px;border:1px dashed rgba(180,186,255,.25);background:rgba(10,16,48,.5)}
+.skip div{display:grid;grid-template-columns:48px 1fr;column-gap:14px;row-gap:10px;align-items:center;padding:18px 20px;border-radius:16px;border:1px dashed rgba(180,186,255,.25);background:rgba(10,16,48,.5)}
 .skip b{font-family:var(--display);font-weight:400;font-size:22px;text-transform:uppercase;letter-spacing:.01em}
-.skip p{font-size:14px;margin-top:6px}
+.skip p{grid-column:1/-1;font-size:14px}
 
 .foot{margin-top:90px;display:flex;flex-wrap:wrap;gap:16px 36px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
 .foot a{color:var(--ink-2)}
 .foot a:hover{color:var(--ink)}
 .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;z-index:20;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--bg);transition:all .3s}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:1100px){.top{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.top{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.grid,.top,.skip{grid-template-columns:1fr}.copy{margin-left:0}}
 </style>
 </head>
@@ -116,22 +124,16 @@ section{margin-top:clamp(56px,10vh,110px)}
     <div class="k">The full list</div>
     <h2>Every partner</h2>
     <div class="bar" id="filters"></div>
-    <div class="legend" style="margin-bottom:22px">
-      <span><i style="background:var(--green)"></i>Integrated</span>
-      <span><i style="background:var(--accent)"></i>DM drafted, not sent</span>
-      <span><i style="background:var(--gold)"></i>No contact yet</span>
-      <span style="color:var(--gold)">P1 launch</span><span>P2 soon after</span><span>P3 growth</span>
-    </div>
-    <div class="grid" id="grid"></div>
+    <div id="phases"></div>
   </section>
 
   <section>
     <div class="k">Already in touch</div>
     <h2>No intro needed</h2>
     <div class="skip">
-      <div><b>peaq</b><p>Machine identity on peaqOS.<br>We still need their onboarding token for the secure chip.</p></div>
-      <div><b>machine.fun</b><p>The platform we build on.<br>Founders run the first launch nights.</p></div>
-      <div><b>CodecFlow</b><p>Talking directly.</p></div>
+      <div><img class="lg" src="/assets/partners/peaq.webp" alt="" /><b>peaq</b><p>Machine identity on peaqOS.<br>We still need their onboarding token for the secure chip.</p></div>
+      <div><img class="lg svg" src="/assets/partners/machine-fun.svg" alt="" /><b>machine.fun</b><p>The platform we build on.<br>Founders run the first launch nights.</p></div>
+      <div><img class="lg" src="/assets/partners/codecflow.webp" alt="" /><b>CodecFlow</b><p>Talking directly.</p></div>
     </div>
   </section>
 
@@ -145,126 +147,130 @@ section{margin-top:clamp(56px,10vh,110px)}
 <div class="toast" id="toast">List copied</div>
 
 <script>
-// status: int = integrated, dm = DM drafted, new = no contact yet; p: 1 launch, 2 soon after, 3 growth
+// p: phase 1 launch, 2 after launch, 3 growth; logo file is the slug of the name unless l is set
 const P = [
-  {n:"Solana Foundation",h:"SolanaFndn",c:"Ecosystem",s:"dm",p:1,
+  {n:"Solana Foundation",h:"SolanaFndn",c:"Ecosystem",p:1,
    need:["Grants for DePIN and gaming.","A Breakpoint booth or side event with a live machine.","Intro to the DePIN and gaming BD leads."],
    get:["A real world Solana demo people can touch."]},
-  {n:"Privy",h:"privy_io",c:"Wallets",s:"int",p:1,
+  {n:"Privy",h:"privy_io",c:"Wallets",p:1,
    need:["Startup program for production pricing.","Review of our Solana only setup before launch."],
    get:["A live case study: embedded wallets for people who never used crypto."]},
-  {n:"Phantom",h:"phantom",c:"Wallets",s:"new",p:1,
+  {n:"Phantom",h:"phantom",c:"Wallets",p:1,
    need:["Our domain verified so players never see a scam warning.","A spot in Phantom Explore at launch."],
    get:["A fun first transaction for new wallets."]},
-  {n:"Helius",h:"mert",c:"Infra",s:"dm",p:1,
+  {n:"Helius",h:"mert",l:"helius",c:"Infra",p:1,
    need:["RPC and webhooks to watch escrow and payouts live.","Startup credits or a dedicated node."],
    get:["A high visibility consumer app on their stack."]},
-  {n:"Jupiter",h:"jupdevrel",c:"Payments",s:"int",p:1,
+  {n:"Jupiter",h:"jupdevrel",c:"Payments",p:1,
    need:["Listed as a Jupiter Plugin integration.","Co-marketing at launch.","Help with referral fees on swaps."],
    get:["Every play can start with a Jupiter swap."]},
-  {n:"Squads",h:"SquadsProtocol",c:"Escrow",s:"new",p:1,
+  {n:"Squads",h:"SquadsProtocol",c:"Escrow",p:1,
    need:["Multisig for the prize escrow and treasury.","Program upgrade authority under Squads."],
    get:["A public trust story: prizes nobody can pull."]},
-  {n:"Sunrise",h:"sunrise",c:"Prizes",s:"dm",p:1,
+  {n:"Sunrise",h:"sunrise",c:"Prizes",p:1,
    need:["Tokenized stocks as capsule prizes.","Rules on who can receive them (KYC, countries).","A golden stock capsule on a launch night."],
    get:["Tokenized stocks shown live to people who never touched them."]},
-  {n:"Raydium",h:"Raydium",c:"Projects",s:"dm",p:1,
+  {n:"Raydium",h:"Raydium",c:"Projects",p:1,
    need:["LaunchLab projects as our first tenants.","A launch night offered to projects launching there."],
    get:["Launches that turn into a live show with clips."]},
-  {n:"pump.fun",h:"pumpdotfun",c:"Projects",s:"new",p:1,
+  {n:"pump.fun",h:"pumpfun",c:"Projects",p:1,
    need:["Launch nights for coins that graduate.","Intro to their partnerships team."],
    get:["A new reason for holders to stay after launch."]},
-  {n:"OtterSec",h:"osec_io",c:"Security",s:"new",p:1,
+  {n:"OtterSec",h:"osec_io",c:"Security",p:1,
    need:["Audit of the escrow and payout program.","Startup pricing, or an ecosystem sponsored audit."],
    get:["An audit badge on a product built on public trust."]},
 
-  {n:"Streamflow",h:"streamflow_fi",c:"Escrow",s:"dm",p:2,
+  {n:"Streamflow",h:"streamflow_fi",c:"Escrow",p:2,
    need:["Prize locks that anyone can verify before the night."],
    get:["A new use case for locks, live on stream."]},
-  {n:"Metaplex",h:"metaplex",c:"Prizes",s:"dm",p:2,
+  {n:"Metaplex",h:"metaplex",c:"Prizes",p:2,
    need:["NFT and whitelist capsules.","Mint night: each grab mints one token ID.","Compressed NFTs as cheap play receipts."],
    get:["A mint with no bots and no gas war."]},
-  {n:"Magic Eden",h:"MagicEden",c:"Projects",s:"new",p:2,
+  {n:"Magic Eden",h:"MagicEden",c:"Projects",p:2,
    need:["Mint night as a launchpad format.","Collections that mint through the claw then trade there."],
    get:["Drops with a clip for every mint."]},
-  {n:"Backpack",h:"BackpackOnchain",c:"Prizes",s:"dm",p:2,
+  {n:"Backpack",h:"BackpackOnchain",c:"Prizes",p:2,
    need:["Wallet listing at launch.","Mad Lads holder drop, only holders play."],
    get:["A community night for their holders."]},
-  {n:"xStocks",h:"xStocksFi",c:"Prizes",s:"dm",p:2,
+  {n:"xStocks",h:"xStocksFi",c:"Prizes",p:2,
    need:["Second issuer for tokenized stock prizes.","Same eligibility questions as Sunrise."],
    get:["A shareable way to show xStocks."]},
-  {n:"Dialect",h:"saydialect",c:"Distribution",s:"new",p:2,
+  {n:"Dialect",h:"saydialect",c:"Distribution",p:2,
    need:["Blinks so people book a play or claim a prize right from X."],
    get:["A physical machine driven from a tweet."]},
-  {n:"LiveKit",h:"livekit",c:"Live play",s:"dm",p:2,
+  {n:"LiveKit",h:"livekit",c:"Live play",p:2,
    need:["Low latency video plus remote control.","Startup program."],
    get:["A physical AI showcase on their stack."]},
-  {n:"Switchboard",h:"switchboardxyz",c:"Proofs",s:"dm",p:2,
+  {n:"Switchboard",h:"switchboardxyz",c:"Proofs",p:2,
    need:["Bring signed machine events on-chain to release or void a payout."],
    get:["An oracle use case from real hardware."]},
-  {n:"Irys",h:"irys_xyz",c:"Proofs",s:"dm",p:2,
+  {n:"Irys",h:"irys_xyz",c:"Proofs",p:2,
    need:["Permanent storage for play proofs: clip hash, sensors, grip."],
    get:["Every play receipt lives on Irys."]},
-  {n:"Sumsub",h:"sumsub",c:"Compliance",s:"dm",p:2,
+  {n:"Sumsub",h:"sumsub",c:"Compliance",p:2,
    need:["Light KYC that only starts when a winner claims a regulated prize."],
    get:["A gaming plus RWA use case."]},
-  {n:"Crypto lawyer",h:"",c:"Compliance",s:"new",p:2,
+  {n:"Crypto lawyer",h:"",l:"",c:"Compliance",p:2,
    need:["EU lawyer for gambling law and MiCA.","Prize mechanics, tokenized stocks as prizes, company setup."],
    get:["A clear, paying client."]},
 
-  {n:"Pyth",h:"PythNetwork",c:"Proofs",s:"dm",p:3,
+  {n:"Pyth",h:"PythNetwork",c:"Proofs",p:3,
    need:["Live USD value for every prize in the sealed inventory."],
    get:["Prices shown on a public, fun product."]},
-  {n:"Dune",h:"Dune",c:"Data",s:"dm",p:3,
+  {n:"Dune",h:"Dune",c:"Data",p:3,
    need:["A featured public dashboard: plays, wallets, prizes paid, refunds."],
    get:["A transparency showcase."]},
-  {n:"Crossmint",h:"crossmint",c:"Prizes",s:"dm",p:3,
+  {n:"Crossmint",h:"crossmint",c:"Prizes",p:3,
    need:["Merch claimed on-chain and shipped.","Card checkout for people without crypto."],
    get:["Physical prizes won live."]},
-  {n:"deBridge",h:"deBridge",c:"Payments",s:"int",p:3,
+  {n:"deBridge",h:"deBridge",c:"Payments",p:3,
    need:["Listed as an integration.","Players bring funds from any chain to Solana."],
    get:["New users bridged into Solana."]},
-  {n:"Solflare",h:"solflare",c:"Wallets",s:"new",p:3,
+  {n:"Solflare",h:"solflare",c:"Wallets",p:3,
    need:["Wallet listing and domain verification."],
    get:["A fun reason to open the wallet."]},
-  {n:"Meteora",h:"MeteoraAG",c:"Projects",s:"new",p:3,
+  {n:"Meteora",h:"MeteoraAG",c:"Projects",p:3,
    need:["Launch nights for projects on launchpads built on Meteora."],
    get:["More life for new pools after launch."]},
-  {n:"Superteam",h:"superteam",c:"Ecosystem",s:"dm",p:3,
+  {n:"Superteam",h:"superteam",c:"Ecosystem",p:3,
    need:["Grants for a hardware plus Solana project.","Intro to the DACH and Romania chapters."],
    get:["A local Solana project with a physical demo."]},
-  {n:"Colosseum",h:"colosseum",c:"Ecosystem",s:"dm",p:3,
+  {n:"Colosseum",h:"colosseum",c:"Ecosystem",p:3,
    need:["Accelerator or next hackathon."],
    get:["A DePIN and consumer team with hardware already built."]},
-  {n:"Solana Mobile",h:"solanamobile",c:"Distribution",s:"dm",p:3,
+  {n:"Solana Mobile",h:"solanamobile",c:"Distribution",p:3,
    need:["Seeker dApp Store listing.","A Seeker holder drop."],
    get:["A playable app for Seeker owners."]},
-  {n:"DRiP",h:"drip_haus",c:"Distribution",s:"dm",p:3,
+  {n:"DRiP",h:"drip_haus",c:"Distribution",p:3,
    need:["A collab drop where collectors play free."],
    get:["A live show for their community."]},
-  {n:"Solana Community",h:"SolCommunityy",c:"Distribution",s:"dm",p:3,
+  {n:"Solana Community",h:"SolCommunityy",c:"Distribution",p:3,
    need:["A spot in the ecosystem landscape.","A community claw night."],
    get:["Content their followers can play."]}
 ];
 
-const ST = {int:"Integrated",dm:"DM drafted",new:"No contact"};
+const PH = {1:["Phase 1","Launch"],2:["Phase 2","After launch"],3:["Phase 3","Growth"]};
 const esc = s => s.replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const logo = x => {
+  const f = x.l === undefined ? slug(x.n) : x.l;
+  return f ? `<img class="lg" src="/assets/partners/${f}.webp" alt="" />` : `<span class="lg mono">§</span>`;
+};
 const handle = x => x.h ? `<a class="h" href="https://x.com/${x.h}" target="_blank" rel="noopener">@${x.h}</a>` : `<span class="h">Ask around</span>`;
 
 document.getElementById("top").innerHTML = P.filter(x => x.p === 1).map((x, i) =>
-  `<a href="#${slug(x.n)}"><span class="n">${String(i + 1).padStart(2, "0")}</span><span><b>${esc(x.n)}</b><small>${esc(x.need[0])}</small></span></a>`).join("");
-
-function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-"); }
+  `<a href="#${slug(x.n)}">${logo(x)}<span class="t"><span class="n">${String(i + 1).padStart(2, "0")}</span><b>${esc(x.n)}</b></span><small>${esc(x.need[0])}</small></a>`).join("");
 
 function card(x) {
   return `<article class="card p${x.p}" id="${slug(x.n)}" data-c="${x.c}">
-    <div class="hd"><div><div class="cat">${esc(x.c)}</div><h3>${esc(x.n)}</h3>${handle(x)}</div><span class="st ${x.s}">${ST[x.s]}</span></div>
+    <div class="hd">${logo(x)}<div><div class="cat">${esc(x.c)}</div><h3>${esc(x.n)}</h3>${handle(x)}</div><span class="st">Phase ${x.p}</span></div>
     <div><div class="lbl">We need</div><ul>${x.need.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div>
     <div><div class="lbl g">They get</div><ul>${x.get.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div>
-    <span class="pri">P${x.p}</span>
   </article>`;
 }
-document.getElementById("grid").innerHTML = P.map(card).join("");
+document.getElementById("phases").innerHTML = [1, 2, 3].map(p =>
+  `<div class="phase" data-p="${p}"><div class="ph p${p}"><b>${PH[p][0]}</b><span>${PH[p][1]}</span></div>
+   <div class="grid">${P.filter(x => x.p === p).map(card).join("")}</div></div>`).join("");
 
 // category filters
 const cats = ["All", ...new Set(P.map(x => x.c))];
@@ -275,15 +281,16 @@ fb.addEventListener("click", e => {
   const b = e.target.closest("[data-f]"); if (!b) return;
   fb.querySelectorAll("[data-f]").forEach(x => x.classList.toggle("on", x === b));
   document.querySelectorAll(".card").forEach(c => c.style.display = (b.dataset.f === "All" || c.dataset.c === b.dataset.f) ? "" : "none");
+  document.querySelectorAll(".phase").forEach(ph => ph.style.display = [...ph.querySelectorAll(".card")].some(c => c.style.display !== "none") ? "" : "none");
 });
 
 // plain text version, for pasting in a chat
 document.getElementById("copy").addEventListener("click", async () => {
   const lines = ["GRABLAB PARTNERS (grablab.fun/docs/partners)", "Real claw machine played from the browser, on-chain prizes, every play proven fair on Solana.", ""];
   [1, 2, 3].forEach(p => {
-    lines.push(["", "P1 LAUNCH", "P2 SOON AFTER", "P3 GROWTH"][p], "");
+    lines.push(`${PH[p][0]}: ${PH[p][1]}`.toUpperCase(), "");
     P.filter(x => x.p === p).forEach(x => {
-      lines.push(`${x.n}${x.h ? " @" + x.h : ""} [${x.c}, ${ST[x.s]}]`);
+      lines.push(`${x.n}${x.h ? " @" + x.h : ""} [${x.c}]`);
       x.need.forEach(t => lines.push("  need: " + t));
       x.get.forEach(t => lines.push("  they get: " + t));
       lines.push("");
