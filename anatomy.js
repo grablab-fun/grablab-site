@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=4";
+import { buildMachine } from "./anatomy-metal.js?v=6";
 
 const $ = s => document.querySelector(s);
 /* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
@@ -485,7 +485,7 @@ const wake = (ms = 2500) => { activeUntil = Math.max(activeUntil, performance.no
 for (const ev of ["pointermove", "pointerdown", "pointerup", "wheel", "keydown", "scroll", "touchmove"]) addEventListener(ev, () => wake(), { passive:true });
 addEventListener("resize", () => wake());
 stage.addEventListener("pointermove", () => { mouseMoved = true; });
-let last = performance.now(), trapG = null, trapT = 0; const linkA = new THREE.Vector3(), linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), XAX = new THREE.Vector3(1, 0, 0), YAX = new THREE.Vector3(0, 1, 0);
+let last = performance.now(), trapG = null, trapT = 0; let binDoorG = null; const linkA = new THREE.Vector3(), linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), XAX = new THREE.Vector3(1, 0, 0), YAX = new THREE.Vector3(0, 1, 0);
 function frame(now){
   const raw = now - last, dt = Math.min(.05, raw/1000); last = now;
   const trapOn = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]);
@@ -499,6 +499,9 @@ function frame(now){
   explode += (explodeTarget - explode)*Math.min(1, dt*4.5);
   if (!orb.down && !orb.pan && !tour && mouseMoved){ mouseMoved = false; const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p || estopHit() ? "pointer" : "grab"; }
   /* the trapdoor swings open and shut while its card item is picked */
+  /* the prize bin door swings out while its card item is picked */
+  if (!binDoorG) root.traverse(o => { if (o.userData.binDoor) binDoorG = o; });
+  if (binDoorG){ const on = selected && selected.id === "cage" && subFocus && /Prize bin door/.test(selected.subs[subFocus.i][0]); binDoorG.rotation.z += ((on ? 1.5 : 0) - binDoorG.rotation.z)*Math.min(1, dt*5); }
   if (!trapG) root.traverse(o => { if (o.userData.trap) trapG = o; });
   if (trapG){ const on = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]); trapT = on ? trapT + dt : 0;
     const want = on ? -1.1*(.5 - .5*Math.cos(trapT*2.2)) : 0; trapG.rotation.x += (want - trapG.rotation.x)*Math.min(1, dt*10);

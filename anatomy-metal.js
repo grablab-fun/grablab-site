@@ -363,7 +363,9 @@ export function buildMachine(THREE, api){
   const FZ = .238, FT = .012, HX0 = mm(MP.CHUTE[0]), HX1 = mm(MP.CHUTE[1]), HY0 = mm(MP.CHUTE[2]), HY1 = mm(MP.CHUTE[3]);   // floor top at 250, 243 x 243 hole front right
   sm("box_floor", pvc, "cage_floor");
   SM(["box_prize_L", "box_prize_B"], pvc, "cage_prize_wall");
-  SM(["box_skin_L", "box_skin_R"], pvc, "cage_skin");
+  sm("box_skin_L", pvc, "cage_skin");
+  /* the right skin, cut round the prize bin door opening (y -440 to 200, z 35 to 210 from the centre / ground) */
+  for (const [y0, y1, z0, z1] of [[-.5, .5, 0, .035], [-.5, .5, .21, .35], [-.5, -.44, .035, .21], [.2, .5, .035, .21]]) box(.5, y0, z0, .503, y1, z1, pvc, "cage_skin");
   sm("box_skin_B", pvc, "cage_door"); sm("boxhw_door", rivetM, "cage_door_rivnut");          // the back base skin is the service door
   sm("box_back_cage", pvc, "cage_showcase");
   sm("box_left_cage", acrylic, "cage_window");
@@ -494,9 +496,12 @@ export function buildMachine(THREE, api){
   rb(QX1, -.1, .07, QX1 + .004, -.02, .09, binM, "chute_bin_handle", .002);
   for (const x of [QX0 + .03, QX1 - .055]) box(x, -.475, 0, x + .025, .475, QZ0, steelT, "chute_bin_rail");
   use("cage");
-  box(.5035, -.44, .035, .5075, .2, .21, pvc, "cage_bin_door");
-  for (const z of [.06, .185]){ box(.503, .19, z - .012, .509, .206, z + .012, steel, "cage_bin_door_hinge"); add(cylZ(.0018, .024, 10), steel, .509, .204, z, 0, 0, 0, "cage_bin_door_hinge_pin"); }
-  box(.5075, -.42, .11, .5135, -.4, .14, steel, "cage_bin_door_knob");
+  /* the door turns on its hinge pins (the page swings it open while its card item is picked) */
+  const binDoor = new THREE.Group(); binDoor.name = "cage_bin_door_pivot"; binDoor.position.set(.509, .204, 0); binDoor.userData.binDoor = true; G("cage").add(binDoor);
+  const BD = (x0, y0, z0, x1, y1, z1, mt, nm) => box(x0 - .509, y0 - .204, z0, x1 - .509, y1 - .204, z1, mt, nm, binDoor);
+  BD(.5035, -.44, .035, .5075, .2, .21, pvc, "cage_bin_door");
+  for (const z of [.06, .185]){ BD(.503, .19, z - .012, .509, .2, z + .012, steel, "cage_bin_door_hinge"); box(.507, .199, z - .012, .511, .209, z + .012, steel, "cage_bin_door_hinge"); add(cylZ(.0018, .03, 10), steel, .509, .204, z, 0, 0, 0, "cage_bin_door_hinge_pin"); }
+  BD(.5075, -.42, .11, .5135, -.4, .14, steel, "cage_bin_door_knob");
   /* the E-stop cable: from the switch at the front, under the floor, to the supply behind the service door */
   long(() => { harness([[.35, -.444, .195], [.27, -.444, .2], [.27, .38, .2], [-.2475, .38, .2], [-.2475, .41, .12], [-.2475, .423, .088], [-.2735, .423, .088]], .0015, wireR, "el_wire_estop");
     harness([[.35, -.444, .21], [.26, -.444, .212], [.26, .385, .212], [-.3145, .385, .212], [-.3145, .455, .2195]], .0015, wireR, "el_wire_estop"); });
