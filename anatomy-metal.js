@@ -72,7 +72,7 @@ export function buildMachine(THREE, api){
     const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; t.userData.redraw = () => { g.clearRect(0, 0, w, h); draw(g, w, h); t.needsUpdate = true; }; return t; };
   /* a printed face: canvas drawn at about 12 px per mm, capped at 2048 px */
   const label = (key, w, h, drawFn, o) => { const S = Math.min(12000, 2048/Math.max(w, h)); const t = canvasTex(Math.round(w*S), Math.round(h*S), drawFn); onFont(() => t.userData.redraw());
-    return m(key, Object.assign({ map:t, roughness:.6, metalness:0 }, o || {})); };
+    return m(key, Object.assign({ map:t, roughness:.6, metalness:0, polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-4 }, o || {})); };
   const FACE_NEG_Y = [Math.PI/2, 0, 0], FACE_POS_Y = [Math.PI/2, Math.PI, 0];   // plane rotations: printed side toward -y or +y, text upright
 
   /* V-slot cross section (mm): slots on every face, centre bores, extruded along one axis */
@@ -156,11 +156,11 @@ export function buildMachine(THREE, api){
   SM(["box_floor_X0", "box_floor_X1", "box_floor_chuteL", "box_floor_chuteB"], steelT, "frame_floor_rail");
   sm("boxhw_feet", steel, "frame_foot");
 
-  /* =========================================================================================== service door: the back base skin, with the E-stop, the QR and the GRABLAB plate */
+  /* =========================================================================================== front panel: the front base skin, with the E-stop, the QR and the GRABLAB plate */
   use("panel");
-  /* the plates and the E-stop sit on the service door: the back base skin, outer face at y 503, 20 mm lower than on the old MDF panel */
-  { const g = new THREE.Group(); g.name = "panel_plates"; g.position.set(0, -.009, -.02); G("panel").add(g); SUBP.panel = g; }
-  sm("box_skin_B", pvc, "panel_door", G("panel")); sm("boxhw_door", rivetM, "panel_screw", G("panel"));
+  /* the plates and the E-stop sit on the front base skin, under the window: built facing +y, turned round to face the player at -y, outer face at y -503 */
+  { const g = new THREE.Group(); g.name = "panel_plates"; g.position.set(0, .009, -.02); g.rotation.z = Math.PI; G("panel").add(g); SUBP.panel = g; }
+  sm("box_skin_F", pvc, "panel_skin", G("panel"));
   const IN = .50, PY1 = .512;                                     // inner face (components) and outer face (E-stop, QR, GRABLAB)
   /* E-stop: contact block inside, collar through the 22 mm hole, yellow legend, red mushroom outside */
   box(-.365, IN - .045, .205, -.335, IN, .235, m("estopbody", { color:0x1b1c20, roughness:.5 }), "panel_estop_contacts");
@@ -196,50 +196,128 @@ export function buildMachine(THREE, api){
   /* one plate on the inside of the back tubes, between the ground and the floor ring */
   { const g = new THREE.Group(); g.name = "el_board"; g.position.set(0, -.025, -.02); G("electronics").add(g); SUBP.electronics = g; }
   box(-.47, IN - .003, .045, .13, IN, .235, pvc, "el_plate");
-  /* 12 V 10 A supply, lying, terminals on the right */
-  box(-.455, IN - .042, .035, -.256, IN, .133, m("psu", { color:0xc3c7cf, roughness:.38, metalness:.9 }), "el_psu");
-  for (let r = 0; r < 3; r++) for (let i = 0; i < 12; i++) box(-.445 + i*.0085, IN - .0424, .04 + r*.012, -.441 + i*.0085, IN - .042, .048 + r*.012, dark, "el_psu_vent");
-  box(-.288, IN - .05, .042, -.259, IN - .042, .126, m("term", { color:0x18191d, roughness:.5 }), "el_psu_terminals");
-  for (let i = 0; i < 7; i++) add(cylY(.003, .002, 12), steel, -.2735, IN - .051, .05 + i*.0115, 0, 0, 0, "el_psu_screw");
-  const psuLbl = label("psulbl", .08, .036, (g, w, h) => { g.fillStyle = "#e9ebef"; g.fillRect(0, 0, w, h); g.fillStyle = "#1d1f24"; g.font = `700 ${h*.3}px Satoshi, sans-serif`; g.fillText("DC 12 V", w*.06, h*.5); });
-  add(new THREE.PlaneGeometry(.08, .036), psuLbl, -.34, IN - .0426, .1, ...FACE_NEG_Y, "el_psu_label");
-  /* two 5 way lever connectors side by side: 12 V and ground */
-  for (const x0 of [-.32, -.27]){ box(x0, IN - .018, .24, x0 + .045, IN, .26, wagoM, "el_wago");
-    for (let i = 0; i < 5; i++) box(x0 + .002 + i*.009, IN - .022, .252, x0 + .009 + i*.009, IN - .018, .26, lever, "el_wago_lever"); }
-  /* Arduino UNO on standoffs, CNC Shield V3 on its headers, 4 x A4988 with heatsinks */
+  /* ---- board details: PCB faces drawn on canvas (copper traces, vias, pads, silkscreen), real parts on top ---- */
+  const pcbFace = (key, w, h, base, ink, extra) => label(key, w, h, (g, W, H) => {
+    g.fillStyle = base; g.fillRect(0, 0, W, H);
+    let sd = 0; for (const ch of key) sd = (sd*31 + ch.charCodeAt(0)) % 2147483647; sd = sd || 7; const r = () => (sd = (sd*16807) % 2147483647)/2147483647;
+    g.lineCap = "round"; g.strokeStyle = "rgba(255,255,255,.085)"; g.lineWidth = Math.max(1, W*.005);
+    for (let i = 0; i < 34; i++){ let x = r()*W, y = r()*H; g.beginPath(); g.moveTo(x, y); for (let k = 0; k < 3; k++){ if (r() < .5) x += (r() - .5)*W*.5; else y += (r() - .5)*H*.5; g.lineTo(x, y); } g.stroke(); }
+    for (let i = 0; i < 46; i++){ const x = r()*W, y = r()*H; g.fillStyle = "rgba(222,186,96,.7)"; g.beginPath(); g.arc(x, y, W*.0065, 0, 7); g.fill(); g.fillStyle = "rgba(0,0,0,.55)"; g.beginPath(); g.arc(x, y, W*.0028, 0, 7); g.fill(); }
+    g.strokeStyle = ink; g.lineWidth = Math.max(1, W*.006); g.strokeRect(W*.025, H*.035, W*.95, H*.93);
+    g.fillStyle = "rgba(222,186,96,.85)"; for (const [x, y] of [[.05, .07], [.95, .07], [.05, .93], [.95, .93]]){ g.beginPath(); g.arc(W*x, H*y, W*.028, 0, 7); g.fill(); g.fillStyle = "#08080a"; g.beginPath(); g.arc(W*x, H*y, W*.015, 0, 7); g.fill(); g.fillStyle = "rgba(222,186,96,.85)"; }
+    if (extra){ g.fillStyle = ink; g.strokeStyle = ink; extra(g, W, H); } });
+  const onFace = (mt, w, h, x, y, z, nm) => add(new THREE.PlaneGeometry(w, h), mt, x, y, z, ...FACE_NEG_Y, nm);
+  const txt = (g, t, x, y, px, wgt = 700) => { g.font = `${wgt} ${px}px Satoshi, sans-serif`; g.textBaseline = "middle"; g.fillText(t, x, y); };
+  const capBody = () => m("capb", { color:0x15192a, roughness:.35, metalness:.15 }), capTop = () => m("capt", { color:0xb9bec8, roughness:.25, metalness:1 });
+  /* electrolytic capacitor standing out of a board face at yb (towards -y) */
+  const ecap = (x, z, r, hgt, yb, nm) => { add(cylY(r, hgt, 28), capBody, x, yb - hgt/2, z, 0, 0, 0, nm); add(cylY(r*.86, .0004, 28), capTop, x, yb - hgt - .0002, z, 0, 0, 0, nm + "_top");
+    add(BOX(r*1.5, .00045, r*.12), dark, x, yb - hgt - .00045, z, 0, 0, 0, nm + "_vent"); add(BOX(r*.12, .00045, r*1.5), dark, x, yb - hgt - .00045, z, 0, 0, 0, nm + "_vent"); };
+  /* screw terminal block: n ways at 5 mm, body on the board face, screw heads facing -y */
+  const termBlock = (x0, z0, n, yb, col, nm, vertical) => { const W = .005*n, D = .009, Hh = .008;
+    const bm = m("tb" + col.toString(16), { color:col, roughness:.45 });
+    if (vertical) box(x0, yb - D, z0, x0 + Hh, yb, z0 + W, bm, nm); else box(x0, yb - D, z0, x0 + W, yb, z0 + Hh, bm, nm);
+    for (let i = 0; i < n; i++){ const cx = vertical ? x0 + Hh/2 : x0 + .0025 + i*.005, cz = vertical ? z0 + .0025 + i*.005 : z0 + Hh/2;
+      add(cylY(.0017, .0006, 16), steel, cx, yb - D - .0003, cz, 0, 0, 0, nm + "_screw"); add(BOX(.0026, .0004, .0004), dark, cx, yb - D - .0006, cz, 0, 0, 0, nm + "_slot"); } };
+  const header = (x0, z0, n, rows, yb, nm, len = .006) => { for (let rr = 0; rr < rows; rr++){ box(x0 - .0002, yb - .0025, z0 + rr*.00254 - .0012, x0 + n*.00254 - .0002, yb, z0 + rr*.00254 + .0012, dark, nm + "_base");
+    for (let i = 0; i < n; i++) box(x0 + i*.00254 + .0009, yb - len, z0 + rr*.00254 - .0003, x0 + i*.00254 + .0015, yb - .0025, z0 + rr*.00254 + .0003, brass, nm); } };
+  const chip = (x, z, w, h, yb, nm) => box(x - w/2, yb - .0012, z - h/2, x + w/2, yb, z + h/2, m("ic", { color:0x0b0b0d, roughness:.3, metalness:.25 }), nm);
+  const smdR = (x, z, yb, nm) => box(x - .0008, yb - .0005, z - .0004, x + .0008, yb, z + .0004, m("smd", { color:0x1b1b1e, roughness:.4 }), nm);
+  const heatsink = (x0, z0, w, h, yb, depth, fins, mt, nm) => { box(x0, yb - .0015, z0, x0 + w, yb, z0 + h, mt, nm);
+    for (let f = 0; f < fins; f++){ const fx = x0 + (f + .5)*w/fins; box(fx - w/fins*.22, yb - depth, z0, fx + w/fins*.22, yb - .0015, z0 + h, mt, nm + "_fin"); } };
+
+  /* 12 V 10 A supply, lying: perforated cover, terminal strip on the right under a clear guard, trimmer and power LED */
+  { const P0 = -.455, P1 = -.256, Z0 = .035, Z1 = .133, F = IN - .042;
+    box(P0, F, Z0, P1, IN, Z1, m("psu", { color:0xb7bcc6, roughness:.34, metalness:.92 }), "el_psu");
+    for (const z of [Z0 + .0015, Z1 - .0015]) box(P0 - .0005, F - .0008, z - .0015, P1 + .0005, F + .004, z + .0015, m("psuedge", { color:0x9aa0ab, roughness:.3, metalness:1 }), "el_psu_edge");
+    const mesh = label("psumesh", .145, .088, (g, W, H) => { g.fillStyle = "#aeb3bd"; g.fillRect(0, 0, W, H); const st = W/46;
+      for (let yy = st; yy < H - st*.5; yy += st*.87) for (let xx = st*((Math.round(yy/(st*.87)) % 2) ? 1 : .5); xx < W - st*.4; xx += st){ g.fillStyle = "#1a1c21"; g.beginPath(); g.arc(xx, yy, st*.31, 0, 7); g.fill(); }
+      g.strokeStyle = "rgba(255,255,255,.35)"; g.lineWidth = 2; g.strokeRect(1, 1, W - 2, H - 2); }, { metalness:.85, roughness:.38 });
+    onFace(mesh, .145, .088, P0 + .078, F - .0002, (Z0 + Z1)/2, "el_psu_cover");
+    box(-.292, IN - .052, .04, -.258, F, .128, m("term", { color:0x17181c, roughness:.5 }), "el_psu_terminals");
+    for (let i = 0; i < 7; i++){ const z = .05 + i*.0115; box(-.29, IN - .053, z - .0052, -.26, IN - .052, z + .0052, m("termbay", { color:0x0c0c0e, roughness:.6 }), "el_psu_terminals");
+      add(cylY(.0034, .0018, 20), m("brass2", { color:0xcfa64e, roughness:.28, metalness:1 }), -.2735, IN - .0538, z, 0, 0, 0, "el_psu_screw"); add(BOX(.0048, .0005, .0007), dark, -.2735, IN - .0548, z, 0, 0, 0, "el_psu_screw_slot"); }
+    box(-.293, IN - .061, .04, -.257, IN - .0595, .128, np(m("guard", { color:0xdfe7ff, roughness:.05, transparent:true, opacity:.16, depthWrite:false })), "el_psu_guard");
+    const tl = label("psuterm", .012, .084, (g, W, H) => { g.fillStyle = "#e9ebef"; g.fillRect(0, 0, W, H); g.fillStyle = "#1d1f24"; g.textAlign = "center";
+      ["+V", "+V", "-V", "-V", "⏚", "N", "L"].forEach((t, i) => txt(g, t, W/2, H*(1 - (i + .5)/7), H*.05, 800)); });
+    onFace(tl, .012, .084, -.2985, F - .0002, .0845, "el_psu_label");
+    add(cylY(.0026, .002, 16), m("trim", { color:0xe8e9ec, roughness:.4 }), -.3085, F - .001, .052, 0, 0, 0, "el_psu_trim"); add(BOX(.0034, .0004, .0006), dark, -.3085, F - .0021, .052, 0, 0, 0, "el_psu_trim");
+    add(cylY(.0016, .0016, 12), led(0x52d96b), -.3085, F - .0008, .064, 0, 0, 0, "el_psu_led");
+    const pl = label("psulbl", .046, .022, (g, W, H) => { g.fillStyle = "#14161b"; g.fillRect(0, 0, W, H); g.fillStyle = "#e9ebef"; txt(g, "12 V  10 A", W*.08, H*.36, H*.26, 800);
+      g.fillStyle = "rgba(233,235,239,.6)"; txt(g, "SWITCHING POWER SUPPLY", W*.08, H*.72, H*.13, 600); });
+    onFace(pl, .046, .022, P0 + .03, F - .0004, Z1 - .016, "el_psu_tag"); }
+
+  /* two 5 way lever connectors side by side: 12 V and ground, translucent housings, orange levers */
+  for (const x0 of [-.32, -.27]){ box(x0, IN - .018, .24, x0 + .045, IN, .26, np(m("wagoT", { color:0xc9ccd4, roughness:.18, transmission:0, transparent:true, opacity:.72 }, true)), "el_wago");
+    box(x0 + .001, IN - .004, .2405, x0 + .044, IN, .2595, m("wagoCore", { color:0x8f949e, roughness:.4, metalness:.6 }), "el_wago");
+    for (let i = 0; i < 5; i++){ box(x0 + .0022 + i*.009, IN - .0225, .2505, x0 + .0078 + i*.009, IN - .018, .2605, lever, "el_wago_lever"); add(cylZ(.0018, .003, 12), dark, x0 + .0055 + i*.009, IN - .009, .2385, 0, 0, 0, "el_wago_port"); } }
+
+  /* motion controller: board on brass standoffs, the shield on its headers, four drivers with heatsinks */
   const ux0 = -.232, uz0 = .095;
-  for (const [dx, dz] of [[.004, .004], [.064, .004], [.004, .049], [.064, .049]]) add(cylY(.0025, .006, 10), brass, ux0 + dx, IN - .003, uz0 + dz, 0, 0, 0, "el_uno_standoff");
+  for (const [dx, dz] of [[.004, .004], [.064, .004], [.004, .049], [.064, .049]]){ add(cylY(.0025, .006, 6), brass, ux0 + dx, IN - .003, uz0 + dz, 0, 0, 0, "el_uno_standoff"); add(cylY(.0022, .0012, 16), steel, ux0 + dx, IN - .0221, uz0 + dz, 0, 0, 0, "el_shield_screw"); }
   box(ux0, IN - .0076, uz0, ux0 + .0686, IN - .006, uz0 + .0534, m("uno", { color:0x0e6ea8, roughness:.45 }), "el_uno");
-  box(ux0 + .03, IN - .019, uz0 - .006, ux0 + .042, IN - .0076, uz0 + .01, steel, "el_uno_usb");
+  box(ux0 + .03, IN - .019, uz0 - .006, ux0 + .042, IN - .0076, uz0 + .01, steel, "el_uno_usb"); box(ux0 + .0052, IN - .018, uz0 - .004, ux0 + .0142, IN - .0076, uz0 + .009, dark, "el_uno_jack");
   for (let i = 0; i < 24; i++) box(ux0 + .006 + i*.0024, IN - .0199, uz0 + .002, ux0 + .0072 + i*.0024, IN - .0076, uz0 + .0034, brass, "el_shield_pins");
   box(ux0 + .003, IN - .0215, uz0 + .001, ux0 + .0656, IN - .0199, uz0 + .052, m("shield", { color:0x1b3a87, roughness:.45 }), "el_cnc_shield");
-  for (let i = 0; i < 4; i++){ const x = ux0 + .007 + i*.0145;
-    box(x, IN - .028, uz0 + .018, x + .0127, IN - .0215, uz0 + .0382, m("a4988", { color:0xb81d24, roughness:.45 }), "el_a4988");
-    box(x + .002, IN - .031, uz0 + .023, x + .0107, IN - .028, uz0 + .032, plate, "el_a4988_heatsink");
-    for (let f = 0; f < 4; f++) box(x + .002 + f*.0024, IN - .036, uz0 + .023, x + .003 + f*.0024, IN - .031, uz0 + .032, plate, "el_a4988_fin"); }
-  box(ux0 + .046, IN - .03, uz0 + .041, ux0 + .062, IN - .0215, uz0 + .051, m("term2", { color:0x1e7a3a, roughness:.5 }), "el_shield_power");
-  /* printed carrier with the L298N and the 12 V to 5 V converter */
-  const cx0 = -.155;
+  const SB = IN - .0215;
+  onFace(pcbFace("cncshield", .0626, .051, "#1d3e8f", "#e8edf8", (g, W, H) => { g.textAlign = "center"; ["X", "Y", "Z", "A"].forEach((t, i) => txt(g, t, W*(.12 + i*.232), H*.16, H*.075, 800));
+    g.textAlign = "left"; txt(g, "MOTION", W*.07, H*.9, H*.055, 800); txt(g, "12-36V", W*.62, H*.9, H*.05, 700); }), .0626, .051, ux0 + .0343, SB - .0001, uz0 + .0265, "el_cnc_shield_face");
+  for (let i = 0; i < 4; i++){ const x = ux0 + .007 + i*.0145, DB = SB - .0085;
+    header(x + .0004, uz0 + .0165, 5, 1, SB, "el_shield_header", .0085); header(x + .0004, uz0 + .0395, 5, 1, SB, "el_shield_header", .0085);
+    box(x, DB - .0016, uz0 + .015, x + .0127, DB, uz0 + .0412, m("a4988", { color:0xb81d24, roughness:.42 }), "el_a4988");
+    onFace(pcbFace("drv" + i, .0127, .0262, "#b81d24", "#ffe1e1"), .0127, .0262, x + .00635, DB - .0017, uz0 + .0281, "el_a4988_face");
+    chip(x + .0064, uz0 + .028, .005, .005, DB - .0016, "el_a4988_chip");
+    heatsink(x + .0019, uz0 + .0235, .009, .009, DB - .0028, .0075, 5, m("hsalu", { color:0x7d8492, roughness:.3, metalness:1 }), "el_a4988_heatsink");
+    add(cylY(.0016, .0012, 16), m("pot", { color:0xc9a35a, roughness:.3, metalness:1 }), x + .0035, DB - .0022, uz0 + .0185, 0, 0, 0, "el_a4988_pot");
+    for (let j = 0; j < 3; j++) box(x + .0012 + j*.004, SB - .0042, uz0 + .006, x + .0034 + j*.004, SB, uz0 + .0105, m("jumper", { color:0xf2c418, roughness:.45 }), "el_shield_jumper"); }
+  termBlock(ux0 + .046, uz0 + .042, 2, SB, 0x1f5fd0, "el_shield_power");
+  ecap(ux0 + .0405, uz0 + .046, .004, .011, SB, "el_shield_cap");
+  header(ux0 + .006, uz0 + .0035, 12, 2, SB, "el_shield_endstops", .007);
+  box(ux0 + .057, SB - .0035, uz0 + .006, ux0 + .063, SB, uz0 + .012, m("btn", { color:0xd9dadf, roughness:.4 }), "el_shield_reset"); add(cylY(.0016, .0012, 14), dark, ux0 + .06, SB - .0041, uz0 + .009, 0, 0, 0, "el_shield_reset");
+
+  /* printed carrier with the claw driver and the 12 V to 5 V converter */
+  const cx0 = -.155, LB = IN - .0046;
   box(cx0, IN - .003, .085, cx0 + .1, IN, .145, petg, "el_carrier");
-  box(cx0 + .006, IN - .0046, .091, cx0 + .049, IN - .003, .134, m("l298", { color:0xc0262e, roughness:.45 }), "el_l298n");
-  box(cx0 + .016, IN - .027, .1, cx0 + .039, IN - .0046, .125, m("hs", { color:0x101114, roughness:.4, metalness:.6 }), "el_l298n_heatsink");
-  for (let f = 0; f < 7; f++) box(cx0 + .016 + f*.0035, IN - .035, .1, cx0 + .0175 + f*.0035, IN - .027, .125, m("hs"), "el_l298n_fin");
-  box(cx0 + .008, IN - .0126, .091, cx0 + .03, IN - .0046, .099, m("term2"), "el_l298n_terminal"); box(cx0 + .034, IN - .0126, .134, cx0 + .048, IN - .0046, .142, m("term2"), "el_l298n_terminal");
-  box(cx0 + .057, IN - .016, .1, cx0 + .095, IN - .003, .13, m("conv", { color:0x101013, roughness:.55 }), "el_converter");
-  const convLbl = label("convlbl", .034, .022, (g, w, h) => { g.fillStyle = "#101013"; g.fillRect(0, 0, w, h); g.fillStyle = "#e6e8ee"; g.font = `700 ${h*.3}px Satoshi, sans-serif`; g.fillText("5 V", w*.08, h*.6); });
-  add(new THREE.PlaneGeometry(.034, .022), convLbl, cx0 + .076, IN - .0161, .115, ...FACE_NEG_Y, "el_converter_label");
-  /* Pi case 100 x 70 x 35: back on the panel, Raspberry Pi 4 on posts, OPTIGA Trust M Express on its own 2 posts, smoked lid with the 30 mm fan */
-  const px0 = 0, pz0 = .12, pib = IN - .008;                       // pib: back of the Pi board
-  box(px0, IN - .0025, pz0, px0 + .1, IN, pz0 + .07, petg, "el_picase_back");
-  box(px0, IN - .035, pz0, px0 + .0025, IN - .0025, pz0 + .07, petg, "el_picase_wall"); box(px0 + .0975, IN - .035, pz0, px0 + .1, IN - .0025, pz0 + .07, petg, "el_picase_wall");
-  box(px0, IN - .035, pz0, px0 + .1, IN - .0025, pz0 + .0025, petg, "el_picase_wall"); box(px0, IN - .035, pz0 + .0675, px0 + .1, IN - .0025, pz0 + .07, petg, "el_picase_wall");
-  for (const [dx, dz] of [[.011, .0105], [.069, .0105], [.011, .0595], [.069, .0595]]) add(cylY(.003, .0055, 12), petg, px0 + dx, IN - .00525, pz0 + dz, 0, 0, 0, "el_pi_post");
+  for (const [x, z] of [[cx0 + .004, .089], [cx0 + .096, .089], [cx0 + .004, .141], [cx0 + .096, .141]]) add(cylY(.0021, .0012, 16), steel, x, IN - .0036, z, 0, 0, 0, "el_carrier_screw");
+  box(cx0 + .006, LB, .091, cx0 + .049, IN - .003, .134, m("l298", { color:0xc0262e, roughness:.42 }), "el_l298n");
+  onFace(pcbFace("l298", .043, .043, "#c0262e", "#ffe7e7", (g, W, H) => { g.textAlign = "left"; txt(g, "MOTOR A", W*.06, H*.93, H*.06, 800); txt(g, "B", W*.85, H*.93, H*.06, 800); txt(g, "+12V GND +5V", W*.08, H*.08, H*.05, 700); }), .043, .043, cx0 + .0275, LB - .0001, .1125, "el_l298n_face");
+  heatsink(cx0 + .0135, .099, .025, .027, LB - .004, .019, 10, m("hs", { color:0x101114, roughness:.42, metalness:.65 }), "el_l298n_heatsink");
+  chip(cx0 + .026, .113, .02, .005, LB - .0022, "el_l298n_chip"); box(cx0 + .016, LB - .004, .1005, cx0 + .036, LB, .126, m("hs"), "el_l298n_heatsink");
+  termBlock(cx0 + .0075, .0915, 3, LB, 0x1f5fd0, "el_l298n_terminal"); termBlock(cx0 + .033, .1335, 3, LB, 0x1f5fd0, "el_l298n_terminal");
+  termBlock(cx0 + .0075, .1235, 2, LB, 0x1f5fd0, "el_l298n_terminal", true); termBlock(cx0 + .0405, .108, 2, LB, 0x1f5fd0, "el_l298n_terminal", true);
+  ecap(cx0 + .0105, .106, .0032, .009, LB, "el_l298n_cap"); ecap(cx0 + .0105, .1145, .0032, .009, LB, "el_l298n_cap");
+  chip(cx0 + .041, .097, .007, .006, LB, "el_l298n_reg"); header(cx0 + .03, .093, 6, 1, LB, "el_l298n_header", .0065);
+  for (const [x, cc] of [[cx0 + .045, 0xff3b3b]]) add(cylY(.0011, .0012, 10), led(cc), x, LB - .0006, .129, 0, 0, 0, "el_l298n_led");
+  { const B0 = cx0 + .055, B1 = cx0 + .097, VB = IN - .0046;
+    box(B0, VB, .1, B1, IN - .003, .13, m("buck", { color:0x123a7a, roughness:.42 }), "el_converter");
+    onFace(pcbFace("buck", B1 - B0, .03, "#123a7a", "#e3ecff", (g, W, H) => { g.textAlign = "left"; txt(g, "IN+", W*.05, H*.12, H*.11, 800); txt(g, "OUT+", W*.72, H*.12, H*.11, 800); txt(g, "IN-", W*.05, H*.9, H*.11, 800); txt(g, "OUT-", W*.72, H*.9, H*.11, 800); }), B1 - B0, .03, (B0 + B1)/2, VB - .0001, .115, "el_converter_face");
+    add(cylY(.0068, .006, 32), m("core", { color:0x1a1b1f, roughness:.55 }), B0 + .0145, VB - .003, .115, 0, 0, 0, "el_converter_inductor");
+    add(new THREE.TorusGeometry(.0068, .0011, 8, 40), m("copper", { color:0xb8692e, roughness:.32, metalness:1 }), B0 + .0145, VB - .006, .115, Math.PI/2, 0, 0, "el_converter_inductor");
+    for (let k = 0; k < 14; k++){ const an = k/14*Math.PI*2; add(BOX(.0012, .006, .0012), m("copper"), B0 + .0145 + .0068*Math.cos(an), VB - .003, .115 + .0068*Math.sin(an), 0, an, 0, "el_converter_inductor"); }
+    ecap(B0 + .028, .108, .0034, .009, VB, "el_converter_cap"); ecap(B0 + .028, .1225, .0034, .009, VB, "el_converter_cap");
+    box(B0 + .0335, VB - .006, .103, B0 + .0405, VB, .113, m("trimb", { color:0x2a62d8, roughness:.4 }), "el_converter_trim"); add(cylY(.0011, .0008, 12), m("brass2"), B0 + .037, VB - .0064, .1055, 0, 0, 0, "el_converter_trim");
+    chip(B0 + .036, .123, .006, .005, VB, "el_converter_chip");
+    for (const [x, z] of [[B0 + .003, .103], [B0 + .003, .127], [B1 - .003, .103], [B1 - .003, .127]]){ add(cylY(.0019, .0007, 16), m("brass2"), x, VB - .0003, z, 0, 0, 0, "el_converter_pad"); } }
+
+  /* computer case 100 x 70 x 35: dark anodised aluminium, the board on posts, the secure chip on its own 2 posts, smoked lid with the 30 mm fan */
+  const px0 = 0, pz0 = .12, pib = IN - .008, caseM = () => m("picase", { color:0x1d1f26, roughness:.32, metalness:.8 });
+  box(px0, IN - .0025, pz0, px0 + .1, IN, pz0 + .07, caseM, "el_picase_back");
+  box(px0, IN - .035, pz0, px0 + .0025, IN - .0025, pz0 + .07, caseM, "el_picase_wall"); box(px0 + .0975, IN - .035, pz0, px0 + .1, IN - .0025, pz0 + .07, caseM, "el_picase_wall");
+  box(px0, IN - .035, pz0, px0 + .1, IN - .0025, pz0 + .0025, caseM, "el_picase_wall"); box(px0, IN - .035, pz0 + .0675, px0 + .1, IN - .0025, pz0 + .07, caseM, "el_picase_wall");
+  for (let i = 0; i < 9; i++) box(px0 + .012 + i*.0085, IN - .0352, pz0 + .0675, px0 + .0165 + i*.0085, IN - .0348, pz0 + .07, dark, "el_picase_vent");
+  for (const [dx, dz] of [[.011, .0105], [.069, .0105], [.011, .0595], [.069, .0595]]){ add(cylY(.003, .0055, 12), caseM, px0 + dx, IN - .00525, pz0 + dz, 0, 0, 0, "el_pi_post"); add(cylY(.0019, .0008, 14), steel, px0 + dx, pib - .002, pz0 + dz, 0, 0, 0, "el_pi_screw"); }
   box(px0 + .0075, pib - .0016, pz0 + .007, px0 + .0925, pib, pz0 + .063, m("pi", { color:0x1f7a3c, roughness:.45 }), "el_pi4");
+  onFace(pcbFace("pi4", .085, .056, "#1d7a3b", "#eef8f0", (g, W, H) => { g.textAlign = "left"; txt(g, "4 GB", W*.06, H*.3, H*.06, 800); }), .085, .056, px0 + .05, pib - .0017, pz0 + .035, "el_pi4_face");
   box(px0 + .072, pib - .017, pz0 + .01, px0 + .0925, pib - .0016, pz0 + .025, steel, "el_pi_usb3"); box(px0 + .072, pib - .017, pz0 + .027, px0 + .0925, pib - .0016, pz0 + .042, steel, "el_pi_usb2");
+  for (const z of [pz0 + .0145, pz0 + .0315]) box(px0 + .0921, pib - .0145, z, px0 + .0926, pib - .0042, z + .006, m("usbblue", { color:0x1f5fd0, roughness:.4 }), "el_pi_usb3");
   box(px0 + .074, pib - .0145, pz0 + .045, px0 + .0925, pib - .0016, pz0 + .06, steel, "el_pi_ethernet");
+  for (const x of [px0 + .02, px0 + .034]) box(x, pib - .0045, pz0 + .007, x + .0075, pib - .0016, pz0 + .0105, steel, "el_pi_hdmi");
+  box(px0 + .009, pib - .0048, pz0 + .007, px0 + .0175, pib - .0016, pz0 + .0105, steel, "el_pi_usbc");
   box(px0 + .04, pib - .0045, pz0 + .03, px0 + .055, pib - .0016, pz0 + .045, m("soc", { color:0xa7abb3, roughness:.3, metalness:.9 }), "el_pi_heatsink");
   for (let f = 0; f < 5; f++) box(px0 + .0405 + f*.003, pib - .009, pz0 + .03, px0 + .0415 + f*.003, pib - .0045, pz0 + .045, plate, "el_pi_heatsink_fin");
+  chip(px0 + .062, pz0 + .037, .008, .011, pib - .0016, "el_pi_ram"); chip(px0 + .067, pz0 + .019, .005, .005, pib - .0016, "el_pi_usbchip");
   for (let r = 0; r < 2; r++) for (let c = 0; c < 20; c++) box(px0 + .012 + c*.00254, pib - .0085, pz0 + .057 + r*.00254, px0 + .0128 + c*.00254, pib - .0016, pz0 + .0578 + r*.00254, brass, "el_pi_gpio");
+  box(px0 + .0116, pib - .0026, pz0 + .0555, px0 + .0632, pib - .0016, pz0 + .0605, dark, "el_pi_gpio");
+
   const ox0 = px0 + .022, oz0 = pz0 + .012, ob = pib - .0199;     // OPTIGA board back face
   for (const dz of [.004, .02]) add(cylY(.0022, .0183, 10), petg, ox0 + .004, pib - .01075, oz0 + dz, 0, 0, 0, "el_optiga_post");
   box(ox0, ob - .0016, oz0, ox0 + .036, ob, oz0 + .026, m("optpcb", { color:0x9a1622, roughness:.4 }), "el_optiga_board");
@@ -264,8 +342,7 @@ export function buildMachine(THREE, api){
   /* power and signal wiring: red on the panel, black one layer out, every bend rounded, never through a board */
   const R = (pts, nm) => harness(pts, .0015, wireR, nm), K = (pts, nm) => harness(pts, .0015, wireK, nm);
   const wr = i => -.32 + .0055 + .009*i, wk = i => -.27 + .0055 + .009*i, WB = .2395;
-  R([[-.2735, IN - .052, .108], [-.2475, IN - .052, .108], [-.2475, IN - .004, .108], [-.2475, IN - .004, .162], [-.345, IN - .004, .162], [-.345, IN - .004, .19], [-.345, IN - .02, .2045]], "el_wire_psu_estop");
-  R([[-.3345, IN - .02, .215], [wr(0), IN - .02, .215], [wr(0), IN - .009, .228], [wr(0), IN - .009, WB]], "el_wire_estop_wago");
+  R([[-.2735, IN - .052, .108], [-.2475, IN - .052, .108], [-.2475, IN - .004, .108], [-.2475, IN - .004, .215], [wr(0), IN - .004, .215], [wr(0), IN - .009, WB]], "el_wire_psu_wago");
   K([[-.2735, IN - .052, .073], [-.2435, IN - .052, .073], [-.2435, IN - .013, .073], [-.2435, IN - .013, .225], [wk(4), IN - .013, .225], [wk(4), IN - .009, WB]], "el_wire_psu_gnd");
   R([[wr(1), IN - .009, WB], [wr(1), IN - .004, .19], [-.182, IN - .004, .19], [-.182, IN - .004, .16], [-.182, IN - .026, .1465]], "el_wire_shield");
   K([[wk(0), IN - .009, WB], [wk(0), IN - .0085, .185], [-.174, IN - .0085, .185], [-.174, IN - .0085, .16], [-.174, IN - .026, .1465]], "el_wire_shield");
@@ -282,52 +359,68 @@ export function buildMachine(THREE, api){
   const FZ = .238, FT = .012, HX0 = mm(MP.CHUTE[0]), HX1 = mm(MP.CHUTE[1]), HY0 = mm(MP.CHUTE[2]), HY1 = mm(MP.CHUTE[3]);   // floor top at 250, 243 x 243 hole front right
   sm("box_floor", pvc, "cage_floor");
   SM(["box_prize_L", "box_prize_B"], pvc, "cage_prize_wall");
-  SM(["box_skin_F", "box_skin_L", "box_skin_R"], pvc, "cage_skin");
-  SM(["box_back_cage", "box_left_cage"], pvc, "cage_showcase");
+  SM(["box_skin_L", "box_skin_R"], pvc, "cage_skin");
+  sm("box_skin_B", pvc, "cage_door"); sm("boxhw_door", rivetM, "cage_door_rivnut");          // the back base skin is the service door
+  sm("box_back_cage", pvc, "cage_showcase");
+  sm("box_left_cage", acrylic, "cage_window");
   SM(["box_glass_F", "box_glass_R"], acrylic, "cage_window");
   SM(["boxhw_floor", "boxhw_skins", "boxhw_glass"], rivetM, "cage_rivet");
 
   /* =========================================================================================== chute, cradle, prize cup */
   use("chute");
-  const wall = m("wall", { color:0x101114, roughness:.8, metalness:0 }); wall.userData.xray = .28;      // see-through when the chute is isolated
-  sm("box_chute", wall, "chute_wall");
-  const CZT = mz(MP.FLOOR_TOP - MP.BOX_T - MP.T), CZB = CZT - .15, CCX = (HX0 + HX1)/2, CCY = (HY0 + HY1)/2;   // chute 222 to 72 above the ground
-  /* the drop sensor: one reflective unit on the left wall, a red reflector on the right one, 17 mm under the floor frame */
-  const SZ = CZT - .017, e3 = m("e3jk", { color:0x23252b, roughness:.38, metalness:.15 }), wx = HX0 - .003;
-  rb(wx - .003, CCY - .045, SZ - .035, wx, CCY + .045, CZT, petg, "chute_sensor_bracket", .0012);
-  rb(wx - .021, CCY - .025, SZ - .022, wx - .003, CCY + .025, SZ + .022, e3, "chute_e3jk_sensor", .004);
-  add(cylX(.0062, .01, 28), lens, wx + .001, CCY, SZ, 0, 0, 0, "chute_e3jk_lens");
-  add(new THREE.TorusGeometry(.0068, .0011, 8, 28), nemaCap, HX0 + .0005, CCY, SZ, 0, Math.PI/2, 0, "chute_e3jk_lens_ring");
-  add(cylX(.0016, .0016, 12), led(0xff8a2a), wx - .0214, CCY - .014, SZ + .013, 0, 0, 0, "chute_e3jk_led"); add(cylX(.0016, .0016, 12), led(0x52d96b), wx - .0214, CCY - .006, SZ + .013, 0, 0, 0, "chute_e3jk_led");
-  add(cylX(.0034, .0022, 20), m("knob", { color:0xc9a35a, roughness:.3, metalness:1 }), wx - .0218, CCY + .012, SZ + .012, 0, 0, 0, "chute_e3jk_knob");
-  add(cylZ(.0042, .008, 16), dark, wx - .012, CCY, SZ - .026, 0, 0, 0, "chute_e3jk_gland");
-  box(HX1 - .002, CCY - .02, SZ - .02, HX1, CCY + .02, SZ + .02, m("refl", { color:0xb3262a, roughness:.22, metalness:.35 }), "chute_sensor_reflector");
+  /* the first chute design, built round a 120 mm opening and moved under the centre of the 243 mm hole; the floor frame is its top */
+  const CHG = new THREE.Group(); CHG.name = "chute_insert"; CHG.position.set(.0135, -.0135, 0); G("chute").add(CHG); SUBP.chute = CHG;
+  { const FZ = .222, HX0 = .28, HX1 = .40, HY0 = -.40, HY1 = -.28;
+  const CZ0 = .172, CZ1 = FZ, WT = .012;                                 // a 50 deep chute under the floor frame, so the long prize bin fits under it
+  const wall = m("wall", { color:0x17181c, roughness:.9, metalness:0 }); wall.userData.xray = .28;      // see-through when the chute is isolated
+  box(HX0 - WT, HY0 - WT, CZ0, HX1 + WT, HY0, CZ1, wall, "chute_wall"); /* rear wall with a small acrylic window: the landing camera films from outside, out of the capsule's way */
+  const WX0 = .30, WX1 = .38, WZ0 = .178, WZ1 = .214;
+  box(HX0 - WT, HY1, CZ0, WX0, HY1 + WT, CZ1, wall, "chute_wall"); box(WX1, HY1, CZ0, HX1 + WT, HY1 + WT, CZ1, wall, "chute_wall");
+  box(WX0, HY1, CZ0, WX1, HY1 + WT, WZ0, wall, "chute_wall"); box(WX0, HY1, WZ1, WX1, HY1 + WT, CZ1, wall, "chute_wall");
+  { const wg = m("window", { color:0xdfe7ff, roughness:.04, metalness:0, clearcoat:1, transparent:true, opacity:.18, depthWrite:false }, true); wg.userData.noPick = true; box(WX0, HY1 + .004, WZ0, WX1, HY1 + .007, WZ1, wg, "chute_c960_window"); }
+  box(HX0 - WT, HY0, CZ0, HX0, HY1, CZ1, wall, "chute_wall"); box(HX1, HY0, CZ0, HX1 + WT, HY1, CZ1, wall, "chute_wall");
+  /* the drop sensor pair: moulded bodies on printed L brackets, 30 below the floor, lenses through 20 mm holes in the side walls */
+  const SZ = FZ - .03, e3 = m("e3jk", { color:0x23252b, roughness:.38, metalness:.15 });
+  for (const o of [-1, 1]){
+    const wx = o < 0 ? HX0 - WT : HX1 + WT, lo = (a, b) => [Math.min(a, b), Math.max(a, b)];
+    const [b0, b1] = lo(wx, wx + o*.003), [f0, f1] = lo(wx, wx + o*.04), [s0, s1] = lo(wx + o*.003, wx + o*.021), sx = wx + o*.012, ox = wx + o*.021;
+    rb(b0, -.38, SZ - .03, b1, -.30, FZ, petg, "chute_sensor_bracket", .0012); rb(f0, -.38, FZ - .003, f1, -.30, FZ, petg, "chute_sensor_bracket", .0012);
+    for (const y of [-.372, -.308]) add(cylX(.0028, .0012, 12), dark, o < 0 ? b0 - .0005 : b1 + .0005, y, SZ - .022, 0, 0, 0, "chute_sensor_bracket_screw");
+    rb(s0, -.365, SZ - .022, s1, -.315, SZ + .022, e3, o < 0 ? "chute_e3jk_emitter" : "chute_e3jk_receiver", .004);
+    /* lens barrel through the wall, a ring on the inside face */
+    add(cylX(.0062, .026, 28), lens, (o < 0 ? HX0 : HX1) + o*.0025 - o*.004, -.34, SZ, 0, 0, 0, "chute_e3jk_lens");
+    add(new THREE.TorusGeometry(.0068, .0011, 8, 28), nemaCap, o < 0 ? HX0 + .0005 : HX1 - .0005, -.34, SZ, 0, Math.PI/2, 0, "chute_e3jk_lens_ring");
+    /* back face: two indicator LEDs, the sensitivity knob with its slot, a label strip */
+    add(cylX(.0016, .0016, 12), led(0xff8a2a), ox + o*.0004, -.354, SZ + .013, 0, 0, 0, "chute_e3jk_led"); add(cylX(.0016, .0016, 12), led(0x52d96b), ox + o*.0004, -.346, SZ + .013, 0, 0, 0, "chute_e3jk_led");
+    add(cylX(.0034, .0022, 20), m("knob", { color:0xc9a35a, roughness:.3, metalness:1 }), ox + o*.0008, -.328, SZ + .012, 0, 0, 0, "chute_e3jk_knob");
+    { const [k0, k1] = lo(ox + o*.0016, ox + o*.0021); box(k0, -.3296, SZ + .0092, k1, -.3264, SZ + .0148, dark, "chute_e3jk_knob_slot"); }
+    { const [l0, l1] = lo(ox, ox + o*.0004); box(l0, -.36, SZ - .012, l1, -.32, SZ + .003, m("e3lbl", { color:0x3a3d46, roughness:.5 }), "chute_e3jk_label"); }
+    /* cable gland under the body, the cable leaves downward */
+    add(cylZ(.0042, .008, 16), dark, sx, -.34, SZ - .026, 0, 0, 0, "chute_e3jk_gland");
+  }
   const beamM = m("laser", { color:0xff2a2a, emissive:0xff2a2a, emissiveIntensity:2.2, transparent:true, opacity:.85, toneMapped:false, depthWrite:false }); beamM.userData.noPick = true;
-  add(cylX(.0009, HX1 - HX0 - .004, 10), beamM, (HX0 + HX1)/2, CCY, SZ, 0, 0, 0, "chute_e3jk_beam");
-  add(cylX(.0028, HX1 - HX0 - .004, 16), m("laserglow", { color:0xff3030, emissive:0xff2020, emissiveIntensity:1.2, transparent:true, opacity:.18, toneMapped:false, depthWrite:false, blending:THREE.AdditiveBlending }), (HX0 + HX1)/2, CCY, SZ, 0, 0, 0, "chute_e3jk_beam");
-  /* the cradle insert: built round a 120 mm opening, hung 72 mm lower and centred in the 243 mm chute */
-  { const g = new THREE.Group(); g.name = "chute_insert"; g.position.set(CCX - .34, CCY + .34, -.0715); G("chute").add(g); SUBP.chute = g; }
-  const HX0c = .28, HX1c = .40, HY0c = -.40, HY1c = -.28, WT = .012, CZ0c = .25;
+  add(cylX(.0009, HX1 - HX0 - .002, 10), beamM, (HX0 + HX1)/2, -.34, SZ, 0, 0, 0, "chute_e3jk_beam");
+  add(cylX(.0028, HX1 - HX0 - .002, 16), m("laserglow", { color:0xff3030, emissive:0xff2020, emissiveIntensity:1.2, transparent:true, opacity:.18, toneMapped:false, depthWrite:false, blending:THREE.AdditiveBlending }), (HX0 + HX1)/2, -.34, SZ, 0, 0, 0, "chute_e3jk_beam");
   /* printed cradle at the bottom of the chute: four walls, a padded trapdoor as its floor, the NFC reader on the back wall */
-  const X0 = HX0c - WT, X1 = HX1c + WT, Y0 = HY0c - WT, Y1 = HY1c + WT, CB = .205;
+  const X0 = HX0 - WT, X1 = HX1 + WT, Y0 = HY0 - WT, Y1 = HY1 + WT, CB = CZ0 - .045;
   const pla = () => m("pla", { color:0x34373f, roughness:.48, metalness:.05 });
-  rb(X0, Y0, CB, X0 + .004, Y1, CZ0c, pla, "chute_cradle", .002); rb(X1 - .004, Y0, CB, X1, Y1, CZ0c, pla, "chute_cradle", .002);
-  rb(X0, Y0, CB, X1, Y0 + .004, CZ0c, pla, "chute_cradle", .002); rb(X0, Y1 - .004, CB, X1, Y1, CZ0c, pla, "chute_cradle", .002);
+  rb(X0, Y0, CB, X0 + .004, Y1, CZ0, pla, "chute_cradle", .002); rb(X1 - .004, Y0, CB, X1, Y1, CZ0, pla, "chute_cradle", .002);
+  rb(X0, Y0, CB, X1, Y0 + .004, CZ0, pla, "chute_cradle", .002); rb(X0, Y1 - .004, CB, X1, Y1, CZ0, pla, "chute_cradle", .002);
   /* an open flange around the top, screwed under the chute walls: the capsule falls straight through it */
-  rb(X0 - .004, Y0 - .004, CZ0c - .004, X1 + .004, Y0 + .004, CZ0c, pla, "chute_cradle_flange", .002); rb(X0 - .004, Y1 - .004, CZ0c - .004, X1 + .004, Y1 + .004, CZ0c, pla, "chute_cradle_flange", .002);
-  rb(X0 - .004, Y0 - .004, CZ0c - .004, X0 + .004, Y1 + .004, CZ0c, pla, "chute_cradle_flange", .002); rb(X1 - .004, Y0 - .004, CZ0c - .004, X1 + .004, Y1 + .004, CZ0c, pla, "chute_cradle_flange", .002);
+  rb(X0 - .004, Y0 - .004, CZ0 - .004, X1 + .004, Y0 + .004, CZ0, pla, "chute_cradle_flange", .002); rb(X0 - .004, Y1 - .004, CZ0 - .004, X1 + .004, Y1 + .004, CZ0, pla, "chute_cradle_flange", .002);
+  rb(X0 - .004, Y0 - .004, CZ0 - .004, X0 + .004, Y1 + .004, CZ0, pla, "chute_cradle_flange", .002); rb(X1 - .004, Y0 - .004, CZ0 - .004, X1 + .004, Y1 + .004, CZ0, pla, "chute_cradle_flange", .002);
   /* the reader stands on the outside of the back wall and reads the capsule through 4 mm of plastic */
-  rb(.291, Y1, CB - .01, .389, Y1 + .011, CB + .055, m("acr", { color:0x141518, roughness:.42 }), "chute_acr122u", .005);
+  rb(.291, Y1, CB - .02, .389, Y1 + .011, CB + .043, m("acr", { color:0x141518, roughness:.42 }), "chute_acr122u", .005);
   const acrl = label("acr", .06, .04, (g, w, h) => { g.fillStyle = "#141518"; g.fillRect(0, 0, w, h); g.strokeStyle = "rgba(150,185,255,.6)"; g.lineWidth = h*.022;
     for (let i = 0; i < 4; i++){ g.beginPath(); g.arc(w/2, h/2, h*(.12 + i*.09), -Math.PI*.3, Math.PI*.3); g.stroke(); g.beginPath(); g.arc(w/2, h/2, h*(.12 + i*.09), Math.PI*.7, Math.PI*1.3); g.stroke(); } }, { transparent:true });
-  add(new THREE.PlaneGeometry(.06, .04), acrl, .34, Y1 + .0112, CB + .022, ...FACE_POS_Y, "chute_acr122u_top");
-  add(cylY(.0022, .0008, 16), led(0x52d96b), .375, Y1 + .0113, CB + .046, 0, 0, 0, "chute_acr122u_led");
-  for (const x of [.296, .384]) add(cylY(.0028, .0012, 12), dark, x, Y1 + .0115, CB + .05, 0, 0, 0, "chute_acr122u_screw");
+  add(new THREE.PlaneGeometry(.06, .04), acrl, .34, Y1 + .0112, CB + .012, ...FACE_POS_Y, "chute_acr122u_top");
+  add(cylY(.0022, .0008, 16), led(0x52d96b), .375, Y1 + .0113, CB + .036, 0, 0, 0, "chute_acr122u_led");
+  for (const x of [.296, .384]) add(cylY(.0028, .0012, 12), dark, x, Y1 + .0115, CB + .04, 0, 0, 0, "chute_acr122u_screw");
   /* trapdoor: hinged on the front edge, held shut by the servo; it swings down and the capsule drops straight into the bin */
   const AXZ = CB + .0015, AY = Y0 + .007;
   const flapM = m("flapM", { color:0x4a4f5c, roughness:.42, metalness:.08 });
   /* the trapdoor, its pad, hinge barrel and lever turn together around the axle (the page swings it open to show how it works) */
-  const trap = new THREE.Group(); trap.name = "chute_trap"; trap.position.set(0, AY, AXZ); trap.userData.trap = true; SUBP.chute.add(trap);
+  const trap = new THREE.Group(); trap.name = "chute_trap"; trap.position.set(0, AY, AXZ); trap.userData.trap = true; CHG.add(trap);
   const TR = (geo, mt, x, y, z, nm) => add(geo, mt, x, y - AY, z - AXZ, 0, 0, 0, nm, trap);
   TR(rbox(X1 - X0 - .01, Y1 - .005 - AY, .003, .004), flapM, (X0 + X1)/2, (AY + Y1 - .005)/2, AXZ, "chute_flap");
   TR(rbox(X1 - X0 - .018, Y1 - .009 - AY - .004, .0045, .003), m("foam", { color:0x24262c, roughness:.95 }), (X0 + X1)/2, (AY + .004 + Y1 - .009)/2, AXZ + .00375, "chute_flap_pad");
@@ -345,7 +438,7 @@ export function buildMachine(THREE, api){
   add(cylX(.0058, .003, 24), m("mg90"), SX0 - .0015, shY, SZ0, 0, 0, 0, "chute_mg90s_boss");
   add(cylX(.0022, .004, 12), m("gearM", { color:0xc9a35a, roughness:.3, metalness:1 }), SX0 - .004, shY, SZ0, 0, 0, 0, "chute_mg90s_shaft");
   /* the horn turns on the servo shaft; the page turns it with the trapdoor */
-  const hornP = new THREE.Group(); hornP.name = "chute_horn_pivot"; hornP.position.set(SX0 - .0055, shY, SZ0); SUBP.chute.add(hornP);
+  const hornP = new THREE.Group(); hornP.name = "chute_horn_pivot"; hornP.position.set(SX0 - .0055, shY, SZ0); CHG.add(hornP);
   add(rbox(.0014, .006, .0185, .0025), m("horn", { color:0xf2f2f4, roughness:.5 }), 0, 0, .00625, 0, 0, 0, "chute_horn", hornP);
   for (const dz of [.006, .0115]) add(cylX(.0007, .0016, 8), dark, 0, 0, dz, 0, 0, 0, "chute_horn_hole", hornP);
   /* pushrod: a straight steel link on the outer faces, a pin into the horn hole and one into the lever hole */
@@ -355,37 +448,53 @@ export function buildMachine(THREE, api){
   { const L = trap.userData.link, A = new THREE.Vector3(L.rx, shY, SZ0 + .0115), B = new THREE.Vector3(L.rx, AY + .001, AXZ + .018), d = B.clone().sub(A);
     rod.position.copy(A).add(B).multiplyScalar(.5); rod.scale.y = d.length(); rod.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize());
     pins[0].position.set(L.rx - .0015, A.y, A.z); pins[1].position.set(L.rx - .0015, B.y, B.z); }
-  /* a printed funnel from the chute walls down to the cradle mouth */
-  { const ft = SZ - .012, fb = CZ0c - .0715 + .001, ox = CCX - .34, oy = CCY + .34, Xo0 = HX0c - WT - .004 + ox, Xo1 = HX1c + WT + .004 + ox, Yo0 = HY0c - WT - .004 + oy, Yo1 = HY1c + WT + .004 + oy;
-    const O = [[HX0, HY0, ft], [HX1, HY0, ft], [HX1, HY1, ft], [HX0, HY1, ft]], I = [[Xo0, Yo0, fb], [Xo1, Yo0, fb], [Xo1, Yo1, fb], [Xo0, Yo1, fb]], pos = [];
-    for (let i = 0; i < 4; i++){ const j = (i + 1) % 4; pos.push(...O[i], ...O[j], ...I[j], ...O[i], ...I[j], ...I[i]); }
-    const fg = new THREE.BufferGeometry(); fg.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); fg.computeVertexNormals();
-    add(fg, m("funnel", { color:0x2b2e36, roughness:.35, metalness:.2, side:THREE.DoubleSide }), 0, 0, 0, 0, 0, 0, "chute_funnel", G("chute")); }
-  /* the prize cup under the chute, emptied through a clear door in the right skin */
-  const GC = G("chute"), binM = () => m("binM", { color:0x2b2e36, roughness:.5, metalness:.05 }), QZ0 = .006, QX0 = HX0 - .003, QX1 = HX1 + .003, QY0 = HY0 - .003, QY1 = HY1 + .003;
-  add(rbox(QX1 - QX0, QY1 - QY0, .004, .006), binM, (QX0 + QX1)/2, (QY0 + QY1)/2, QZ0 + .002, 0, 0, 0, "chute_cup", GC);
-  for (const [a, b, c, d] of [[QX0, QY0, QX0 + .004, QY1], [QX0, QY0, QX1, QY0 + .004], [QX0, QY1 - .004, QX1, QY1]]) add(rbox(c - a, d - b, CZB - QZ0 - .004, .002), binM, (a + c)/2, (b + d)/2, (QZ0 + .004 + CZB)/2, 0, 0, 0, "chute_cup", GC);
-  add(rbox(.003, .2, .15, .004), m("cupdoor", { color:0x1a1d26, roughness:.06, metalness:.1, clearcoat:1, transparent:true, opacity:.55 }, true), .5045, CCY, .1, 0, 0, 0, "chute_cup_door", GC);
-  for (const z of [.04, .16]) box(.503, CCY + .095, z - .012, .507, CCY + .107, z + .012, steel, "chute_cup_door_hinge", GC);
-  box(.506, CCY - .09, .09, .511, CCY - .075, .11, steel, "chute_cup_door_knob", GC);
-  /* landing camera on a printed bracket in the chute's back left corner, looking down at the trapdoor */
-  rb(HX0 + .004, HY1 - .03, CZT - .028, HX0 + .07, HY1, CZT - .024, petg, "chute_c960_clip", .002);
-  rb(HX0, HY1 - .03, CZT - .04, HX0 + .004, HY1, CZT, petg, "chute_c960_clip", .0015);
-  const flapC = new THREE.Vector3(CCX, CCY, .1355);
-  const cam = new THREE.Group(); cam.position.set(HX0 + .042, HY1 - .033, CZT - .038); GC.add(cam);
-  { const yA = flapC.clone().sub(cam.position).normalize(), xA = new THREE.Vector3(0, 0, 1).cross(yA).normalize(), zA = xA.clone().cross(yA);   // lens at the flap, body level
-    cam.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(xA, yA, zA)); }
+  /* C960 clipped to the rear wall at the top, 250 above the flap, looking down at it; its cable leaves through a grommet */
+  /* landing camera outside the chute, behind the window, on a printed L bracket, looking down at the flap */
+  /* a printed shelf under the camera, held to the wall by two side plates that stay clear of the window */
+  /* the shelf has a notch at the front, so the lens looks down through it */
+  rb(.29, HY1 + WT + .021, .181, .39, HY1 + WT + .036, .185, petg, "chute_c960_clip", .002);
+  rb(.29, HY1 + WT, .181, .322, HY1 + WT + .022, .185, petg, "chute_c960_clip", .002); rb(.358, HY1 + WT, .181, .39, HY1 + WT + .022, .185, petg, "chute_c960_clip", .002);
+  for (const x of [.286, .39]) rb(x, HY1 + WT, .161, x + .004, HY1 + WT + .036, .189, petg, "chute_c960_clip", .0015);
+  for (const x of [.288, .392]) for (const z of [.167, .181]) add(cylY(.0022, .0012, 10), dark, x, HY1 + WT + .036 + .0006, z, 0, 0, 0, "chute_c960_clip_screw");
+  const cam = new THREE.Group(); cam.position.set(.34, HY1 + WT + .024, .202); cam.rotation.set(-2.43, 0, 0); CHG.add(cam);
   add(rbox(.064, .02, .024, .009), m("c960", { color:0x121317, roughness:.35, metalness:.2 }), 0, 0, 0, Math.PI/2, 0, 0, "chute_c960", cam);
   add(rbox(.05, .002, .017, .007), m("c960face", { color:0x050507, roughness:.08, metalness:.3, clearcoat:1 }, true), 0, .0105, 0, Math.PI/2, 0, 0, "chute_c960_face", cam);
   add(cylY(.0075, .004, 32), m("ring", { color:0xa8adb7, roughness:.3, metalness:1 }), 0, .0125, 0, 0, 0, 0, "chute_c960_lens_ring", cam);
   add(cylY(.006, .0045, 32), lens, 0, .013, 0, 0, 0, 0, "chute_c960_lens", cam);
+  add(cylY(.0036, .001, 24), m("glass", { color:0x2a3f8c, roughness:.02, metalness:.9, emissive:0x1a2a66, emissiveIntensity:.4 }), 0, .0156, 0, 0, 0, 0, "chute_c960_glass", cam);
   add(cylY(.001, .001, 10), led(0x52d96b), .018, .0112, 0, 0, 0, 0, "chute_c960_led", cam);
+  /* what it sees: a faint cone from the lens to the flap */
   cam.updateMatrixWorld(true); const apex = new THREE.Vector3(0, .016, 0).applyMatrix4(cam.matrixWorld);
-  { const P = [[-.053, -.053], [.053, -.053], [.053, .053], [-.053, .053]].map(([x, y]) => new THREE.Vector3(CCX + x, CCY + y, flapC.z + .002)), pos = [];
+  { const P = [[.287, -.393], [.393, -.393], [.393, -.287], [.287, -.287]].map(([x, y]) => new THREE.Vector3(x, y, AXZ + .002)), pos = [];
     for (let i = 0; i < 4; i++){ const a = P[i], b = P[(i + 1) % 4]; pos.push(apex.x, apex.y, apex.z, a.x, a.y, a.z, b.x, b.y, b.z); }
     const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals();
     const cone = m("viewcone", { color:0x7fb0ff, emissive:0x3b7bff, emissiveIntensity:.8, transparent:true, opacity:.07, depthWrite:false, side:THREE.DoubleSide, toneMapped:false, blending:THREE.AdditiveBlending }); cone.userData.noPick = true;
-    add(g, cone, 0, 0, 0, 0, 0, 0, "chute_c960_view", GC); }
+    add(g, cone, 0, 0, 0, 0, 0, 0, "chute_c960_view");
+    const lp = []; for (const c of P) lp.push(apex.x, apex.y, apex.z, c.x, c.y, c.z);
+    const lg = new THREE.BufferGeometry(); lg.setAttribute("position", new THREE.Float32BufferAttribute(lp, 3));
+    const ln = new THREE.LineSegments(lg, m("viewline", { color:0x9cc0ff, emissive:0x3b7bff, emissiveIntensity:1, transparent:true, opacity:.35, depthWrite:false, toneMapped:false })); ln.userData.part = "chute"; ln.name = "chute_c960_view"; ln.raycast = () => {}; CHG.add(ln); }
+
+  }
+  delete SUBP.chute;
+  /* a funnel from the edges of the 243 hole down to the chute mouth */
+  { const ft = .2495, fb = .2225, O = [[HX0, HY0, ft], [HX1, HY0, ft], [HX1, HY1, ft], [HX0, HY1, ft]], I = [[.2815, -.4255, fb], [.4255, -.4255, fb], [.4255, -.2815, fb], [.2815, -.2815, fb]], pos = [];
+    for (let i = 0; i < 4; i++){ const j = (i + 1) % 4; pos.push(...O[i], ...O[j], ...I[j], ...O[i], ...I[j], ...I[i]); }
+    const fg = new THREE.BufferGeometry(); fg.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); fg.computeVertexNormals();
+    add(fg, m("funnel", { color:0x2b2e36, roughness:.35, metalness:.2, side:THREE.DoubleSide }), 0, 0, 0, 0, 0, 0, "chute_funnel"); }
+  /* the prize bin: long and low under the play floor, about 32 litres (room for every capsule in the machine), on two rails, emptied through a door in the right skin */
+  const binM = () => m("binM", { color:0x2b2e36, roughness:.5, metalness:.05 }), QX0 = .05, QX1 = .465, QY0 = -.465, QY1 = .3, QZ0 = .008, QZ1 = .118;
+  rb(QX0, QY0, QZ0, QX1, QY1, QZ0 + .005, binM, "chute_bin", .012);
+  rb(QX0, QY0, QZ0 + .005, QX0 + .005, QY1, QZ1, binM, "chute_bin", .002); rb(QX1 - .005, QY0, QZ0 + .005, QX1, QY1, QZ1, binM, "chute_bin", .002);
+  rb(QX0, QY0, QZ0 + .005, QX1, QY0 + .005, QZ1, binM, "chute_bin", .002); rb(QX0, QY1 - .005, QZ0 + .005, QX1, QY1, QZ1, binM, "chute_bin", .002);
+  rb(QX1, -.1, .07, QX1 + .004, -.02, .09, binM, "chute_bin_handle", .002);
+  for (const x of [QX0 + .03, QX1 - .055]) box(x, -.475, 0, x + .025, .475, QZ0, steelT, "chute_bin_rail");
+  use("cage");
+  box(.5035, -.44, .035, .5075, .2, .21, pvc, "cage_bin_door");
+  for (const z of [.06, .185]){ box(.503, .19, z - .012, .509, .206, z + .012, steel, "cage_bin_door_hinge"); add(cylZ(.0018, .024, 10), steel, .509, .204, z, 0, 0, 0, "cage_bin_door_hinge_pin"); }
+  box(.5075, -.42, .11, .5135, -.4, .14, steel, "cage_bin_door_knob");
+  /* the E-stop cable: from the switch at the front, under the floor, to the supply behind the service door */
+  long(() => { harness([[.35, -.444, .195], [.27, -.444, .2], [.27, .38, .2], [-.2475, .38, .2], [-.2475, .41, .12], [-.2475, .423, .088], [-.2735, .423, .088]], .0015, wireR, "el_wire_estop");
+    harness([[.35, -.444, .21], [.26, -.444, .212], [.26, .385, .212], [-.3145, .385, .212], [-.3145, .455, .2195]], .0015, wireR, "el_wire_estop"); });
 
   /* =========================================================================================== capsules: clear, one colour, size not fixed */
   use("capsules");
@@ -525,9 +634,47 @@ export function buildMachine(THREE, api){
   add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(coil, false, "centripetal"), 1800, .0016, 8), m("coil", { color:0x0e0f12, roughness:.38, metalness:.15 }), 0, 0, 0, 0, 0, 0, "claw_coil_cable");
 
 
-  /* =========================================================================================== play camera: webcam on the back of the top ring */
+  /* =========================================================================================== play camera: webcam under a printed block in the front left corner of the top ring */
   use("camera");
-  sm("camera", m("c920", { color:0x111215, roughness:.35, metalness:.2 }), "camera_c920");
+  const TOPZ = mz(-25);                                   // underside of the top ring
+  box(-.475, -.475, TOPZ - .04, -.415, -.415, TOPZ, petg, "camera_block");
+  const cg = new THREE.Group(); cg.position.set(-.445, -.445, TOPZ - .052); cg.rotation.z = -Math.PI/4; G("camera").add(cg);
+  const c2 = new THREE.Group(); c2.rotation.x = -.78; cg.add(c2);
+  add(BOX(.04, .03, .012), dark, 0, -.004, .006, 0, 0, 0, "camera_clip", cg); add(BOX(.03, .004, .022), dark, 0, -.017, -.005, 0, 0, 0, "camera_clip", cg);
+  add(new THREE.CapsuleGeometry(.0145, .066, 8, 16).rotateZ(Math.PI/2), m("c920", { color:0x111215, roughness:.35, metalness:.2 }), 0, 0, -.008, 0, 0, 0, "camera_c920", c2);
+  add(new THREE.CapsuleGeometry(.0128, .062, 8, 16).rotateZ(Math.PI/2).scale(1, .35, .92), m("face", { color:0x050507, roughness:.08, metalness:.3, clearcoat:1, clearcoatRoughness:.05 }, true), 0, .0108, -.008, 0, 0, 0, "camera_c920_face", c2);
+  add(cylY(.0095, .006, 40), nemaCap, 0, .0145, -.008, 0, 0, 0, "camera_c920_lens_ring", c2);
+  add(cylY(.0078, .0062, 40), lens, 0, .0149, -.008, 0, 0, 0, "camera_c920_lens", c2);
+  add(cylY(.0048, .001, 32), m("glass", { color:0x2a3f8c, roughness:.02, metalness:.9, emissive:0x1a2a66, emissiveIntensity:.4 }), 0, .0181, -.008, 0, 0, 0, "camera_c920_glass", c2);
+  for (const dx of [-.026, .026]) add(cylY(.0016, .001, 12), m("mic", { color:0x1a1b1f, roughness:.4, metalness:.6 }), dx, .0153, -.008, 0, 0, 0, "camera_c920_mic", c2);
+  add(cylY(.0012, .001, 12), led(0xffffff), .016, .0153, -.008, 0, 0, 0, "camera_c920_led", c2);
+
+
+  /* =========================================================================================== cables: the motion build's own routes (mm), at the export pose */
+  use("wiring");
+  { const V = (x, y, z) => new THREE.Vector3(x, y, z), BACK = MP.BOX_D + 12, LOOP_X = -28, LOOP_L = 1000, HOLE = [60, MP.FLOOR_TOP - 60];
+    const UNO = [300, 955, -1030], PI = [550, 955, -995];                                     // the boards on the electronics plate behind the service door
+    const loopPts = (x, Y, z0) => { const sp = BACK - Y, h = Math.max(25, (LOOP_L - sp - 65)/2), pts = []; for (let t = 0; t <= 1.0001; t += .1) pts.push(V(x, Y + sp*t, z0 + (-40 - z0)*t - h*Math.sin(Math.PI*t))); return pts; };
+    const toCtrl = (x, k, t = UNO) => { const zh = HOLE[1] - k*3; return [V(x, BACK, -40), V(x, BACK, zh), V(HOLE[0] + k*4, BACK, zh), V(HOLE[0] + k*4, 985, zh), V(t[0] + k*4, 985, t[2] + 8), V(t[0] + k*4, t[1], t[2] + 8)]; };
+    const Y = MP.Y_REF, X = MP.X_REF, yc = Y - (MP.CHAIN_A[0] + MP.CHAIN_A[1])/2, [a, b, c] = [MP.PLUG_YL, MP.PLUG_YR, MP.ES_Y];
+    const px = MP.PLUG_X, ex = MP.ES_X, pw = MP.PLUG_W, ez = MP.ES_Z;
+    const cm = V(X, yc, MP.ZT_X + MP.Z_HI + 9), cf = V(MP.CHAIN_FIX_X - 10, yc, MP.ZT_X + MP.Z_LO);
+    const hz = (k, start) => [...start, V(LOOP_X - k*3, Y + 4*k, 26), ...loopPts(LOOP_X - k*3, Y + 4*k, 26).slice(1), ...toCtrl(LOOP_X - k*3, k)];
+    const slot = Y + 8, lowSlot = MP.ZT_X - 30;
+    const R = {
+      yl:[[0xf28c28, 2.6], [V(...a), V(a[0], a[1], a[2] + 10), V(a[0], BACK, a[2] + 10), ...toCtrl(a[0], 0)]],
+      yes:[[0x3fa34d, 1.4], [V(c[0], c[1], c[2] - 18), V(-6, c[1], 8), V(-6, BACK, 8), ...toCtrl(-6, 1)]],
+      yr:[[0xd6a019, 2.6], [V(...b), V(b[0], b[1], b[2] + 10), V(b[0], BACK, b[2] + 10), ...toCtrl(b[0], 2)]],
+      x:[[0x2b8cd6, 2.6], hz(0, [V(...px), V(px[0], px[1], px[2] + 12), V(LOOP_X, px[1], px[2] + 12)])],
+      xes:[[0x66c27a, 1.4], hz(1, [V(...ex), V(ex[0], slot, lowSlot), V(6, slot, lowSlot), V(LOOP_X - 3, slot, 70)])],
+      w1:[[0x7a4fd6, 2.6], [V(...pw), V(pw[0], pw[1], pw[2] + 14), V(pw[0], yc, pw[2] + 14), cm]], w2:[[0x7a4fd6, 2.6], hz(2, [cf, V(30, yc, 72), V(LOOP_X - 6, yc, 72)])],
+      z1:[[0x9ad47a, 1.4], [V(...ez), V(ez[0], ez[1] - 6, ez[2] + 70), V(ez[0], yc - 4, MP.ZT_X + 72), V(X - 4, yc - 4, cm.z)]], z2:[[0x9ad47a, 1.4], hz(3, [V(cf.x, cf.y - 4, cf.z), V(30, yc - 4, 74), V(LOOP_X - 9, yc - 4, 74)])],
+      a1:[[0x1c1b19, 2.0], [V(X + MP.WSIGN*MP.EYE_W, Y - MP.EYE_A, MP.ZT_X + 70), V(X + 6, yc + 4, cm.z)]], a2:[[0x1c1b19, 2.0], hz(4, [V(cf.x, cf.y + 4, cf.z), V(30, yc + 4, 76), V(LOOP_X - 12, yc + 4, 76)])],
+      /* the play camera's USB: along the inside of the left top ring to the back, over it, then down the back like the rest */
+      cam:[[0xc0392b, 2.0], [V(55, 55, -70), V(32, 45, -44), V(32, 300, -40), V(32, 960, -40), V(32, 990, 6), V(32, BACK, 6), ...toCtrl(32, 0, PI)]],
+    };
+    for (const [k, [[col, r], pts]] of Object.entries(R)){ const P = pts.map(v => new THREE.Vector3(mm(v.x), mm(v.y), mz(v.z)));
+      add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(P, false, "centripetal"), Math.max(24, P.length*8), r/1000, 8, false), m("cable" + k.replace(/\d/, ""), { color:col, roughness:.55 }), 0, 0, 0, 0, 0, 0, "wire_" + k); } }
 
   return { parts, capsules, dims:{ FZ, FT, HX0, HX1, HY0, HY1, CR, XC, YC, CT, LX, LY, IN, PY1 } };
 }

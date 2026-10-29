@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=1";
+import { buildMachine } from "./anatomy-metal.js?v=2";
 
 const $ = s => document.querySelector(s);
 /* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
@@ -15,17 +15,17 @@ const PARTS = [
     text:["A welded frame of square steel tube.", "Four posts and four rings: ground, floor, lip and top.", "Two crossbars and a frame round the prize hole carry the floor.", "Adjustable feet below."],
     subs:[["Posts", ["frame_post"]], ["Rings", ["frame_rail"]], ["Floor crossbars", ["frame_floor_rail"]], ["Adjustable feet", ["frame_foot"], { ph:1.42, one:true }]], proof:"Built from the parts list" },
   { id:"cage", n:"02", name:"Skins and windows", spec:"Black panels, clear windows", ph:1.0, th:-1.2, anchor:[-.3,-.3,.25], ex:[0,0,.2],
-    text:["A black floor with one prize hole, front right.", "Two low walls fence the drop zone.", "Clear windows on the front and the right.", "Black panels on the base, the back and the left.", "Riveted to the frame all round."],
-    subs:[["Floor", ["cage_floor"]], ["Drop zone walls", ["cage_prize_wall"]], ["Base panels", ["cage_skin"]], ["Showcase back", ["cage_showcase"]], ["Rivets", ["cage_rivet"]], ["Clear windows", []]], proof:"Watched from every side" },
-  { id:"panel", n:"03", name:"Service door", spec:"Black panel, anodised plates", ph:1.32, th:-1.57, anchor:[.05,.505,.17], ex:[0,.5,0],
-    text:["The back of the base opens for service.", "Emergency stop, scan to play QR, GRABLAB plate.", "The electronics sit right behind it."],
-    subs:[["Emergency stop", ["panel_estop"]], ["Scan to play", ["panel_qr", "panel_scan"]], ["GRABLAB plate", ["panel_wordmark", "panel_trim"]], ["Door", ["panel_door", "panel_screw"]]], proof:"No joystick. Browser only" },
+    text:["A black floor with one prize hole, front right.", "Two low walls fence the drop zone.", "Clear windows on the front, the left and the right.", "Black panels on the base and the back of the showcase.", "The back of the base opens for service.", "Riveted to the frame all round."],
+    subs:[["Floor", ["cage_floor"]], ["Drop zone walls", ["cage_prize_wall"]], ["Base panels", ["cage_skin"]], ["Showcase back", ["cage_showcase"]], ["Service door", ["cage_door"]], ["Prize bin door", ["cage_bin_door"]], ["Rivets", ["cage_rivet"]], ["Clear windows", []]], proof:"Watched from every side" },
+  { id:"panel", n:"03", name:"Front panel", spec:"Black panel, anodised plates", ph:1.32, th:1.57, anchor:[0,-.505,.17], ex:[0,-.5,0],
+    text:["The face of the machine, under the window.", "Emergency stop, scan to play QR, GRABLAB plate."],
+    subs:[["Emergency stop", ["panel_estop"]], ["Scan to play", ["panel_qr", "panel_scan"]], ["GRABLAB plate", ["panel_wordmark", "panel_trim"]], ["Panel", ["panel_skin"]]], proof:"No joystick. Browser only" },
   { id:"electronics", n:"04", name:"Electronics", spec:"Boards and wiring on one plate", ph:1.36, th:1.57, anchor:[.04,.45,.12], ex:[0,.24,0],
     text:["Power, motion and claw drivers on one plate.", "A small computer runs the play and the stream.", "A secure chip signs every event.", "Its key never leaves the chip."],
     subs:[["Secure chip", ["el_optiga"]], ["Computer", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
-  { id:"chute", n:"05", name:"Chute and prize cup", spec:"Black chute, printed cradle", ph:1.22, th:.4, anchor:[.354,-.354,.15], ex:[.3,-.34,0],
-    text:["A square chute under the prize hole.", "A red light beam sees the capsule fall.", "A funnel lands it on a padded trapdoor, filmed up close.", "The NFC reader takes its UID.", "Then the trapdoor drops it into the prize cup."],
-    subs:[["Chute and funnel", ["chute_wall", "chute_funnel"]], ["Drop sensor, light beam", ["chute_e3jk", "chute_sensor"]], ["Landing camera", ["chute_c960"]], ["NFC reader", ["chute_acr122u"]], ["Printed cradle", ["chute_cradle", "chute_axle_block"]], ["Trapdoor and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Prize cup", ["chute_cup"]]], proof:"Seen twice: beam and camera" },
+  { id:"chute", n:"05", name:"Chute and prize bin", spec:"Black chute, printed cradle", ph:1.22, th:.4, anchor:[.354,-.354,.15], ex:[.3,-.3,0],
+    text:["A funnel and a chute under the prize hole.", "A red light beam sees the capsule fall.", "It lands on a padded trapdoor, filmed up close.", "The NFC reader takes its UID.", "Then the trapdoor drops it into the long prize bin."],
+    subs:[["Chute and funnel", ["chute_wall", "chute_funnel"]], ["Drop sensor, light beam", ["chute_e3jk", "chute_sensor"]], ["Landing camera", ["chute_c960"]], ["NFC reader", ["chute_acr122u"]], ["Printed cradle", ["chute_cradle", "chute_axle_block"]], ["Trapdoor and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Prize bin", ["chute_bin"]]], proof:"Seen twice: beam and camera" },
   { id:"capsules", n:"06", name:"Capsules", spec:"Clear plastic, NFC sticker", ph:1.0, th:-1.2, anchor:[.1,.1,.29], ex:[0,0,.42],
     text:["Clear two piece shells, NFC sticker inside.", "Factory UID, read only.", "Size set by the grip test.", "Click one to open it."],
     subs:[["Clear two piece shell", []], ["NFC sticker", []], ["Size set by the grip test", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
@@ -38,16 +38,16 @@ const PARTS = [
   { id:"claw", n:"09", name:"Claw", spec:"Printed body, steel pins", ph:1.1, th:1.2, chain:["gantry", "winch"], anchor:[-.031,-.056,.8], ex:[0,0,-.2], skip:["claw_coil_cable", "claw_line"],
     text:["A printed claw with three fingers.", "A 12 V actuator opens and closes them.", "It hangs from a swivel on the line.", "A coiled cable brings the power down."],
     subs:[["Swivel", ["claw_swivel"]], ["Cap", ["claw_cap"]], ["Linear actuator", ["claw_actuator"]], ["Body", ["claw_body", "claw_hub"]], ["Fingers", ["claw_finger", "claw_pad", "claw_lug", "claw_rod", "claw_bearing", "claw_link", "claw_spreader"]], ["Coil cable", ["claw_coil", "claw_cable_tie"]]], proof:"Grip measured before you play" },
-  { id:"camera", n:"10", name:"Play camera", spec:"Webcam on the top ring", ph:1.2, th:-1.2, anchor:[0,.46,1.09], ex:[0,.15,.1],
-    text:["A webcam on the back of the top ring, looking down.", "Its picture is the stream you play from."],
-    subs:[["Webcam", ["camera_c920"]]], proof:"The stream you play" }
+  { id:"camera", n:"10", name:"Play camera", spec:"Webcam on a printed block", ph:1.25, th:-.55, anchor:[-.44,-.44,1.04], ex:[-.15,-.15,.1],
+    text:["A webcam in the front corner, tilted down.", "Its picture is the stream you play from."],
+    subs:[["Webcam", ["camera_c920"]], ["Mount", ["camera_block", "camera_clip"]]], proof:"The stream you play" }
 ];
 const byId = id => PARTS.find(p => p.id === id);
 const ICON = { frame:"assets/parts/post.png", cage:"assets/parts/mdf.png", panel:"assets/parts/estop.png", electronics:"assets/parts/optiga.png", chute:"assets/parts/funnel.png", capsules:"assets/parts/capsule.png", gantry:"assets/parts/rail.png", winch:"assets/parts/spool.png", claw:"assets/parts/claw.png", camera:"assets/parts/webcam.png" };
 const SUBICON = {
   "Posts":"assets/parts/post.png", "Rings":"assets/parts/framering.png", "Floor crossbars":"assets/parts/framering.png", "Angle brackets":"assets/parts/bracket.png", "Adjustable feet":"assets/parts/foot.png",
   "Floor":"assets/parts/mdf.png", "Drop zone walls":"assets/parts/guard.png", "Base panels":"assets/parts/mdf.png", "Showcase back":"assets/parts/mdf.png", "Rivets":"assets/parts/bracket.png", "Clear windows":"assets/parts/guard.png", "Drop zone guard and funnel":"assets/parts/guard.png", "Cable grommets":"assets/parts/gland.png", "Acrylic walls":"assets/parts/guard.png",
-  "Emergency stop":"assets/parts/estop.png", "Scan to play":"assets/parts/qr.png", "GRABLAB plate":"assets/brand/mark-chrome-256.png", "Door":"assets/parts/mdf.png",
+  "Emergency stop":"assets/parts/estop.png", "Scan to play":"assets/parts/qr.png", "GRABLAB plate":"assets/brand/mark-chrome-256.png", "Panel":"assets/parts/mdf.png", "Service door":"assets/parts/mdf.png",
   "Secure chip":"assets/parts/optiga.png", "Computer":"assets/parts/pi.png", "Case and fan":"assets/parts/fan.png", "Power supply":"assets/parts/psu.png", "Motion controller":"assets/parts/motionboard.png",
   "Claw driver":"assets/parts/clawdriver.png", "5 V supply":"assets/parts/relay.png", "Power splitters":"assets/parts/wago.png", "Wiring":"assets/parts/coil.png",
   "Chute and funnel":"assets/parts/funnel.png", "Drop sensor, light beam":"assets/parts/beam.png", "Prize cup":"assets/parts/drawer.png", "Rubber curtain":"assets/parts/guard.png", "Landing camera":"assets/parts/webcam.png", "NFC reader":"assets/parts/nfcreader.png", "Printed cradle":"assets/parts/bracket.png", "Trapdoor and servo":"assets/parts/servo.png", "Prize bin door":"assets/parts/drawer.png", "Prize bin":"assets/parts/drawer.png",
@@ -71,7 +71,7 @@ try {
 renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
 renderer.shadowMap.enabled = false;
 const scene = new THREE.Scene(); scene.background = null;
-const camera = new THREE.PerspectiveCamera(32, 1, .05, 40);
+const camera = new THREE.PerspectiveCamera(32, 1, .08, 20);
 const root = new THREE.Group(); root.rotation.x = -Math.PI/2; scene.add(root);   // z-up scene into y-up three
 
 /* ---------- lights ---------- */
