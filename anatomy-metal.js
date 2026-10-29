@@ -372,8 +372,9 @@ export function buildMachine(THREE, api){
   rb(HX0 + .004, HY1 - .03, CZT - .028, HX0 + .07, HY1, CZT - .024, petg, "chute_c960_clip", .002);
   rb(HX0, HY1 - .03, CZT - .04, HX0 + .004, HY1, CZT, petg, "chute_c960_clip", .0015);
   const flapC = new THREE.Vector3(CCX, CCY, .1355);
-  const cam = new THREE.Group(); cam.position.set(HX0 + .04, HY1 - .018, CZT - .038); GC.add(cam);
-  cam.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), flapC.clone().sub(cam.position).normalize());
+  const cam = new THREE.Group(); cam.position.set(HX0 + .042, HY1 - .033, CZT - .038); GC.add(cam);
+  { const yA = flapC.clone().sub(cam.position).normalize(), xA = new THREE.Vector3(0, 0, 1).cross(yA).normalize(), zA = xA.clone().cross(yA);   // lens at the flap, body level
+    cam.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(xA, yA, zA)); }
   add(rbox(.064, .02, .024, .009), m("c960", { color:0x121317, roughness:.35, metalness:.2 }), 0, 0, 0, Math.PI/2, 0, 0, "chute_c960", cam);
   add(rbox(.05, .002, .017, .007), m("c960face", { color:0x050507, roughness:.08, metalness:.3, clearcoat:1 }, true), 0, .0105, 0, Math.PI/2, 0, 0, "chute_c960_face", cam);
   add(cylY(.0075, .004, 32), m("ring", { color:0xa8adb7, roughness:.3, metalness:1 }), 0, .0125, 0, 0, 0, 0, "chute_c960_lens_ring", cam);
@@ -396,7 +397,7 @@ export function buildMachine(THREE, api){
   const gTag = new THREE.CircleGeometry(.0105, 32);
   let seed = 11; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
   /* a hexagonal pack on the floor, kept off the drop zone walls, and a small pile on top of it */
-  const d = 2*CR + .0012, dy = d*Math.sqrt(3)/2, Lc = .47 - CR, spots = [], keep = new Set();
+  const d = 2*CR + .0012, dy = d*Math.sqrt(3)/2, Lc = .455 - CR, spots = [], keep = new Set();
   const clear = (x, y) => !(x > HX0 - .006 - CR && y < HY1 + .006 + CR);
   const z1 = FZ + FT + CR + .0002, z2 = z1 + CR*1.633 - .0004;
   for (let r = 0; ; r++){ const y = -Lc + r*dy; if (y > Lc) break;
