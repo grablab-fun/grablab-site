@@ -55,7 +55,9 @@ section{margin-top:clamp(56px,10vh,110px)}
 .chip{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:9px 14px;border-radius:999px;border:1px solid rgba(180,186,255,.25);background:rgba(10,16,48,.62);color:var(--ink-2);cursor:pointer;transition:all .2s}
 .chip:hover{color:var(--ink);border-color:rgba(180,186,255,.5)}
 .chip.on{color:var(--bg);background:var(--ink);border-color:var(--ink)}
-.copy{margin-left:auto;border-color:rgba(255,178,74,.4);color:var(--gold-soft)}
+.hrow{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:10px 0 18px}
+.hrow h2{margin:0}
+.copy{flex:none;margin-bottom:6px;border-color:rgba(255,178,74,.4);color:var(--gold-soft)}
 .copy:hover{border-color:var(--gold);color:var(--gold)}
 /* phases */
 .phase{margin-top:48px}
@@ -97,7 +99,7 @@ section{margin-top:clamp(56px,10vh,110px)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 @media (max-width:1100px){.top{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:760px){.top{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.grid,.top,.skip{grid-template-columns:1fr}.copy{margin-left:0}}
+@media (max-width:560px){.grid,.top,.skip{grid-template-columns:1fr}.hrow{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -121,7 +123,7 @@ section{margin-top:clamp(56px,10vh,110px)}
 
   <section>
     <div class="k">The full list</div>
-    <h2>Every partner</h2>
+    <div class="hrow"><h2>Every partner</h2><button class="chip copy" id="copy">Copy as text</button></div>
     <div class="bar" id="filters"></div>
     <div id="phases"></div>
   </section>
@@ -163,7 +165,7 @@ const P = [
   {n:"Jupiter",h:"jupdevrel",c:"Payments",p:1,
    need:["Listed as a Jupiter Plugin integration.","Co-marketing at launch.","Help with referral fees on swaps."],
    get:["Every play can start with a Jupiter swap."]},
-  {n:"Squads",h:"SquadsProtocol",c:"Escrow",p:1,
+  {n:"Squads",h:"SquadsProtocol",c:"Trust",p:1,
    need:["Multisig for the prize escrow and treasury.","Program upgrade authority under Squads."],
    get:["A public trust story: prizes nobody can pull."]},
   {n:"Sunrise",h:"sunrise",c:"Prizes",p:1,
@@ -175,11 +177,11 @@ const P = [
   {n:"pump.fun",h:"pumpfun",c:"Projects",p:1,
    need:["Launch nights for coins that graduate.","Intro to their partnerships team."],
    get:["A new reason for holders to stay after launch."]},
-  {n:"OtterSec",h:"osec_io",c:"Security",p:1,
+  {n:"OtterSec",h:"osec_io",c:"Trust",p:1,
    need:["Audit of the escrow and payout program.","Startup pricing, or an ecosystem sponsored audit."],
    get:["An audit badge on a product built on public trust."]},
 
-  {n:"Streamflow",h:"streamflow_fi",c:"Escrow",p:2,
+  {n:"Streamflow",h:"streamflow_fi",c:"Trust",p:2,
    need:["Prize locks that anyone can verify before the night."],
    get:["A new use case for locks, live on stream."]},
   {n:"Metaplex",h:"metaplex",c:"Prizes",p:2,
@@ -197,13 +199,13 @@ const P = [
   {n:"Dialect",h:"saydialect",c:"Distribution",p:2,
    need:["Blinks so people book a play or claim a prize right from X."],
    get:["A physical machine driven from a tweet."]},
-  {n:"LiveKit",h:"livekit",c:"Live play",p:2,
+  {n:"LiveKit",h:"livekit",c:"Infra",p:2,
    need:["Low latency video plus remote control.","Startup program."],
    get:["A physical AI showcase on their stack."]},
-  {n:"Switchboard",h:"switchboardxyz",c:"Proofs",p:2,
+  {n:"Switchboard",h:"switchboardxyz",c:"Trust",p:2,
    need:["Bring signed machine events on-chain to release or void a payout."],
    get:["An oracle use case from real hardware."]},
-  {n:"Irys",h:"irys_xyz",c:"Proofs",p:2,
+  {n:"Irys",h:"irys_xyz",c:"Trust",p:2,
    need:["Permanent storage for play proofs: clip hash, sensors, grip."],
    get:["Every play receipt lives on Irys."]},
   {n:"Sumsub",h:"sumsub",c:"Compliance",p:2,
@@ -213,10 +215,10 @@ const P = [
    need:["EU lawyer for gambling law and MiCA.","Prize mechanics, tokenized stocks as prizes, company setup."],
    get:["A clear, paying client."]},
 
-  {n:"Pyth",h:"PythNetwork",c:"Proofs",p:3,
+  {n:"Pyth",h:"PythNetwork",c:"Trust",p:3,
    need:["Live USD value for every prize in the sealed inventory."],
    get:["Prices shown on a public, fun product."]},
-  {n:"Dune",h:"Dune",c:"Data",p:3,
+  {n:"Dune",h:"Dune",c:"Infra",p:3,
    need:["A featured public dashboard: plays, wallets, prizes paid, refunds."],
    get:["A transparency showcase."]},
   {n:"Crossmint",h:"crossmint",c:"Prizes",p:3,
@@ -274,8 +276,7 @@ document.getElementById("phases").innerHTML = [1, 2, 3].map(p =>
 // category filters
 const cats = ["All", ...new Set(P.map(x => x.c))];
 const fb = document.getElementById("filters");
-fb.innerHTML = cats.map((c, i) => `<button class="chip${i ? "" : " on"}" data-f="${c}">${c}</button>`).join("") +
-  `<button class="chip copy" id="copy">Copy as text</button>`;
+fb.innerHTML = cats.map((c, i) => `<button class="chip${i ? "" : " on"}" data-f="${c}">${c}</button>`).join("");
 fb.addEventListener("click", e => {
   const b = e.target.closest("[data-f]"); if (!b) return;
   fb.querySelectorAll("[data-f]").forEach(x => x.classList.toggle("on", x === b));
