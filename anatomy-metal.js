@@ -524,19 +524,19 @@ export function buildMachine(THREE, api){
   const gSeam = new THREE.TorusGeometry(CR + .00005, .00028, 6, 48), holeM = m("hole", { color:0x2e2d2b, roughness:.9 }), seamM = m("seam", { color:0xb9b7b0, roughness:.8 });
   const gTag = new THREE.CircleGeometry(.0105, 32);
   let seed = 11; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
-  /* a hexagonal pack on the floor, kept off the drop zone walls, and a small pile on top of it */
-  const d = 2*CR + .0012, dy = d*Math.sqrt(3)/2, Lc = .455 - CR, spots = [], keep = new Set();
-  const clear = (x, y) => !(x > HX0 - .006 - CR && y < HY1 + .006 + CR);
-  const z1 = FZ + FT + CR + .0002, z2 = z1 + CR*1.633 - .0004;
-  for (let r = 0; ; r++){ const y = -Lc + r*dy; if (y > Lc) break;
-    for (let c = 0; ; c++){ const x = -Lc + (r % 2 ? d/2 : 0) + c*d; if (x > Lc) break; if (clear(x, y)){ spots.push([x, y, z1]); keep.add(r + "," + c); } } }
-  for (let r = 0; ; r += 2){ const y = -Lc + r*dy; if (y > Lc) break;
-    for (let c = 0; ; c++){ const x = -Lc + c*d; if (x > Lc) break;
-      const x2 = x + d/2, y2 = y + dy/3; if (Math.hypot(x2 + .1, y2 - .08) > .19) continue;
-      if (keep.has(r + "," + c) && keep.has(r + "," + (c + 1)) && keep.has((r + 1) + "," + c)) spots.push([x2, y2, z2]); } }
+  /* a heap, not a grid: balls dropped one by one at random spots (more towards the middle), each settles on the floor or on the
+     balls under it; of a few tries per ball the lowest wins, so holes fill first and a soft mound grows. Seeded, so it is the same every load. */
+  const Lc = .471 - CR, spots = [], z0 = FZ + FT + CR + .0002, D2 = 4*CR*CR;
+  const clear = (x, y) => !(x > HX0 - .004 - CR && y < HY1 + .004 + CR);
+  let hs = 23; const hr = () => (hs = (hs*16807) % 2147483647)/2147483647;
+  const restZ = (x, y) => { let z = z0; for (const [bx, by, bz] of spots){ const dd = (x - bx)**2 + (y - by)**2; if (dd < D2) z = Math.max(z, bz + Math.sqrt(D2 - dd) + .0001); } return z; };
+  for (let n = 0; n < 470; n++){ let best = null;
+    for (let t = 0; t < 7; t++){ const g = () => (hr() + hr() + hr() - 1.5)/1.5, x = Math.max(-Lc, Math.min(Lc, -.06 + g()*.62)), y = Math.max(-Lc, Math.min(Lc, .05 + g()*.62));
+      if (!clear(x, y)) continue; const z = restZ(x, y); if (!best || z < best[2]) best = [x, y, z]; }
+    if (best && best[2] < z0 + .125) spots.push(best); }
   spots.forEach(([x, y, z], k) => {
     const o = new THREE.Group(); o.name = "capsule_" + String(k + 1).padStart(3, "0"); o.position.set(x, y, z);
-    o.quaternion.setFromEuler(new THREE.Euler((rnd() - .5)*.7, (rnd() - .5)*.7, rnd()*6.28));
+    o.quaternion.setFromEuler(new THREE.Euler(rnd()*6.28, rnd()*6.28, rnd()*6.28));
     const lidG = new THREE.Group(); o.add(lidG);
     const t = new THREE.Mesh(gTop, shell), b = new THREE.Mesh(gBot, shell);
     const hl = new THREE.Mesh(gHoles, holeM), sm2 = new THREE.Mesh(gSeam, seamM);
@@ -638,8 +638,8 @@ export function buildMachine(THREE, api){
       seg.quaternion.copy(q1).premultiply(new THREE.Quaternion().setFromUnitVectors(yA, side.clone().projectOnPlane(d).normalize()));
       if (i === 9 || i === 16){ const sl = A(BOX(.0046, .008, .005), slotM, p.x, p.y, p.z, "claw_finger_slot"); sl.quaternion.copy(seg.quaternion); } }
     /* paddle: a rounded triangle, cupped in towards the axis, so the three meet under the cage */
-    const tip = curve.getPointAt(1), sh = new THREE.Shape(), W = .028, H = .044;
-    sh.moveTo(-.009, 0); sh.lineTo(.009, 0); sh.quadraticCurveTo(W, .004, W*.86, H*.6); sh.quadraticCurveTo(W*.6, H, 0, H); sh.quadraticCurveTo(-W*.6, H, -W*.86, H*.6); sh.quadraticCurveTo(-W, .004, -.009, 0);
+    const tip = curve.getPointAt(1), sh = new THREE.Shape(), W = .03, H = .05;
+    sh.moveTo(-.008, 0); sh.lineTo(.008, 0); sh.lineTo(W*.9, H*.78); sh.quadraticCurveTo(W*1.02, H*.97, W*.72, H); sh.quadraticCurveTo(0, H*1.07, -W*.72, H); sh.quadraticCurveTo(-W*1.02, H*.97, -W*.9, H*.78); sh.lineTo(-.008, 0);   // rounded triangle: narrow at the arm, wide at the edge
     const pg = new THREE.ExtrudeGeometry(sh, { depth:.003, bevelEnabled:true, bevelSize:.0012, bevelThickness:.0012, bevelSegments:2, curveSegments:10 }); pg.translate(0, 0, -.0015);
     const along = new THREE.Vector3(-c, -s, -.38).normalize(), nrm = new THREE.Vector3().crossVectors(side, along).normalize();
     const pad = A(pg, blk, tip.x, tip.y, tip.z, "claw_pad"); pad.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(side, along, nrm));
