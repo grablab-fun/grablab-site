@@ -607,3 +607,31 @@ document.addEventListener("click", e => {
   } else if (e.target.closest(".mm-links a") || e.target.closest(".mm-overlay")) closeMenu();
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
+
+/* ---------------- display headings: a full stop sits right against letters whose foot is narrow (P, T, Y, V, W, F) ---------------- */
+(function(){
+  const PULL = { P:-.11, T:-.12, Y:-.1, V:-.09, W:-.05, F:-.1 };
+  function kern(root=document){
+    root.querySelectorAll("h1,h2,h3,.chrome,.hl").forEach(h => {
+      if (!/Anton/i.test(getComputedStyle(h).fontFamily)) return;
+      const up = getComputedStyle(h).textTransform === "uppercase", walk = document.createTreeWalker(h, NodeFilter.SHOW_TEXT), nodes = [];
+      while (walk.nextNode()) nodes.push(walk.currentNode);
+      nodes.forEach((n, i) => {
+        if (n.parentNode.classList && n.parentNode.classList.contains("kp")) return;
+        const s = n.nodeValue; let prev = i ? nodes[i-1].nodeValue.slice(-1) : "";
+        if (!/\./.test(s)) return;
+        const frag = document.createDocumentFragment(); let buf = "";
+        for (const ch of s){
+          const L = up ? prev.toUpperCase() : prev;
+          if (ch === "." && PULL[L] !== undefined){ if (buf) frag.append(buf); buf = ""; const k = document.createElement("span"); k.className = "kp"; k.style.marginLeft = PULL[L] + "em"; k.textContent = "."; frag.append(k); }
+          else buf += ch;
+          prev = ch;
+        }
+        if (buf) frag.append(buf);
+        n.replaceWith(frag);
+      });
+    });
+  }
+  window.glKern = kern;
+  kern(); addEventListener("load", () => kern());
+})();

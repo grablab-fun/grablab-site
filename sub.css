@@ -551,6 +551,5 @@
 .fm:hover h3{color:#fff;text-shadow:0 0 22px rgba(125,176,255,.55)}
 .fm dl{transition:border-color .35s}.fm:hover dl{border-color:rgba(125,176,255,.3)}
 @media(hover:none){.fmts .fm.in:hover{transform:none}.fm:hover .fm-img{transform:none}}
-.kp{margin-left:-.11em}
 .stk-px span{white-space:nowrap}
 @media(min-width:621px){.stk-px{width:150px}}
