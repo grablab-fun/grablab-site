@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=6";
+import { buildMachine } from "./anatomy-metal.js?v=7";
 
 const $ = s => document.querySelector(s);
 /* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
@@ -26,17 +26,17 @@ const PARTS = [
   { id:"chute", n:"05", name:"Chute and prize bin", spec:"Black chute, printed cradle", ph:1.22, th:.4, anchor:[.354,-.354,.15], ex:[.3,-.3,0],
     text:["A funnel and a chute under the prize hole.", "A red light beam sees the capsule fall.", "It lands on a padded trapdoor, filmed up close.", "The NFC reader takes its UID.", "Then the trapdoor drops it into the long prize bin."],
     subs:[["Chute and funnel", ["chute_wall", "chute_funnel"]], ["Drop sensor, light beam", ["chute_e3jk", "chute_sensor"]], ["Landing camera", ["chute_c960"]], ["NFC reader", ["chute_acr122u"]], ["Printed cradle", ["chute_cradle", "chute_axle_block"]], ["Trapdoor and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Prize bin", ["chute_bin"]]], proof:"Seen twice: beam and camera" },
-  { id:"capsules", n:"06", name:"Capsules", spec:"Clear plastic, NFC sticker", ph:1.0, th:-1.2, anchor:[.1,.1,.29], ex:[0,0,.42],
-    text:["Clear two piece shells, NFC sticker inside.", "Factory UID, read only.", "Size set by the grip test.", "Click one to open it."],
-    subs:[["Clear two piece shell", []], ["NFC sticker", []], ["Size set by the grip test", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
+  { id:"capsules", n:"06", name:"Capsules", spec:"Printed white shell, NFC sticker", ph:1.0, th:-1.2, anchor:[.1,.1,.29], ex:[0,0,.42],
+    text:["Printed two piece shells, NFC sticker inside.", "Factory UID, read only.", "Size set by the grip test.", "Click one to open it."],
+    subs:[["Printed two piece shell", []], ["NFC sticker", []], ["Size set by the grip test", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
   { id:"gantry", n:"07", name:"Gantry", spec:"Aluminium rails, printed blocks", ph:1.0, th:-1.9, anchor:[.47,-.2,1.16], ex:[0,0,.5],
     text:["Two rails front to back, one beam across.", "Printed corner blocks hold the motors and idlers.", "Three stepper motors pull toothed belts.", "End stops on X and Y, a drag chain for the cables."],
     subs:[["Y rails", ["gantry_y_rail"]], ["X beam", ["gantry_x_beam"]], ["Corner blocks", ["gantry_block"]], ["Carriages", ["gantry_y_carriage", "gantry_y_wheel", "gantry_saddle"]], ["Motors", ["gantry_motor"]], ["Belts and pulleys", ["gantry_y_belt", "gantry_x_belt", "gantry_pulley", "gantry_idler", "gantry_belt_cap"]], ["End stops", ["gantry_endstop"]], ["Drag chain", ["gantry_drag_chain", "gantry_chain_ledge"]]], proof:"Position known to the step" },
   { id:"winch", n:"08", name:"Carriage and winch", spec:"Printed saddle and spool", ph:1.15, th:1.15, chain:["gantry"], anchor:[0,-.04,1.24], ex:[0,-.22,.12],
     text:["The carriage rides the X beam.", "A stepper winds the line on a printed spool.", "The line leaves through a brass eyelet.", "An end stop finds the top."],
     subs:[["Carriage", ["winch_x_carriage", "winch_x_wheel", "winch_saddle"]], ["Winch motor", ["winch_motor", "winch_mount"]], ["Spool and eyelet", ["winch_spool", "winch_eyelet"]], ["Top end stop", ["winch_z_endstop"]], ["Belt clip", ["winch_belt_cap"]]], proof:"Same depth every play" },
-  { id:"claw", n:"09", name:"Claw", spec:"Printed body, steel pins", ph:1.1, th:1.2, chain:["gantry", "winch"], anchor:[-.031,-.056,.8], ex:[0,0,-.2], skip:["claw_coil_cable", "claw_line"],
-    text:["A printed claw with three fingers.", "A 12 V actuator opens and closes them.", "It hangs from a swivel on the line.", "A coiled cable brings the power down."],
+  { id:"claw", n:"09", name:"Claw", spec:"Black print, three paddles", ph:1.1, th:1.2, chain:["gantry", "winch"], anchor:[-.031,-.056,.8], ex:[0,0,-.2], skip:["claw_coil_cable", "claw_line"],
+    text:["A black printed claw with three long arms.", "Closed, the paddles meet into a bowl under the capsule.", "A 12 V linear actuator down the middle opens and closes them.", "It hangs from a swivel on the line.", "A coiled cable brings the power down."],
     subs:[["Swivel", ["claw_swivel"]], ["Cap", ["claw_cap"]], ["Linear actuator", ["claw_actuator"]], ["Body", ["claw_body", "claw_hub"]], ["Fingers", ["claw_finger", "claw_pad", "claw_lug", "claw_rod", "claw_bearing", "claw_link", "claw_spreader"]], ["Coil cable", ["claw_coil", "claw_cable_tie"]]], proof:"Grip measured before you play" },
   { id:"camera", n:"10", name:"Play camera", spec:"Webcam on a printed block", ph:1.25, th:-.55, anchor:[-.44,-.44,1.04], ex:[-.15,-.15,.1],
     text:["A webcam in the front corner, tilted down.", "Its picture is the stream you play from."],
@@ -51,7 +51,7 @@ const SUBICON = {
   "Secure chip":"assets/parts/optiga.png", "Computer":"assets/parts/pi.png", "Case and fan":"assets/parts/fan.png", "Power supply":"assets/parts/psu.png", "Motion controller":"assets/parts/motionboard.png",
   "Claw driver":"assets/parts/clawdriver.png", "5 V supply":"assets/parts/relay.png", "Power splitters":"assets/parts/wago.png", "Wiring":"assets/parts/coil.png",
   "Chute and funnel":"assets/parts/funnel.png", "Drop sensor, light beam":"assets/parts/beam.png", "Prize cup":"assets/parts/drawer.png", "Rubber curtain":"assets/parts/guard.png", "Landing camera":"assets/parts/webcam.png", "NFC reader":"assets/parts/nfcreader.png", "Printed cradle":"assets/parts/bracket.png", "Trapdoor and servo":"assets/parts/servo.png", "Prize bin door":"assets/parts/drawer.png", "Prize bin":"assets/parts/drawer.png",
-  "Clear two piece shell":"assets/parts/capsule.png", "NFC sticker":"assets/parts/nfcsticker.png", "Size set by the grip test":"assets/parts/capsuleopen.png",
+  "Printed two piece shell":"assets/parts/capsule.png", "NFC sticker":"assets/parts/nfcsticker.png", "Size set by the grip test":"assets/parts/capsuleopen.png",
   "Y rails":"assets/parts/rail.png", "X beam":"assets/parts/beam2040.png", "Carriages":"assets/parts/bracket.png", "Corner blocks":"assets/parts/bracket.png", "Motors":"assets/parts/nema17.png", "Belts and pulleys":"assets/parts/belt.png", "End stops":"assets/parts/endstop.png", "Drag chain":"assets/parts/dragchain.png",
   "Carriage":"assets/parts/rail.png", "Winch motor":"assets/parts/nema17.png", "Spool and eyelet":"assets/parts/spool.png", "Top end stop":"assets/parts/endstop.png", "Cable joints":"assets/parts/wago.png", "Belt clip":"assets/parts/belt.png",
   "Swivel":"assets/parts/swivel.png", "Cap":"assets/parts/collar.png", "Linear actuator":"assets/parts/actuator.png", "Body":"assets/parts/claw.png", "Fingers":"assets/parts/claw.png", "Coil cable":"assets/parts/coil.png",
@@ -119,7 +119,7 @@ async function load(){
   for (const [id, g] of Object.entries(M.parts)){ root.add(g); ents.set(id, g); }
   /* draw calls: siblings with the same material and the same name become one mesh, so a weak GPU draws ~hundreds, not ~1900.
      Names survive (card items pick meshes by name); anything that moves on its own is left alone. */
-  const KEEP = STORY ? /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view|gantry|winch|claw/ : /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view/;
+  const KEEP = STORY ? /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view|gantry|winch|claw/ : /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view|claw_link$/;
   (function mergeAll(o){
     for (const c of [...o.children]) if (c.children.length && !c.isMesh) mergeAll(c);
     const groups = new Map();
@@ -485,11 +485,11 @@ const wake = (ms = 2500) => { activeUntil = Math.max(activeUntil, performance.no
 for (const ev of ["pointermove", "pointerdown", "pointerup", "wheel", "keydown", "scroll", "touchmove"]) addEventListener(ev, () => wake(), { passive:true });
 addEventListener("resize", () => wake());
 stage.addEventListener("pointermove", () => { mouseMoved = true; });
-let last = performance.now(), trapG = null, trapT = 0; let binDoorG = null; const linkA = new THREE.Vector3(), linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), XAX = new THREE.Vector3(1, 0, 0), YAX = new THREE.Vector3(0, 1, 0);
+let last = performance.now(), trapG = null, trapT = 0; let binDoorG = null, clawRig = null, clawT = 0; const clawQ = new THREE.Quaternion(); const linkA = new THREE.Vector3(), linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), XAX = new THREE.Vector3(1, 0, 0), YAX = new THREE.Vector3(0, 1, 0);
 function frame(now){
   const raw = now - last, dt = Math.min(.05, raw/1000); last = now;
-  const trapOn = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]);
-  if (!(now < activeUntil || tour || trapOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0 || estop.k > .001 && estop.k < .999)){ requestAnimationFrame(frame); return; }
+  const trapOn = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]), clawOn = selected && selected.id === "claw";
+  if (!(now < activeUntil || tour || trapOn || clawOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0 || estop.k > .001 && estop.k < .999)){ requestAnimationFrame(frame); return; }
   /* frame time watchdog: drop the resolution a step if the device cannot keep up, raise it back when it can */
   if (REC) slow = fast = 0; else if (raw > 28) slow++; else if (raw < 18) fast++;
   const floor = LITE || document.documentElement.classList.contains("lite") ? .6 : 1;
@@ -502,6 +502,12 @@ function frame(now){
   /* the prize bin door swings out while its card item is picked */
   if (!binDoorG) root.traverse(o => { if (o.userData.binDoor) binDoorG = o; });
   if (binDoorG){ const on = selected && selected.id === "cage" && subFocus && /Prize bin door/.test(selected.subs[subFocus.i][0]); binDoorG.rotation.z += ((on ? 1.5 : 0) - binDoorG.rotation.z)*Math.min(1, dt*5); }
+  /* the claw closes and opens while it is picked, then waits open */
+  if (!clawRig) root.traverse(o => { if (o.userData.clawRig) clawRig = o.userData.clawRig; });
+  if (clawRig){ clawT = selected && selected.id === "claw" ? clawT + dt : 0; const want = clawT ? .55*(.5 + .5*Math.cos(clawT*1.7)) : .55;
+    if (Math.abs(want - clawRig.open) > .0005){ clawRig.open += (want - clawRig.open)*Math.min(1, dt*8);
+      for (const arm of clawRig.arms){ const u = arm.userData.clawArm; arm.quaternion.copy(u.q0).multiply(clawQ.setFromAxisAngle(u.side, -clawRig.open)); }
+      for (const l of clawRig.links){ linkB.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); linkD.copy(linkB).sub(l.a); l.mesh.position.copy(l.a).add(linkB).multiplyScalar(.5); l.mesh.scale.y = linkD.length(); l.mesh.quaternion.setFromUnitVectors(YAX, linkD.normalize()); } } }
   if (!trapG) root.traverse(o => { if (o.userData.trap) trapG = o; });
   if (trapG){ const on = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]); trapT = on ? trapT + dt : 0;
     const want = on ? -1.1*(.5 - .5*Math.cos(trapT*2.2)) : 0; trapG.rotation.x += (want - trapG.rotation.x)*Math.min(1, dt*10);

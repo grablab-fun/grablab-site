@@ -509,10 +509,19 @@ export function buildMachine(THREE, api){
   /* =========================================================================================== capsules: clear, one colour, size not fixed */
   use("capsules");
   const capsules = [], CR = .025;
-  const shell = m("shell", { color:0xeef3ff, roughness:.03, metalness:0, clearcoat:1, clearcoatRoughness:.03, transparent:true, opacity:.2, specularIntensity:1, depthWrite:false, side:THREE.DoubleSide }, true);
+  /* printed white shell: matte, layer lines (a stripe map along the latitude), five small holes on the lid, a seam where the halves meet */
+  const layerT = canvasTex(8, 64, (g, W, H) => { g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, H); for (let y = 0; y < H; y += 4){ g.fillStyle = "rgba(120,118,112,.22)"; g.fillRect(0, y, W, 1); } });
+  layerT.wrapS = layerT.wrapT = THREE.RepeatWrapping; layerT.repeat.set(1, 6);
+  const shell = m("shell", { color:0xf2f1ec, map:layerT, roughness:.68, metalness:0, side:THREE.DoubleSide });
   const tagT = new THREE.TextureLoader().load("assets/nfc-tag.png?v=1"); tagT.colorSpace = THREE.SRGBColorSpace; tagT.anisotropy = 8;
   const tagM = m("tag", { map:tagT, alphaTest:.4, roughness:.6, metalness:0 });
-  const gTop = new THREE.SphereGeometry(CR, 28, 12, 0, Math.PI*2, 0, Math.PI/2).rotateX(Math.PI/2), gBot = new THREE.SphereGeometry(CR, 28, 12, 0, Math.PI*2, Math.PI/2, Math.PI/2).rotateX(Math.PI/2);
+  const gTop = new THREE.SphereGeometry(CR, 36, 16, 0, Math.PI*2, 0, Math.PI/2).rotateX(Math.PI/2), gBot = new THREE.SphereGeometry(CR, 36, 16, 0, Math.PI*2, Math.PI/2, Math.PI/2).rotateX(Math.PI/2);
+  const gHoles = (() => { const pos = [], nor = [], q = new THREE.Quaternion(), Z = new THREE.Vector3(0, 0, 1);
+    for (let k = 0; k < 5; k++){ const ph = k*Math.PI*2/5 + .3, th = .62, n = new THREE.Vector3(Math.sin(th)*Math.cos(ph), Math.sin(th)*Math.sin(ph), Math.cos(th)), c = n.clone().multiplyScalar(CR + .00012);
+      const d = new THREE.CircleGeometry(.0017, 14).toNonIndexed(); q.setFromUnitVectors(Z, n); d.applyQuaternion(q); d.translate(c.x, c.y, c.z);
+      pos.push(...d.attributes.position.array); nor.push(...d.attributes.normal.array); d.dispose(); }
+    const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("normal", new THREE.Float32BufferAttribute(nor, 3)); return g; })();
+  const gSeam = new THREE.TorusGeometry(CR + .00005, .00028, 6, 48), holeM = m("hole", { color:0x2e2d2b, roughness:.9 }), seamM = m("seam", { color:0xb9b7b0, roughness:.8 });
   const gTag = new THREE.CircleGeometry(.0105, 32);
   let seed = 11; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
   /* a hexagonal pack on the floor, kept off the drop zone walls, and a small pile on top of it */
@@ -530,11 +539,12 @@ export function buildMachine(THREE, api){
     o.quaternion.setFromEuler(new THREE.Euler((rnd() - .5)*.7, (rnd() - .5)*.7, rnd()*6.28));
     const lidG = new THREE.Group(); o.add(lidG);
     const t = new THREE.Mesh(gTop, shell), b = new THREE.Mesh(gBot, shell);
-    lidG.add(t);
+    const hl = new THREE.Mesh(gHoles, holeM), sm2 = new THREE.Mesh(gSeam, seamM);
+    lidG.add(t, hl);
     /* NFC sticker on the outside of the lower half, on the side that turns to you when the capsule opens */
     const tg = new THREE.Mesh(gTag, tagM); tg.position.set(0, 0, -CR*.55);                     // lying on the inside floor of the lower half
-    [t, b, tg].forEach(mm => { mm.userData.part = "capsules"; mm.name = o.name; });
-    o.add(b, tg); o.userData.lid = lidG; o.userData.q0 = o.quaternion.clone(); o.userData.cap = true; o.userData.part = "capsules";
+    [t, b, tg, hl, sm2].forEach(mm => { mm.userData.part = "capsules"; mm.name = o.name; });
+    o.add(b, tg, sm2); o.userData.lid = lidG; o.userData.q0 = o.quaternion.clone(); o.userData.cap = true; o.userData.part = "capsules";
     G("capsules").add(o); capsules.push(o);
   });
 
@@ -586,7 +596,7 @@ export function buildMachine(THREE, api){
   sm("zes_hanger", petg, "winch_z_endstop"); sm("zes_board", pcbRed, "winch_z_endstop"); sm("zes_switch", sw, "winch_z_endstop"); sm("zes_lever", steel, "winch_z_endstop");
   const XC = mm(MP.X_REF), YC = mm(MP.Y_REF), EYE = mz(91);       // the line leaves the brass eyelet 1221 above the ground
 
-  /* =========================================================================================== claw: printed body, 12 V actuator, 3 fingers */
+  /* =========================================================================================== claw: black print, motor block, square actuator tube, 3 long arms with paddles on a pivot hub */
   use("claw");
   const LX = mm(MP.X_REF + MP.WSIGN*MP.EYE_W), LY = mm(MP.Y_REF - MP.EYE_A), CT = .9;
   add(new THREE.CylinderGeometry(.001, .001, EYE - (CT + .022), 8), m("dyneema", { color:0x46474e, roughness:.75 }), LX, LY, (EYE + CT + .022)/2, Math.PI/2, 0, 0, "claw_line");
@@ -596,50 +606,62 @@ export function buildMachine(THREE, api){
   C(new THREE.TorusGeometry(.0045, .0009, 8, 20), steel, 0, 0, .019, "claw_swivel", Math.PI/2);
   C(new THREE.CylinderGeometry(.0022, .0028, .009, 16).rotateX(Math.PI/2), steel, 0, 0, .011, "claw_swivel");
   C(new THREE.TorusGeometry(.0045, .0009, 8, 20), steel, 0, 0, .003, "claw_swivel", 0, 0, Math.PI/2);
-  /* printed cap with the eye */
-  C(new THREE.TorusGeometry(.005, .0018, 10, 24), petg, 0, 0, -.003, "claw_cap_eye", Math.PI/2);
-  C(new THREE.CylinderGeometry(.022, .03, .022, 6).rotateX(Math.PI/2), petg, 0, 0, -.019, "claw_cap", 0, 0, Math.PI/6);
-  /* hex body, two open windows that show the actuator */
-  const bodyH = .1;
-  for (let k = 0; k < 6; k++){ const a = k*Math.PI/3; if (k === 0 || k === 3) continue;
-    C(BOX(.0302, .004, bodyH), petg, .026*Math.cos(a), .026*Math.sin(a), -.033 - bodyH/2, "claw_body", 0, 0, a + Math.PI/2); }
-  for (const a of [0, Math.PI]){ const cx = .026*Math.cos(a);
-    C(BOX(.004, .0302, .014), petg, cx, 0, -.04, "claw_body"); C(BOX(.004, .0302, .014), petg, cx, 0, -.126, "claw_body");
-    for (const s of [-1, 1]) C(BOX(.004, .004, bodyH - .028), petg, cx, s*.013, -.083, "claw_body"); }
-  C(new THREE.CylinderGeometry(.03, .03, .006, 6).rotateX(Math.PI/2), petg, 0, 0, -.033, "claw_body_top", 0, 0, Math.PI/6);
-  /* Justech 12 V actuator: motor can, gearbox, tube, rod, top ear on an M3 through the walls */
-  C(cylZ(.0105, .034), m("motor", { color:0xb9bec8, roughness:.3, metalness:1 }), 0, 0, -.053, "claw_actuator_motor");
-  C(cylZ(.011, .014), m("gear", { color:0x16171b, roughness:.4 }), 0, 0, -.077, "claw_actuator_gearbox");
-  C(cylZ(.0075, .036), m("tube", { color:0x16171b, roughness:.35, metalness:.3 }), 0, 0, -.102, "claw_actuator_tube");
-  C(cylZ(.003, .036), steel, 0, 0, -.138, "claw_actuator_rod");
-  C(BOX(.006, .022, .006), m("ear", { color:0x16171b, roughness:.4 }), 0, 0, -.039, "claw_actuator_ear"); C(cylY(.0016, .064, 10), steel, 0, 0, -.039, "claw_actuator_screw");
-  for (const [c, x] of [[0xd02a2a, .004], [0x111111, -.004]]) C(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(x, .006, -.04), new THREE.Vector3(x*1.5, .014, -.037), new THREE.Vector3(x*2, .0235, -.036)]), 12, .0007, 6), m("aw" + c, { color:c, roughness:.5 }), 0, 0, 0, "claw_actuator_wire");
-  /* bottom hub with 3 lugs, spreader on the rod, 3 links, 3 fingers on MR63ZZ bearings and 3 mm rods */
-  const HZ = -.033 - bodyH;
-  C(new THREE.CylinderGeometry(.03, .028, .01, 6).rotateX(Math.PI/2), petg, 0, 0, HZ - .005, "claw_hub", 0, 0, Math.PI/6);
-  C(new THREE.CylinderGeometry(.009, .011, .01, 24).rotateX(Math.PI/2), petg, 0, 0, HZ - .028, "claw_spreader");
+  /* the new claw, all black print: the motor block on top with a cross plate and three link ears, the actuator's square
+     tube down the middle, a hub on its end where three long arms pivot, a link from each top ear to the arm's elbow.
+     Closed, the arms make a round cage and the three paddles meet under it as a bowl; the page opens and closes it. */
+  const blk = () => m("clawblk", { color:0x16171a, roughness:.55, metalness:.05 }), blk2 = () => m("clawblk2", { color:0x202126, roughness:.42, metalness:.1 });
+  C(new THREE.TorusGeometry(.005, .0018, 10, 24), blk, 0, 0, -.001, "claw_cap_eye", Math.PI/2);
+  C(rbox(.03, .03, .034, .003), blk, 0, 0, -.022, "claw_body");                                   // motor block
+  for (const [x, y] of [[-.011, -.0151], [.011, -.0151], [-.011, .0151], [.011, .0151]]) C(cylY(.0019, .001, 12), steel, x, y, -.012, "claw_body_screw");
+  C(rbox(.05, .05, .006, .004), blk2, 0, 0, -.042, "claw_cap");                                    // cross plate
+  const ZT0 = -.042, ZP = -.112, RP = .036, RE = .032;                                             // top ears, arm pivots
+  for (let k = 0; k < 3; k++){ const a = k*2*Math.PI/3 + Math.PI/2; C(BOX(.014, .01, .012), blk2, RE*Math.cos(a), RE*Math.sin(a), ZT0, "claw_cap_ear", 0, 0, a); }
+  C(BOX(.012, .012, .066), m("acttube", { color:0xa9adb5, roughness:.32, metalness:.9 }), 0, 0, -.077, "claw_actuator");   // square tube, the rod inside
+  C(rbox(.02, .02, .012, .002), blk, 0, 0, -.051, "claw_actuator_collar");
+  C(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(.012, .012, -.03), new THREE.Vector3(.03, .02, -.05), new THREE.Vector3(.038, .024, -.09), new THREE.Vector3(.044, .02, -.13)]), 24, .0009, 8), m("redlead", { color:0xc22325, roughness:.45 }), 0, 0, 0, "claw_actuator_lead");
+  C(new THREE.CylinderGeometry(.03, .03, .01, 6).rotateX(Math.PI/2), blk2, 0, 0, ZP, "claw_hub", 0, 0, Math.PI/6);   // pivot hub
+  C(cylZ(.009, .014, 20), blk, 0, 0, ZP - .01, "claw_hub_nut");
+  const arms = [], links = [];
   for (let k = 0; k < 3; k++){
-    const a = k*2*Math.PI/3 + Math.PI/2, c = Math.cos(a), s = Math.sin(a), P = (r, z) => new THREE.Vector3(r*c, r*s, z);
-    C(BOX(.008, .012, .012), petg, .026*c, .026*s, HZ - .014, "claw_lug", 0, 0, a);
-    C(new THREE.CylinderGeometry(.0015, .0015, .014, 10), steel, .027*c, .027*s, HZ - .016, "claw_rod", 0, 0, a);
-    for (const e of [-1, 1]) C(new THREE.CylinderGeometry(.003, .003, .0025, 16), steel, .027*c - e*.0058*s, .027*s + e*.0058*c, HZ - .016, "claw_bearing", 0, 0, a);
-    const curve = new THREE.CatmullRomCurve3([P(.027, HZ - .016), P(.04, HZ - .03), P(.047, HZ - .055), P(.042, HZ - .08), P(.028, HZ - .097), P(.017, HZ - .104)]);
-    const nSeg = 20, side = new THREE.Vector3(-s, c, 0);
-    for (let i = 0; i < nSeg; i++){ const p = curve.getPointAt((i + .5)/nSeg), d = curve.getTangentAt((i + .5)/nSeg), w = .013 - .004*i/nSeg, t = .0065 - .002*i/nSeg;
-      const seg = C(BOX(t, w, curve.getLength()/nSeg + .0012), petg, p.x, p.y, p.z, "claw_finger");
+    const a = k*2*Math.PI/3 + Math.PI/2, c = Math.cos(a), s = Math.sin(a), side = new THREE.Vector3(-s, c, 0);
+    C(BOX(.012, .016, .014), blk2, RP*Math.cos(a), RP*Math.sin(a), ZP, "claw_lug", 0, 0, a);
+    /* the arm turns on its pin; built closed, in its own frame: u out from the axis, z down */
+    const arm = new THREE.Group(); arm.position.set(RP*c, RP*s, ZP); claw.add(arm);
+    const P = (u, z) => new THREE.Vector3(u*c, u*s, z);
+    const A = (geo, mt, x, y, z, nm) => add(geo, mt, x, y, z, 0, 0, 0, nm, arm);
+    A(new THREE.CylinderGeometry(.0018, .0018, .022, 10).rotateZ(Math.PI/2).rotateZ(a + Math.PI/2), steel, 0, 0, 0, "claw_rod");
+    const curve = new THREE.CatmullRomCurve3([P(0, 0), P(.016, -.01), P(.028, -.034), P(.027, -.06), P(.014, -.082), P(-.006, -.094)]);
+    const nSeg = 26, L = curve.getLength(), slotM = m("slot", { color:0x060607, roughness:.9 });
+    for (let i = 0; i < nSeg; i++){ const t = (i + .5)/nSeg, p = curve.getPointAt(t), d = curve.getTangentAt(t);
+      const seg = A(BOX(.0042, .02, L/nSeg + .0012), blk, p.x, p.y, p.z, "claw_finger");
       const q1 = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), d), yA = new THREE.Vector3(0, 1, 0).applyQuaternion(q1);
-      seg.quaternion.copy(q1).premultiply(new THREE.Quaternion().setFromUnitVectors(yA, side.clone().projectOnPlane(d).normalize())); }
-    const tip = curve.getPointAt(1), td = curve.getTangentAt(1);
-    const pad = C(new THREE.CapsuleGeometry(.0034, .008, 6, 12), pom, tip.x + td.x*.003, tip.y + td.y*.003, tip.z + td.z*.003, "claw_pad"); pad.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), td);
-    const l0 = new THREE.Vector3(.008*c, .008*s, HZ - .028), l1 = curve.getPointAt(.25), dl = l1.clone().sub(l0);
-    const ln = C(new THREE.CylinderGeometry(.0018, .0018, dl.length(), 10), petg, (l0.x + l1.x)/2, (l0.y + l1.y)/2, (l0.z + l1.z)/2, "claw_link"); ln.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dl.normalize());
-    C(cylZ(.0012, .006, 8), steel, l1.x, l1.y, l1.z, "claw_link_pin");
+      seg.quaternion.copy(q1).premultiply(new THREE.Quaternion().setFromUnitVectors(yA, side.clone().projectOnPlane(d).normalize()));
+      if (i === 9 || i === 16){ const sl = A(BOX(.0046, .008, .005), slotM, p.x, p.y, p.z, "claw_finger_slot"); sl.quaternion.copy(seg.quaternion); } }
+    /* paddle: a rounded triangle, cupped in towards the axis, so the three meet under the cage */
+    const tip = curve.getPointAt(1), sh = new THREE.Shape(), W = .028, H = .044;
+    sh.moveTo(-.009, 0); sh.lineTo(.009, 0); sh.quadraticCurveTo(W, .004, W*.86, H*.6); sh.quadraticCurveTo(W*.6, H, 0, H); sh.quadraticCurveTo(-W*.6, H, -W*.86, H*.6); sh.quadraticCurveTo(-W, .004, -.009, 0);
+    const pg = new THREE.ExtrudeGeometry(sh, { depth:.003, bevelEnabled:true, bevelSize:.0012, bevelThickness:.0012, bevelSegments:2, curveSegments:10 }); pg.translate(0, 0, -.0015);
+    const along = new THREE.Vector3(-c, -s, -.38).normalize(), nrm = new THREE.Vector3().crossVectors(side, along).normalize();
+    const pad = A(pg, blk, tip.x, tip.y, tip.z, "claw_pad"); pad.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(side, along, nrm));
+    /* the elbow lug the link pulls on */
+    const el = curve.getPointAt(.36).add(new THREE.Vector3(c*.004, s*.004, 0));
+    A(BOX(.008, .012, .01), blk2, el.x, el.y, el.z, "claw_link_lug").rotation.z = a;
+    arm.userData.clawArm = { side:side.clone(), q0:arm.quaternion.clone() }; arms.push(arm);
+    /* link: top ear to elbow, redrawn by the page as the arm turns */
+    const ln = C(new THREE.CylinderGeometry(.0024, .0024, 1, 10), blk2, 0, 0, 0, "claw_link");
+    links.push({ mesh:ln, a:new THREE.Vector3(RE*c, RE*s, ZT0), arm, b:el.clone() });
   }
+  claw.userData.clawRig = { arms, links };
+  /* start open, as it waits over the capsules */
+  { const open = .55, q = new THREE.Quaternion(), Y = new THREE.Vector3(0, 1, 0), B = new THREE.Vector3(), D = new THREE.Vector3();
+    for (const arm of arms){ const u = arm.userData.clawArm; arm.quaternion.copy(u.q0).multiply(q.setFromAxisAngle(u.side, -open)); }
+    for (const l of links){ B.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); D.copy(B).sub(l.a); l.mesh.position.copy(l.a).add(B).multiplyScalar(.5); l.mesh.scale.y = D.length(); l.mesh.quaternion.setFromUnitVectors(Y, D.normalize()); }
+    claw.userData.clawRig.open = open; }
   /* coil cable: tied to a body wall 30 below the clamps, then up beside the line to the Wago on the carriage */
   const CA = Math.PI/3, ccx = LX + .036*Math.cos(CA), ccy = LY + .036*Math.sin(CA), ZT = EYE - .016, coil = [], turns = 28;
-  for (const z of [-.052, -.06]){ C(BOX(.003, .012, .003), m("tie", { color:0x0c0c0d, roughness:.6 }), .029*Math.cos(CA), .029*Math.sin(CA), z, "claw_cable_tie", 0, 0, CA); }
-  coil.push(new THREE.Vector3(ccx, ccy, CT - .062), new THREE.Vector3(ccx, ccy, CT - .056));
-  for (let i = 0; i <= turns*16; i++){ const t = i/(turns*16), a = t*turns*2*Math.PI; coil.push(new THREE.Vector3(ccx + .007*Math.cos(a), ccy + .007*Math.sin(a), CT - .05 + t*(ZT - .03 - (CT - .05)))); }
+  for (const z of [-.016, -.028]){ C(BOX(.003, .012, .003), m("tie", { color:0x0c0c0d, roughness:.6 }), .0155*Math.cos(CA)*1.25, .0155*Math.sin(CA)*1.25, z, "claw_cable_tie", 0, 0, CA); }
+  coil.push(new THREE.Vector3(ccx, ccy, CT - .03), new THREE.Vector3(ccx, ccy, CT - .024));
+  for (let i = 0; i <= turns*16; i++){ const t = i/(turns*16), a = t*turns*2*Math.PI; coil.push(new THREE.Vector3(ccx + .007*Math.cos(a), ccy + .007*Math.sin(a), CT - .018 + t*(ZT - .03 - (CT - .018)))); }
   coil.push(new THREE.Vector3(ccx, ccy, ZT), new THREE.Vector3(ccx + .006, ccy - .004, EYE - .006), new THREE.Vector3(XC - .006, mm(458), EYE + .0005));
   add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(coil, false, "centripetal"), 1800, .0016, 8), m("coil", { color:0x0e0f12, roughness:.38, metalness:.15 }), 0, 0, 0, 0, 0, 0, "claw_coil_cable");
 
