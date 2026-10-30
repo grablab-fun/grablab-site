@@ -11,10 +11,10 @@ const REC = /[?&]rec=1/.test(location.search); if (REC) document.documentElement
 const STORY = REC && /[?&]story=1/.test(location.search);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
 const PARTS = [
-  { id:"frame", n:"01", name:"Frame", spec:"Welded steel tube, matte black", ph:1.15, th:-1.2, anchor:[-.49,-.49,.7], ex:[0,0,0],
+  { id:"frame", n:"01", name:"Frame", spec:"Welded steel tube, matte black", ph:1.2, th:1.3, anchor:[-.49,-.49,.7], ex:[0,0,0],
     text:["A welded frame of square steel tube.", "Four posts and four rings: ground, floor, lip and top.", "Two crossbars and a frame round the prize hole carry the floor.", "Adjustable feet below."],
     subs:[["Posts", ["frame_post"]], ["Rings", ["frame_rail"]], ["Floor crossbars", ["frame_floor_rail"]], ["Adjustable feet", ["frame_foot"], { ph:1.42, one:true }]], proof:"Built from the parts list" },
-  { id:"cage", n:"02", name:"Skins and windows", spec:"Black panels, clear windows", ph:1.0, th:-1.2, anchor:[-.3,-.3,.25], ex:[0,0,.2],
+  { id:"cage", n:"02", name:"Skins and windows", spec:"Black panels, clear windows", ph:1.25, th:1.57, anchor:[-.3,-.3,.25], ex:[0,0,.2],
     text:["A black floor with one prize hole, front right.", "Two low walls fence the drop zone.", "Clear windows on the front, the left and the right.", "Black panels on the base and the back of the showcase.", "The back of the base opens for service.", "Riveted to the frame all round."],
     subs:[["Floor", ["cage_floor"]], ["Drop zone walls", ["cage_prize_wall"]], ["Base panels", ["cage_skin"]], ["Showcase back", ["cage_showcase"]], ["Service door", ["cage_door"]], ["Prize bin door", ["cage_bin_door"]], ["Rivets", ["cage_rivet"]], ["Clear windows", []]], proof:"Watched from every side" },
   { id:"panel", n:"03", name:"Front panel", spec:"Black panel, anodised plates", ph:1.32, th:1.57, anchor:[0,-.505,.17], ex:[0,-.5,0],
@@ -26,7 +26,7 @@ const PARTS = [
   { id:"chute", n:"05", name:"Chute and prize bin", spec:"Black chute, printed cradle", ph:1.22, th:.4, anchor:[.354,-.354,.15], ex:[.3,-.3,0],
     text:["A funnel and a chute under the prize hole.", "A red light beam sees the capsule fall.", "It lands on a padded trapdoor, filmed up close.", "The NFC reader takes its UID.", "Then the trapdoor drops it into the long prize bin."],
     subs:[["Chute and funnel", ["chute_wall", "chute_funnel"]], ["Drop sensor, light beam", ["chute_e3jk", "chute_sensor"]], ["Landing camera", ["chute_c960"]], ["NFC reader", ["chute_acr122u"]], ["Printed cradle", ["chute_cradle", "chute_axle_block"]], ["Trapdoor and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Prize bin", ["chute_bin"]]], proof:"Seen twice: beam and camera" },
-  { id:"capsules", n:"06", name:"Capsules", spec:"Printed white shell, NFC sticker", ph:1.0, th:-1.2, anchor:[.1,.1,.29], ex:[0,0,.42],
+  { id:"capsules", n:"06", name:"Capsules", spec:"Printed white shell, NFC sticker", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.42],
     text:["Printed two piece shells, NFC sticker inside.", "Factory UID, read only.", "Size set by the grip test.", "Click one to open it."],
     subs:[["Printed two piece shell", []], ["NFC sticker", []], ["Size set by the grip test", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
   { id:"gantry", n:"07", name:"Gantry", spec:"Aluminium rails, printed blocks", ph:1.0, th:-1.9, anchor:[.47,-.2,1.16], ex:[0,0,.5],
