@@ -520,11 +520,6 @@ html.lite .page-atmosphere{transform:none!important;filter:none!important}
 .foot-tg svg{width:18px;height:18px;color:#8fb2ff}
 .foot-tg:hover{background:rgba(255,255,255,.11);border-color:rgba(180,186,255,.55);transform:translateY(-1px)}
 
-/* the same glass island behind the logo and behind Connect wallet as behind the links */
-.islands .brand-isl .brand,.islands .nav-right .flipwrap{display:flex;align-items:center;border-radius:14px;
-  background:rgba(5,9,24,calc(.55 - var(--np) * .55));border:1px solid rgba(180,186,255,calc(.2 - var(--np) * .2));
-  backdrop-filter:blur(calc((1 - var(--np)) * 16px));-webkit-backdrop-filter:blur(calc((1 - var(--np)) * 16px));
-  box-shadow:0 1px 0 rgba(255,255,255,calc(.07 - var(--np) * .07)) inset,0 18px 44px rgba(0,0,0,calc(.38 - var(--np) * .38))}
+/* logo and Connect wallet sit free at the top (only the links have a glass island); scrolled, the one bar holds all three */
 .islands .brand-isl .brand{padding:8px 16px 8px 10px;min-height:52px;box-sizing:border-box}
-.islands .nav-right .flipwrap{padding:8px;min-height:52px;box-sizing:border-box}
-html.lite .islands .brand-isl .brand,html.lite .islands .nav-right .flipwrap{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(9,13,32,calc(.9 - var(--np) * .9))}
+.islands .nav-right .flipwrap{display:flex;align-items:center;padding:8px;min-height:52px;box-sizing:border-box}
