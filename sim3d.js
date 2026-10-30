@@ -107,7 +107,7 @@ export function createSim3D(canvas, pips){
     /* under the claw body, looking down past the arms; game back is up on screen */
     { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, -1); c.position.set(p.x + .02, p.y - .12, p.z + .07); c.lookAt(p.x, FLOOR - .02, p.z - .005); } },
     /* the landing camera behind the chute window, on the trapdoor */
-    { name:"Chute camera", cam:mk(64), pose(c){ c.up.set(0, 1, 0); c.position.set(.3535, .1895, .2756); c.lookAt(.3535, .135, .3535); } },
+    { name:"Chute camera", cam:mk(78), pose(c){ c.up.set(0, 1, 0); c.position.set(.3535, .216, .297); c.lookAt(.3535, .128, .3605); } },   // inside the top of the chute, looking down at the trapdoor
     /* recordings only: over the front glass, looking down into the pile */
     { name:"Stream camera", cam:mk(46), pose(c){ c.up.set(0, 1, 0); c.position.set(-.3, 1.02, .95); c.lookAt(.04, .45, -.06); } },
     /* recordings only: straight down from above the machine */

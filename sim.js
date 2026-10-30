@@ -48,10 +48,10 @@
 
   /* ---------------- markup ---------------- */
   /* real camera loops (3 clips over 6 machines: second use mirrored and offset) */
-  const FEED = [[6,0,0],[4,0,0],[5,0,0],[1,0,0],[6,1,6],[4,1,5]];
+  const FEED = [[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0]];   // one feed per drop, each with as many capsules as it has left
   function feedVideo(i){
     const [n, mir, off] = FEED[i % FEED.length];
-    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=6" poster="assets/feeds/feed${n}.jpg?v=6" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
+    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=7" poster="assets/feeds/feed${n}.jpg?v=7" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
   }
   /* project socials (demo projects: icons only, real ones link out) */
   const SOC = {
@@ -432,9 +432,9 @@
     $("#rmLogo", root).src = p.logo; $("#rmName", root).textContent = p.name; $("#rmTk", root).textContent = p.tk; $("#rmCat", root).textContent = p.tags;
     $("#rmSoc", root).innerHTML = socials(p);
     /* three cameras on the same play: the stream, straight down from the top, and the beam sensor in the chute; tap a window to swap it in */
-    const CAMN = { main:"Corner camera", claw:"Claw camera", chute:"Beam sensor camera" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=6`;
+    const CAMN = { main:"Corner camera", claw:"Claw camera", chute:"Beam sensor camera" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=7`;
     const pips = [...root.querySelectorAll(".rm-pip")];
-    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "main"; v.src = url("main"); v.poster = `assets/feeds/feed${fn}.jpg?v=6`;
+    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "main"; v.src = url("main"); v.poster = `assets/feeds/feed${fn}.jpg?v=7`;
       pips.forEach(b => { const pv = b.querySelector("video"); pv.src = url(b.dataset.k); pv.dataset.k = b.dataset.k; b.querySelector("span").textContent = CAMN[b.dataset.k]; }); $("#rmCam", root).textContent = CAMN.main; }
     if (!root.dataset.rmPips){ root.dataset.rmPips = "1";
       /* keep the windows on the same moment as the main feed */
@@ -476,7 +476,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=12").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=13").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){
@@ -488,9 +488,10 @@
     if (window.glBack && !glBack.has("sim")) glBack.push("sim", simBack);
     feeds.forEach(g => { if (!g.isRunning()) g.start(); });
     root.querySelectorAll(".pc-vid").forEach(v => {
-      if (+v.dataset.off && !v.dataset.set){
-        v.dataset.set = 1;
-        const seek = () => { try { v.currentTime = +v.dataset.off; } catch(e){} };
+      /* every card starts at its own random moment and runs a touch faster or slower, so the claws never move together */
+      if (!v.dataset.set){
+        v.dataset.set = 1; v.playbackRate = .9 + Math.random()*.2;
+        const seek = () => { try { v.currentTime = (+v.dataset.off + Math.random()*9.5) % (v.duration || 10); } catch(e){} };
         if (v.readyState >= 1) seek(); else v.addEventListener("loadedmetadata", seek, { once:true });
       }
       v.play().catch(() => {});
@@ -523,7 +524,7 @@
   function demoAddr(c){ return c === "base" ? "0x" + Array.from({length:40}, () => "0123456789abcdef"[Math.random()*16|0]).join("") : b58(44); }
   function enterPay(){
     const pi = PROJECTS.indexOf(proj), [fn, mir] = FEED[pi % FEED.length], pv = $("#payVid", root);
-    if (!pv.src.endsWith(`feed${fn}.mp4?v=6`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=6`; pv.poster = `assets/feeds/feed${fn}.jpg?v=6`; }
+    if (!pv.src.endsWith(`feed${fn}.mp4?v=7`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=7`; pv.poster = `assets/feeds/feed${fn}.jpg?v=7`; }
     pv.classList.toggle("mir", !!mir); pv.play().catch(() => {});
     $("#payMach", root).textContent = `Catching at ${proj.name}`;
     const w = 380 + (proj.left * 37) % 1400, wv = $("#payWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);
