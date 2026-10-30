@@ -368,6 +368,10 @@ export function buildMachine(THREE, api){
   for (const [y0, y1, z0, z1] of [[-.5, .5, 0, .035], [-.5, .5, .21, .35], [-.5, -.44, .035, .21], [.2, .5, .035, .21]]) box(.5, y0, z0, .503, y1, z1, pvc, "cage_skin");
   sm("box_skin_B", pvc, "cage_door"); sm("boxhw_door", rivetM, "cage_door_rivnut");          // the back base skin is the service door
   sm("box_back_cage", pvc, "cage_showcase");
+  /* the back sticker: printed vinyl on the inside of the black back panel, cut 1000 x 780 (the bleed trimmed), the sky the camera plays against */
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){ const t = new THREE.TextureLoader().load("assets/machine/sticker-back.webp?v=1");   // local preview only until it is approved t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+    const sk = m("sticker", { map:t, emissiveMap:t, emissive:0xffffff, emissiveIntensity:.22, roughness:.5, metalness:0, polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-4 });
+    add(new THREE.PlaneGeometry(1, .78), sk, 0, .4996, mz(-390), ...FACE_NEG_Y, "cage_sticker"); }
   sm("box_left_cage", acrylic, "cage_window");
   SM(["box_glass_F", "box_glass_R"], acrylic, "cage_window");
   SM(["boxhw_floor", "boxhw_glass"], rivetM, "cage_rivet");
@@ -644,7 +648,7 @@ export function buildMachine(THREE, api){
     const P = (u, z) => new THREE.Vector3(u*c, u*s, z);
     const A = (geo, mt, x, y, z, nm) => add(geo, mt, x, y, z, 0, 0, 0, nm, arm);
     A(new THREE.CylinderGeometry(.0018, .0018, .022, 10).rotateZ(Math.PI/2).rotateZ(a + Math.PI/2), steel, 0, 0, 0, "claw_rod");
-    const curve = new THREE.CatmullRomCurve3([P(0, 0), P(.016, -.01), P(.028, -.034), P(.027, -.06), P(.014, -.082), P(-.006, -.094)]);
+    const curve = new THREE.CatmullRomCurve3([P(0, 0), P(.016, -.01), P(.028, -.034), P(.027, -.06), P(.016, -.082), P(.006, -.097)]);
     const nSeg = 26, L = curve.getLength(), slotM = m("slot", { color:0x060607, roughness:.9 });
     for (let i = 0; i < nSeg; i++){ const t = (i + .5)/nSeg, p = curve.getPointAt(t), d = curve.getTangentAt(t);
       const seg = A(BOX(.0042, .02, L/nSeg + .0012), blk, p.x, p.y, p.z, "claw_finger");
@@ -652,8 +656,8 @@ export function buildMachine(THREE, api){
       seg.quaternion.copy(q1).premultiply(new THREE.Quaternion().setFromUnitVectors(yA, side.clone().projectOnPlane(d).normalize()));
       if (i === 9 || i === 16){ const sl = A(BOX(.0046, .008, .005), slotM, p.x, p.y, p.z, "claw_finger_slot"); sl.quaternion.copy(seg.quaternion); } }
     /* paddle: a rounded triangle, cupped in towards the axis, so the three meet under the cage */
-    const tip = curve.getPointAt(1), sh = new THREE.Shape(), W = .03, H = .05;
-    sh.moveTo(-.008, 0); sh.lineTo(.008, 0); sh.lineTo(W*.9, H*.78); sh.quadraticCurveTo(W*1.02, H*.97, W*.72, H); sh.quadraticCurveTo(0, H*1.07, -W*.72, H); sh.quadraticCurveTo(-W*1.02, H*.97, -W*.9, H*.78); sh.lineTo(-.008, 0);   // rounded triangle: narrow at the arm, wide at the edge
+    const tip = curve.getPointAt(1), sh = new THREE.Shape(), W = .032, H = .041;   // each paddle stays inside its third of the bowl, so closed they meet, never cross
+    sh.moveTo(-W*.86, 0); sh.quadraticCurveTo(0, -.004, W*.86, 0); sh.quadraticCurveTo(W, .002, W*.9, .008); sh.lineTo(.003, H*.97); sh.quadraticCurveTo(0, H, -.003, H*.97); sh.lineTo(-W*.9, .008); sh.quadraticCurveTo(-W, .002, -W*.86, 0);   // a rounded slice: wide at the arm, its point at the bowl's centre
     const pg = new THREE.ExtrudeGeometry(sh, { depth:.003, bevelEnabled:true, bevelSize:.0012, bevelThickness:.0012, bevelSegments:2, curveSegments:10 }); pg.translate(0, 0, -.0015);
     const along = new THREE.Vector3(-c, -s, -.38).normalize(), nrm = new THREE.Vector3().crossVectors(side, along).normalize();
     const pad = A(pg, blk, tip.x, tip.y, tip.z, "claw_pad"); pad.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(side, along, nrm));

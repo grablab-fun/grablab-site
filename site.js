@@ -242,18 +242,20 @@ function bookingHTML(){
     <div class="ld-brand"><img src="assets/brand/mark-chrome-256.png${V}" alt="">GRABLAB</div>`;
   el.innerHTML = `<div class="leaf l"><div class="inner">${scene}</div><img class="ld-hand" src="assets/glove-l.webp${V}" alt=""></div><div class="leaf r"><div class="inner">${scene}</div><img class="ld-hand" src="assets/glove-r.webp${V}" alt=""></div><span class="seam"></span>`;
   const q = s => [...el.querySelectorAll(s)];
-  /* the counter roams to a new spot every quarter */
+  /* the counter roams round all four corners, a quarter each (top right, bottom right, bottom left, top left under LOADING), then lands in the middle */
+  const E = "clamp(24px,4vw,72px)", TOP = "clamp(70px,12vh,120px)", BOT = "calc(100vh - clamp(30px,6vh,60px))";
   const SPOTS = [
-    { left:"calc(100vw - clamp(24px,4vw,72px))", top:"clamp(70px,12vh,120px)", t:"translateX(-100%)" },
-    { left:"clamp(24px,4vw,72px)", top:"calc(100vh - clamp(30px,6vh,60px))", t:"translateY(-100%)" },
-    { left:"calc(100vw - clamp(24px,4vw,72px))", top:"calc(100vh - clamp(30px,6vh,60px))", t:"translate(-100%,-100%)" },
+    { left:`calc(100vw - ${E})`, top:TOP, t:"translateX(-100%)" },
+    { left:`calc(100vw - ${E})`, top:BOT, t:"translate(-100%,-100%)" },
+    { left:E, top:BOT, t:"translateY(-100%)" },
+    { left:E, top:TOP, t:"none" },
     { left:"50%", top:"50%", t:"translate(-50%,-50%)" },
   ];
   let spot = -1;
   function place(i){ if (i === spot) return; spot = i; const s = SPOTS[i]; q(".ld-pct").forEach(p => { p.style.left = s.left; p.style.top = s.top; p.style.transform = s.t; }); }
   place(0);
   let d = 0; const dots = setInterval(() => { d = (d+1)%4; q(".dots").forEach(x => x.textContent = ".".repeat(d)); }, 260);
-  const t0 = performance.now(), MIN = 1100, MAX = 4000;
+  const t0 = performance.now(), MIN = 3200, MAX = 6000;
   const tasks = [];
   if (document.fonts && document.fonts.ready) tasks.push(document.fonts.ready);
   tasks.push(new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", r, { once:true })));
@@ -263,7 +265,7 @@ function bookingHTML(){
   function paint(n){
     q(".n").forEach(x => x.textContent = String(n).padStart(2, "0"));
     q(".ld-machine").forEach(m => m.style.setProperty("--p", n + "%"));
-    place(n >= 100 ? 3 : Math.min(2, Math.floor(n / 34)));
+    place(n >= 100 ? 4 : Math.min(3, Math.floor(n / 25)));
   }
   function open(){
     clearInterval(dots);
