@@ -581,9 +581,9 @@
    - on hover the icon lifts and glows; a chrome sheen runs along the top edge */
 .card,.prize,.pq,.uc,.case{position:relative;transform-style:preserve-3d;--mx:50%;--my:30%;--rx:0deg;--ry:0deg;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s}
 .card.live,.prize.live,.case.live{transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-4px)}
-.card::after,.prize::after,.uc::after,.case::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;
+.card::after,.prize::after,.case::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;
   background:radial-gradient(260px 200px at var(--mx) var(--my),rgba(180,196,255,.16),transparent 70%)}
-.card.live::after,.prize.live::after,.uc.live::after,.case.live::after{opacity:1}
+.card.live::after,.prize.live::after,.case.live::after{opacity:1}
 .card::before,.prize::before,.case::before{content:"";position:absolute;left:14%;right:14%;top:-1px;height:1px;border-radius:2px;pointer-events:none;opacity:0;
   background:linear-gradient(90deg,transparent,#d6e4ff 30%,#3b7bff 55%,#fff 75%,transparent);transition:opacity .4s,left .6s cubic-bezier(.2,.8,.2,1),right .6s cubic-bezier(.2,.8,.2,1)}
 .card.live::before,.prize.live::before,.case.live::before{opacity:.9;left:4%;right:4%}
@@ -612,7 +612,6 @@
 .uc-tiles b{display:inline-block;transition:transform .25s,color .25s}
 .uc-tiles b.flip{animation:tileFlip .45s cubic-bezier(.2,.8,.2,1)}
 @keyframes tileFlip{0%{transform:rotateX(0)}45%{transform:rotateX(-90deg);color:#9cc0ff}55%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
-.uc.live .uc-date{border-color:rgba(120,170,255,.5);box-shadow:0 0 22px rgba(59,123,255,.25)}
 .uc-date{transition:border-color .35s,box-shadow .35s}
 /* modes: one line under every title */
 .cards.four .card p{white-space:nowrap;font-size:13.5px}
