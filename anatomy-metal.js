@@ -370,8 +370,21 @@ export function buildMachine(THREE, api){
   for (const [y0, y1, z0, z1] of [[-.5, .5, 0, .035], [-.5, .5, .21, .35], [-.5, -.44, .035, .21], [.2, .5, .035, .21]]) box(.5, y0, z0, .503, y1, z1, pvc, "cage_skin");
   sm("box_skin_B", pvc, "cage_door");          // the back base skin is the service door
   sm("box_back_cage", pvc, "cage_showcase");
-  sm("box_left_cage", acrylic, "cage_window");
+  sm("box_left_cage", pvc, "cage_showcase");   // the left of the showcase is a black panel too, like the back
   SM(["box_glass_F", "box_glass_R"], acrylic, "cage_window");
+  /* LED strip profiles (LPU18: black aluminium 45 degree corner profile with an opal cover) glued on the four inner top edges under the
+     top ring, lighting the play floor. Each one is a right angle prism in the wall and ring corner, its cover facing down and in.
+     The front and the left runs stop short of the camera block in the front left corner. */
+  { const P = .018, TZ = mz(-25), IN = .4745, alu = m("lpu", { color:0x111214, roughness:.5, metalness:.6 }), opal = m("lpuopal", { color:0xfff4e0, emissive:0xffe9c4, emissiveIntensity:2.2, roughness:.9 });
+    /* legs (ax, 0) and (0, ay) from the corner, extruded along local z and centred; the cover is a 1 mm plate just outside the hypotenuse */
+    const prism = (ax, ay, L) => { const s = new THREE.Shape(); s.moveTo(0, 0); s.lineTo(ax, 0); s.lineTo(0, ay); s.closePath(); const g = new THREE.ExtrudeGeometry(s, { depth:L, bevelEnabled:false }); g.translate(0, 0, -L/2); return g; };
+    const cover = (ax, ay, L) => { const nx = Math.sign(ax)/Math.SQRT2, ny = Math.sign(ay)/Math.SQRT2, A = [ax*.94, ay*.06], B = [ax*.06, ay*.94], s = new THREE.Shape();
+      s.moveTo(A[0] + nx*.0003, A[1] + ny*.0003); s.lineTo(B[0] + nx*.0003, B[1] + ny*.0003); s.lineTo(B[0] + nx*.0013, B[1] + ny*.0013); s.lineTo(A[0] + nx*.0013, A[1] + ny*.0013); s.closePath();
+      const g = new THREE.ExtrudeGeometry(s, { depth:L, bevelEnabled:false }); g.translate(0, 0, -L/2); return g; };
+    /* runs along y (left, right): rotation x -90 maps local z to world y and local +y to world down. Runs along x (front, back): rotation y 90 maps local z to world x and local +x to world down. */
+    const runs = [[-IN, null, -.41, IN, P, P, [-Math.PI/2, 0, 0]], [IN, null, -IN, IN, -P, P, [-Math.PI/2, 0, 0]], [null, IN, -IN, IN, P, -P, [0, Math.PI/2, 0]], [null, -IN, -.41, IN, P, P, [0, Math.PI/2, 0]]];
+    for (const [x, y, a, b, ax, ay, rot] of runs){ const L = b - a, c = (a + b)/2, px = x === null ? c : x, py = y === null ? c : y;
+      add(prism(ax, ay, L), alu, px, py, TZ, ...rot, "cage_led_profile"); add(cover(ax, ay, L), opal, px, py, TZ, ...rot, "cage_led_cover"); } }
   /* no rivets drawn: on the black panels and the glass they read as specks */
 
   /* =========================================================================================== chute, cradle, prize cup */
@@ -718,7 +731,8 @@ export function buildMachine(THREE, api){
       z1:[[0x9ad47a, 1.4], [V(...ez), V(ez[0], ez[1] - 6, ez[2] + 70), V(ez[0], yc - 4, MP.ZT_X + 72), V(X - 4, yc - 4, cm.z)]], z2:[[0x9ad47a, 1.4], hz(3, [V(cf.x, cf.y - 4, cf.z), V(30, yc - 4, 74), V(LOOP_X - 9, yc - 4, 74)])],
       a1:[[0x1c1b19, 2.0], [V(X + MP.WSIGN*MP.EYE_W, Y - MP.EYE_A, MP.ZT_X + 70), V(X + 6, yc + 4, cm.z)]], a2:[[0x1c1b19, 2.0], hz(4, [V(cf.x, cf.y + 4, cf.z), V(30, yc + 4, 76), V(LOOP_X - 12, yc + 4, 76)])],
       /* the play camera's USB: along the inside of the left top ring to the back, over it, then down the back like the rest */
-      cam:[[0xc0392b, 2.0], [V(55, 55, -70), V(32, 45, -44), V(32, 300, -40), V(32, 960, -40), V(32, 990, 6), V(32, BACK, 6), ...toCtrl(32, 0, PI)]],
+      /* black, tucked in the corner behind the LED profile on the left top edge, so it never shows through the window */
+      cam:[[0x141416, 2.0], [V(55, 55, -70), V(40, 42, -52), V(31, 60, -32), V(31, 300, -32), V(31, 960, -32), V(32, 990, 6), V(32, BACK, 6), ...toCtrl(32, 0, PI)]],
     };
     for (const [k, [[col, r], pts]] of Object.entries(R)){ const P = pts.map(v => new THREE.Vector3(mm(v.x), mm(v.y), mz(v.z)));
       add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(P, false, "centripetal"), Math.max(24, P.length*8), r/1000, 8, false), m("cable" + k.replace(/\d/, ""), { color:col, roughness:.55 }), 0, 0, 0, 0, 0, 0, "wire_" + k); } }

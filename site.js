@@ -637,3 +637,45 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu();
   window.glKern = kern;
   kern(); addEventListener("load", () => kern());
 })();
+
+/* ---------------- live cards and the CTA band (Oct 31): a light follows the pointer, the card tilts toward it ---------------- */
+(function(){
+  const SEL = ".card,.prize,.pq,.uc,.case,.callout";
+  const fine = matchMedia("(hover:hover) and (pointer:fine)").matches, still = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  document.addEventListener("pointermove", e => {
+    const el = e.target.closest && e.target.closest(SEL); if (!el || !fine) return;
+    const r = el.getBoundingClientRect(), x = (e.clientX - r.left)/r.width, y = (e.clientY - r.top)/r.height;
+    el.style.setProperty("--mx", (x*100).toFixed(1) + "%"); el.style.setProperty("--my", (y*100).toFixed(1) + "%");
+    if (!still && !el.classList.contains("callout")){ el.style.setProperty("--ry", ((x - .5)*6).toFixed(2) + "deg"); el.style.setProperty("--rx", ((.5 - y)*5).toFixed(2) + "deg"); }
+    el.classList.add("live");
+  }, { passive:true });
+  document.addEventListener("pointerout", e => { const el = e.target.closest && e.target.closest(SEL); if (el && !el.contains(e.relatedTarget)){ el.classList.remove("live"); el.style.setProperty("--rx", "0deg"); el.style.setProperty("--ry", "0deg"); } }, { passive:true });
+  /* stagger the idle float per card and the quest rows per row; cards built later (the simulator) get it through the observer below */
+  function prime(root=document){
+    root.querySelectorAll(SEL).forEach((el, i) => { if (!el.style.getPropertyValue("--i")) el.style.setProperty("--i", i % 6); });
+    root.querySelectorAll(".pq-l li").forEach((li, j) => li.style.setProperty("--j", j % 8));
+  }
+  prime();
+  if ("IntersectionObserver" in window){
+    const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } }), { threshold:.2 });
+    const watch = root => root.querySelectorAll(".pq,.uc").forEach(el => io.observe(el));
+    watch(document);
+    new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => { if (n.nodeType === 1){ prime(n); watch(n); if (n.matches && n.matches(".pq,.uc")) io.observe(n); } }))).observe(document.body, { childList:true, subtree:true });
+  } else document.querySelectorAll(".pq,.uc").forEach(el => el.classList.add("in"));
+  /* quest progress: once something is done the bar stops scanning */
+  document.addEventListener("click", e => { const pq = e.target.closest && e.target.closest(".pq"); if (pq && e.target.closest(".qc-cta")) pq.classList.add("started"); });
+  /* upcoming clocks: a tile flips when its digit changes */
+  new MutationObserver(ms => ms.forEach(m => { const b = m.target.nodeType === 3 ? m.target.parentElement : m.target; if (b && b.matches && b.matches(".uc-tiles b")){ b.classList.remove("flip"); void b.offsetWidth; b.classList.add("flip"); } })).observe(document.body, { characterData:true, subtree:true, childList:true });
+
+  /* the CTA band: the last two words of the headline go blue chrome, the claw hangs in on the right */
+  document.querySelectorAll(".callout").forEach(c => {
+    const h = c.querySelector("h2"); if (!h || c.querySelector(".co-claw")) return;
+    const last = [...h.childNodes].reverse().find(n => n.nodeType === 3 && n.nodeValue.trim());
+    if (last){ const m = last.nodeValue.match(/^(.*?)(\S+\s+\S+\.?)\s*$/); if (m){ const sp = document.createElement("span"); sp.className = "hl"; sp.textContent = m[2]; last.nodeValue = m[1]; last.after(sp); } }
+    const body = document.createElement("div"); body.className = "co-body"; while (c.firstChild) body.appendChild(c.firstChild); c.appendChild(body);
+    const art = document.createElement("div"); art.className = "co-art"; art.innerHTML = '<i class="co-line"></i><img class="co-claw" src="assets/icons/claw.png" alt="" /><i class="co-glow"></i>'; c.appendChild(art);
+    const k = document.createElement("span"); k.className = "co-k"; k.textContent = c.dataset.k || "Next"; body.prepend(k);
+    const a = c.querySelector("a.btn"); if (a && !a.querySelector("svg")) a.insertAdjacentHTML("beforeend", '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5"/></svg>');
+    if (window.glKern) glKern(c);
+  });
+})();

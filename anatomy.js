@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=17";
+import { buildMachine } from "./anatomy-metal.js?v=18";
 
 const $ = s => document.querySelector(s);
 /* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
@@ -15,7 +15,7 @@ const PARTS = [
     text:["A welded frame of square steel tube.", "Four posts and four rings: ground, floor, lip and top.", "Two crossbars and a frame round the prize hole carry the floor.", "Adjustable feet below."],
     subs:[["Posts", ["frame_post"]], ["Rings", ["frame_rail"]], ["Floor crossbars", ["frame_floor_rail"]], ["Adjustable feet", ["frame_foot"], { ph:1.42, one:true }]], proof:"Built from the parts list" },
   { id:"cage", n:"02", name:"Skins and windows", spec:"Black panels, clear windows", ph:1.25, th:1.57, anchor:[-.3,-.3,.25], ex:[0,0,.2],
-    text:["A black floor with one prize hole, front right.", "Two low walls fence the drop zone.", "Clear windows on the front, the left and the right.", "Black panels on the base and the back of the showcase.", "The back of the base opens for service.", "Fixed to the frame all round."],
+    text:["A black floor with one prize hole, front right.", "Two low walls fence the drop zone.", "Clear windows on the front and the right.", "Black panels on the base, the back and the left of the showcase.", "LED profiles on the top edges light the floor.", "The back of the base opens for service.", "Fixed to the frame all round."],
     subs:[["Floor", ["cage_floor"]], ["Drop zone walls", ["cage_prize_wall"]], ["Base panels", ["cage_skin"]], ["Showcase back", ["cage_showcase"]], ["Service door", ["cage_door"]], ["Prize bin door", ["cage_bin_door"]], ["Clear windows", []]], proof:"Watched from every side" },
   { id:"panel", n:"03", name:"Front panel", spec:"Black panel, anodised plates", ph:1.32, th:1.57, anchor:[0,-.505,.17], ex:[0,-.5,0],
     text:["The face of the machine, under the window.", "Emergency stop, scan to play QR, GRABLAB plate."],

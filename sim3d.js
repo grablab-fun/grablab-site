@@ -5,7 +5,7 @@
    Game x runs along the machine's x (left..right as the front left play camera sees it), game z along y (front glass..back), so the prize hole is front right.
    Light on purpose: no point lights, no shadows, the electronics and cables left out, every still mesh merged, capsules one instanced mesh. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=17";
+import { buildMachine } from "./anatomy-metal.js?v=18";
 
 const SCENE = await fetch("assets/machine/metal.json?v=2").then(r => r.json());
 

@@ -553,3 +553,73 @@
 @media(hover:none){.fmts .fm.in:hover{transform:none}.fm:hover .fm-img{transform:none}}
 .stk-px span{white-space:nowrap}
 @media(min-width:621px){.stk-px{width:150px}}
+
+/* ============ LIVE CARDS (Oct 31): every card family moves a little, like the machine does ============
+   .card (modes, mint steps, three steps), .prize (capsule shelf), .pq (quests), .uc (upcoming), .case (refund cases)
+   - the icon floats on an idle loop, staggered per card
+   - a soft light follows the pointer (vars --mx/--my set in site.js), the card tilts a few degrees toward it
+   - on hover the icon lifts and glows; a chrome sheen runs along the top edge */
+.card,.prize,.pq,.uc,.case{position:relative;transform-style:preserve-3d;--mx:50%;--my:30%;--rx:0deg;--ry:0deg;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s}
+.card.live,.prize.live,.case.live{transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-4px)}
+.card::after,.prize::after,.pq::after,.uc::after,.case::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:radial-gradient(260px 200px at var(--mx) var(--my),rgba(180,196,255,.16),transparent 70%)}
+.card.live::after,.prize.live::after,.pq.live::after,.uc.live::after,.case.live::after{opacity:1}
+.card::before,.prize::before,.case::before{content:"";position:absolute;left:14%;right:14%;top:-1px;height:1px;border-radius:2px;pointer-events:none;opacity:0;
+  background:linear-gradient(90deg,transparent,#d6e4ff 30%,#3b7bff 55%,#fff 75%,transparent);transition:opacity .4s,left .6s cubic-bezier(.2,.8,.2,1),right .6s cubic-bezier(.2,.8,.2,1)}
+.card.live::before,.prize.live::before,.case.live::before{opacity:.9;left:4%;right:4%}
+.card .ico,.prize img,.pq-h .pc-logo,.uc-head .pc-logo,.case .cico{animation:icoFloat 5.2s ease-in-out infinite;animation-delay:calc(var(--i,0) * -1.3s);transition:transform .5s cubic-bezier(.2,1.2,.3,1),filter .5s;will-change:transform}
+.card.live .ico,.prize.live img,.case.live .cico{transform:translateY(-10px) scale(1.06) rotate(-3deg);filter:drop-shadow(0 22px 30px rgba(0,0,0,.6)) drop-shadow(0 0 18px rgba(120,170,255,.45))}
+.pq.live .pc-logo,.uc.live .pc-logo{transform:translateY(-3px) scale(1.06)}
+@keyframes icoFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(1.2deg)}}
+/* the number in the corner counts in when the card arrives; the recommended tag breathes */
+.card .num{display:inline-block;transition:transform .5s cubic-bezier(.2,1.4,.4,1),opacity .5s}
+.card.reveal:not(.in) .num{transform:translateY(8px);opacity:0}
+.card .tag{animation:tagBreath 3.2s ease-in-out infinite}
+@keyframes tagBreath{50%{box-shadow:0 0 18px rgba(59,123,255,.55)}}
+/* quest cards: the rows slide in one after another, the reward counts, the bar pulses until something is done */
+.pq-l li{transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .5s;transition-delay:calc(var(--j,0) * 70ms)}
+.pq:not(.in) .pq-l li{transform:translateX(-10px);opacity:0}
+.pq-up b{display:inline-block;transition:transform .4s cubic-bezier(.2,1.6,.4,1)}
+.pq.live .pq-up b{transform:scale(1.12)}
+.pq-bar i{min-width:0}
+.pq:not(.started) .pq-bar::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,transparent,rgba(180,196,255,.35),transparent);animation:barScan 2.6s linear infinite}
+.pq-bar{position:relative}
+@keyframes barScan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.pq-l li:hover{background:rgba(180,196,255,.05)}
+.pq-l li:hover img{transform:scale(1.15) rotate(-6deg)}
+.pq-l li img{transition:transform .35s cubic-bezier(.2,1.4,.4,1)}
+/* upcoming cards: the clock tiles flip when a digit changes, the date chip glows on hover */
+.uc-tiles b{display:inline-block;transition:transform .25s,color .25s}
+.uc-tiles b.flip{animation:tileFlip .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes tileFlip{0%{transform:rotateX(0)}45%{transform:rotateX(-90deg);color:#9cc0ff}55%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+.uc.live .uc-date{border-color:rgba(120,170,255,.5);box-shadow:0 0 22px rgba(59,123,255,.25)}
+.uc-date{transition:border-color .35s,box-shadow .35s}
+/* modes: one line under every title */
+.cards.four .card p{white-space:nowrap;font-size:13.5px}
+@media(max-width:1000px){.cards.four .card p{white-space:normal;font-size:14.5px}}
+
+/* ---- refund cases: chrome icon, the case as a claim, the outcome as a chrome tag ---- */
+.cases{gap:18px}
+.case{padding:26px 24px 24px;border-radius:20px;display:flex;flex-direction:column;gap:12px;min-height:250px;overflow:hidden}
+.case .cico{height:110px;width:auto;align-self:flex-start;object-fit:contain;filter:drop-shadow(0 16px 24px rgba(0,0,0,.55));margin:-4px 0 4px}
+.case .if{margin:0}
+.case h3{font-size:clamp(22px,1.9vw,27px);margin:0}
+.case .then{display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding:8px 12px;border-radius:999px;color:#071029;background:var(--blue-chrome);font-size:10.5px;letter-spacing:.14em;box-shadow:0 8px 20px rgba(59,123,255,.25);align-self:flex-start}
+.case .then::before{content:"";width:6px;height:6px;border-radius:50%;background:#071029;opacity:.7}
+.case .arrow{position:absolute;right:22px;top:24px;font-family:'Anton',Impact,sans-serif;font-size:13px;letter-spacing:.08em;color:var(--ink-3)}
+@media(max-width:620px){.case .cico{height:84px}}
+
+/* ---- the machine.fun chips in the live window are real links ---- */
+a.mf{text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .2s,border-color .2s,background .2s,transform .2s}
+a.mf::after{content:"↗";font-size:10px;opacity:.7;transition:transform .2s}
+a.mf:hover{color:#071029;background:var(--blue-chrome);border-color:transparent;transform:translateY(-1px)}
+a.mf:hover::after{transform:translate(1px,-1px)}
+.pj{transition:background .25s,padding .25s;border-radius:10px}
+.pj:hover{background:rgba(180,196,255,.05);padding-left:6px;padding-right:6px}
+.pj .lg{transition:transform .35s cubic-bezier(.2,1.4,.4,1),filter .35s}
+.pj:hover .lg{transform:scale(1.08) rotate(-3deg);filter:drop-shadow(0 0 12px rgba(120,170,255,.45))}
+
+@media(prefers-reduced-motion:reduce){
+  .card .ico,.prize img,.pq-h .pc-logo,.uc-head .pc-logo,.case .cico,.card .tag,.pq:not(.started) .pq-bar::after,.uc-tiles b.flip{animation:none}
+  .card.live,.prize.live,.case.live{transform:none}
+}
