@@ -368,10 +368,6 @@ export function buildMachine(THREE, api){
   for (const [y0, y1, z0, z1] of [[-.5, .5, 0, .035], [-.5, .5, .21, .35], [-.5, -.44, .035, .21], [.2, .5, .035, .21]]) box(.5, y0, z0, .503, y1, z1, pvc, "cage_skin");
   sm("box_skin_B", pvc, "cage_door"); sm("boxhw_door", rivetM, "cage_door_rivnut");          // the back base skin is the service door
   sm("box_back_cage", pvc, "cage_showcase");
-  /* the back sticker: printed vinyl on the inside of the black back panel, cut 1000 x 780 (the bleed trimmed), the sky the camera plays against */
-  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){ const t = new THREE.TextureLoader().load("assets/machine/sticker-back.webp?v=1");   // local preview only until it is approved t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
-    const sk = m("sticker", { map:t, emissiveMap:t, emissive:0xffffff, emissiveIntensity:.22, roughness:.5, metalness:0, polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-4 });
-    add(new THREE.PlaneGeometry(1, .78), sk, 0, .4996, mz(-390), ...FACE_NEG_Y, "cage_sticker"); }
   sm("box_left_cage", acrylic, "cage_window");
   SM(["box_glass_F", "box_glass_R"], acrylic, "cage_window");
   SM(["boxhw_floor", "boxhw_glass"], rivetM, "cage_rivet");

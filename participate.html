@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="styles.css?v=nv2" />
 <link rel="stylesheet" href="pages.css?v=c6" />
 <link rel="stylesheet" href="sub.css?v=c4" />
-<link rel="stylesheet" href="sim.css?v=c7" />
+<link rel="stylesheet" href="sim.css?v=c9" />
 </head>
 <body data-page="participate">
 <!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
@@ -57,7 +57,7 @@
           <span class="url"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>grablab.fun/play</span>
         </div>
         <div class="bview">
-          <video id="phVid" autoplay muted loop playsinline preload="auto" poster="assets/play-live.jpg?v=5" aria-label="A player steering the claw live"><source src="assets/play-live.mp4?v=5" type="video/mp4" /></video>
+          <video id="phVid" autoplay muted loop playsinline preload="auto" poster="assets/play-live.jpg?v=6" aria-label="A player steering the claw live"><source src="assets/play-live.mp4?v=6" type="video/mp4" /></video>
           <div class="bhud tl"><span class="bcatch"><i class="rec" aria-label="Live"></i><span class="bc-k">Catching at</span><img src="assets/proj3d/rover.webp" alt="" /><b>Rover Labs</b></span></div>
           <div class="bhud tr"><span class="bwatch"><i></i><b class="vn" data-n="1284">1,284</b> watching</span></div>
           <div class="bhud br"><b class="timer" id="phTimer" data-sync>0:30</b></div>
@@ -150,7 +150,7 @@
 <script src="site.js?v=kp2"></script>
 <script src="consent.js?v=9"></script>
 <script src="sub.js?v=c2"></script>
-<script src="sim.js?v=c5"></script>
+<script src="sim.js?v=c6"></script>
 <script>/* size the lab title so it spans the whole card */
 (function(){ const b = document.querySelector(".ph-cta .lab-go b"), go = document.querySelector(".ph-cta .lab-go"); if (!b) return;
   const fit = () => { if (innerWidth <= 620){ b.style.removeProperty("--labfs"); return; } b.style.setProperty("--labfs", "40px"); const k = go.clientWidth/b.scrollWidth; b.style.setProperty("--labfs", Math.max(20, Math.min(64, 40*k*.99)) + "px"); };
