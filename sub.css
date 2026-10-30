@@ -581,9 +581,9 @@
    - on hover the icon lifts and glows; a chrome sheen runs along the top edge */
 .card,.prize,.pq,.uc,.case{position:relative;transform-style:preserve-3d;--mx:50%;--my:30%;--rx:0deg;--ry:0deg;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s}
 .card.live,.prize.live,.case.live{transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-4px)}
-.card::after,.prize::after,.pq::after,.uc::after,.case::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;
+.card::after,.prize::after,.uc::after,.case::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;
   background:radial-gradient(260px 200px at var(--mx) var(--my),rgba(180,196,255,.16),transparent 70%)}
-.card.live::after,.prize.live::after,.pq.live::after,.uc.live::after,.case.live::after{opacity:1}
+.card.live::after,.prize.live::after,.uc.live::after,.case.live::after{opacity:1}
 .card::before,.prize::before,.case::before{content:"";position:absolute;left:14%;right:14%;top:-1px;height:1px;border-radius:2px;pointer-events:none;opacity:0;
   background:linear-gradient(90deg,transparent,#d6e4ff 30%,#3b7bff 55%,#fff 75%,transparent);transition:opacity .4s,left .6s cubic-bezier(.2,.8,.2,1),right .6s cubic-bezier(.2,.8,.2,1)}
 .card.live::before,.prize.live::before,.case.live::before{opacity:.9;left:4%;right:4%}
@@ -605,7 +605,7 @@
 .pq:not(.started) .pq-bar::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,transparent,rgba(180,196,255,.35),transparent);animation:barScan 2.6s linear infinite}
 .pq-bar{position:relative}
 @keyframes barScan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.pq-l li:hover{background:rgba(180,196,255,.05)}
+
 .pq-l li:hover img{transform:scale(1.15) rotate(-6deg)}
 .pq-l li img{transition:transform .35s cubic-bezier(.2,1.4,.4,1)}
 /* upcoming cards: the clock tiles flip when a digit changes, the date chip glows on hover */
