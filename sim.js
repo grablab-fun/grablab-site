@@ -220,7 +220,7 @@
           <aside class="rm-chat">
             <div class="ch-h"><b>Live chat</b><span id="rmChatN"></span></div>
             <div class="ch-list" id="rmChat" aria-live="polite"></div>
-            <form class="ch-in" id="rmChatForm"><input id="rmChatIn" maxlength="120" placeholder="Say something" autocomplete="off" /><button type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2-6z"/></svg></button></form>
+            <form class="ch-in" id="rmChatForm"><div class="ch-emo" id="rmEmo" role="listbox" aria-label="Emoji"></div><input id="rmChatIn" maxlength="120" placeholder="Say something" autocomplete="off" /><button type="button" class="ch-emob" id="rmEmoBtn" aria-label="Emoji" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="1.2"/><circle cx="15" cy="10" r="1.2"/><path d="M8.2 14.2c1 1.5 2.3 2.2 3.8 2.2s2.8-.7 3.8-2.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button><button type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2-6z"/></svg></button></form>
           </aside>
         </div>
       </section>
@@ -374,6 +374,15 @@
     $(".rm-back", root).addEventListener("click", () => go("pick"));
     $("#rmBuy", root).addEventListener("click", () => go("pay"));
     root.addEventListener("click", e => { if (e.target.closest(".rm-soc a")) e.preventDefault(); });
+    /* emoji: a small panel over the input, a tap puts the emoji where the cursor is */
+    { const box = $("#rmEmo", root), btn = $("#rmEmoBtn", root), inp = $("#rmChatIn", root);
+      box.innerHTML = ["🔥","🚀","💎","🙌","👀","🎯","😂","😮","🥶","🤞","🍀","🫡","💜","✨","🙏","💀","🦾","🤖","🎰","🏆","gm"].map(e => `<button type="button" role="option">${e}</button>`).join("");
+      const show = on => { box.classList.toggle("on", on); btn.setAttribute("aria-expanded", on); };
+      btn.addEventListener("click", () => show(!box.classList.contains("on")));
+      box.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; const t = b.textContent + (b.textContent === "gm" ? " " : ""), a = inp.selectionStart ?? inp.value.length, z = inp.selectionEnd ?? a;
+        inp.value = (inp.value.slice(0, a) + t + inp.value.slice(z)).slice(0, 120); inp.focus(); inp.setSelectionRange(a + t.length, a + t.length); });
+      document.addEventListener("pointerdown", e => { if (!e.target.closest("#rmEmo, #rmEmoBtn")) show(false); });
+      $("#rmChatForm", root).addEventListener("submit", () => show(false)); }
     $("#rmChatForm", root).addEventListener("submit", e => {
       e.preventDefault();
       const i = $("#rmChatIn", root), t = i.value.trim(); if (!t) return;
@@ -412,8 +421,8 @@
   function chatTick(){
     if (view !== "room") return;
     const r = Math.random();
-    if (r < 0.12) chatAdd({ ev:true, cap:"gold", text:`${wal()} grabbed +${fmt(proj.gold)} ${proj.tk}` });
-    else if (r < 0.17) chatAdd({ ev:true, cap:"violet", text:`${wal()} grabbed a violet capsule: +${fmt(proj.violet)} ${proj.tk}` });
+    if (r < 0.12) chatAdd({ ev:true, cap:"gold", text:`${wal()} won +${fmt(proj.gold)} ${proj.tk}` });
+    else if (r < 0.17) chatAdd({ ev:true, cap:"violet", text:`${wal()} won +${fmt(proj.violet)} ${proj.tk}` });
     else if (r < 0.22) chatAdd({ who:pick(CH_NAMES), text:"joined the line" });
     else chatAdd({ who:pick(CH_NAMES), text:pick(CH_LINES).replace("{n}", proj.name).replace("{r}", proj.rare) });
     chatT = setTimeout(chatTick, 1500 + Math.random()*2200);
