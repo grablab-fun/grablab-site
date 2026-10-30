@@ -46,7 +46,7 @@
 
 /* ---- five proofs : pinned countdown (provably fair) ---- */
 .cd{position:relative;height:340vh;margin-top:-6vh}
-.cd-pin{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:1fr auto;align-items:center;column-gap:clamp(20px,4vw,70px);padding:12vh 0 8vh}
+.cd-pin{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.1fr) minmax(0,1.2fr);grid-template-rows:1fr auto;align-items:center;column-gap:clamp(20px,4vw,70px);padding:12vh 0 8vh}
 .cd-num{display:flex;align-items:flex-end;justify-content:flex-end}
 /* the digit box gets its full line height + padding so the gradient (background-clip:text) covers the whole glyph */
 .cd-num b{display:inline-block;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(200px,27vw,400px);line-height:1.12;padding:.04em .02em;
@@ -54,17 +54,19 @@
 .cd-num b.tick{animation:cdTick .55s cubic-bezier(.2,1.2,.3,1)}
 @keyframes cdTick{from{transform:translateY(14%);opacity:0}to{transform:none;opacity:1}}
 .cd-num span{font-family:'Anton',Impact,sans-serif;font-size:clamp(40px,4vw,70px);line-height:1;color:var(--ink-3);margin:0 0 .55em .1em}
+.cd-mach{position:relative;height:min(60vh,620px)}
+.cd-mach video,.cd-mach .av-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
 .cd-stage{position:relative;height:300px}
 .cd-s{position:absolute;inset:0;display:flex;align-items:center;gap:26px;opacity:0;transform:translateY(30px);transition:opacity .45s,transform .55s cubic-bezier(.2,.9,.3,1);pointer-events:none}
 .cd-s.on{opacity:1;transform:none}
-.cd-s img{height:190px;width:auto;filter:drop-shadow(0 14px 22px rgba(0,0,0,.55))}
-.cd-s h3{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(30px,3.1vw,52px);line-height:1;margin:0 0 12px;white-space:nowrap}
+.cd-s img{height:130px;width:auto;mix-blend-mode:screen;filter:drop-shadow(0 0 18px rgba(120,170,255,.35))}
+.cd-s h3{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(24px,2.3vw,38px);line-height:1;margin:0 0 12px;white-space:nowrap}
 .cd-s p{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap;margin:0}
 .cd-dots{grid-column:1/-1;display:flex;justify-content:center;gap:10px}
 .cd-dots i{width:46px;height:4px;border-radius:4px;background:rgba(180,186,255,.2);transition:.4s}
 .cd-dots i.on{background:var(--blue-bar);box-shadow:0 0 12px rgba(59,123,255,.6)}
 @media(max-width:900px){
-  .cd{height:auto;margin:0}.cd-pin{position:relative;height:auto;display:block;padding:0}.cd-num,.cd-dots{display:none}
+  .cd{height:auto;margin:0}.cd-pin{position:relative;height:auto;display:block;padding:0}.cd-num,.cd-dots{display:none}.cd-mach{height:56vh;margin-bottom:22px}
   .cd-stage{height:auto;display:flex;flex-direction:column;gap:22px}.cd-s{position:relative;opacity:1;transform:none;gap:18px}.cd-s img{height:84px}.cd-s h3{font-size:26px;margin-bottom:6px}.cd-s p{white-space:normal;font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){.cd-num b.tick{animation:none}.cd-s{transition:none}}
