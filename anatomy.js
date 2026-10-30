@@ -221,7 +221,7 @@ function resize(){
 addEventListener("resize", resize);
 
 /* ---------- orbit: drag, wheel, inertia, idle auto spin ---------- */
-const orb = { th:.62, ph:1.28, r:3.0, tx:0, ty:.52, tz:0, vth:0, vph:0, down:false, pan:false, px:0, py:0, pz:0, lx:0, ly:0, idle:0, zoom:1 };
+const orb = { th:1.57, ph:1.3, r:3.0, tx:0, ty:.52, tz:0, vth:0, vph:0, down:false, pan:false, px:0, py:0, pz:0, lx:0, ly:0, idle:0, zoom:1 };
 const tgt = new THREE.Vector3();
 function cam(){
   const sp = Math.sin(orb.ph), c = Math.cos(orb.ph), r = orb.r*orb.zoom;
@@ -468,7 +468,7 @@ function tourStep(dt){
   if (T < 2.5){ if (selected) setSelected(null); orb.th += dt*.12; }
   else if (T < 2.5 + N*S){ const i = Math.floor((T - 2.5)/S); if (i !== tour.i){ tour.i = i; setSelected(PARTS[i]); } }
   else if (T < 2.5 + N*S + 4){ if (tour.i !== 99){ tour.i = 99; selectCap(capsules[Math.floor(capsules.length*.45)]); } }
-  else if (T < 2.5 + N*S + 6.5){ if (selected){ setSelected(null); orb.thT = .62; orb.phT = 1.28; } }
+  else if (T < 2.5 + N*S + 6.5){ if (selected){ setSelected(null); orb.thT = 1.57; orb.phT = 1.3; } }
   else { tour.t = 0; tour.i = -1; }
 }
 
@@ -476,7 +476,7 @@ function tourStep(dt){
 const q = new URLSearchParams(location.search);
 $("#pix").onclick = e => { pixel = !pixel; e.currentTarget.classList.toggle("on", pixel); document.body.classList.toggle("pix", pixel); post.uniforms.pixel.value = pixel ? 1 : 0; scene.background = null; resize(); };
 if (q.get("pixel") === "1") $("#pix").click();
-$("#reset").onclick = () => { setSelected(null); setExplode(0); orb.px = orb.py = orb.pz = 0; orb.thT = .62; orb.phT = 1.28; orb.zoom = 1; if (tour) stopTour(); };
+$("#reset").onclick = () => { setSelected(null); setExplode(0); orb.px = orb.py = orb.pz = 0; orb.thT = 1.57; orb.phT = 1.3; orb.zoom = 1; if (tour) stopTour(); };
 if (q.get("ui") === "min"){ document.body.classList.add("ui-min"); document.getElementById("loader")?.remove(); }
 
 /* ---------- loop: render only while something moves; phones get a lower, self adjusting resolution ---------- */
