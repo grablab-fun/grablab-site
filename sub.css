@@ -99,7 +99,7 @@
 .con .cbar i{width:9px;height:9px;border-radius:50%;background:rgba(180,186,255,.25)}
 .con .cbar i:first-child{background:#ff4d6d;box-shadow:0 0 8px #ff4d6d}
 .con .cbar b{margin-left:auto;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:18px;letter-spacing:.04em;color:var(--ink)}
-.con .log{padding:22px 24px 10px;min-height:280px;font-family:var(--mono);font-size:13.5px;line-height:1.9;color:var(--ink-2)}
+.con .log{padding:22px 24px 10px;min-height:0;font-family:var(--mono);font-size:13.5px;line-height:1.9;color:var(--ink-2)}
 .con .ln{display:grid;grid-template-columns:34px 26px 1fr auto;gap:12px;align-items:center;opacity:0;transform:translateX(-6px);transition:opacity .3s,transform .4s;padding:0;border:0}
 .con .ln.on{opacity:1;transform:none}
 .con .ln .t{color:var(--ink-3);font-size:11px}
@@ -109,12 +109,17 @@
 .con .ln .ok{width:auto;height:auto;border:0;background:none;box-shadow:none;transform:none;color:#9cc0ff;font-size:11px;letter-spacing:.2em;display:inline}
 .con .ln.v .w{color:#9cc0ff}
 .con.done .ln.v{opacity:1;transform:none}
-.con .prompt{display:flex;align-items:center;gap:12px;padding:14px 24px 18px;border-top:1px solid rgba(180,186,255,.12);font-family:var(--mono)}
-.con .prompt span{color:#9cc0ff}
-.con .prompt input{flex:1;min-width:0;font-family:var(--mono);font-size:14px;letter-spacing:.06em;color:var(--ink);background:transparent;border:0;outline:none;caret-color:#9cc0ff}
+.con .prompt{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 24px 16px;border-top:1px solid rgba(180,186,255,.12);font-family:var(--mono)}
+.con .prompt label{color:var(--ink-2);font-size:13px;white-space:nowrap;cursor:pointer}
+.con .prompt label span{color:#9cc0ff}
+.con .prompt .field{flex:1;min-width:160px;display:flex;align-items:center;gap:8px;padding:0 16px;height:44px;border-radius:999px;background:rgba(5,9,24,.6);border:1px solid rgba(180,186,255,.3);transition:border-color .2s,box-shadow .2s}
+.con .prompt .field:focus-within{border-color:rgba(120,170,255,.8);box-shadow:0 0 0 4px rgba(59,123,255,.15)}
+.con .prompt .field i{font-style:normal;color:var(--ink-3)}
+.con .prompt input{flex:1;min-width:0;font-family:var(--mono);font-size:15px;letter-spacing:.08em;color:var(--ink);background:transparent;border:0;outline:none;caret-color:#9cc0ff}
+.con .prompt input::placeholder{color:var(--ink-3)}
+.con .prompt small{flex-basis:100%;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
 .con .prompt button{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#071029;background:var(--blue-chrome);border:0;border-radius:999px;padding:10px 16px;cursor:pointer;transition:transform .2s}
 .con .prompt button:hover{transform:translateY(-1px)}
-.con .wm{position:absolute;right:-30px;bottom:-40px;height:260px;width:auto;opacity:.08;pointer-events:none;filter:grayscale(1)}
 .con .cur{display:inline-block;width:8px;height:14px;background:#9cc0ff;vertical-align:-2px;animation:blink 1s steps(2) infinite}
 .con.done{border-color:rgba(120,170,255,.45)!important;box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 18px 44px rgba(0,0,0,.38),0 0 40px rgba(59,123,255,.2)!important}
 @media(max-width:620px){.con .log{padding:16px 14px 8px;font-size:12px}.con .ln{grid-template-columns:30px 20px 1fr auto;gap:8px}.con .ln .w small{display:block;margin:0}.con .prompt{padding:12px 14px 14px}}
