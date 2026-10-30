@@ -65,6 +65,13 @@
   if (tm && !tm.hasAttribute("data-sync")){ let s = 30; setInterval(() => { s = s <= 0 ? 30 : s - 1; tm.textContent = "0:" + String(s).padStart(2,"0"); }, 1000); }
 })();
 
+/* the live window: the tabs pick a column */
+(function(){
+  const app = document.querySelector(".app"); if (!app) return;
+  const tabs = [...app.querySelectorAll(".tabs button")];
+  tabs.forEach(t => t.addEventListener("click", () => { tabs.forEach(x => x.classList.toggle("on", x === t)); app.dataset.col = t.dataset.col; }));
+})();
+
 /* five proofs: the pinned countdown steps 1 to 5 with scroll */
 (function(){
   const root = document.getElementById("countdown"); if (!root) return;

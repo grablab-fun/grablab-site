@@ -210,8 +210,13 @@
 .app .bar{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid rgba(180,186,255,.14)}
 .app .dots{display:flex;gap:6px}.app .dots i{width:10px;height:10px;border-radius:50%;background:rgba(180,186,255,.25)}
 .app .tabs{display:flex;gap:6px;margin-left:8px}
-.app .tabs span{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);padding:7px 12px;border-radius:999px}
-.app .tabs span.on{color:#071029;background:var(--blue-chrome)}
+.app .tabs button{all:unset;cursor:pointer;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);padding:7px 12px;border-radius:999px;transition:color .2s,background .2s}
+.app .tabs button:hover{color:var(--ink)}
+.app .tabs button.on{color:#071029;background:var(--blue-chrome)}
+/* the tabs pick a column: the others step back; on phones only the picked one shows */
+.app .col{transition:opacity .35s,transform .35s}
+.app[data-col] .col{opacity:.38}
+.app[data-col="0"] .col:nth-child(1),.app[data-col="1"] .col:nth-child(2),.app[data-col="2"] .col:nth-child(3){opacity:1}
 .app .bar .soon{margin-left:auto}
 .app .body{display:grid;grid-template-columns:1.35fr 1fr 1fr;min-height:360px}
 .app .col{padding:20px 20px 22px;border-right:1px solid rgba(180,186,255,.1)}
@@ -259,7 +264,7 @@
 @media(max-width:620px){
   .shelf,.stocks{grid-template-columns:1fr}
   .app .body{grid-template-columns:1fr}.app .col{border-right:0;border-bottom:1px solid rgba(180,186,255,.1)}
-  .app .tabs{display:none}
+  .app .tabs{display:flex}.app .chip.soon{display:none}.app .col{display:none;opacity:1!important}.app:not([data-col]) .col:nth-child(1),.app[data-col="0"] .col:nth-child(1),.app[data-col="1"] .col:nth-child(2),.app[data-col="2"] .col:nth-child(3){display:block}
   .ph h1 .line{white-space:normal}
 }
 
@@ -489,11 +494,23 @@
 @media(max-width:620px){ .fm-own{grid-template-columns:1fr;padding:22px} .fm-own-ico{width:72px;height:72px} .fm-own-ico img{width:52px;height:52px} .fm-cta{justify-self:stretch;text-align:center} }
 
 /* participate: the subtitle on two even lines, a quiet live pill, the drop progress as a full width line */
-.sh .sub2{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sh .sub2{display:flex;flex-wrap:wrap;justify-content:center;column-gap:.5em;row-gap:4px}
+@media(max-width:700px){.sh .sub2{flex-direction:column;align-items:center}}
 .pill.live{color:#cfe0ff;background:rgba(59,123,255,.16);border:1px solid rgba(143,184,255,.45);box-shadow:none}
 .pill.live::before{content:none}
 .dr-bar{grid-column:1/-1;display:block;height:3px;border-radius:3px;background:rgba(180,186,255,.14);overflow:hidden;margin-top:2px}
 .dr-bar i{display:block;height:100%;width:calc(var(--f) * 100%);border-radius:3px;background:var(--blue-bar,linear-gradient(90deg,#7fa8ff,#3b7bff))}
+.dr-n{grid-column:1/-1;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:-2px}
+.dr-n b{color:#9cc0ff;font-weight:400}
+/* the drop rows and the quest rows answer the pointer like the discover rows */
+.dr,.task{transition:background .25s,border-color .25s,padding .25s}
+.dr:hover{background:rgba(180,196,255,.07);border-color:rgba(180,186,255,.22)}
+.dr .lg{transition:transform .35s cubic-bezier(.2,1.4,.4,1),filter .35s}
+.dr:hover .lg{transform:scale(1.08) rotate(-3deg);filter:drop-shadow(0 0 12px rgba(120,170,255,.45))}
+.task{border-radius:10px}
+.task:hover{background:rgba(180,196,255,.05);padding-left:6px;padding-right:6px}
+.task i{transition:transform .35s cubic-bezier(.2,1.4,.4,1),border-color .25s}
+.task:hover i{transform:scale(1.12);border-color:rgba(120,170,255,.6)}
 
 /* participate hero: the physics lab and its partners in one card */
 .lab-card{display:flex;align-items:center;gap:22px;margin-top:22px;padding:14px 20px;border-radius:18px;width:max-content;max-width:100%}

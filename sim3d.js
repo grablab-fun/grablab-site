@@ -15,14 +15,15 @@ const FLOOR = .25, SX = .45, SZ = .9;
 const toM = (x, z) => [x*SX, -.45 + z*SZ];                      // game x,z to machine x,y
 const toG = (mx, my) => [mx/SX, (my + .45)/SZ];
 
-export function createSim3D(canvas, pips){
+export function createSim3D(canvas, pips, opts = {}){
   const LITE = document.documentElement.classList.contains("lite");
+  /* opts.alpha: a transparent background for recordings (no room floor, no fog); opts.cam: {pos, look, fov} adds a fixed recording camera */
   /* the renderer is made on the first visible frame: a WebGL context on a hidden canvas gets dropped by some browsers */
   let renderer = null;
   let failed = false;
-  const makeRenderer = () => { try { renderer = new THREE.WebGLRenderer({ canvas, antialias:!LITE, alpha:false, powerPreference:"high-performance" });
+  const makeRenderer = () => { try { renderer = new THREE.WebGLRenderer({ canvas, antialias:!LITE, alpha:!!opts.alpha, powerPreference:"high-performance", preserveDrawingBuffer:!!opts.alpha }); if (opts.alpha) renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05; renderer.setScissorTest(true); } catch (e){ failed = true; console.warn("sim3d: no WebGL", e); } };
-  const scene = new THREE.Scene(); scene.background = new THREE.Color(0x070a1a); scene.fog = new THREE.Fog(0x070a1a, 3.5, 9);
+  const scene = new THREE.Scene(); if (!opts.alpha){ scene.background = new THREE.Color(0x070a1a); scene.fog = new THREE.Fog(0x070a1a, 3.5, 9); }
   const root = new THREE.Group(); root.rotation.x = -Math.PI/2; scene.add(root);
 
   /* studio light: sky fill, a soft key from the front left, a cool rim from the back, and an environment for the metal */
@@ -37,7 +38,7 @@ export function createSim3D(canvas, pips){
       g.fillStyle = gr; g.fillRect(0, 0, N, N); if (f === 0 || f === 4){ g.fillStyle = "rgba(240,244,255,.85)"; g.fillRect(N*.3, N*.08, N*.4, N*.34); } faces.push(cv); }
     const ct = new THREE.CubeTexture(faces); ct.colorSpace = THREE.SRGBColorSpace; ct.needsUpdate = true; scene.environment = ct; scene.environmentIntensity = .6; })();
   /* the room floor */
-  const fl = new THREE.Mesh(new THREE.CircleGeometry(5, 48), new THREE.MeshStandardMaterial({ color:0x0b0f24, roughness:.85, metalness:.1 })); fl.position.z = -.023; root.add(fl);
+  const fl = new THREE.Mesh(new THREE.CircleGeometry(5, 48), new THREE.MeshStandardMaterial({ color:0x0b0f24, roughness:.85, metalness:.1 })); fl.position.z = -.023; if (!opts.alpha) root.add(fl);
 
   /* the machine */
   const cache = new Map();
@@ -113,6 +114,7 @@ export function createSim3D(canvas, pips){
     /* recordings only: straight down from above the machine */
     { name:"Top camera", cam:mk(44), pose(c){ c.up.set(0, 0, -1); c.position.set(0, 2.45, 0); c.lookAt(0, .3, 0); } }
   ];
+  if (opts.cam) cams.push({ name:"Rec camera", cam:mk(opts.cam.fov || 36), pose(c){ c.up.set(0, 1, 0); c.position.set(...opts.cam.pos); c.lookAt(...opts.cam.look); } });
   let main = 0;
   const setMain = i => { main = i; layoutPips(); };
   function layoutPips(){ if (!pips) return; const order = [0, 1, 2].filter(i => i !== main); pips.forEach((el, k) => { el.dataset.cam = order[k]; el.querySelector("span").textContent = cams[order[k]].name; }); if (pips.label) pips.label.textContent = cams[main].name; }
