@@ -20,7 +20,7 @@ const PARTS = [
   { id:"panel", n:"03", name:"Front panel", spec:"Black panel, anodised plates", ph:1.32, th:1.57, anchor:[0,-.505,.17], ex:[0,-.5,0],
     text:["The face of the machine, under the window.", "Emergency stop, scan to play QR, GRABLAB plate."],
     subs:[["Emergency stop", ["panel_estop"]], ["Scan to play", ["panel_qr", "panel_scan"]], ["GRABLAB plate", ["panel_wordmark", "panel_trim"]], ["Panel", ["panel_skin"]]], proof:"No joystick. Browser only" },
-  { id:"electronics", n:"04", name:"Electronics", spec:"Boards and wiring on one plate", ph:1.36, th:1.57, anchor:[.04,.45,.12], ex:[0,.24,0],
+  { id:"electronics", n:"04", name:"Electronics", spec:"Boards and wiring on one plate", ph:1.5, th:1.57, fitK:.8, anchor:[.04,.45,.12], ex:[0,.24,0],
     text:["Power, motion and claw drivers on one plate.", "A small computer runs the play and the stream.", "A secure chip signs every event.", "Its key never leaves the chip."],
     subs:[["Secure chip", ["el_optiga"]], ["Computer", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
   { id:"chute", n:"05", name:"Chute and prize bin", spec:"Black chute, printed cradle", ph:1.22, th:.4, anchor:[.354,-.354,.15], ex:[.3,-.3,0],
@@ -273,7 +273,7 @@ function fit(b, minR, margin){
 function goal(){
   if (selectedCap){ selectedCap.getWorldPosition(tmpV); return { tx:tmpV.x, ty:tmpV.y + .015, tz:tmpV.z, r:.2 }; }
   if (subFocus){ box.copy(subFocus.box).expandByScalar(.02); return fit(box, .2, 1.15); }
-  if (selected){ partBox(selected, box); if (!box.isEmpty()){ box.expandByScalar(.03); return fit(box, .42, 1.12); } }
+  if (selected){ partBox(selected, box); if (!box.isEmpty()){ box.expandByScalar(.03); return fit(box, .42, selected.fitK || 1.12); } }   /* fitK: a part can ask to be framed closer */
   whole.makeEmpty(); for (const p of PARTS) if (p.lbox && !p.lbox.isEmpty() && p.id !== "capsules") whole.union(partBox(p, pb));
   return fit(whole, 1.2, 1.04);
 }
