@@ -22,8 +22,8 @@
 <link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
 <link rel="stylesheet" href="styles.css?v=nv7" />
-<link rel="stylesheet" href="pages.css?v=c7" />
-<link rel="stylesheet" href="sub.css?v=c5" />
+<link rel="stylesheet" href="pages.css?v=c9" />
+<link rel="stylesheet" href="sub.css?v=c6" />
 </head>
 <body data-page="fair">
 <!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
@@ -90,21 +90,22 @@
     </div>
   </section>
 
-  <!-- VERIFIER -->
+  <!-- VERIFIER : the proof as the machine's own log -->
   <section class="blk" id="verify">
-    <div class="blk-in vfy">
-      <div>
-        <div class="sh"><span class="k reveal">Try it</span><h2 class="reveal d1">Check<br><span class="hl">any play.</span></h2><p class="reveal d2">Enter a play number</p></div>
-        <div class="in-row reveal d2"><input id="vfyIn" type="text" inputmode="numeric" value="427" aria-label="Play number" /><button class="btn btn-primary" id="vfyBtn">Verify</button></div>
-      </div>
-      <div class="rcpt glass reveal d1" id="vfyRcpt">
-        <div class="rh"><span>Play receipt</span><b class="pn">#000427</b></div>
-        <div class="rrow"><img src="assets/sub/inventory.webp" alt="" /><div class="t">Inventory sealed<small>&nbsp;</small></div><i class="ok"></i></div>
-        <div class="rrow"><img src="assets/icons/gauge.webp" alt="" /><div class="t">Grip promised<small>&nbsp;</small></div><i class="ok"></i></div>
-        <div class="rrow"><img src="assets/icons/chip.webp" alt="" /><div class="t">Grip measured and signed<small>&nbsp;</small></div><i class="ok"></i></div>
-        <div class="rrow"><img src="assets/icons/lens.webp" alt="" /><div class="t">Drop confirmed<small>&nbsp;</small></div><i class="ok"></i></div>
-        <div class="rrow"><img src="assets/icons/wallet.webp" alt="" /><div class="t">Prize settled<small>&nbsp;</small></div><i class="ok"></i></div>
-        <div class="rf"><span>Preview data</span><b>Verified</b></div>
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Try it</span><h2 class="reveal d1">Read the<br class="mbr"> <span class="hl">machine's log.</span></h2></div>
+      <div class="con glass reveal d1" id="vfyRcpt">
+        <div class="cbar"><i></i><i></i><i></i><span>grablab / prototype 01 / verify</span><b class="pn">#000427</b></div>
+        <div class="log">
+          <div class="rrow ln"><span class="t">00.00</span><img src="assets/sub/inventory.webp" alt="" /><span class="w">inventory sealed<small>&nbsp;</small></span><span class="ok">OK</span></div>
+          <div class="rrow ln"><span class="t">00.62</span><img src="assets/icons/gauge.webp" alt="" /><span class="w">grip promised<small>&nbsp;</small></span><span class="ok">OK</span></div>
+          <div class="rrow ln"><span class="t">01.24</span><img src="assets/icons/chip.webp" alt="" /><span class="w">grip measured, signed<small>&nbsp;</small></span><span class="ok">OK</span></div>
+          <div class="rrow ln"><span class="t">01.86</span><img src="assets/icons/lens.webp" alt="" /><span class="w">drop confirmed<small>&nbsp;</small></span><span class="ok">OK</span></div>
+          <div class="rrow ln"><span class="t">02.48</span><img src="assets/icons/wallet.webp" alt="" /><span class="w">prize settled<small>&nbsp;</small></span><span class="ok">OK</span></div>
+          <div class="ln v"><span class="t">02.90</span><span></span><span class="w">verified. 5 / 5 proofs hold. <i class="cur"></i></span><span class="ok"></span></div>
+        </div>
+        <div class="prompt"><span>&gt; verify play</span><input id="vfyIn" type="text" inputmode="numeric" value="427" aria-label="Play number" /><button id="vfyBtn" type="button">Run</button></div>
+        <img class="wm" src="assets/icons/claw.png" alt="" />
       </div>
     </div>
   </section>
@@ -115,8 +116,8 @@
   </section>
 </main>
 <footer id="site-footer"></footer>
-<script src="site.js?v=kp3"></script>
+<script src="site.js?v=kp4"></script>
 <script src="consent.js?v=9"></script>
-<script src="sub.js?v=c2"></script>
+<script src="sub.js?v=c3"></script>
 </body>
 </html>

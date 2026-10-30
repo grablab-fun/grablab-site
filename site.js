@@ -671,7 +671,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu();
   document.querySelectorAll(".callout").forEach(c => {
     const h = c.querySelector("h2"); if (!h || c.querySelector(".co-claw")) return;
     const last = [...h.childNodes].reverse().find(n => n.nodeType === 3 && n.nodeValue.trim());
-    if (last){ const m = last.nodeValue.match(/^(.*?)(\S+\s+\S+\.?)\s*$/); if (m){ const sp = document.createElement("span"); sp.className = "hl"; sp.textContent = m[2]; last.nodeValue = m[1]; last.after(sp); } }
+    if (last){ const m = h.querySelector("br") ? [0, "", last.nodeValue] : last.nodeValue.match(/^(.*?)(\S+\s+\S+\.?)\s*$/); if (m){ const sp = document.createElement("span"); sp.className = "hl"; sp.textContent = m[2]; last.nodeValue = m[1]; last.after(sp); } }
     const body = document.createElement("div"); body.className = "co-body"; while (c.firstChild) body.appendChild(c.firstChild); c.appendChild(body);
     const art = document.createElement("div"); art.className = "co-art"; art.innerHTML = '<i class="co-line"></i><img class="co-claw" src="assets/icons/claw.png" alt="" /><i class="co-glow"></i>'; c.appendChild(art);
     const k = document.createElement("span"); k.className = "co-k"; k.textContent = c.dataset.k || "Next"; body.prepend(k);

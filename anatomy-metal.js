@@ -688,8 +688,10 @@ export function buildMachine(THREE, api){
   /* coil cable: tied to a body wall 30 below the clamps, then up beside the line to the Wago on the carriage */
   const CA = Math.PI/3, ccx = LX + .036*Math.cos(CA), ccy = LY + .036*Math.sin(CA), ZT = EYE - .016, coil = [], turns = 28;
   for (const z of [-.016, -.028]){ C(BOX(.003, .012, .003), m("tie", { color:0x0c0c0d, roughness:.6 }), .0155*Math.cos(CA)*1.25, .0155*Math.sin(CA)*1.25, z, "claw_cable_tie", 0, 0, CA); }
-  coil.push(new THREE.Vector3(ccx, ccy, CT - .03), new THREE.Vector3(ccx, ccy, CT - .024));
-  for (let i = 0; i <= turns*16; i++){ const t = i/(turns*16), a = t*turns*2*Math.PI; coil.push(new THREE.Vector3(ccx + .007*Math.cos(a), ccy + .007*Math.sin(a), CT - .018 + t*(ZT - .03 - (CT - .018)))); }
+  /* the cable starts on the body wall under the two ties (tie radius 19 mm), runs up through them, then bends out to the coil radius */
+  { const tr = .0155*1.25, tx = LX + tr*Math.cos(CA), ty = LY + tr*Math.sin(CA);
+    coil.push(new THREE.Vector3(tx, ty, CT - .04), new THREE.Vector3(tx, ty, CT - .03), new THREE.Vector3(tx, ty, CT - .014), new THREE.Vector3(tx + (ccx - tx)*.5, ty + (ccy - ty)*.5, CT - .006), new THREE.Vector3(ccx, ccy, CT + .002)); }
+  for (let i = 0; i <= turns*16; i++){ const t = i/(turns*16), a = t*turns*2*Math.PI; coil.push(new THREE.Vector3(ccx + .007*Math.cos(a), ccy + .007*Math.sin(a), CT + .008 + t*(ZT - .03 - (CT + .008)))); }
   coil.push(new THREE.Vector3(ccx, ccy, ZT), new THREE.Vector3(ccx + .006, ccy - .004, EYE - .006), new THREE.Vector3(XC - .006, mm(458), EYE + .0005));
   add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(coil, false, "centripetal"), 1800, .0016, 8), m("coil", { color:0x0e0f12, roughness:.38, metalness:.15 }), 0, 0, 0, 0, 0, 0, "claw_coil_cable");
 

@@ -157,21 +157,7 @@ body.page-in main,body.page-in .hero{opacity:1;transform:none}
 /* ============ INSIDE : dissection video lower ============ */
 .center-head{text-align:center;margin-inline:auto}
 .center-head .lead{margin-inline:auto}
-.inside-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(24px,4vw,56px);align-items:start}
-.inside-video{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/5;position:sticky;top:100px;
   box-shadow:0 40px 110px rgba(0,0,0,.6),0 0 70px rgba(154,123,255,.12),inset 0 1px 0 rgba(255,255,255,.14)}
-.inside-video video,.inside-video .av-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
-.inside-video::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 60% at 50% 40%,transparent,rgba(7,9,18,.35))}
-.inside-steps{display:flex;flex-direction:column;gap:14px}
-.istep{display:grid;grid-template-columns:54px 1fr;gap:18px;align-items:start;padding:22px 24px}
-.istep .in{font-family:var(--display);font-size:26px;line-height:1;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;padding-top:2px}
-.istep h4{font-size:18px;margin-bottom:6px;line-height:1.15}
-.istep p{color:var(--ink-2);font-size:14px}
-@media(max-width:900px){
-  
-  .inside-grid{grid-template-columns:1fr}
-  .inside-video{position:relative;top:auto;max-width:460px;margin:0 auto}
-}
 
 /* ---- hero art: colorful cinematic sky, machine below the headline (machine.fun impact) ---- */
 
@@ -474,22 +460,12 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 
 /* palette cohesion: faint periwinkle tint on glass surfaces */
 .glass{background:linear-gradient(160deg,rgba(125,132,255,.06),rgba(125,132,255,.015))}
-/* inside steps light up in sequence with the dissection video */
-.istep{transition:border-color .35s,background .35s,transform .35s,box-shadow .35s}
-.istep.active{border-color:rgba(180,186,255,.55);background:linear-gradient(160deg,rgba(125,132,255,.16),rgba(125,132,255,.04));
   transform:translateX(6px);box-shadow:0 14px 40px rgba(0,0,0,.35),0 0 40px rgba(125,132,255,.14),inset 0 1px 0 rgba(255,255,255,.14)}
-.istep.active .in{filter:drop-shadow(0 0 10px rgba(180,186,255,.5))}
 
 /* continuity: every section heading gets the same chrome treatment as the hero */
 .section-head h2,.center-head h2{background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
 
-/* inside: video frame and steps column share the exact same height (aligned edges) */
-.inside-grid{align-items:stretch}
-.inside-video{position:relative;top:auto;aspect-ratio:auto;height:100%}
-.inside-video video,.inside-video .av-cv{height:100%}
-.inside-steps{justify-content:space-between}
-@media(max-width:900px){.inside-video{aspect-ratio:4/5;height:auto}}
 
 /* footer: dark clouds without the bright horizon line */
 .footer-bg{background-image:url("assets/bg-sky-dark.webp");background-position:center 70%;filter:brightness(.8) saturate(1)}
@@ -502,15 +478,10 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 /* ============ CHROME ICONS (machine.fun style): black bg drops out via screen blend ============ */
 .teaser-ic{width:52px;height:52px;object-fit:contain;mix-blend-mode:screen;margin-bottom:4px;
   filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
-.istep{grid-template-columns:70px 1fr}
-.istep-ic{display:flex;flex-direction:column;align-items:center;gap:3px}
-.istep-ic img{width:46px;height:46px;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 3px 8px rgba(0,0,0,.4))}
-.istep .in{font-size:12px;opacity:.75}
-.istep.active .istep-ic img{filter:drop-shadow(0 0 12px rgba(180,186,255,.5))}
 @media(max-width:560px){.istep{grid-template-columns:56px 1fr}.istep-ic img{width:38px;height:38px}}
 
 /* icons now have transparent backgrounds: no blend needed */
-.teaser-ic,.istep-ic img{mix-blend-mode:normal}
+.teaser-ic{mix-blend-mode:normal}
 
 /* ============ ONE SHARED ATMOSPHERE behind every section ============ */
 body{background:
@@ -890,20 +861,6 @@ body.is-loading{overflow:hidden}
 .v-steps::before{top:23px}
 .v-steps .st.settle.on i{background:rgba(59,123,255,.22);border-color:rgba(160,195,255,.9);box-shadow:0 0 26px rgba(59,123,255,.8)}
 
-/* ============ INSIDE THE MACHINE : the whole section fits one screen (kicker, title, lead and all five steps) ============ */
-@media(min-width:901px){
-  .inside-show{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:clamp(84px,11vh,110px);padding-bottom:clamp(24px,4vh,44px)}
-  .inside-show .section-head{margin-bottom:clamp(16px,3vh,30px)}
-  .inside-show .section-head .kicker{margin-bottom:10px}
-  .inside-show .section-head h2{font-size:clamp(28px,min(3.4vw,5.4vh),46px);margin-bottom:8px}
-  .inside-show .section-head .lead{font-size:clamp(14px,1.9vh,17px)}
-  .inside-show .inside-grid{height:min(64vh,640px)}
-  .inside-show .inside-steps{gap:clamp(8px,1.4vh,14px)}
-  .inside-show .istep{flex:1;align-items:center;padding:clamp(10px,1.6vh,18px) 22px}
-  .inside-show .istep h4{font-size:clamp(15px,2vh,18px);margin-bottom:3px}
-  .inside-show .istep p{font-size:13.5px}
-  .inside-show .istep-ic img{width:clamp(34px,4.6vh,46px);height:clamp(34px,4.6vh,46px)}
-}
 
 /* ============ PHONE HERO : smaller machine up top, copy fits the same screen ============ */
 @media(max-width:900px){
@@ -999,8 +956,6 @@ body.is-loading{overflow:hidden}
 
 /* a heading set on two balanced lines on phones */
 @media (max-width:700px){ .section-head h2.two span{display:block;white-space:nowrap} .section-head h2.two{font-size:min(9.4vw,44px)} }
-/* phones: the inside video takes the full column, above the five steps */
-@media (max-width:900px){ .inside-show .inside-grid{height:auto} .inside-video{width:100%;max-width:460px;justify-self:center;aspect-ratio:4/5!important;height:auto!important} }
 
 /* ===== snappy: short, cheap transitions everywhere (no blur filters in motion) ===== */
 .page-wipe{transition:opacity .14s ease!important}
@@ -1017,7 +972,7 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
 .callout::before{content:"";position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,#d6e4ff 30%,#3b7bff 55%,#fff 75%,transparent);opacity:.75}
 .callout .co-body{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-start;gap:18px}
 .callout .co-k{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#9cc0ff}
-.callout h2{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(36px,5vw,84px);line-height:.94;letter-spacing:.005em;margin:0;max-width:14ch;background:none;-webkit-text-fill-color:initial;color:var(--ink);filter:none}
+.callout h2{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(34px,4.4vw,76px);line-height:.94;letter-spacing:.005em;margin:0;max-width:16ch;background:none;-webkit-text-fill-color:initial;color:var(--ink);filter:none}
 .callout h2 .hl{background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .callout p{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin:0;max-width:60ch;line-height:1.75}
 .callout .btn{display:inline-flex;align-items:center;gap:12px;color:#071029;background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);box-shadow:0 12px 36px rgba(59,123,255,.35);border:0;margin-top:6px;transition:transform .25s cubic-bezier(.2,1.2,.3,1),box-shadow .25s}
@@ -1033,3 +988,33 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
 @keyframes coGlow{50%{transform:translateX(-50%) scale(1.2);opacity:.7}}
 @media(max-width:760px){.callout{grid-template-columns:1fr;text-align:left;min-height:0;padding-top:150px}.callout .co-art{position:absolute;left:0;right:0;top:0;height:150px;min-height:0}.callout .co-claw{top:10px;height:120px}.callout .co-line{display:none}.callout h2{font-size:clamp(32px,9vw,44px)}}
 @media(prefers-reduced-motion:reduce){.callout .co-claw,.callout .co-line,.callout .co-glow{animation:none}}
+
+/* ============ INSIDE THE MACHINE (Oct 31): the five proofs countdown, the machine opening in the middle. scroll drives it ============ */
+.inside{position:relative;height:320vh}
+.inside .in-pin{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.1fr) minmax(0,1.2fr);grid-template-rows:auto 1fr auto;align-items:center;column-gap:clamp(16px,3vw,48px);padding:11vh clamp(16px,4vw,48px) 6vh;max-width:1400px;margin:0 auto}
+.inside .in-head{grid-column:1/-1;text-align:center;align-self:start}
+.inside .in-head .kicker{text-align:center;font-size:11px;letter-spacing:.28em;color:#9cc0ff;margin-bottom:14px}
+.inside .in-head h2{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(34px,5vw,84px);line-height:.92;letter-spacing:.005em;margin:0;background:none;color:var(--ink);filter:none;-webkit-text-fill-color:initial}
+.inside .in-head h2 .hl{background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.inside .in-num{display:flex;align-items:flex-end;justify-content:flex-end}
+.inside .in-num b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(180px,22vw,340px);line-height:1.12;background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 30px rgba(5,9,24,.6))}
+.inside .in-num b.tick{animation:inTick .55s cubic-bezier(.2,1.2,.3,1)}
+@keyframes inTick{0%{transform:translateY(14px);opacity:.2}100%{transform:none;opacity:1}}
+.inside .in-num span{font-family:'Anton',Impact,sans-serif;font-size:clamp(40px,4vw,70px);line-height:1;color:var(--ink-3);margin:0 0 .55em .1em}
+.inside .in-mach{position:relative;height:min(50vh,560px)}
+.inside .in-mach video,.inside .in-mach .av-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.inside .in-stage{position:relative;height:260px}
+.inside .in-s{position:absolute;inset:0;display:flex;align-items:center;gap:22px;opacity:0;transform:translateY(30px);transition:opacity .45s,transform .55s cubic-bezier(.2,.9,.3,1);pointer-events:none}
+.inside .in-s.on{opacity:1;transform:none}
+.inside .in-s img{height:120px;width:120px;object-fit:contain;flex:none;mix-blend-mode:screen;filter:drop-shadow(0 0 18px rgba(120,170,255,.35))}
+.inside .in-s h3{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(24px,2.3vw,38px);line-height:1;margin:0 0 10px;white-space:nowrap}
+.inside .in-s p{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin:0;line-height:1.7;white-space:nowrap}
+.inside .in-dots{grid-column:1/-1;display:flex;justify-content:center;gap:10px}
+.inside .in-dots i{width:46px;height:4px;border-radius:4px;background:rgba(180,186,255,.2);transition:.4s}
+.inside .in-dots i.on{background:linear-gradient(90deg,#1f4fd1,#3b7bff 60%,#d6e4ff);box-shadow:0 0 12px rgba(59,123,255,.6)}
+@media(max-width:900px){
+  .inside{height:auto}.inside .in-pin{position:relative;height:auto;display:block;padding:clamp(60px,9vw,100px) 16px 30px}.inside .in-num,.inside .in-dots{display:none}
+  .inside .in-head{margin-bottom:20px}.inside .in-mach{height:56vh}.inside .in-stage{height:auto;display:flex;flex-direction:column;gap:20px;margin-top:22px}
+  .inside .in-s{position:relative;opacity:1;transform:none;gap:16px}.inside .in-s img{height:72px;width:72px}.inside .in-s h3{font-size:24px;white-space:normal}.inside .in-s p{white-space:normal;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){.inside .in-num b.tick{animation:none}.inside .in-s{transition:none}}

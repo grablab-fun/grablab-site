@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=18";
+import { buildMachine } from "./anatomy-metal.js?v=19";
 
 const $ = s => document.querySelector(s);
 /* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
@@ -26,7 +26,7 @@ const PARTS = [
   { id:"chute", n:"05", name:"Chute and prize bin", spec:"Black chute, printed cradle", ph:1.22, th:.4, anchor:[.354,-.354,.15], ex:[.3,-.3,0],
     text:["A funnel and a chute under the prize hole.", "A red light beam sees the capsule fall.", "It lands on a padded trapdoor, filmed up close.", "The NFC reader takes its UID.", "Then the trapdoor drops it into the long prize bin."],
     subs:[["Chute and funnel", ["chute_wall", "chute_funnel"]], ["Drop sensor, light beam", ["chute_e3jk", "chute_sensor"]], ["Landing camera", ["chute_c960"]], ["NFC reader", ["chute_acr122u"]], ["Printed cradle", ["chute_cradle", "chute_axle_block"]], ["Trapdoor and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Prize bin", ["chute_bin"]]], proof:"Seen twice: beam and camera" },
-  { id:"capsules", n:"06", name:"Capsules", spec:"Printed white shell, NFC sticker", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.42],
+  { id:"capsules", n:"06", name:"Capsules", spec:"Printed white shell, NFC sticker", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.98],
     text:["Printed two piece shells, NFC sticker inside.", "Factory UID, read only.", "Size set by the grip test.", "Click one to open it."],
     subs:[["Printed two piece shell", []], ["NFC sticker", []], ["Size set by the grip test", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
   { id:"gantry", n:"07", name:"Gantry", spec:"Aluminium rails, printed blocks", ph:1.0, th:-1.9, anchor:[.47,-.2,1.16], ex:[0,0,.5],
@@ -136,7 +136,7 @@ async function load(){
       for (const m of list) o.remove(m);
     }
   })(root);
-  M.capsules.forEach(o => { o.userData.home = o.position.clone(); o.userData.spread = new THREE.Vector3(o.position.x*.22, o.position.y*.22, 0); capsules.push(o); });
+  M.capsules.forEach(o => { o.userData.home = o.position.clone(); o.userData.spread = new THREE.Vector3(o.position.x*.06, o.position.y*.06, 0); capsules.push(o); });
   for (const p of PARTS){ p.objs = [ents.get(p.id)].filter(Boolean); p.objs.forEach(o => { o.userData.home = o.position.clone(); }); }
   /* each part's real bounds in machine space (cables that leave the part are not part of its frame) */
   root.updateMatrixWorld(true); const inv = root.matrixWorld.clone().invert(), mm = new THREE.Matrix4();

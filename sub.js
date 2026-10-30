@@ -26,7 +26,7 @@
     };
     el._t = setTimeout(step, 500);
   }
-  document.querySelectorAll(".rrow .ok").forEach(o => o.innerHTML = CHECK);
+  document.querySelectorAll(".rrow .ok").forEach(o => { if (!o.closest(".con")) o.innerHTML = CHECK; });
 
   const hero = document.getElementById("heroRcpt");
   if (hero){

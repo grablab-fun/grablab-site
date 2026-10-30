@@ -22,7 +22,7 @@
 <link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
 <link rel="stylesheet" href="styles.css?v=nv7" />
-<link rel="stylesheet" href="pages.css?v=c7" />
+<link rel="stylesheet" href="pages.css?v=c9" />
 </head>
 <body data-page="home">
 <!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
@@ -90,24 +90,20 @@
   </div>
 </section>
 
-<!-- INSIDE : the dissection video, lower on the page -->
-<section class="section inside-show" id="inside">
-  <div class="section-head center-head">
-    <span class="kicker reveal">Inside the machine</span>
-    <h2 class="reveal d1 two"><span>See every part</span> <span>that makes it honest.</span></h2>
-    <p class="lead reveal d2">Every part has a job in the proof.</p>
-  </div>
-  <div class="inside-grid">
-    <div class="inside-video glass reveal">
-      <video id="heroVideo" class="av" data-webm="assets/inside-anatomy-alpha.webm?v=2" data-stacked="assets/inside-anatomy-stacked.mp4?v=2" poster="assets/inside-anatomy-poster.webp?v=2" autoplay muted loop playsinline preload="auto"></video>
+<!-- INSIDE : the five parts that prove the play, one at a time, the machine opening in the middle (scroll driven, like the five proofs) -->
+<section class="inside" id="inside">
+  <div class="in-pin">
+    <div class="in-head"><span class="kicker">Inside the machine</span><h2>Every part <span class="hl">has a job.</span></h2></div>
+    <div class="in-num"><b id="inNum">1</b><span>/5</span></div>
+    <div class="in-mach"><video id="heroVideo" class="av" data-webm="assets/inside-anatomy-alpha.webm?v=3" data-stacked="assets/inside-anatomy-stacked.mp4?v=3" poster="assets/inside-anatomy-poster.webp?v=3" autoplay muted loop playsinline preload="auto"></video></div>
+    <div class="in-stage" id="inStage">
+      <div class="in-s on"><img src="assets/icons/cabinet.webp" alt="" /><div><h3>A real claw</h3><p>Steel, acrylic, a 12 V claw.<br>Driven from your browser.</p></div></div>
+      <div class="in-s"><img src="assets/icons/gauge.webp" alt="" /><div><h3>Grip set on-chain</h3><p>Promised before you play.<br>Measured as you do.</p></div></div>
+      <div class="in-s"><img src="assets/icons/chip.webp" alt="" /><div><h3>It signs every play</h3><p>A secure chip on the board.<br>A key it can't fake.</p></div></div>
+      <div class="in-s"><img src="assets/icons/lens.webp" alt="" /><div><h3>Beam and camera</h3><p>Two witnesses to the drop.<br>Hashed together.</p></div></div>
+      <div class="in-s"><img src="assets/icons/wallet.webp" alt="" /><div><h3>Prize in your wallet</h3><p>Seconds. Or a refund.</p></div></div>
     </div>
-    <div class="inside-steps">
-      <div class="istep glass glass-hover reveal"><div class="istep-ic"><img src="assets/icons/cabinet.webp" alt="" /><span class="in">01</span></div><div><h4>A real claw, not a simulation</h4><p>Driven from your browser.</p></div></div>
-      <div class="istep glass glass-hover reveal d1"><div class="istep-ic"><img src="assets/icons/gauge.webp" alt="" /><span class="in">02</span></div><div><h4>Grip strength, set on-chain</h4><p>Promised, then measured.</p></div></div>
-      <div class="istep glass glass-hover reveal d2"><div class="istep-ic"><img src="assets/icons/chip.webp" alt="" /><span class="in">03</span></div><div><h4>The machine signs every play</h4><p>A key it can't fake.</p></div></div>
-      <div class="istep glass glass-hover reveal d3"><div class="istep-ic"><img src="assets/icons/lens.webp" alt="" /><span class="in">04</span></div><div><h4>Camera and sensor, hashed together</h4><p>The drop, proven.</p></div></div>
-      <div class="istep glass glass-hover reveal d4"><div class="istep-ic"><img src="assets/icons/wallet.webp" alt="" /><span class="in">05</span></div><div><h4>The prize lands in your wallet</h4><p>Seconds.<br>Or a refund.</p></div></div>
-    </div>
+    <div class="in-dots" id="inDots"><i class="on"></i><i></i><i></i><i></i><i></i></div>
   </div>
 </section>
 
@@ -149,10 +145,10 @@
 </section>
 
 <footer id="site-footer"></footer>
-<script src="site.js?v=kp3"></script>
+<script src="site.js?v=kp4"></script>
 <script src="consent.js?v=9"></script>
 <script src="alpha-video.js?v=1"></script>
 <script src="alpha-any.js?v=2"></script>
-<script src="app.js?v=c2"></script>
+<script src="app.js?v=c3"></script>
 </body>
 </html>

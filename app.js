@@ -1,21 +1,20 @@
 /* ============================================================
    GRABLAB : home-only interactions
    (nav, wallet, i18n, telemetry, transitions, reveal live in site.js)
-   - dissection video: cycle a label naming the part being shown
+   - inside the machine: scroll steps the countdown 1 to 5 beside the exploding machine
    ============================================================ */
-(function stepSync(){
-  const video = document.getElementById("heroVideo");
-  const steps = [...document.querySelectorAll(".inside-steps .istep")];
-  if (!video || steps.length < 2) return;
-  let cur = -1;
-  function tick(){
-    const d = video.duration || 16, half = d / 2;
-    const tt = video.currentTime <= half ? video.currentTime : (d - video.currentTime);
-    const idx = Math.min(steps.length - 1, Math.floor((tt / half) * steps.length));
-    if (idx === cur) return;
-    cur = idx; steps.forEach((s,i) => s.classList.toggle("active", i === idx));
+(function inside(){
+  const root = document.getElementById("inside"), num = document.getElementById("inNum"), st = [...document.querySelectorAll("#inStage .in-s")], dots = [...document.querySelectorAll("#inDots i")];
+  if (!root || !num) return;
+  let cur = 0;
+  function update(){
+    if (innerWidth <= 900) return;
+    const r = root.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top/(r.height - innerHeight))), i = Math.min(4, Math.floor(p*5));
+    if (i === cur) return; cur = i;
+    num.textContent = i + 1; num.classList.remove("tick"); void num.offsetWidth; num.classList.add("tick");
+    st.forEach((s, k) => s.classList.toggle("on", k === i)); dots.forEach((d, k) => d.classList.toggle("on", k === i));
   }
-  video.addEventListener("timeupdate", tick);
+  addEventListener("scroll", update, { passive:true }); addEventListener("resize", update); update();
 })();
 
 
