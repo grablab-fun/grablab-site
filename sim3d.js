@@ -5,7 +5,7 @@
    Game x runs along the machine's x (left..right as the front left play camera sees it), game z along y (front glass..back), so the prize hole is front right.
    Light on purpose: no point lights, no shadows, the electronics and cables left out, every still mesh merged, capsules one instanced mesh. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=19";
+import { buildMachine } from "./anatomy-metal.js?v=20";
 
 const SCENE = await fetch("assets/machine/metal.json?v=2").then(r => r.json());
 
@@ -163,6 +163,13 @@ export function createSim3D(canvas, pips, opts = {}){
   /* capsule spots for the game: a loose hex pack on the floor, jittered, clear of the prize hole and its walls */
   function spots(){
     const out = [], d = 2*RM + .0055, dy = d*Math.sqrt(3)/2, L = .445 - RM; let sd = 5; const r = () => (sd = (sd*16807) % 2147483647)/2147483647;
+    if (opts.layer2){ /* recordings: a second, uneven layer resting in the hollows of the first, thinning toward the front */
+      const top = []; for (let row = 0; ; row++){ const y = -L + dy/2 + row*dy; if (y > L - dy/2) break;
+        for (let c = 0; ; c++){ const x = -L + d/2 + (row % 2 ? d/2 : 0) + c*d; if (x > L - d/2) break;
+          if (x > .229 - RM - .03 && y < -.229 + RM + .03) continue;
+          if (r() > .75 + .2*((y + L)/(2*L))) continue;
+          const [gx, gz] = toG(x + (r() - .5)*.006, y + (r() - .5)*.006); if (gz < .04 || gz > .96 || gx < -.97 || gx > .97) continue; top.push([gx, gz, 1]); } }
+      spots.top = top; }
     for (let row = 0; ; row++){ const y = -L + row*dy; if (y > L) break;
       for (let c = 0; ; c++){ const x = -L + (row % 2 ? d/2 : 0) + c*d; if (x > L) break;
         if (x > .229 - RM - .006 && y < -.229 + RM + .006) continue;

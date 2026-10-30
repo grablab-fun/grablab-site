@@ -308,8 +308,7 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 .fall-capsule::after,.mini-cap::after{content:"";position:absolute;left:8%;right:8%;top:50%;height:1px;background:rgba(80,88,120,.45);transform:translateY(-50%) rotate(-14deg);border-radius:1px}
 .fall-capsule{width:38px;height:38px;margin-left:-19px}
 .mini-cap{width:30px;height:30px}
-.fall-capsule::before,.mini-cap::before{content:"";position:absolute;left:50%;top:50%;border-radius:50%;
-  background:radial-gradient(circle at 40% 35%,#6a7190,#3a4060 70%);box-shadow:none;width:14%!important;height:14%!important;margin:-7% 0 0 -7%!important;transform:translate(-120%,-90%)}
+.fall-capsule::before,.mini-cap::before{content:"";position:absolute;border-radius:50%;background:#4a5070;box-shadow:none}
 .fall-capsule::before{width:22px;height:22px;margin:-11px 0 0 -11px}
 .mini-cap::before{width:16px;height:16px;margin:-8px 0 0 -8px}
 .fall-capsule.v::before,.mini-cap.v::before{background:radial-gradient(circle at 40% 35%,#efe6ff,#a98cf5 45%,#6a4fd0 85%,#3a2a80);box-shadow:0 0 12px rgba(170,140,255,.9),inset 0 0 0 1.5px rgba(220,205,255,.5)}
@@ -1019,3 +1018,9 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
   .inside-cd .in-s{position:relative;opacity:1;transform:none;gap:16px}.inside-cd .in-s img{height:72px;width:72px}.inside-cd .in-s h3{font-size:24px;white-space:normal}.inside-cd .in-s p{white-space:normal;font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){.inside-cd .in-num b.tick{animation:none}.inside-cd .in-s{transition:none}}
+
+/* ============ white capsules everywhere (Oct 31): the printed shells, a seam and the small NFC dot. overrides every older glass + coin rule above ============ */
+.fall-capsule,.mini-cap,.catch-col .bin-fill .mini-cap,.fall-capsule.v,.mini-cap.v,.catch-col .bin-fill .mini-cap.v{background:radial-gradient(circle at 34% 30%,#ffffff 0%,#f4f5fa 30%,#cfd3e3 68%,#9ea4bd 100%);border:0;
+  box-shadow:0 4px 12px rgba(0,0,0,.45),inset 0 -7px 13px rgba(90,100,140,.35),inset 0 2px 4px rgba(255,255,255,.9)}
+.fall-capsule::before,.mini-cap::before,.catch-col .bin-fill .mini-cap::before,.fall-capsule.v::before,.mini-cap.v::before,.catch-col .bin-fill .mini-cap.v::before{left:30%;top:33%;width:13%;height:13%;margin:0;transform:none;background:#4a5070;box-shadow:none}
+.fall-capsule::after,.mini-cap::after,.catch-col .bin-fill .mini-cap::after{left:10%;right:10%;top:50%;width:auto;height:1px;border-radius:0;background:rgba(80,88,120,.5);filter:none;transform:translateY(-50%) rotate(-14deg)}

@@ -26,7 +26,7 @@ window.__sceneP = 0;
   if (!scene || !stage || !h1) return;
   const CH = [
     { eye:"Built on machine.fun", eyeHtml:'<span class="eb-g"><span class="eb-l">Built on</span> <a class="eb-mf" href="https://machine.fun" target="_blank" rel="noopener"><img src="assets/brand/partners/machinefun-white.svg" alt="" />machine.fun</a></span><i class="eb-sep"></i><span class="eb-g"><span class="eb-l">Powered by</span> <a class="eb-mf" href="https://www.peaq.network" target="_blank" rel="noopener" aria-label="peaq"><img class="eb-wm" src="assets/brand/partners/peaq-white.svg" alt="peaq" /></a></span><i class="eb-sep"></i><span class="eb-g"><span class="eb-l">Using</span> <a class="eb-mf" href="https://codecflow.ai" target="_blank" rel="noopener"><img class="eb-cf" src="assets/brand/partners/codecflow-white.svg" alt="" />CodecFlow</a></span>', h:["Every capsule","is a coin."], sub:"A real claw machine with on-chain prizes.\nThey settle on Solana the moment they drop.", acts:false },
-    { eye:"Why it exists", h:["We undo","the rigged","machines."], hm:["We undo the","rigged machines."], sub:"Grip and prizes go on-chain before you play.\nThe claw cannot lie.", acts:false },
+    { eye:"Why it exists", h:["We undo the","rigged machines."], sub:"Grip and prizes go on-chain before you play.\nThe claw cannot lie.", acts:false },
     { eye:"How it feels", h:["Play from","your browser."], sub:"Drive the real claw live on stream.\nBeam, camera and signature prove each drop.", acts:false },
     { eye:"Claw as a service", h:["Rent the claw","for your launch."], sub:"Your drop goes in capsules, grabbed live.\nEvery play is proven fair.", acts:true },
   ];

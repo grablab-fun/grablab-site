@@ -149,7 +149,7 @@ export function buildMachine(THREE, api){
   const LR = a => a.flatMap(n => [n + "_L", n + "_R"]);
   const mm = v => v/1000 - .5, mz = z => (z + 1130)/1000;
   const steelT = () => m("tube", { color:0x16171b, roughness:.52, metalness:.55 });          // powder coated, matte black
-  const pvc = () => m("pvc", { color:0x101114, roughness:.8, metalness:0 });
+  const pvc = () => m("pvc", { color:0x101114, roughness:.8, metalness:0, side:THREE.DoubleSide });   // seen from inside too (the simulator looks through the front at the left panel)
   const rivetM = () => m("rivet", { color:0x9ea3ad, roughness:.35, metalness:.9 });
   const pulleyM = () => m("pulley", { color:0xb3b8c2, roughness:.28, metalness:1 });
 
