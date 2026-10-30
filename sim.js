@@ -467,7 +467,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=8").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=11").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){
@@ -931,7 +931,7 @@
       for (const c of caps){ if (c.state !== "pile") continue; const d = Math.hypot(c.x - x, (c.z - z)*DZ) - (c.y - R)*0.4; if (d < bd){ bd = d; best = c; } }
       return { c: best, d: bd };
     }
-    function inChute(){ return M3 ? st.x < CHUTE.x1 - 0.02 && st.z > CHUTE.z0 + 0.02 : st.x < CHUTE.x1 - 0.02 && st.z < CHUTE.z1 - 0.02; }
+    function inChute(){ return CHUTE.any ? st.x > CHUTE.x0 + 0.02 && st.x < CHUTE.x1 - 0.02 && st.z > CHUTE.z0 + 0.02 && st.z < CHUTE.z1 - 0.02 : M3 ? st.x < CHUTE.x1 - 0.02 && st.z > CHUTE.z0 + 0.02 : st.x < CHUTE.x1 - 0.02 && st.z < CHUTE.z1 - 0.02; }
     function toast(t, ms){
       const node = el("#simToast"); node.textContent = t; node.classList.add("on");
       clearTimeout(node._t); node._t = setTimeout(() => node.classList.remove("on"), ms || 1300);

@@ -1,71 +1,69 @@
-/* ============ SIMULATOR 3D : our machine (anatomy-model.js) driven by the simulator's game state ============
-   Three live cameras: the corner stream, the claw looking down, the landing camera in the chute.
+/* ============ SIMULATOR 3D : the real machine (the metal build, anatomy-metal.js) driven by the simulator's game state ============
+   Three live cameras: the play camera in the front left corner, the claw looking down, the landing camera in the chute.
    The main one fills the stage, the other two run in small windows; tap one to swap.
-   Game space: x -1..1 (player left..right), z 0..1 (front..back), y 0..1 (floor..top), 1 unit = 0.45 m across, 0.9 m deep. */
+   Game space: x -1..1 (left..right), z 0..1 (front..back), y 0..1 (floor..top), 1 unit = 0.45 m across, 0.9 m deep.
+   Game x runs along the machine's x (left..right as the front left play camera sees it), game z along y (front glass..back), so the prize hole is front right.
+   Light on purpose: no point lights, no shadows, the electronics and cables left out, every still mesh merged, capsules one instanced mesh. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-model.js?v=27";
+import { buildMachine } from "./anatomy-metal.js?v=13";
+
+const SCENE = await fetch("assets/machine/metal.json?v=2").then(r => r.json());
 
 export const CAP_R = .06;                                       // capsule radius in game x units (27 mm)
-export const CHUTE = { x0:-1, x1:-.44, z0:.72, z1:1, h:0, cx:-.756, cz:.878 };   // the drop zone corner, in game space
-const FLOOR = .412, SX = .45, SZ = .9;
-const toM = (x, z) => [-x*SX, .45 - z*SZ];                      // game x,z to machine x,y (player stands at +y)
-const toG = (mx, my) => [-mx/SX, (.45 - my)/SZ];
+export const CHUTE = { x0:.52, x1:1.1, z0:-.1, z1:.24, h:0, cx:.786, cz:.107, any:true };   // the prize hole, front right in game space (any: test all four edges)
+const FLOOR = .25, SX = .45, SZ = .9;
+const toM = (x, z) => [x*SX, -.45 + z*SZ];                      // game x,z to machine x,y
+const toG = (mx, my) => [mx/SX, (my + .45)/SZ];
 
 export function createSim3D(canvas, pips){
+  const LITE = document.documentElement.classList.contains("lite");
   /* the renderer is made on the first visible frame: a WebGL context on a hidden canvas gets dropped by some browsers */
   let renderer = null;
   let failed = false;
-  const makeRenderer = () => { try { renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false, powerPreference:"high-performance" });
-    renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.setScissorTest(true); } catch (e){ failed = true; console.warn("sim3d: no WebGL", e); } };
+  const makeRenderer = () => { try { renderer = new THREE.WebGLRenderer({ canvas, antialias:!LITE, alpha:false, powerPreference:"high-performance" });
+    renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05; renderer.setScissorTest(true); } catch (e){ failed = true; console.warn("sim3d: no WebGL", e); } };
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0x070a1a); scene.fog = new THREE.Fog(0x070a1a, 3.5, 9);
   const root = new THREE.Group(); root.rotation.x = -Math.PI/2; scene.add(root);
 
-  /* light and a small painted studio so the metal reads */
-  scene.add(new THREE.HemisphereLight(0xc3caff, 0x141830, 1.25));
-  const key = new THREE.DirectionalLight(0xf3f5ff, 2.6); key.position.set(-1.4, 2.6, 2.2); scene.add(key);
-  const rim = new THREE.DirectionalLight(0x6f8dff, 2.0); rim.position.set(2.2, 1.4, -2.4); scene.add(rim);
-  const inner = new THREE.PointLight(0xdfe6ff, 1.2, 1.6); inner.position.set(0, 1.0, 0); scene.add(inner);
-  /* the cage's LED bars under the top rails: two strips you can see, and their light on the pile */
-  const ledM = new THREE.MeshBasicMaterial({ color:0xeaf0ff, toneMapped:false });
-  for (const y of [-.45, .45]){ const bar = new THREE.Mesh(new THREE.BoxGeometry(.86, .012, .006), ledM); bar.position.set(0, y, 1.193); root.add(bar);
-    const l = new THREE.PointLight(0xe6edff, 1.6, 1.4, 1.6); l.position.set(0, 1.15, -y*.9); scene.add(l); }
+  /* studio light: sky fill, a soft key from the front left, a cool rim from the back, and an environment for the metal */
+  scene.add(new THREE.HemisphereLight(0xc9d0ff, 0x161a30, 1.35));
+  const key = new THREE.DirectionalLight(0xf6f7ff, 2.4); key.position.set(-2.2, 2.8, 1.6); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x7d95ff, 1.6); rim.position.set(2.0, 1.6, -2.2); scene.add(rim);
+  const top = new THREE.DirectionalLight(0xffffff, .9); top.position.set(0, 4, 0); scene.add(top);
   (function env(){ const faces = [], N = 64;
     for (let f = 0; f < 6; f++){ const cv = document.createElement("canvas"); cv.width = cv.height = N; const g = cv.getContext("2d"), gr = g.createLinearGradient(0, 0, 0, N);
-      if (f === 2){ gr.addColorStop(0, "#e9eeff"); gr.addColorStop(1, "#7d86c8"); } else if (f === 3){ gr.addColorStop(0, "#0b0d1c"); gr.addColorStop(1, "#05060e"); }
-      else { gr.addColorStop(0, "#6f78c4"); gr.addColorStop(.55, "#1c2048"); gr.addColorStop(1, "#07081a"); }
-      g.fillStyle = gr; g.fillRect(0, 0, N, N); if (f === 0 || f === 4){ g.fillStyle = "rgba(236,242,255,.8)"; g.fillRect(N*.3, N*.08, N*.4, N*.34); } faces.push(cv); }
-    const ct = new THREE.CubeTexture(faces); ct.colorSpace = THREE.SRGBColorSpace; ct.needsUpdate = true; scene.environment = ct; scene.environmentIntensity = .55; })();
+      if (f === 2){ gr.addColorStop(0, "#eef2ff"); gr.addColorStop(1, "#8790cf"); } else if (f === 3){ gr.addColorStop(0, "#0b0d1c"); gr.addColorStop(1, "#05060e"); }
+      else { gr.addColorStop(0, "#7780c9"); gr.addColorStop(.55, "#1c2048"); gr.addColorStop(1, "#07081a"); }
+      g.fillStyle = gr; g.fillRect(0, 0, N, N); if (f === 0 || f === 4){ g.fillStyle = "rgba(240,244,255,.85)"; g.fillRect(N*.3, N*.08, N*.4, N*.34); } faces.push(cv); }
+    const ct = new THREE.CubeTexture(faces); ct.colorSpace = THREE.SRGBColorSpace; ct.needsUpdate = true; scene.environment = ct; scene.environmentIntensity = .6; })();
   /* the room floor */
-  const fl = new THREE.Mesh(new THREE.CircleGeometry(5, 48), new THREE.MeshStandardMaterial({ color:0x0b0f24, roughness:.85, metalness:.1 })); fl.position.z = -.017; root.add(fl);
+  const fl = new THREE.Mesh(new THREE.CircleGeometry(5, 48), new THREE.MeshStandardMaterial({ color:0x0b0f24, roughness:.85, metalness:.1 })); fl.position.z = -.023; root.add(fl);
 
   /* the machine */
   const cache = new Map();
-  const mat = (part, key, o, phys) => { const k = part + "|" + key; if (cache.has(k)) return cache.get(k); const m = phys ? new THREE.MeshPhysicalMaterial(o) : new THREE.MeshStandardMaterial(o); m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity || 0 }; cache.set(k, m); return m; };
+  const mat = (part, key, o, phys) => { const k = part + "|" + key; if (cache.has(k)) return cache.get(k);
+    if (LITE && phys){ o = { ...o }; delete o.clearcoat; delete o.clearcoatRoughness; delete o.specularIntensity; phys = false; }
+    const m = phys ? new THREE.MeshPhysicalMaterial(o) : new THREE.MeshStandardMaterial(o); m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity || 0 }; cache.set(k, m); return m; };
   const fonts = document.fonts ? Promise.all(["700 100px 'Clash Display'", "700 40px 'Satoshi'", "500 40px 'Satoshi'", "800 40px 'Satoshi'"].map(f => document.fonts.load(f))).catch(() => {}) : Promise.resolve();
-  const M = buildMachine(THREE, { mat, onFont:cb => fonts.then(cb) });
-  for (const [id, g] of Object.entries(M.parts)) if (id !== "capsules" && id !== "wiring" && id !== "electronics") root.add(g);   // the electronics sit behind the panel, never on camera
+  const M = buildMachine(THREE, { mat, onFont:cb => fonts.then(cb), scene:SCENE });
+  for (const [id, g] of Object.entries(M.parts)) if (id !== "capsules" && id !== "wiring" && id !== "electronics") root.add(g);   // electronics and cables sit behind panels, never on camera
 
-  /* moving parts: the beam and its carriages ride Y, the X carriage, winch and claw ride X on top of that */
-  const gantry = M.parts.gantry, moveY = new THREE.Group(), moveX = new THREE.Group(); root.add(moveY); moveY.add(moveX);
-  const nameOf = o => o.isMesh ? o.name : (o.children.find(c => c.isMesh) || {}).name || "";
-  const RIDES = /^gantry_(y_carriage|y_wheel|matik|bracket_screw|x_beam|x_motor|x_pulley|x_idler|x_belt|x_endstop|drag_chain|chain_tray|y_belt_clip)/;
-  for (const c of [...gantry.children]) if (RIDES.test(nameOf(c))) moveY.attach(c);
+  /* moving parts: what rides the beam (move y) and what rides the X cart (move xy), from the motion build's own tags */
+  const moveY = new THREE.Group(), moveX = new THREE.Group(); root.add(moveY); moveY.add(moveX);
+  root.updateMatrixWorld(true);
+  const riders = []; M.parts.gantry.traverse(o => { if (o.isMesh && (o.userData.move === "y" || o.userData.move === "xy")) riders.push(o); });
+  for (const o of riders) (o.userData.move === "xy" ? moveX : moveY).attach(o);
   moveX.attach(M.parts.winch); moveX.attach(M.parts.claw);
   const D = M.dims, YC = D.YC, XC = D.XC;
-  const clawPart = M.parts.claw, clawG = clawPart.children.find(c => c.isGroup && c.children.length > 10), line = clawPart.children.find(c => c.name === "claw_line");
+  const clawPart = M.parts.claw, clawG = clawPart.children.find(c => c.userData.clawRig), rig = clawG.userData.clawRig, line = clawPart.children.find(c => c.name === "claw_line");
   clawPart.traverse(o => { if (o.name === "claw_coil_cable") o.visible = false; });
   root.traverse(o => { if (o.name === "chute_c960_view") o.visible = false; });   // the view cone is an anatomy diagram, not a part
-  const lineTop = line.position.z + line.geometry.parameters.height/2, lineH = line.geometry.parameters.height, CT = clawG.position.z;
-  /* the three fingers turn about their knuckles */
-  const HZ = -.033 - .1, fingers = [];
-  for (let k = 0; k < 3; k++){ const a = k*2*Math.PI/3 + Math.PI/2, pv = new THREE.Group(); pv.position.set(.027*Math.cos(a), .027*Math.sin(a), HZ - .016); pv.userData.ax = new THREE.Vector3(-Math.sin(a), Math.cos(a), 0); clawG.add(pv); fingers.push({ a, pv }); }
-  for (const o of [...clawG.children]){
-    if (!o.isMesh || !/^claw_(finger|pad|link_pin)/.test(o.name)) continue;
-    const a = Math.atan2(o.position.y, o.position.x); let best = fingers[0], bd = 9;
-    for (const f of fingers){ const d = Math.abs(Math.atan2(Math.sin(a - f.a), Math.cos(a - f.a))); if (d < bd){ bd = d; best = f; } }
-    best.pv.attach(o);
-  }
-  for (const o of [...clawG.children]) if (o.isMesh && o.name === "claw_link") o.visible = false;   // the links would tear when the fingers open
+  const lineTop = line.position.z + line.geometry.parameters.height/2, lineH = line.geometry.parameters.height;
+  /* the claw's arms turn on their pins; the links follow both ends */
+  const Yax = new THREE.Vector3(0, 1, 0), lb = new THREE.Vector3(), ld = new THREE.Vector3(), rq = new THREE.Quaternion();
+  function setOpen(k){ if (Math.abs(k - rig.open) < .0004) return; rig.open = k;
+    for (const arm of rig.arms){ const u = arm.userData.clawArm; arm.quaternion.copy(u.q0).multiply(rq.setFromAxisAngle(u.side, -k)); }
+    for (const l of rig.links){ lb.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); ld.copy(lb).sub(l.a); l.mesh.position.copy(l.a).add(lb).multiplyScalar(.5); l.mesh.scale.y = ld.length(); l.mesh.quaternion.setFromUnitVectors(Yax, ld.normalize()); } }
   root.updateMatrixWorld(true);
   /* draw calls: merge every mesh that never moves relative to its holder into one mesh per material */
   function merge(holder, skip){
@@ -83,34 +81,37 @@ export function createSim3D(canvas, pips){
     }
     for (const o of dead) o.parent && o.parent.remove(o);
   }
-  const pivots = new Set(fingers.map(f => f.pv));
-  merge(root, new Set([moveY, fl])); merge(moveY, new Set([moveX])); merge(moveX, new Set([clawPart])); merge(clawG, pivots); for (const pv of pivots) merge(pv, new Set());
+  const live = new Set([...rig.arms, ...rig.links.map(l => l.mesh)]);
+  merge(root, new Set([moveY, fl])); merge(moveY, new Set([moveX])); merge(moveX, new Set([clawPart])); merge(clawPart, new Set([clawG, line])); merge(clawG, live); for (const a of rig.arms) merge(a, new Set());
   root.updateMatrixWorld(true);
 
-  /* capsules: one instanced shell, as many as the game holds */
+  /* capsules: white printed shells, one instanced mesh; layer lines, the five lid holes and the seam are painted in one small texture */
   const RM = CAP_R*SX;
-  const shellG = new THREE.SphereGeometry(RM, 24, 14), shellM = new THREE.MeshPhysicalMaterial({ color:0xffffff, roughness:.02, metalness:0, clearcoat:1, clearcoatRoughness:.02, envMapIntensity:1.8, specularIntensity:1, transparent:true, opacity:.2, depthWrite:false });
-  const tagG = new THREE.CircleGeometry(RM*.36, 20), tagM = new THREE.MeshStandardMaterial({ color:0x2a2f3c, roughness:.6, metalness:.2 });   // the NFC sticker inside, a small dark disc
-  let caps = null, capTags = null, capN = 0;
+  const shellT = (() => { const cv = document.createElement("canvas"); cv.width = 256; cv.height = 128; const g = cv.getContext("2d");
+    g.fillStyle = "#ffffff"; g.fillRect(0, 0, 256, 128); g.fillStyle = "rgba(120,118,112,.16)"; for (let y = 0; y < 128; y += 3) g.fillRect(0, y, 256, 1);
+    g.fillStyle = "rgba(150,148,140,.75)"; g.fillRect(0, 63, 256, 2);
+    g.fillStyle = "#2e2d2b"; for (let k = 0; k < 5; k++){ g.beginPath(); g.ellipse(25 + k*51.2, 23, 4.2, 2.6, 0, 0, 7); g.fill(); }
+    const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; })();
+  const shellG = new THREE.SphereGeometry(RM, 28, 16).rotateX(Math.PI/2), shellM = new THREE.MeshStandardMaterial({ color:0xf3f2ee, map:shellT, roughness:.62, metalness:0 });
+  let caps = null, capN = 0;
   function capMeshes(n){
-    if (caps && capN >= n) return; if (caps){ root.remove(caps); root.remove(capTags); }
-    capN = Math.max(n, 64); caps = new THREE.InstancedMesh(shellG, shellM, capN); capTags = new THREE.InstancedMesh(tagG, tagM, capN);
-    caps.frustumCulled = capTags.frustumCulled = false; root.add(capTags); root.add(caps);
+    if (caps && capN >= n) return; if (caps) root.remove(caps);
+    capN = Math.max(n, 64); caps = new THREE.InstancedMesh(shellG, shellM, capN); caps.frustumCulled = false; root.add(caps);
   }
 
-  /* cameras */
-  const mk = fov => { const c = new THREE.PerspectiveCamera(fov, 1, .01, 30); return c; };
+  /* cameras (three.js space: x = machine x, y = up, z = toward the machine's front) */
+  const mk = fov => new THREE.PerspectiveCamera(fov, 1, .01, 30);
   const cams = [
-    /* inside the cage, in the top front corner, where the real play camera is mounted */
-    { name:"Corner camera", cam:mk(76), pose(c){ c.up.set(0, 1, 0); c.position.set(-.44, 1.0, -.44); c.lookAt(.16, .36, .2); } },
-    /* under the claw body, looking down past the fingers; the back of the machine is up on screen */
-    { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, 1); c.position.set(p.x + .06, p.y - .1, p.z - .02); c.lookAt(p.x - .005, FLOOR - .02, p.z + .01); } },
-    /* the landing camera behind the window of the chute, on the trapdoor */
-    { name:"Chute camera", cam:mk(64), pose(c){ c.up.set(0, 1, 0); c.position.set(.34, .385, .292); c.lookAt(.34, .205, .345); } },
-    /* recordings only: a stream camera over the front glass, looking down into the pile */
-    { name:"Stream camera", cam:mk(46), pose(c){ c.up.set(0, 1, 0); c.position.set(-.34, 1.02, -.92); c.lookAt(.04, .6, .06); } },
+    /* the real play camera: under the top ring in the front left corner, looking across the pile */
+    { name:"Corner camera", cam:mk(68), pose(c){ c.up.set(0, 1, 0); c.position.set(-.43, 1.04, .43); c.lookAt(.12, .36, -.06); } },
+    /* under the claw body, looking down past the arms; game back is up on screen */
+    { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, -1); c.position.set(p.x + .02, p.y - .12, p.z + .07); c.lookAt(p.x, FLOOR - .02, p.z - .005); } },
+    /* the landing camera behind the chute window, on the trapdoor */
+    { name:"Chute camera", cam:mk(64), pose(c){ c.up.set(0, 1, 0); c.position.set(.3535, .1895, .2756); c.lookAt(.3535, .135, .3535); } },
+    /* recordings only: over the front glass, looking down into the pile */
+    { name:"Stream camera", cam:mk(46), pose(c){ c.up.set(0, 1, 0); c.position.set(-.3, 1.02, .95); c.lookAt(.04, .45, -.06); } },
     /* recordings only: straight down from above the machine */
-    { name:"Top camera", cam:mk(44), pose(c){ c.up.set(0, 0, 1); c.position.set(0, 2.45, .0); c.lookAt(0, .42, 0); } }
+    { name:"Top camera", cam:mk(44), pose(c){ c.up.set(0, 0, -1); c.position.set(0, 2.45, 0); c.lookAt(0, .3, 0); } }
   ];
   let main = 0;
   const setMain = i => { main = i; layoutPips(); };
@@ -118,22 +119,23 @@ export function createSim3D(canvas, pips){
   if (pips) pips.forEach(el => el.addEventListener("click", () => setMain(+el.dataset.cam)));
   layoutPips();
 
-  const S = { claw:new THREE.Vector3() }, m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), sc = new THREE.Vector3(1, 1, 1);
+  const S = { claw:new THREE.Vector3() }, m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), sc = new THREE.Vector3(1, 1, 1), eu = new THREE.Euler();
   let W = 0, H = 0, pr = 1, frameN = 0; const PRX = +(new URLSearchParams(location.search).get("pr") || 0);   // recordings render supersampled
-  function resize(){ const r = canvas.getBoundingClientRect(); if (r.width < 2 || r.height < 2) return; if (!renderer && !failed) makeRenderer(); if (!renderer) return; pr = PRX || (document.documentElement.classList.contains("lite") ? 1 : Math.min(innerWidth < 900 ? 1.75 : 2, devicePixelRatio || 1)); W = r.width; H = r.height; renderer.setPixelRatio(pr); renderer.setSize(W, H, false); }
+  function resize(){ const r = canvas.getBoundingClientRect(); if (r.width < 2 || r.height < 2) return; if (!renderer && !failed) makeRenderer(); if (!renderer) return;
+    pr = PRX || (LITE ? 1 : Math.min(innerWidth < 900 ? 1.5 : 1.5, devicePixelRatio || 1)); W = r.width; H = r.height; renderer.setPixelRatio(pr); renderer.setSize(W, H, false); }
   canvas.addEventListener("webglcontextlost", e => { failed = true; e.preventDefault(); });
 
   /* draw one frame from the game state */
+  const HELD = -.188, BOT = .215;                                 // closed: a held capsule's centre and the paddles' lowest point, under the claw's origin
   function draw(st, list){
     if (!W) resize(); if (!W || !renderer || failed) return;
     const [mx, my] = toM(st.x, st.z), tipZ = FLOOR + (st.y - .1)*SX;
     moveY.position.set(0, my - YC, 0); moveX.position.set(mx - XC, 0, 0);
-    const cz = tipZ + .243; clawG.position.z = cz;
+    const cz = tipZ + BOT; clawG.position.z = cz;
     const bot = cz + .022; line.scale.y = Math.max(.01, (lineTop - bot)/lineH); line.position.z = (lineTop + bot)/2;
-    clawPart.rotation.set(0, 0, 0); clawG.rotation.set(st.sw*.12, 0, 0);
-    /* open: the tips swing out; holding: they close around the capsule, tips just under its middle */
-    const fa = st.held ? -.06 : -.62*st.open;
-    for (const f of fingers){ f.pv.quaternion.setFromAxisAngle(f.pv.userData.ax, fa); }
+    clawG.rotation.set(0, st.sw*.12, 0);
+    /* open: the arms swing out; holding: they close round the capsule */
+    setOpen(st.held ? .04 : .55*st.open);
     root.updateMatrixWorld(true);
     clawG.getWorldPosition(S.claw);
     /* capsules */
@@ -141,13 +143,12 @@ export function createSim3D(canvas, pips){
     for (const c of list){
       if (c.state === "gone" && c.inBin) continue;
       let x, y, z;
-      if (c === st.held){ v.set(0, 0, -.222).applyMatrix4(clawG.matrixWorld); root.worldToLocal(v); x = v.x; y = v.y; z = v.z; }
-      else { [x, y] = toM(c.x, c.z); z = FLOOR + c.y*SX; if (c.state === "chute" || c.state === "gone"){ z = Math.max(.205 + RM, z); } }
-      q.setFromEuler(new THREE.Euler(c.rx || (c.rx = Math.random()*6), c.ry || (c.ry = Math.random()*6), 0));
-      m4.compose(v.set(x, y, z), q, sc); caps.setMatrixAt(n, m4);
-      m4.compose(v.set(x, y, z - RM*.6), q.identity(), sc); capTags.setMatrixAt(n, m4); n++;
+      if (c === st.held){ v.set(0, 0, HELD).applyMatrix4(clawG.matrixWorld); root.worldToLocal(v); x = v.x; y = v.y; z = v.z; }
+      else { [x, y] = toM(c.x, c.z); z = FLOOR + c.y*SX; if (c.state === "chute" || c.state === "gone"){ z = Math.max(.136 + RM, z); } }
+      q.setFromEuler(eu.set(c.rx || (c.rx = Math.random()*6.28), c.ry || (c.ry = Math.random()*6.28), c.rz || (c.rz = Math.random()*6.28)));
+      m4.compose(v.set(x, y, z), q, sc); caps.setMatrixAt(n, m4); n++;
     }
-    caps.count = capTags.count = n; caps.instanceMatrix.needsUpdate = capTags.instanceMatrix.needsUpdate = true;
+    caps.count = n; caps.instanceMatrix.needsUpdate = true;
     /* views */
     for (const c of cams) c.pose(c.cam, S);
     const view = (i, x, y, w, h) => { const c = cams[i].cam; c.aspect = w/h; c.updateProjectionMatrix(); renderer.setViewport(x, y, w, h); renderer.setScissor(x, y, w, h); renderer.render(scene, c); };
@@ -157,13 +158,14 @@ export function createSim3D(canvas, pips){
       for (const el of pips){ const r = el.getBoundingClientRect(); if (!r.width) continue; view(+el.dataset.cam, r.left - cr.left, cr.bottom - r.bottom, r.width, r.height); } }
   }
 
-  /* capsule spots for the game: a hex pack on the floor, clear of the drop zone and the grommets */
+  /* capsule spots for the game: a loose hex pack on the floor, jittered, clear of the prize hole and its walls */
   function spots(){
-    const out = [], d = 2*RM + .0012, dy = d*Math.sqrt(3)/2, L = .43 - RM;
-    for (let r = 0; ; r++){ const y = -L + r*dy; if (y > L) break;
-      for (let c = 0; ; c++){ const x = -L + (r % 2 ? d/2 : 0) + c*d; if (x > L) break;
-        if (x > .2 - RM && y < -.2 + RM) continue; if (Math.hypot(x + .449, y - .449) < .03 || Math.hypot(x + .452, y + .452) < .03) continue;
-        const [gx, gz] = toG(x, y); if (gz < .03 || gz > .97) continue; out.push([gx, gz]); } }
+    const out = [], d = 2*RM + .0055, dy = d*Math.sqrt(3)/2, L = .445 - RM; let sd = 5; const r = () => (sd = (sd*16807) % 2147483647)/2147483647;
+    for (let row = 0; ; row++){ const y = -L + row*dy; if (y > L) break;
+      for (let c = 0; ; c++){ const x = -L + (row % 2 ? d/2 : 0) + c*d; if (x > L) break;
+        if (x > .229 - RM - .006 && y < -.229 + RM + .006) continue;
+        const jx = x + (r() - .5)*.005, jy = y + (r() - .5)*.005;            // loose and a little uneven, so the pile does not read as a grid
+        const [gx, gz] = toG(jx, jy); if (gz < .02 || gz > .98 || gx < -.99 || gx > .99) continue; out.push([gx, gz]); } }
     return out;
   }
   return { draw, resize, spots, setMain, get main(){ return main; }, ok:() => !failed };

@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=12";
+import { buildMachine } from "./anatomy-metal.js?v=13";
 
 const $ = s => document.querySelector(s);
 /* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
@@ -114,7 +114,7 @@ async function load(){
     if (!o.emissive && !o.map){ m.emissive = m.color.clone(); m.emissiveIntensity = 0; }
     m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity || 0 }; matCache.set(k, m); return m;
   };
-  const scene = await fetch("assets/machine/metal.json?v=1").then(r => r.json());
+  const scene = await fetch("assets/machine/metal.json?v=2").then(r => r.json());
   const M = buildMachine(THREE, { mat, onFont:cb => fonts.then(cb), scene });
   for (const [id, g] of Object.entries(M.parts)){ root.add(g); ents.set(id, g); }
   /* draw calls: siblings with the same material and the same name become one mesh, so a weak GPU draws ~hundreds, not ~1900.

@@ -144,7 +144,7 @@ export function buildMachine(THREE, api){
     if (keep){ const P = f.attributes.position.array, out = []; for (let i = 0; i < P.length; i += 9) if (keep((P[i] + P[i + 3] + P[i + 6])/3, (P[i + 1] + P[i + 4] + P[i + 7])/3, (P[i + 2] + P[i + 5] + P[i + 8])/3)) for (let k = 0; k < 9; k++) out.push(P[i + k]);
       f.dispose(); f = new THREE.BufferGeometry(); f.setAttribute("position", new THREE.Float32BufferAttribute(out, 3)); }
     toM(f.attributes.position.array); f.computeVertexNormals(); return f; };
-  const sm = (n, mt, name, parent, keep) => { const g = mgeo(n, keep); return g ? add(g, mt, 0, 0, 0, 0, 0, 0, name, parent) : null; };
+  const sm = (n, mt, name, parent, keep) => { const g = mgeo(n, keep); if (!g) return null; const o = add(g, mt, 0, 0, 0, 0, 0, 0, name, parent); o.userData.move = (SD.move || {})[n] || "s"; return o; };   // move: s still, y rides the beam, xy rides the X cart
   const SM = (list, mt, name) => list.forEach(n => sm(n, mt, name));
   const LR = a => a.flatMap(n => [n + "_L", n + "_R"]);
   const mm = v => v/1000 - .5, mz = z => (z + 1130)/1000;
@@ -593,7 +593,7 @@ export function buildMachine(THREE, api){
     for (let k = 0; k < path.length - 1; k++){ const b = k*4, c = b + 4; idx.push(b, c, b + 2, c, c + 2, b + 2, b + 1, b + 3, c + 1, c + 1, b + 3, c + 3, b, b + 1, c, c, b + 1, c + 1, b + 2, c + 2, b + 3, c + 2, c + 3, b + 3); }
     const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx);
     g.rotateZ(rotDeg*Math.PI/180); g.translate(...t); const f = g.toNonIndexed(); g.dispose(); toM(f.attributes.position.array); f.computeVertexNormals();
-    add(f, m("beltd", { color:0x0b0b0c, roughness:.85, metalness:0, side:THREE.DoubleSide }), 0, 0, 0, 0, 0, 0, name); };
+    add(f, m("beltd", { color:0x0b0b0c, roughness:.85, metalness:0, side:THREE.DoubleSide }), 0, 0, 0, 0, 0, 0, name).userData.move = name === "gantry_x_belt" ? "y" : "s"; };
   beltLoop(MP.Y_IDLER - MP.Y_SHAFT, 0, [MP.CL, MP.Y_SHAFT, MP.ZT_Y], "gantry_y_belt");
   beltLoop(MP.Y_SHAFT - MP.Y_IDLER, 180, [MP.CR, MP.Y_SHAFT, MP.ZT_Y], "gantry_y_belt");
   beltLoop(MP.X_IDLER - MP.X_SHAFT, -90, [MP.X_SHAFT, MP.Y_REF, MP.ZT_X], "gantry_x_belt");
@@ -603,7 +603,7 @@ export function buildMachine(THREE, api){
     const geo = BOX((Pc - 1.6)/1000, MP.CHAIN_W/1000, MP.CHAIN_H/1000), cm = m("chain", { color:0x131416, roughness:.55 });
     for (let i = 0; i < N; i++){ const s = (i + .5)*Pc; let x, z, ang;
       if (s < l1){ x = MP.CHAIN_FIX_X + s; z = zlo; ang = 0; } else if (s < l1 + l2){ const q = -Math.PI/2 + (s - l1)/R; x = xb + R*Math.cos(q); z = zm + R*Math.sin(q); ang = q + Math.PI/2; } else { x = xb - (s - l1 - l2); z = zhi; ang = Math.PI; }
-      add(geo, cm, mm(x), mm(y), mz(MP.ZT_X + z), 0, -ang, 0, "gantry_drag_chain"); } }
+      add(geo, cm, mm(x), mm(y), mz(MP.ZT_X + z), 0, -ang, 0, "gantry_drag_chain").userData.move = "y"; } }
 
   /* =========================================================================================== X cart and winch */
   use("winch");
