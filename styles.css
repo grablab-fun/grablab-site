@@ -273,9 +273,8 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:400;text-transform:uppercase;
   width:calc(100% - var(--np) * (100% - var(--pillw,760px)));margin:0 auto;
   padding:calc(var(--np) * 6px) calc(var(--np) * 16px) calc(var(--np) * 6px) calc(var(--np) * 20px);
   border-radius:calc(14px + var(--np) * 985px);
-  background:rgba(5,9,24,calc(var(--np) * .88));border:1px solid rgba(180,186,255,calc(var(--np) * .24));
-  box-shadow:0 18px 50px rgba(0,0,0,calc(var(--np) * .5));
-  backdrop-filter:blur(calc(var(--np) * 16px));-webkit-backdrop-filter:blur(calc(var(--np) * 16px))}
+  background:none;border:1px solid transparent;box-shadow:none}   /* no pill behind the links: the bar stays clear while it condenses */
+.nav.scrolled .nav-links a{text-shadow:0 1px 10px rgba(5,9,24,.85),0 0 2px rgba(5,9,24,.6)}
 .islands .brand-isl{flex:calc(1 - var(--np)) 1 0;min-width:max-content}
 .islands .nav-right{flex:calc(1 - var(--np)) 1 0;min-width:max-content;justify-content:flex-end}
 .islands .nav-links{flex:none}
@@ -507,7 +506,7 @@ html.wl-open,html.wl-open body{overflow:hidden;overscroll-behavior:none}
 html.lite *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 html.lite .glass,html.lite .isl,html.lite .an-card,html.lite .an-bar,html.lite .an-tip,html.lite .lab-card,html.lite [class*="sheet"]{background-color:rgba(9,13,32,.94)!important}
 /* lite: the nav bar stays see-through at the top of the page and only fills in as it condenses on scroll */
-html.lite .islands{background-color:rgba(9,13,32,calc(var(--np) * .94))!important}
+html.lite .islands{background:none!important}
 
 
 html.lite .page-atmosphere{transform:none!important;filter:none!important}
