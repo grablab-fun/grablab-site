@@ -534,6 +534,20 @@ export function buildMachine(THREE, api){
     for (let t = 0; t < 7; t++){ const g = () => (hr() + hr() + hr() - 1.5)/1.5, x = Math.max(-Lc, Math.min(Lc, -.06 + g()*.62)), y = Math.max(-Lc, Math.min(Lc, .05 + g()*.62));
       if (!clear(x, y)) continue; const z = restZ(x, y); if (!best || z < best[2]) best = [x, y, z]; }
     if (best && best[2] < z0 + .125) spots.push(best); }
+  /* then let them settle: small gravity steps, pushed apart where they overlap and kept off the walls and the drop zone, so a ball
+     resting on one other rolls off into a pocket of three, as real spheres do (no ball is left balanced in the air) */
+  { const N = spots.length, X = spots.map(q => q[0]), Y = spots.map(q => q[1]), Z = spots.map(q => q[2]), R2 = 2*CR, cell = R2, grid = new Map();
+    const key = (x, y) => Math.floor(x/cell) + "," + Math.floor(y/cell);
+    for (let it = 0; it < 260; it++){
+      for (let i = 0; i < N; i++){ Z[i] -= .0025*Math.max(.12, 1 - it/200); if (Z[i] < z0) Z[i] = z0; X[i] = Math.max(-Lc, Math.min(Lc, X[i])); Y[i] = Math.max(-Lc, Math.min(Lc, Y[i]));
+        if (!clear(X[i], Y[i])){ const ex = X[i] - (HX0 - .004 - CR), ey = (HY1 + .004 + CR) - Y[i]; if (ex < ey) X[i] -= ex + .0001; else Y[i] += ey + .0001; } }
+      grid.clear(); for (let i = 0; i < N; i++){ const k = key(X[i], Y[i]); if (!grid.has(k)) grid.set(k, []); grid.get(k).push(i); }
+      for (let i = 0; i < N; i++){ const cx = Math.floor(X[i]/cell), cy = Math.floor(Y[i]/cell);
+        for (let gx = cx - 1; gx <= cx + 1; gx++) for (let gy = cy - 1; gy <= cy + 1; gy++){ const L = grid.get(gx + "," + gy); if (!L) continue;
+          for (const j of L){ if (j <= i) continue; let dx = X[j] - X[i], dy = Y[j] - Y[i], dz = Z[j] - Z[i]; const d = Math.hypot(dx, dy, dz);
+            if (d >= R2 || d < 1e-6) continue; const push = (R2 - d)/2/d; dx *= push; dy *= push; dz *= push;
+            X[i] -= dx; Y[i] -= dy; Z[i] -= dz; X[j] += dx; Y[j] += dy; Z[j] += dz; } } } }
+    for (let i = 0; i < N; i++) spots[i] = [X[i], Y[i], Math.max(z0, Z[i])]; }
   spots.forEach(([x, y, z], k) => {
     const o = new THREE.Group(); o.name = "capsule_" + String(k + 1).padStart(3, "0"); o.position.set(x, y, z);
     o.quaternion.setFromEuler(new THREE.Euler(rnd()*6.28, rnd()*6.28, rnd()*6.28));
