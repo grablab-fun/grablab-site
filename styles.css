@@ -273,12 +273,15 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:400;text-transform:uppercase;
   width:calc(100% - var(--np) * (100% - var(--pillw,760px)));margin:0 auto;
   padding:calc(var(--np) * 6px) calc(var(--np) * 16px) calc(var(--np) * 6px) calc(var(--np) * 20px);
   border-radius:calc(14px + var(--np) * 985px);
-  background:none;border:1px solid transparent;box-shadow:none}   /* no pill behind the links: the bar stays clear while it condenses */
+  background:rgba(5,9,24,calc(var(--np) * .55));border:1px solid rgba(180,186,255,calc(var(--np) * .2));   /* scrolled: one glass bar holds logo, links and wallet */
+  box-shadow:0 1px 0 rgba(255,255,255,calc(var(--np) * .07)) inset,0 18px 44px rgba(0,0,0,calc(var(--np) * .38));
+  backdrop-filter:blur(calc(var(--np) * 16px));-webkit-backdrop-filter:blur(calc(var(--np) * 16px))}
 .islands .brand-isl{flex:calc(1 - var(--np)) 1 0;min-width:max-content}
 .islands .nav-right{flex:calc(1 - var(--np)) 1 0;min-width:max-content;justify-content:flex-end}
 .islands .nav-links{flex:none}
-.islands .isl{background:rgba(5,9,24,.55);border-color:rgba(180,186,255,.2);   /* the same glass at the top and while scrolled */
-  box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 18px 44px rgba(0,0,0,.38)}
+.islands .isl{background:rgba(5,9,24,calc(.55 - var(--np) * .55));border-color:rgba(180,186,255,calc(.2 - var(--np) * .2));   /* at the top: three glass islands */
+  box-shadow:0 1px 0 rgba(255,255,255,calc(.07 - var(--np) * .07)) inset,0 18px 44px rgba(0,0,0,calc(.38 - var(--np) * .38));
+  backdrop-filter:blur(calc((1 - var(--np)) * 16px));-webkit-backdrop-filter:blur(calc((1 - var(--np)) * 16px))}
 @media(max-width:900px){.islands{width:100%;padding:calc(var(--np) * 6px) calc(var(--np) * 12px) calc(var(--np) * 6px) calc(var(--np) * 14px)}}
 
 /* connect wallet: same blue-chrome pill as the active nav item */
@@ -505,7 +508,7 @@ html.wl-open,html.wl-open body{overflow:hidden;overscroll-behavior:none}
 html.lite *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 html.lite .glass,html.lite .isl,html.lite .an-card,html.lite .an-bar,html.lite .an-tip,html.lite .lab-card,html.lite [class*="sheet"]{background-color:rgba(9,13,32,.94)!important}
 /* lite: the nav bar stays see-through at the top of the page and only fills in as it condenses on scroll */
-html.lite .islands{background:none!important}
+html.lite .islands{background-color:rgba(9,13,32,calc(var(--np) * .94))!important}
 
 
 html.lite .page-atmosphere{transform:none!important;filter:none!important}
@@ -518,8 +521,10 @@ html.lite .page-atmosphere{transform:none!important;filter:none!important}
 .foot-tg:hover{background:rgba(255,255,255,.11);border-color:rgba(180,186,255,.55);transform:translateY(-1px)}
 
 /* the same glass island behind the logo and behind Connect wallet as behind the links */
-.islands .brand-isl .brand,.islands .nav-right .flipwrap{display:flex;align-items:center;background:rgba(5,9,24,.55);border:1px solid rgba(180,186,255,.2);border-radius:14px;
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 18px 44px rgba(0,0,0,.38)}
+.islands .brand-isl .brand,.islands .nav-right .flipwrap{display:flex;align-items:center;border-radius:14px;
+  background:rgba(5,9,24,calc(.55 - var(--np) * .55));border:1px solid rgba(180,186,255,calc(.2 - var(--np) * .2));
+  backdrop-filter:blur(calc((1 - var(--np)) * 16px));-webkit-backdrop-filter:blur(calc((1 - var(--np)) * 16px));
+  box-shadow:0 1px 0 rgba(255,255,255,calc(.07 - var(--np) * .07)) inset,0 18px 44px rgba(0,0,0,calc(.38 - var(--np) * .38))}
 .islands .brand-isl .brand{padding:8px 16px 8px 10px;min-height:52px;box-sizing:border-box}
 .islands .nav-right .flipwrap{padding:8px;min-height:52px;box-sizing:border-box}
-html.lite .islands .brand-isl .brand,html.lite .islands .nav-right .flipwrap{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(9,13,32,.9)}
+html.lite .islands .brand-isl .brand,html.lite .islands .nav-right .flipwrap{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(9,13,32,calc(.9 - var(--np) * .9))}
