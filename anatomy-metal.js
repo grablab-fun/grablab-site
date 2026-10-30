@@ -362,16 +362,17 @@ export function buildMachine(THREE, api){
   use("cage");
   const FZ = .238, FT = .012, HX0 = mm(MP.CHUTE[0]), HX1 = mm(MP.CHUTE[1]), HY0 = mm(MP.CHUTE[2]), HY1 = mm(MP.CHUTE[3]);   // floor top at 250, 243 x 243 hole front right
   sm("box_floor", pvc, "cage_floor");
+  /* the floor runs out to the skins: a strip over each floor ring tube, so no 3 mm step reads as a gap along the walls */
+  for (const [x0, y0, x1, y1] of [[-.5, -.5, .5, -.475], [-.5, .475, .5, .5], [-.5, -.475, -.475, .475], [.475, -.475, .5, .475]]) box(x0, y0, .247, x1, y1, .25, pvc, "cage_floor");
   SM(["box_prize_L", "box_prize_B"], pvc, "cage_prize_wall");
   sm("box_skin_L", pvc, "cage_skin");
   /* the right skin, cut round the prize bin door opening (y -440 to 200, z 35 to 210 from the centre / ground) */
   for (const [y0, y1, z0, z1] of [[-.5, .5, 0, .035], [-.5, .5, .21, .35], [-.5, -.44, .035, .21], [.2, .5, .035, .21]]) box(.5, y0, z0, .503, y1, z1, pvc, "cage_skin");
-  sm("box_skin_B", pvc, "cage_door"); sm("boxhw_door", rivetM, "cage_door_rivnut");          // the back base skin is the service door
+  sm("box_skin_B", pvc, "cage_door");          // the back base skin is the service door
   sm("box_back_cage", pvc, "cage_showcase");
   sm("box_left_cage", acrylic, "cage_window");
   SM(["box_glass_F", "box_glass_R"], acrylic, "cage_window");
-  SM(["boxhw_floor", "boxhw_glass"], rivetM, "cage_rivet");
-  sm("boxhw_skins", rivetM, "cage_rivet", null, (x, y, z) => z < -920 || z > -870);     // no row on the floor ring: it read as specks in the middle of the base panels
+  /* no rivets drawn: on the black panels and the glass they read as specks */
 
   /* =========================================================================================== chute, cradle, prize cup */
   use("chute");
