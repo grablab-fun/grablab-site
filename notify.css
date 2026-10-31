@@ -52,20 +52,20 @@
 .ng-art{position:relative;height:clamp(260px,32vw,400px)}
 .ng-art img{position:absolute;filter:drop-shadow(0 24px 50px rgba(59,123,255,.4))}
 .ng-art .a{height:100%;left:32%;top:0}.ng-art .b{width:38%;left:0;top:34%}.ng-art .c{width:42%;right:0;top:8%}
-.ng h2.ng-t{font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(32px,5vw,54px);margin:clamp(50px,7vw,84px) 0 18px}
+.ng h2.ng-t{text-align:center;font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(32px,5vw,54px);margin:clamp(50px,7vw,84px) 0 18px}
 .ng-pings{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .ng-pings div{display:flex;align-items:center;gap:18px;padding:20px 22px;border-radius:20px}
 .ng-pings img{width:76px;height:76px;object-fit:contain;flex:none;filter:drop-shadow(0 8px 18px rgba(59,123,255,.4))}
 .ng-pings p{margin:0}
 .ng-pings b{display:block;font-size:19px;margin-bottom:4px}.ng-pings span{display:block;color:var(--ink-2);font-size:15px}
-.ng-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
+.ng-tabs{display:flex;justify-content:safe center;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
 .ng-tabs button{all:unset;cursor:pointer;white-space:nowrap;padding:10px 18px;border-radius:99px;border:1px solid var(--line-2);color:var(--ink-2);font-weight:700;font-size:14.5px;transition:background .2s,color .2s}
 .ng-tabs button.on{background:var(--ink);color:#0a0c16}
 .ng-tabs button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
 .ng-pane{display:none}
 .ng-pane.on{display:block;animation:ngIn .35s ease}
 @keyframes ngIn{from{opacity:0;transform:translateY(8px)}}
-.ng-flow{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:clamp(14px,2.4vw,30px);justify-content:start}
+.ng-flow{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:clamp(14px,2.4vw,30px);justify-content:center}
 .ng-flow.n4{grid-template-columns:repeat(4,minmax(0,220px))}
 .ng-flow.n3{grid-template-columns:repeat(3,minmax(0,260px))}
 .ng-flow.n3:has(.web){grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -112,7 +112,7 @@
 .dv .hot{color:#fff;background:#2f6bff;box-shadow:0 0 0 2px rgba(214,228,255,.8);animation:ngPulse 2.2s ease-in-out infinite}
 @keyframes ngPulse{0%,100%{box-shadow:0 0 0 2px rgba(214,228,255,.8),0 0 8px rgba(59,123,255,.5)}50%{box-shadow:0 0 0 2px #fff,0 0 24px 4px rgba(59,123,255,.95)}}
 @keyframes ngGlow{0%,100%{filter:drop-shadow(0 0 6px rgba(59,123,255,.5))}50%{filter:drop-shadow(0 0 20px rgba(59,123,255,1))}}
-.ng-foot{display:flex;align-items:center;justify-content:flex-start;gap:18px;flex-wrap:wrap;margin-top:30px}
+.ng-foot{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:30px}
 .ng-foot .nv-go{width:auto;display:inline-block;padding:14px 30px;margin:0}
 .dv .dlg span.hot{background:#2f6bff}
 .ng-foot small{color:var(--ink-2);font-size:13.5px}
