@@ -141,7 +141,7 @@
       <div class="sw-box"><div class="sw-top"><span class="sw-lab">You pay</span><span id="swHave"></span></div>
         <div class="sw-row"><input class="sw-amt" id="swAmt" inputmode="decimal" placeholder="0" aria-label="Amount to swap" autocomplete="off" /><span class="sw-side" id="swPayTk">${tkBtn}</span></div>
         <div class="sw-pct"><button type="button" data-pct="25">25%</button><button type="button" data-pct="50">50%</button><button type="button" data-pct="75">75%</button><button type="button" data-pct="100">Max</button></div>
-        <div class="sw-m" id="swMenu" hidden><input id="swFind" placeholder="Search name or address" aria-label="Search a token" autocomplete="off" /><div id="swList" role="listbox"></div></div></div>
+        <div class="sw-m" id="swMenu" hidden><input id="swFind" placeholder="Search any token or address" aria-label="Search a token" autocomplete="off" /><div id="swList" role="listbox"></div></div></div>
       <button type="button" class="sw-mid" id="swFlip" aria-label="Swap direction"><img src="assets/sub/a-swap.webp" alt="" /></button>
       <div class="sw-box"><div class="sw-top"><span class="sw-lab">You get</span><span id="swHaveGet"></span></div>
         <div class="sw-row"><span class="sw-amt" id="swOut">0</span><span class="sw-side" id="swGetTk">${usdcBtn}</span></div>
@@ -152,18 +152,18 @@
       <p class="sw-fine"><img src="assets/chains/jup.png" alt="" />Routed by Jupiter. You approve every swap in your wallet.</p></div>`;
     /* the list: what the wallet holds, then the most traded verified tokens, or the search results */
     const TOK = "https://lite-api.jup.ag/tokens/v2/";
-    const fromJup = t => ({ mint:t.id, symbol:String(t.symbol || "").slice(0, 12), decimals:t.decimals, icon:t.icon || null, ui:0, raw:"0", usd:0 });
+    const fromJup = t => ({ mint:t.id, symbol:String(t.symbol || "").slice(0, 12), name:String(t.name || "").slice(0, 26), decimals:t.decimals, icon:t.icon || null, ui:0, raw:"0", usd:0 });
     const usable = list => list.filter(t => t.isVerified && t.id !== USDC_MINT).map(fromJup);
     let shown = [], popular = null, found = null, findSeq = 0;
     const paintMenu = () => {
       const l = $("swList"); if (!l) return;
       const held = found ? found.map(f => tokens.find(t => t.mint === f.mint) || f) : [...tokens, ...(popular || []).filter(p => !tokens.some(t => t.mint === p.mint))];
       shown = held;
-      l.innerHTML = held.length ? held.map(t => `<button type="button" role="option" data-mint="${esc(t.mint)}">${icon(t)}${esc(t.symbol)}<em>${t.ui ? trim(t.ui, 4) : ""}</em></button>`).join("") : `<p class="sw-none">No token found.</p>`;
+      l.innerHTML = held.length ? held.map(t => `<button type="button" role="option" data-mint="${esc(t.mint)}">${icon(t)}<span>${esc(t.symbol)}${t.name && t.name !== t.symbol ? `<small>${esc(t.name)}</small>` : ""}</span><em>${t.ui ? trim(t.ui, 4) : ""}</em></button>`).join("") : `<p class="sw-none">No token found.</p>`;
     };
     async function loadPopular(){
       if (popular) return;
-      try { popular = usable(await (await fetch(TOK + "toporganicscore/24h?limit=30")).json()); paintMenu(); } catch (e) {}
+      try { popular = usable(await (await fetch(TOK + "toporganicscore/24h?limit=60")).json()); paintMenu(); } catch (e) {}
     }
     async function find(q){
       const mine = ++findSeq; q = q.trim();
