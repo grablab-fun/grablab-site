@@ -428,6 +428,8 @@ try { if (localStorage.getItem("gl_wallet")) (window.requestIdleCallback || setT
 addEventListener("load", () => setTimeout(() => (window.requestIdleCallback || setTimeout)(() => {
   if (privy || document.querySelector('link[href$="privy/wallet.js"]')) return;
   if (document.documentElement.classList.contains("lite")) return;
+  /* not on phones or slow links: the bundle is 1.6 MB and most visitors never connect */
+  const c = navigator.connection; if (innerWidth < 900 || (c && (c.saveData || /2g|3g/.test(c.effectiveType || "")))) return;
   const l = document.createElement("link"); l.rel = "prefetch"; l.as = "script"; l.href = "assets/privy/wallet.js"; document.head.appendChild(l);   /* download only; it is compiled when a Connect button is reached */
 }), 2500));
 ["pointerover", "focusin", "touchstart"].forEach(ev => document.addEventListener(ev, e => {
@@ -673,7 +675,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu();
     const last = [...h.childNodes].reverse().find(n => n.nodeType === 3 && n.nodeValue.trim());
     if (last){ const m = h.querySelector("br") ? [0, "", last.nodeValue] : last.nodeValue.match(/^(.*?)(\S+\s+\S+\.?)\s*$/); if (m){ const sp = document.createElement("span"); sp.className = "hl"; sp.textContent = m[2]; last.nodeValue = m[1]; last.after(sp); } }
     const body = document.createElement("div"); body.className = "co-body"; while (c.firstChild) body.appendChild(c.firstChild); c.appendChild(body);
-    const art = document.createElement("div"); art.className = "co-art"; art.innerHTML = '<i class="co-line"></i><img class="co-claw" src="assets/icons/claw.png" alt="" /><i class="co-glow"></i>'; c.appendChild(art);
+    const art = document.createElement("div"); art.className = "co-art"; art.innerHTML = '<i class="co-line"></i><img class="co-claw" src="assets/icons/claw.webp" alt="" /><i class="co-glow"></i>'; c.appendChild(art);
     const k = document.createElement("span"); k.className = "co-k"; k.textContent = c.dataset.k || "Next"; body.prepend(k);
     const a = c.querySelector("a.btn"); if (a && !a.querySelector("svg")) a.insertAdjacentHTML("beforeend", '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5"/></svg>');
     if (window.glKern) glKern(c);

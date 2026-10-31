@@ -53,6 +53,8 @@ window.__sceneP = 0;
   let cur = -1, timer = null, subTimer = null, pending = false, idle = null;
   function scramble(lines){
     clearInterval(timer); clearInterval(idle);
+    /* measure the finished headline first and hold that height, so the random glyphs never reflow the hero */
+    h1.innerHTML = lines.map(l => `<span class="line">${l}</span>`).join(""); h1.style.minHeight = h1.offsetHeight + "px";
     h1.innerHTML = lines.map(l => `<span class="line">${[...l].map(c => c === " " ? " " : `<span class="ch scr"></span>`).join("")}</span>`).join("");
     const chars = [...h1.querySelectorAll(".ch")];
     const roll = () => chars.forEach(el => el.textContent = GL[Math.floor(Math.random()*GL.length)]);

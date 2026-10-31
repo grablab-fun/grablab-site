@@ -41,7 +41,6 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
 
 /* kicker + lead */
 .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-2);display:block;margin-bottom:18px;opacity:.9}
-.lead{color:var(--ink-2);font-size:clamp(15px,1.9vw,19px);max-width:56ch}
 
 /* ============ NAV : ISLANDS ============ */
 /* brand and actions float free; only the sections sit in a glass island. Active section wears the blue chrome of the logo. */
@@ -115,19 +114,12 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
 
 
 
-.play h2,.proof h2,.capsules h2,.rent h2,.formats h2,.check h2{font-size:clamp(30px,4.2vw,52px);margin-bottom:28px}
-.flow{list-style:none;counter-reset:f}
-.flow li{counter-increment:f;padding:18px 0 18px 54px;border-top:1px solid var(--line);position:relative;color:var(--ink-2);font-size:15.5px}
-.flow li:first-child{border-top:none}
-.flow li::before{content:"0" counter(f);position:absolute;left:0;top:18px;font-family:var(--mono);font-size:13px;color:var(--accent-2);opacity:.9}
-.flow b{color:var(--ink);font-weight:700}
 
 /* ============ PROOF ============ */
 .proof{position:relative;padding:clamp(120px,18vw,240px) clamp(16px,4vw,48px);text-align:center;overflow:hidden}
 
 
 
-.proof .lead{margin:0 auto 44px}
 
 
 
@@ -146,11 +138,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
 
 
 
-.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:44px;max-width:900px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden}
-.mode{background:rgba(7,9,18,.82);backdrop-filter:blur(8px);padding:32px 28px}
 
-.mode h4{font-size:21px;margin-bottom:12px}
-.mode p{color:var(--ink-2);font-size:14.5px}
 
 
 
@@ -159,15 +147,12 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
 
 
 
-.formats .kicker{text-align:center}
 
 
 
 /* ============ CHECK ============ */
 .check{padding:clamp(90px,14vw,180px) clamp(16px,4vw,48px);text-align:center;background:radial-gradient(80% 60% at 50% 30%,rgba(154,123,255,.1),transparent 70%)}
 
-.check .kicker{text-align:center}
-.check .lead{margin:0 auto 44px}
 
 .check-row{display:flex;gap:12px}
 .check-row input{flex:1;padding:15px 18px;border-radius:999px;border:1px solid var(--line-2);background:rgba(0,0,0,.35);color:var(--ink);font-family:var(--mono);font-size:14px;outline:none}
@@ -242,8 +227,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.015em;li
   .play{grid-template-columns:1fr}
   
   
-  .modes{grid-template-columns:1fr}
-  
+    
   
   .foot-grid{grid-template-columns:1fr 1fr}
   .wallet-sheet{grid-template-columns:1fr;max-width:420px}

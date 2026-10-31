@@ -527,7 +527,7 @@ export function buildMachine(THREE, api){
   const layerT = canvasTex(8, 64, (g, W, H) => { g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, H); for (let y = 0; y < H; y += 4){ g.fillStyle = "rgba(120,118,112,.22)"; g.fillRect(0, y, W, 1); } });
   layerT.wrapS = layerT.wrapT = THREE.RepeatWrapping; layerT.repeat.set(1, 6);
   const shell = m("shell", { color:0xf2f1ec, map:layerT, roughness:.68, metalness:0, side:THREE.DoubleSide });
-  const tagT = new THREE.TextureLoader().load("assets/nfc-tag.png?v=1"); tagT.colorSpace = THREE.SRGBColorSpace; tagT.anisotropy = 8;
+  const tagT = new THREE.TextureLoader().load("assets/nfc-tag.webp?v=2"); tagT.colorSpace = THREE.SRGBColorSpace; tagT.anisotropy = 8;
   const tagM = m("tag", { map:tagT, alphaTest:.4, roughness:.6, metalness:0 });
   const gTop = new THREE.SphereGeometry(CR, 36, 16, 0, Math.PI*2, 0, Math.PI/2).rotateX(Math.PI/2), gBot = new THREE.SphereGeometry(CR, 36, 16, 0, Math.PI*2, Math.PI/2, Math.PI/2).rotateX(Math.PI/2);
   const gHoles = (() => { const pos = [], nor = [], q = new THREE.Quaternion(), Z = new THREE.Vector3(0, 0, 1);

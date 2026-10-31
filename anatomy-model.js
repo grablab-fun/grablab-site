@@ -430,7 +430,7 @@ export function buildMachine(THREE, api){
   use("capsules");
   const capsules = [], CR = .025;
   const shell = m("shell", { color:0xeef3ff, roughness:.03, metalness:0, clearcoat:1, clearcoatRoughness:.03, transparent:true, opacity:.2, specularIntensity:1, depthWrite:false, side:THREE.DoubleSide }, true);
-  const tagT = new THREE.TextureLoader().load("assets/nfc-tag.png?v=1"); tagT.colorSpace = THREE.SRGBColorSpace; tagT.anisotropy = 8;
+  const tagT = new THREE.TextureLoader().load("assets/nfc-tag.webp?v=2"); tagT.colorSpace = THREE.SRGBColorSpace; tagT.anisotropy = 8;
   const tagM = m("tag", { map:tagT, alphaTest:.4, roughness:.6, metalness:0 });
   const gTop = new THREE.SphereGeometry(CR, 28, 12, 0, Math.PI*2, 0, Math.PI/2).rotateX(Math.PI/2), gBot = new THREE.SphereGeometry(CR, 28, 12, 0, Math.PI*2, Math.PI/2, Math.PI/2).rotateX(Math.PI/2);
   const gTag = new THREE.CircleGeometry(.0105, 32);

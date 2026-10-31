@@ -64,16 +64,8 @@ body.page-in main,body.page-in .hero{opacity:1;transform:none}
 .section{max-width:var(--maxw);margin:0 auto;padding:clamp(60px,9vw,130px) clamp(16px,4vw,48px)}
 .section-head{max-width:720px;margin-bottom:clamp(34px,5vw,58px)}
 .section-head h2{font-size:clamp(28px,4.2vw,48px);line-height:1.05;margin-bottom:18px}
-.section-head .lead{color:var(--ink-2);font-size:clamp(15px,1.9vw,19px)}
 
 /* feature cards grid */
-
-
-.feat{padding:30px 26px;display:flex;flex-direction:column;gap:12px}
-.feat .fn{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent-2)}
-.feat h3{font-size:21px;line-height:1.1}
-.feat p{color:var(--ink-2);font-size:14.5px}
-
 
 
 /* big numbered steps (easy to understand) */
@@ -97,7 +89,6 @@ body.page-in main,body.page-in .hero{opacity:1;transform:none}
 /* callout / cta band */
 .callout{max-width:var(--maxw);margin:0 auto clamp(60px,9vw,120px);padding:clamp(40px,6vw,70px);text-align:center}
 .callout h2{font-size:clamp(28px,4.4vw,48px);margin-bottom:16px}
-.callout p{color:var(--ink-2);font-size:clamp(15px,1.9vw,18px);max-width:52ch;margin:0 auto 28px}
 
 @media(max-width:1040px){
   .teasers{grid-template-columns:1fr 1fr}
@@ -156,7 +147,6 @@ body.page-in main,body.page-in .hero{opacity:1;transform:none}
 
 /* ============ INSIDE : dissection video lower ============ */
 .center-head{text-align:center;margin-inline:auto}
-.center-head .lead{margin-inline:auto}
   box-shadow:0 40px 110px rgba(0,0,0,.6),0 0 70px rgba(154,123,255,.12),inset 0 1px 0 rgba(255,255,255,.14)}
 
 /* ---- hero art: colorful cinematic sky, machine below the headline (machine.fun impact) ---- */
@@ -247,11 +237,6 @@ body.page-in main,body.page-in .hero{opacity:1;transform:none}
 
 
 /* ============ BOWL : capsules land here, verification readout ============ */
-
-.bowl{position:relative;width:250px;height:150px;border-radius:0 0 125px 125px;overflow:hidden;
-  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.13));border:1px solid rgba(255,255,255,.38);border-top:0;
-  box-shadow:inset 0 -20px 34px rgba(154,123,255,.2),inset 0 2px 0 rgba(255,255,255,.25),0 24px 60px rgba(0,0,0,.55)}
-
 .mini-cap{position:absolute;width:24px;height:36px;border-radius:12px;
   background:linear-gradient(160deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,.12) 30%,rgba(200,190,255,.08) 60%,rgba(255,255,255,.22) 100%);
   border:1px solid rgba(255,255,255,.55);box-shadow:0 0 14px rgba(255,190,80,.45),inset 0 0 8px rgba(255,255,255,.2);animation:settle .45s cubic-bezier(.3,1.4,.5,1)}
@@ -290,7 +275,6 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 .catch{position:relative;max-width:1280px;margin:-34vh auto 0;padding:0 clamp(16px,4vw,48px) 40px;display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(30px,5vw,70px)}
 
 
-.bowl{position:relative;width:100%;max-width:300px;aspect-ratio:1/1;border-radius:0;overflow:visible;background:none;border:0;box-shadow:none;justify-self:center}
 
 
 
@@ -321,7 +305,6 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 
 /* catch zone sits just under the machine, bigger bowl, no dark square behind it */
 .catch{margin-top:-84px;padding-bottom:20px}
-.bowl{max-width:400px}
 
 
 .mini-cap{width:34px;height:34px}
@@ -333,21 +316,16 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 .catch{margin-top:-108px;padding-bottom:0}
 
 
-.bowl{position:absolute;left:71%;top:-10px;transform:translateX(-50%);width:330px;max-width:none;margin:0;justify-self:unset}
 .verify{position:absolute;left:0;top:96px;min-width:200px;max-width:225px;padding:14px 16px}
 .verify .v-hash{font-size:10.5px}
 
 @media(max-width:900px){
   .catch{margin-top:-60px}
   
-  .bowl{position:relative;left:auto;top:auto;transform:none}
-  .verify{position:relative;left:auto;top:auto;max-width:none;width:100%}
+    .verify{position:relative;left:auto;top:auto;max-width:none;width:100%}
 }
 
 /* ============ CATCH ZONE v3 : big clean bowl, readout directly beneath it ============ */
-
-.bowl{width:440px;top:-24px}
-
 
 .mini-cap{width:36px;height:36px}
 .mini-cap::before{width:19px;height:19px;margin:-10px 0 0 -10px}
@@ -355,15 +333,12 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 .verify .v-hash{font-size:11px}
 
 
-@media(max-width:900px){.bowl{width:min(440px,100%);top:auto}.verify{transform:none;left:auto;top:auto;width:100%}}
+@media(max-width:900px){.verify{transform:none;left:auto;top:auto;width:100%}}
 
 /* catch zone v4: tighter stack, bigger bowl, softer sky end */
-
-.bowl{width:500px;top:-34px}
-
 .verify{top:196px}
 
-@media(max-width:900px){.bowl{width:min(500px,100%);top:auto}.verify{top:auto}}
+@media(max-width:900px){.verify{top:auto}}
 
 /* catch v5: readout hugs the bowl; glows fade out instead of being clipped at the hero edge */
 .verify{top:138px}
@@ -375,12 +350,7 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 /* catch v6: bowl below the fold, fully blended into the page */
 .catch{margin-top:56px;padding-bottom:10px}
 
-.bowl{top:0}
-.bowl::before{content:"";position:absolute;inset:-14%;border-radius:50%;z-index:0;pointer-events:none;
-  background:radial-gradient(ellipse 48% 34% at 50% 52%,#020411 0%,#020411 40%,transparent 72%)}
 
-.bowl::after{content:"";position:absolute;left:18%;right:18%;top:62%;height:26%;border-radius:50%;z-index:0;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 40%,rgba(154,123,255,.22),transparent 70%);filter:blur(10px)}
 
 .verify{top:176px}
 @media(max-width:900px){.catch{margin-top:24px}.verify{top:auto}}
@@ -394,12 +364,6 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
 .problem-text .kicker{margin-bottom:16px}
 .catch-col{position:relative;z-index:1;align-self:stretch;min-height:440px}
 /* bowl at 71% of the right column = directly under the chute (same container+grid as hero) */
-.catch-col .bowl{position:absolute;left:71%;top:4%;transform:translateX(-50%);width:clamp(300px,34vw,460px);max-width:none;aspect-ratio:1/1;margin:0;overflow:visible;background:none;border:0;box-shadow:none}
-.catch-col .bowl::before{content:"";position:absolute;inset:-14%;border-radius:50%;z-index:0;pointer-events:none;
-  background:radial-gradient(ellipse 48% 34% at 50% 52%,#020411 0%,#020411 40%,transparent 72%)}
-
-.catch-col .bowl::after{content:"";position:absolute;left:18%;right:18%;top:62%;height:26%;border-radius:50%;z-index:0;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 40%,rgba(154,123,255,.22),transparent 70%);filter:blur(10px)}
 
 .mini-cap{position:absolute}
 .catch-col .verify{position:absolute;left:71%;transform:translateX(-50%);bottom:0;width:min(300px,86%);min-width:0;padding:16px 18px}
@@ -408,8 +372,7 @@ body>.fall-capsule{position:absolute;left:0;top:0;bottom:auto;margin:0;z-index:6
   
   .problem-row{grid-template-columns:1fr;gap:40px}
   .catch-col{min-height:380px}
-  .catch-col .bowl{left:50%;width:min(380px,80%)}
-  .catch-col .verify{left:50%}
+    .catch-col .verify{left:50%}
 }
 
 /* calmer capsule glow so the pile reads as distinct spheres */
@@ -538,6 +501,7 @@ body{background:transparent}
   text-shadow:0 2px 30px rgba(5,9,24,.8)}
 .stage .copy h1 .line{display:block;white-space:nowrap}
 .stage .copy h1 .ch{display:inline-block;min-width:.2em}
+.stage .copy h1 .ch.scr{width:.58em;text-align:center}
 .stage .copy h1 .ch.scr{color:#9cc0ff;opacity:.7}
 .stage .copy .sub{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);line-height:1.7;max-width:60ch;margin:0 0 30px;min-height:3em}
 .stage .copy .acts{display:flex;gap:12px;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none}

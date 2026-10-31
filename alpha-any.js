@@ -7,7 +7,12 @@
   const webkit = /iP(hone|ad|od)/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ||
                  (/Safari\//.test(ua) && !/Chrome|Chromium|CriOS|FxiOS|Android|Edg/.test(ua));
   const force = /[?&]stacked=1/.test(location.search);
-  document.querySelectorAll("video.av").forEach(v => {
+  /* a video far down the page waits until it is about a screen away; the one in view starts at once */
+  const near = v => { const r = v.getBoundingClientRect(); return r.bottom > -innerHeight && r.top < innerHeight*2; };
+  const pending = [];
+  const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ io.unobserve(e.target); setup(e.target); } }), { rootMargin:"100% 0px" }) : null;
+  document.querySelectorAll("video.av").forEach(v => { if (!io || near(v)) setup(v); else io.observe(v); });
+  function setup(v){
     if (!(webkit || force)){ v.src = v.dataset.webm; v.load(); v.play && v.play().catch(() => {}); return; }
     const cv = document.createElement("canvas");
     const gl = cv.getContext("webgl", { alpha:true, premultipliedAlpha:true, antialias:false });
@@ -41,5 +46,5 @@
     if ("requestVideoFrameCallback" in v){ const tick = () => { draw(); v.requestVideoFrameCallback(tick); }; v.requestVideoFrameCallback(tick); }
     else { const loop = () => { if (!v.paused) draw(); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
     v.addEventListener("loadeddata", () => { size(); fit(); draw(); }); addEventListener("resize", size); size();
-  });
+  }
 })();
