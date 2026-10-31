@@ -522,14 +522,19 @@ async function chooseWallet(w, detected){
   if (!addr) return; closeWallet(); onConnected(addr);
 }
 function shorten(a){ return a && a.length>12 ? a.slice(0,6)+"…"+a.slice(-4) : a; }
+window.glWallet = { addr:null, async disconnect(){ if (privyAddr){ const p = await loadPrivy(); if (p) p.logout(); } else onConnected(null); } };
 function onConnected(addr){
-  document.querySelectorAll("#connectBtn, #connectBtn2").forEach(b=> (b.querySelector(".f") || b).textContent = addr ? shorten(addr) : t("cta.connect"));
+  window.glWallet.addr = addr || null;
+  document.documentElement.classList.toggle("is-in", !!addr);
+  document.querySelectorAll("#connectBtn, #connectBtnM").forEach(b=> (b.querySelector(".f") || b).textContent = addr ? shorten(addr) : t("cta.connect"));
+  document.querySelectorAll("#connectBtn2").forEach(b=> { b.textContent = addr ? "My account" : "Connect wallet"; });
+  dispatchEvent(new CustomEvent("gl:wallet"));
   if (!addr) return;
   const input = document.getElementById("addrInput"); if (input){ input.value = addr; renderResult(addr); document.getElementById("check")?.scrollIntoView({behavior:"smooth",block:"center"}); }
 }
 document.addEventListener("click", e=>{
   const cb = e.target.closest("#connectBtn, #connectBtn2, #connectBtnM");
-  if (cb){ closeMenu(); openWallet(cb); }
+  if (cb){ closeMenu(); if (window.glWallet.addr) location.href = "account.html"; else openWallet(cb); }
   if (e.target.id === "walletClose") closeWallet();
   if (e.target.id === "walletOverlay") closeWallet();
 });
@@ -589,7 +594,7 @@ function demoTierFor(addr){
 function renderResult(addr){
   const box = document.getElementById("checkResult"); if (!box) return;
   const e = demoTierFor(addr); box.hidden = false;
-  if (e){ box.className="check-result ok"; box.innerHTML = `<span class="tier">Eligible: ${e.tier}</span><div><code>${shorten(addr)}</code> gets <b>${e.note}</b>.<br>Grab your capsule live on launch night.</div>`; }
+  if (e){ box.className=`check-result ok t-${e.tier.toLowerCase()}`; box.innerHTML = `<img class="tr-badge" src="assets/sub/tier-${e.tier.toLowerCase()}.webp" alt="" /><div class="tr-b"><small>You're eligible</small><span class="tier">${e.tier} tier</span><p><b>${e.note.split(" ")[0]} free play${e.note.startsWith("1 ") ? "" : "s"}</b> in the airdrop claw</p><code>${shorten(addr)}</code></div>`; }
   else { box.className="check-result no"; box.innerHTML = `<span class="tier">Not on the snapshot yet</span><div><code>${shorten(addr)}</code> isn't on the list for this draw.<br>Be early for the next launch.</div>`; }
 }
 document.addEventListener("click", e=>{
