@@ -1,0 +1,31 @@
+<!doctype html><html><body style="margin:0;background:transparent;overflow:hidden"><canvas id="c" style="width:100vw;height:100vh;display:block"></canvas>
+<script type="module">
+import { createSim3D, CAP_R, CHUTE } from "./sim3d.js?v=rec6";
+const q = new URLSearchParams(location.search), seed0 = +(q.get("seed") || 1), T = +(q.get("T") || 10), cam = JSON.parse(q.get("cam")), DX = q.has("dx") ? +q.get("dx") : .099, DZ = q.has("dz") ? +q.get("dz") : -.048;
+/* the claw hangs 44 mm left and 43 mm in front of the carriage reference the game steers: aim the carriage past the hole by that much */
+const CX = CHUTE.cx + DX, CZ = CHUTE.cz + DZ;
+const S = createSim3D(document.getElementById("c"), null, { alpha:true, cam, layer2:true }); S.setMain(5);
+let seed = seed0*7919; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
+const base = S.spots().map(([x, z]) => ({ x, z, y:CAP_R, state:"pile" })), top = (S.spots.top || []).map(([x, z]) => ({ x, z, y:CAP_R*2.72, state:"pile" }));
+const caps = base.concat(top);
+const pickable = top.length ? top.filter(c => c.x > -.5 && c.x < .75 && c.z > .2 && c.z < .75) : caps.filter(c => c.x > -.5 && c.x < .75 && c.z > .2 && c.z < .75);
+const tgt = pickable[Math.floor(rnd()*pickable.length)], home = { x:.35 + rnd()*.3, z:.3 + rnd()*.2 };
+const st = { x:home.x, z:home.z, y:.98, open:0, sw:0, held:null };
+const e = x => x < .5 ? 2*x*x : 1 - Math.pow(-2*x + 2, 2)/2, seg = (t, a, b) => t <= a ? 0 : t >= b ? 1 : e((t - a)/(b - a));
+const lerp = (a, b, k) => a + (b - a)*k;
+let prevX = st.x;
+/* the same play as the live feeds: go to the capsule, lower, close, lift, carry to the chute, drop, come home. k runs 0..10 over T seconds */
+window.frameAt = t => {
+  const k = t/T*10, low = tgt.y + CAP_R*.25;
+  const go1 = seg(k, 0, 2.4), down = seg(k, 2.6, 3.6) - seg(k, 4.1, 5.1), go2 = seg(k, 5.2, 7.4), back = seg(k, 8.8, 10);
+  st.x = lerp(lerp(lerp(home.x, tgt.x, go1), CX, go2), home.x, back); st.z = lerp(lerp(lerp(home.z, tgt.z, go1), CZ, go2), home.z, back);
+  st.y = lerp(.98, low + .1, down);
+  st.open = k < 2.6 ? 0 : k < 3.7 ? seg(k, 2.6, 3.3) : k < 4.1 ? 1 - seg(k, 3.7, 4.05)*.42 : k < 7.6 ? .58 : k < 8.8 ? 1 : 1 - seg(k, 8.8, 9.6);
+  const v = (st.x - prevX)*60; prevX = st.x; st.sw += (-v*.22 - st.sw)*.25;
+  if (k >= 4.05 && k < 7.6){ st.held = tgt; tgt.state = "held"; }
+  else if (k >= 7.6){ st.held = null; tgt.state = "chute"; tgt.x = CHUTE.cx; tgt.z = CHUTE.cz; tgt.y = lerp(.83, -.5, Math.min(1, Math.pow((k - 7.6)/.9, 2))); }
+  else { st.held = null; tgt.state = "pile"; tgt.y = CAP_R; }
+  S.draw(st, caps); return document.getElementById("c").toDataURL("image/png");
+};
+window.ready = true;
+</script></body></html>
