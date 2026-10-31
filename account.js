@@ -96,6 +96,12 @@
       { mint:"Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", symbol:"USDT", decimals:6, ui:0, raw:"0", usd:0, icon:"https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.svg" }
     ];
     let tokens = BASE, tk = BASE[0], order = null, tm = 0, seq = 0, busy = false, refresh = 0;
+    let dir = "in", solRaw = 0n;   /* "in": a token becomes SOL. "out": SOL becomes the token. The arrow in the middle flips it */
+    const SOLT = { mint: SOL, symbol: "SOL", decimals: 9 };
+    const pay = () => dir === "in" ? tk : SOLT, get = () => dir === "in" ? SOLT : tk;
+    const payRaw = () => dir === "in" ? BigInt(tk.raw) : solRaw;
+    const solBtn = `<button type="button" class="sw-tk" disabled><img src="assets/sub/a-sol.webp" alt="" />SOL</button>`;
+    const tkBtn = `<button type="button" class="sw-tk" id="swTk" aria-haspopup="listbox"></button>`;
     const dot = '<svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>';
     const icon = t => t.icon ? `<img src="${esc(t.icon)}" alt="" onerror="this.src='assets/sub/token-silver.webp'" />` : `<img src="assets/sub/token-silver.webp" alt="" />`;
     const trim = (v, d) => { const s = v.toFixed(d); return s.includes(".") ? s.replace(/\.?0+$/, "") : s; };
@@ -106,21 +112,26 @@
     };
     const html = () => `<div class="sw">
       <div class="sw-box"><span class="sw-lab">You pay</span>
-        <div class="sw-row"><input class="sw-amt" id="swAmt" inputmode="decimal" placeholder="0" aria-label="Amount to swap" autocomplete="off" /><button type="button" class="sw-tk" id="swTk" aria-haspopup="listbox"></button></div>
+        <div class="sw-row"><input class="sw-amt" id="swAmt" inputmode="decimal" placeholder="0" aria-label="Amount to swap" autocomplete="off" /><span class="sw-side" id="swPayTk">${tkBtn}</span></div>
         <div class="sw-meta"><span id="swHave"></span><button type="button" class="sw-max" id="swMax">Max</button></div>
         <div class="sw-m" id="swMenu" role="listbox" hidden></div></div>
-      <img class="sw-mid" src="assets/sub/a-swap.webp" alt="" />
+      <button type="button" class="sw-mid" id="swFlip" aria-label="Swap direction"><img src="assets/sub/a-swap.webp" alt="" /></button>
       <div class="sw-box"><span class="sw-lab">You get</span>
-        <div class="sw-row"><span class="sw-amt" id="swOut">0</span><button type="button" class="sw-tk" disabled><img src="assets/sub/a-sol.webp" alt="" />SOL</button></div>
+        <div class="sw-row"><span class="sw-amt" id="swOut">0</span><span class="sw-side" id="swGetTk">${solBtn}</span></div>
         <div class="sw-meta"><span id="swOutUsd"></span></div></div>
       <div class="sw-info" id="swInfo" hidden></div>
       <button type="button" class="nv-go" id="swGo" disabled>Enter an amount</button>
       <p class="sw-note" id="swNote" role="status"></p>
       <p class="sw-fine"><img src="assets/chains/jup.png" alt="" />Routed by Jupiter. You approve every swap in your wallet.</p></div>`;
+    const paintMenu = () => { const m = $("swMenu"); if (m) m.innerHTML = tokens.map(t => `<button type="button" role="option" data-mint="${esc(t.mint)}">${icon(t)}${esc(t.symbol)}<em>${trim(t.ui, 4)}</em></button>`).join(""); };
     const paintTk = () => {
-      if (!$("swTk")) return;
+      if (!$("swPayTk")) return;
+      $("swPayTk").innerHTML = dir === "in" ? tkBtn : solBtn; $("swGetTk").innerHTML = dir === "in" ? solBtn : tkBtn;
       $("swTk").innerHTML = `${icon(tk)}${esc(tk.symbol)}${dot}`;
-      $("swHave").textContent = `You have ${trim(tk.ui, 4)} ${tk.symbol}`;
+      /* the token list opens under whichever box holds the token button */
+      const menu = $("swMenu"); menu.hidden = true; $("swTk").closest(".sw-box").appendChild(menu); paintMenu();
+      const p = pay(); $("swHave").textContent = `You have ${trim(dir === "in" ? tk.ui : Number(solRaw) / 1e9, 4)} ${p.symbol}`;
+      $("swGo") && set(order ? `Swap to ${get().symbol}` : "Enter an amount", !!order);
     };
     const set = (label, on) => { const b = $("swGo"); if (b){ b.textContent = label; b.disabled = !on; } };
     const note = (msg, bad) => { const n = $("swNote"); if (n){ n.innerHTML = msg; n.classList.toggle("bad", !!bad); } };
@@ -128,43 +139,44 @@
     const REASON = { 1:"Not enough for this swap.", 2:"Not enough SOL to pay the network fee." };
 
     async function quote(raw){
-      const u = `${JUP}order?inputMint=${tk.mint}&outputMint=${SOL}&amount=${raw}&taker=${window.glWallet.addr}`;
+      const u = `${JUP}order?inputMint=${pay().mint}&outputMint=${get().mint}&amount=${raw}&taker=${window.glWallet.addr}`;
       const r = await fetch(u); const o = await r.json();
       if (!r.ok || o.error) throw new Error(o.error || "quote");
       return o;
     }
     async function update(keep){
       clearTimeout(refresh);
-      const mySeq = ++seq, raw = toRaw($("swAmt").value, tk.decimals);
+      const P = pay(), G = get(), mySeq = ++seq, raw = toRaw($("swAmt").value, P.decimals);
       if (keep !== true) note("");
       if (raw <= 0n){ clearOut(); return set("Enter an amount", false); }
-      if (raw > BigInt(tk.raw)){ clearOut(); return set(`Not enough ${tk.symbol}`, false); }
+      if (raw > payRaw()){ clearOut(); return set(`Not enough ${P.symbol}`, false); }
       set("Getting price", false);
       try {
         const o = await quote(raw); if (mySeq !== seq) return;
         order = o;
-        const out = Number(o.outAmount) / 1e9, min = Number(o.otherAmountThreshold) / 1e9;
+        const out = Number(o.outAmount) / 10 ** G.decimals, min = Number(o.otherAmountThreshold) / 10 ** G.decimals, inAmt = Number(raw) / 10 ** P.decimals;
         $("swOut").textContent = trim(out, 5);
         $("swOutUsd").textContent = o.outUsdValue ? fmtUsd(o.outUsdValue) : "";
         const info = $("swInfo"); info.hidden = false;
-        info.innerHTML = `<p><span>Rate</span><em>1 SOL = ${trim(Number(raw) / 10 ** tk.decimals / out, 2)} ${esc(tk.symbol)}</em></p>
-          ${min && min < out ? `<p><span>Minimum you get</span><em>${trim(min, 5)} SOL</em></p>` : ""}
-          <p><span>Price impact</span><em>${Math.abs(+o.priceImpact || 0).toFixed(2)}%</em></p>`;
-        if (!o.transaction){ set("Swap to SOL", false); note(REASON[o.errorCode] || esc(o.errorMessage || "This swap isn't available right now."), true); return; }
-        set("Swap to SOL", true);
+        const rate = dir === "in" ? `1 SOL = ${trim(inAmt / out, 2)} ${esc(tk.symbol)}` : `1 SOL = ${trim(out / inAmt, 2)} ${esc(tk.symbol)}`;
+        info.innerHTML = `<p><span>Rate</span><em>${rate}</em></p>
+          ${min && min < out ? `<p><span>Minimum you get</span><em>${trim(min, 5)} ${esc(G.symbol)}</em></p>` : ""}
+          <p><span>Price impact</span><em>${Math.abs(+(o.priceImpactPct ?? o.priceImpact) || 0).toFixed(2)}%</em></p>`;
+        if (!o.transaction){ set(`Swap to ${G.symbol}`, false); note(REASON[o.errorCode] || esc(o.errorMessage || "This swap isn't available right now."), true); return; }
+        set(`Swap to ${G.symbol}`, true);
         refresh = setTimeout(update, 20000);   // a price is only good for a few seconds on chain
-      } catch (e){ if (mySeq !== seq) return; clearOut(); set("Swap to SOL", false); note("No price right now. Try again in a moment.", true); }
+      } catch (e){ if (mySeq !== seq) return; clearOut(); set(`Swap to ${G.symbol}`, false); note("No price right now. Try again in a moment.", true); }
     }
     async function go(){
       if (busy || !order) return;
       busy = true; seq++; clearTimeout(refresh);
-      const addr = window.glWallet.addr, raw = toRaw($("swAmt").value, tk.decimals);
+      const P = pay(), G = get(), addr = window.glWallet.addr, raw = toRaw($("swAmt").value, P.decimals);
       try {
         set("Open your wallet", false); note("");
         const p = await window.glWallet.signer();
         const o = await quote(raw);   // a fresh order: the one on screen may have expired
         if (!o.transaction) throw new Error("no tx");
-        if (o.inputMint !== tk.mint || o.outputMint !== SOL || o.taker !== addr || o.inAmount !== raw.toString()) throw new Error("mismatch");
+        if (o.inputMint !== P.mint || o.outputMint !== G.mint || o.taker !== addr || o.inAmount !== raw.toString()) throw new Error("mismatch");
         const signedTransaction = await p.signTx(o.transaction, addr);
         set("Landing your swap", false);
         const r = await fetch(`${JUP}execute`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ signedTransaction, requestId:o.requestId }) });
@@ -175,7 +187,7 @@
         window.glChain.load(true);
       } catch (e){
         const m = String(e && e.message || "");
-        set("Swap to SOL", false);
+        set(`Swap to ${G.symbol}`, false);
         note(m === "reconnect" ? "Reconnect your wallet, then swap." : /reject|cancel|denied|closed/i.test(m) ? "Swap cancelled." : "The swap didn't go through. Nothing left your wallet unless your wallet shows it.", !/cancel|reject|denied|closed/i.test(m));
         update(true);
       } finally { busy = false; }
@@ -187,16 +199,21 @@
       const b = e.target.closest("[data-mint]");
       if (b){ tk = tokens.find(t => t.mint === b.dataset.mint) || tk; menu.hidden = true; paintTk(); update(); return; }
       if (!menu.hidden && !e.target.closest("#swMenu")) menu.hidden = true;
-      if (e.target.id === "swMax"){ $("swAmt").value = (BigInt(tk.raw) === 0n) ? "" : (tk.raw.padStart(tk.decimals + 1, "0").replace(new RegExp(`(\\d{${tk.decimals}})$`), ".$1").replace(/\.0*$|(\.\d*?)0+$/, "$1")); update(); }
+      if (e.target.closest("#swFlip")){ dir = dir === "in" ? "out" : "in"; $("swAmt").value = ""; clearOut(); paintTk(); set("Enter an amount", false); note(""); return; }
+      if (e.target.id === "swMax"){
+        /* all of it, except 0.01 SOL kept for network fees when paying in SOL */
+        const P = pay(); let r = payRaw(); if (dir === "out") r = r > 10000000n ? r - 10000000n : 0n;
+        $("swAmt").value = r === 0n ? "" : r.toString().padStart(P.decimals + 1, "0").replace(new RegExp(`(\\d{${P.decimals}})$`), ".$1").replace(/\.0*$|(\.\d*?)0+$/, "$1"); update();
+      }
       if (e.target.id === "swGo") go();
     });
     return { html,
-      reset(){ tk = tokens[0]; order = null; paintTk(); },
+      reset(){ tk = tokens[0]; order = null; dir = "in"; paintTk(); },
       chain(c){
         const have = c.tokens.filter(t => !BASE.some(b => b.mint === t.mint));
         tokens = [...BASE.map(b => c.tokens.find(t => t.mint === b.mint) ? { ...b, ...c.tokens.find(t => t.mint === b.mint), icon:b.icon } : b), ...have].sort((a, b) => b.usd - a.usd);
         tk = tokens.find(t => t.mint === tk.mint) || tokens[0];
-        const m = $("swMenu"); if (m) m.innerHTML = tokens.map(t => `<button type="button" role="option" data-mint="${esc(t.mint)}">${icon(t)}${esc(t.symbol)}<em>${trim(t.ui, 4)}</em></button>`).join("");
+        solRaw = BigInt(Math.round((+c.sol || 0) * 1e9));
         paintTk();
       } };
   })();
