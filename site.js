@@ -559,7 +559,27 @@ window.glWallet = { addr:null, async disconnect(){
     if (!p.has(a)){ openWallet(); throw new Error("reconnect"); }
     return p;
   } };
-/* what the wallet holds, from the API: {sol, usd, solUsd, tokens, tokensUsd}. "gl:chain" fires on every fresh read */
+/* what the wallet holds: {sol, usd, solUsd, tokens, tokensUsd}. Read in the browser: balances from a public Solana RPC,
+   names and prices from Jupiter. "gl:chain" fires on every fresh read */
+const SOL_MINT = "So11111111111111111111111111111111111111112";
+async function readWallet(addr){
+  const rpc = (method, params) => fetch("https://solana-rpc.publicnode.com", { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ jsonrpc:"2.0", id:1, method, params }) }).then(r => r.json()).then(d => { if (d.error || !d.result) throw new Error("rpc"); return d.result; });
+  const [bal, ...lists] = await Promise.all([ rpc("getBalance", [addr]),
+    ...["TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA", "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"].map(programId => rpc("getTokenAccountsByOwner", [addr, { programId }, { encoding:"jsonParsed" }]).catch(() => ({ value:[] }))) ]);
+  const held = {};
+  for (const l of lists) for (const a of l.value){
+    const i = a.account.data.parsed.info, t = i.tokenAmount; if (t.amount === "0" || i.mint === SOL_MINT) continue;
+    const h = held[i.mint] || (held[i.mint] = { mint:i.mint, raw:0n, decimals:t.decimals }); h.raw += BigInt(t.amount);
+  }
+  /* prices are extras: the balance still shows when Jupiter is down */
+  const info = {}, mints = [SOL_MINT, ...Object.keys(held)];
+  for (let i = 0; i < Math.min(mints.length, 150); i += 50){ try { for (const t of await (await fetch("https://lite-api.jup.ag/tokens/v2/search?query=" + mints.slice(i, i + 50).join(","))).json()) info[t.id] = t; } catch (e) {} }
+  const solUsd = info[SOL_MINT]?.usdPrice || null, sol = bal.value / 1e9;
+  /* only verified tokens: airdropped scam tokens stay out of the list */
+  const tokens = Object.values(held).filter(h => info[h.mint]?.isVerified).map(h => { const m = info[h.mint], ui = Number(h.raw) / 10 ** h.decimals;
+    return { mint:h.mint, raw:h.raw.toString(), decimals:h.decimals, ui, usd:m.usdPrice ? ui * m.usdPrice : 0, symbol:String(m.symbol || "").slice(0, 12), icon:m.icon || null }; }).sort((a, b) => b.usd - a.usd).slice(0, 20);
+  return { sol, solUsd, usd:solUsd ? sol * solUsd : null, tokens, tokensUsd:tokens.reduce((n, t) => n + t.usd, 0) };
+}
 window.glChain = { data:null, addr:null, t:0, busy:null,
   async load(force){
     const a = window.glWallet.addr; if (!a) return null;
@@ -567,9 +587,8 @@ window.glChain = { data:null, addr:null, t:0, busy:null,
     if (this.busy) return this.busy;
     return this.busy = (async () => {
       try {
-        const r = await fetch(API + "chain/wallet?wallet=" + encodeURIComponent(a) + (force ? "&f=" + Date.now() : ""));
-        const d = r.ok ? await r.json() : null;
-        if (d && d.ok && window.glWallet.addr === a){ this.data = d; this.addr = a; this.t = Date.now(); dispatchEvent(new CustomEvent("gl:chain")); }
+        const d = await readWallet(a);
+        if (window.glWallet.addr === a){ this.data = d; this.addr = a; this.t = Date.now(); dispatchEvent(new CustomEvent("gl:chain")); }
         return this.data;
       } catch (e) { return this.data; } finally { this.busy = null; }
     })();
