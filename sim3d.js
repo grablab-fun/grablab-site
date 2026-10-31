@@ -162,19 +162,19 @@ export function createSim3D(canvas, pips, opts = {}){
 
   /* capsule spots for the game: a loose hex pack on the floor, jittered, clear of the prize hole and its walls */
   function spots(){
-    const out = [], d = 2*RM + .0055, dy = d*Math.sqrt(3)/2, L = .445 - RM; let sd = 5; const r = () => (sd = (sd*16807) % 2147483647)/2147483647;
+    const out = [], d = 2*RM + .0055, dy = d*Math.sqrt(3)/2, L = .475 - RM - .003; let sd = 5; const r = () => (sd = (sd*16807) % 2147483647)/2147483647;   // right up to the walls (the skins sit at 475 from the centre)
     if (opts.layer2){ /* recordings: a second, uneven layer resting in the hollows of the first, thinning toward the front */
       const top = []; for (let row = 0; ; row++){ const y = -L + dy/2 + row*dy; if (y > L - dy/2) break;
         for (let c = 0; ; c++){ const x = -L + d/2 + (row % 2 ? d/2 : 0) + c*d; if (x > L - d/2) break;
           if (x > .229 - RM - .03 && y < -.229 + RM + .03) continue;
           if (r() > .75 + .2*((y + L)/(2*L))) continue;
-          const [gx, gz] = toG(x + (r() - .5)*.006, y + (r() - .5)*.006); if (gz < .04 || gz > .96 || gx < -.97 || gx > .97) continue; top.push([gx, gz, 1]); } }
+          const [gx, gz] = toG(x + (r() - .5)*.006, y + (r() - .5)*.006); if (gz < .02 || gz > .98 || gx < -.98 || gx > .98) continue; top.push([gx, gz, 1]); } }
       spots.top = top; }
     for (let row = 0; ; row++){ const y = -L + row*dy; if (y > L) break;
       for (let c = 0; ; c++){ const x = -L + (row % 2 ? d/2 : 0) + c*d; if (x > L) break;
         if (x > .229 - RM - .006 && y < -.229 + RM + .006) continue;
         const jx = x + (r() - .5)*.005, jy = y + (r() - .5)*.005;            // loose and a little uneven, so the pile does not read as a grid
-        const [gx, gz] = toG(jx, jy); if (gz < .02 || gz > .98 || gx < -.99 || gx > .99) continue; out.push([gx, gz]); } }
+        const [gx, gz] = toG(jx, jy); if (gz < .003 || gz > .997 || gx < -.996 || gx > .996) continue; out.push([gx, gz]); } }
     return out;
   }
   return { draw, resize, spots, setMain, get main(){ return main; }, ok:() => !failed };
