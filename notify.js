@@ -28,7 +28,7 @@
   function body(){
     if (needsHome) return `<ol class="nv-steps"><li><span>Tap <b>Share</b> in the browser bar</span></li><li><span>Choose <b>Add to Home Screen</b></span></li><li><span>Open <b>Grablab</b> from your Home Screen and tap the bell</span></li></ol><p class="nv-note">Apple only allows notifications from apps on the Home Screen, iOS 16.4 or newer.</p>${tgRow}`;
     if (!canPush) return `<p class="nv-note">This browser can't show notifications. Open grablab.fun in Chrome, Edge or Safari, or use Telegram.</p>${tgRow}`;
-    if (Notification.permission === "denied") return `<p class="nv-note">Notifications are blocked for this site. Allow them in your browser's site settings, then come back.</p><a class="nv-link" href="notify.html">How to unblock them</a>${tgRow}`;
+    if (Notification.permission === "denied") return `<p class="nv-note">Notifications are blocked for this site.<br />Allow them in your browser's site settings, then come back.</p><a class="nv-link" href="notify.html">How to unblock them</a>${tgRow}`;
     if (isOn()) return `<div class="nv-list">${switches(load().cats || [])}</div>${installRow()}<button type="button" class="nv-off" data-act="off">Turn off on this device</button>${tgRow}`;
     return `<div class="nv-list">${switches(picked)}</div><button type="button" class="nv-go" data-act="on" ${busy || !picked.length ? "disabled" : ""}>${busy ? "Turning on" : "Turn on notifications"}</button>${err ? `<p class="nv-err">${err}</p>` : ""}${installRow()}${tgRow}`;
   }
