@@ -37,7 +37,7 @@
 <body data-page="fair">
 <!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
 <div class="loader" id="loader" aria-hidden="true">
-  <script>try{if(sessionStorage.getItem("gl_loaded")){document.getElementById("loader").remove();}}catch(e){}</script>
+  <script>try{if(sessionStorage.getItem("gl_loaded")||navigator.standalone||matchMedia("(display-mode:standalone),(display-mode:minimal-ui),(display-mode:window-controls-overlay)").matches){document.getElementById("loader").remove();}}catch(e){}</script>
 </div>
 
 <div class="grain" aria-hidden="true"></div>
@@ -129,6 +129,6 @@
 <script src="consent.js?v=9a"></script>
 <script src="sub.js?v=c3"></script>
 <script src="alpha-any.js?v=3"></script>
-<script src="notify.js?v=5" defer></script>
+<script src="notify.js?v=6" defer></script>
 </body>
 </html>

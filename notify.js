@@ -23,7 +23,8 @@
   const isOn = () => !!load().on;
   const switches = cats => CATS.map(([k, n, d]) => `<label class="nv-sw"><input type="checkbox" data-c="${k}" ${cats.includes(k) ? "checked" : ""}/><i></i><span><b>${n}</b><small>${d}</small></span></label>`).join("");
   const tgRow = `<a class="nv-tg" href="${TG}" target="_blank" rel="noopener"><img src="assets/sub/n-plane.webp" alt="" /><span><b>Prefer Telegram?</b><small>Same pings from our bot</small></span></a>`;
-  const installRow = () => installEvt ? `<button type="button" class="nv-install" data-act="install"><img src="assets/sub/n-app.webp" alt="" /><span><b>Install Grablab</b><small>Opens like an app</small></span></button>` : "";
+  /* the browser offers the prompt only sometimes, for example not right after a removal: then say where the option lives */
+  const installRow = () => standalone ? "" : installEvt ? `<button type="button" class="nv-install" data-act="install"><img src="assets/sub/n-app.webp" alt="" /><span><b>Install Grablab</b><small>Opens like an app</small></span></button>` : `<div class="nv-install"><img src="assets/sub/n-app.webp" alt="" /><span><b>Install Grablab</b><small>Browser menu, then Install</small></span></div>`;
 
   function body(){
     if (needsHome) return `<ol class="nv-steps"><li><span>Tap <b>Share</b></span></li><li><span><b>Add to Home Screen</b></span></li><li><span>Open it, tap the <b>bell</b></span></li></ol><p class="nv-note">iOS 16.4 or newer</p>${tgRow}`;

@@ -36,7 +36,7 @@
 <body data-page="home">
 <!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
 <div class="loader" id="loader" aria-hidden="true">
-  <script>try{if(sessionStorage.getItem("gl_loaded")){document.getElementById("loader").remove();}}catch(e){}</script>
+  <script>try{if(sessionStorage.getItem("gl_loaded")||navigator.standalone||matchMedia("(display-mode:standalone),(display-mode:minimal-ui),(display-mode:window-controls-overlay)").matches){document.getElementById("loader").remove();}}catch(e){}</script>
 </div>
 
 <div class="grain" aria-hidden="true"></div>
@@ -164,6 +164,6 @@
 <script src="alpha-video.js?v=2"></script>
 <script src="alpha-any.js?v=3"></script>
 <script src="app.js?v=c11"></script>
-<script src="notify.js?v=5" defer></script>
+<script src="notify.js?v=6" defer></script>
 </body>
 </html>

@@ -38,7 +38,7 @@
 <body data-page="participate">
 <!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
 <div class="loader" id="loader" aria-hidden="true">
-  <script>try{if(sessionStorage.getItem("gl_loaded")){document.getElementById("loader").remove();}}catch(e){}</script>
+  <script>try{if(sessionStorage.getItem("gl_loaded")||navigator.standalone||matchMedia("(display-mode:standalone),(display-mode:minimal-ui),(display-mode:window-controls-overlay)").matches){document.getElementById("loader").remove();}}catch(e){}</script>
 </div>
 
 <div class="grain" aria-hidden="true"></div>
@@ -164,6 +164,6 @@
 (function(){ const b = document.querySelector(".ph-cta .lab-go b"), go = document.querySelector(".ph-cta .lab-go"); if (!b) return;
   const fit = () => { if (innerWidth <= 620){ b.style.removeProperty("--labfs"); return; } b.style.setProperty("--labfs", "40px"); const k = go.clientWidth/b.scrollWidth; b.style.setProperty("--labfs", Math.max(20, Math.min(64, 40*k*.99)) + "px"); };
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(fit); addEventListener("resize", fit); })();</script>
-<script src="notify.js?v=5" defer></script>
+<script src="notify.js?v=6" defer></script>
 </body>
 </html>
