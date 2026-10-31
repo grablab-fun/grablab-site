@@ -10,7 +10,7 @@
   const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch(e){ return d; } };
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
   const $ = id => document.getElementById(id);
-  let drops = [], drawn = null, switched = null;
+  let drops = [], drawn = null, switched = null, capAt = 0;
 
   function gate(wait){
     drawn = null;
@@ -22,14 +22,17 @@
     const box = $("acDrops"); if (!box) return;
     const on = read("gl_reminders", []), now = Date.now();
     const list = drops.map(d => ({ ...d, t:Date.parse(String(d.at).replace(" ", "T") + ":00Z") })).filter(d => d.t > now).sort((a, b) => a.t - b.t).slice(0, 3);
-    box.innerHTML = list.length ? `<ul class="ac-drops">${list.map(d => `<li><b>${esc(d.name)}</b><span>${new Date(d.t).toLocaleString("en-GB", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit", timeZone:"UTC" })} UTC</span>${on.includes(d.id) ? `<em>Reminder on</em>` : ""}</li>`).join("")}</ul>` : `<p class="ac-empty">No drops announced yet.</p>`;
+    box.innerHTML = list.length ? `<ul class="ac-next">${list.map(d => `<li>${d.logo ? `<img src="${esc(d.logo)}" alt="" />` : ""}<div><a href="${esc(d.url || "participate.html#app")}">${esc(d.name)}</a><span>${new Date(d.t).toLocaleString("en-GB", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit", timeZone:"UTC" })} UTC</span></div><div class="side"><time data-t="${d.t}">${left(d.t)}</time><button type="button" class="${on.includes(d.id) ? "on" : ""}" data-a="rem" data-id="${esc(d.id)}">${on.includes(d.id) ? "Reminder set" : "Remind me"}</button></div></li>`).join("")}</ul>` : `<p class="ac-empty">No drops announced yet.</p>`;
   }
+  const left = t => { const s = Math.max(0, Math.floor((t - Date.now()) / 1000)), p = n => String(n).padStart(2, "0"); return `${Math.floor(s / 86400)}d ${p(Math.floor(s / 3600) % 24)}h ${p(Math.floor(s / 60) % 60)}m ${p(s % 60)}s`; };
+  setInterval(() => root.querySelectorAll(".ac-next time").forEach(c => { c.textContent = left(+c.dataset.t); }), 1000);
   function paintMe(addr){
     const me = mine(addr), caps = me ? me.capsules : [], n = read("gl_notify", {});
     const pl = $("acPlays"), cp = $("acCaps"), li = $("acCapList"), pg = $("acPings");
     if (pl) pl.textContent = me ? me.plays : 0;
     if (cp) cp.textContent = caps.length;
-    if (li) li.innerHTML = caps.length ? `<ul class="ac-drops">${caps.map(c => `<li><b>${esc(c.label)}</b><span>${esc(c.status)}</span></li>`).join("")}</ul>` : `<p class="ac-empty">Your first grab lands here.</p>`;
+    if (li) li.innerHTML = caps.length ? capPages(caps) : `<p class="ac-empty">Your first grab lands here.</p>`;
+    capMark();
     if (pg) pg.textContent = n.on ? (n.cats || []).map(c => CATS[c]).filter(Boolean).join(", ") : "Off on this device";
     const adm = $("acAdmin");
     if (adm) adm.innerHTML = me && me.role === "admin" ? `<section class="glass ac-admin"><iframe src="/api/v1/admin/ui" title="Admin" id="adminFrame"></iframe></section>` : "";
@@ -38,11 +41,25 @@
     if (me && me.role === "admin"){ if (!go && row) row.insertAdjacentHTML("beforeend", `<button type="button" id="acAdminGo" data-a="admin">Admin</button>`); } else if (go) go.remove();
     Ship.paint(addr);
   }
+  /* capsules, three to a page: swipe them, or pick a page under the list. Past eight pages the dots become a counter */
+  function capPages(caps){
+    const pages = []; for (let i = 0; i < caps.length; i += 3) pages.push(caps.slice(i, i + 3));
+    const n = pages.length, mid = n > 8 ? `<span id="acPgN"></span>` : pages.map((_, i) => `<button type="button" class="dot" data-a="pg" data-i="${i}" aria-label="Page ${i + 1}"></button>`).join("");
+    return `<div class="ac-pages" id="acPages">${pages.map(p => `<ul class="ac-drops">${p.map(c => `<li><b>${esc(c.label)}</b><span>${esc(c.status)}</span></li>`).join("")}</ul>`).join("")}</div>${n > 1 ? `<div class="ac-pager"><button type="button" data-a="pg" data-d="-1" aria-label="Previous page">‹</button>${mid}<button type="button" data-a="pg" data-d="1" aria-label="Next page">›</button></div>` : ""}`;
+  }
+  function capMark(){
+    const b = $("acPages"); if (!b) return;
+    const i = Math.round(b.scrollLeft / (b.clientWidth || 1)), n = b.children.length, c = $("acPgN"), bar = b.nextElementSibling; capAt = i;
+    if (c) c.textContent = `${i + 1} / ${n}`;
+    if (bar) bar.querySelectorAll("button").forEach(x => { if (x.dataset.i) x.classList.toggle("on", +x.dataset.i === i); else x.disabled = x.dataset.d < 0 ? i === 0 : i === n - 1; });
+  }
   function paintChain(){
     const c = window.glChain.data, box = $("acBig"); if (!box || window.glChain.addr !== window.glWallet.addr || !c) return;
     box.innerHTML = `<span>${fmtUsdc(c.usdc)}</span><img src="assets/chains/usdc.png" alt="USDC" />`;
     $("acUsd").innerHTML = `<img src="assets/chains/solana-mark.svg" alt="SOL" />${fmtSol(c.sol)} for network fees`;
-    $("acTok").textContent = c.otherUsd >= .01 ? `Plus ${fmtUsd(c.otherUsd)} in other tokens` : "";
+    /* the other tokens open over the page, so the card keeps its height */
+    const others = c.tokens.filter(t => t.mint !== USDC_MINT);
+    $("acTok").innerHTML = c.otherUsd >= .01 ? `<button type="button" class="ac-link" data-a="toks" aria-expanded="false">Plus ${fmtUsd(c.otherUsd)} in other tokens</button><ul class="ac-toks" id="acToks" hidden>${others.map(t => `<li>${t.icon ? `<img src="${esc(t.icon)}" alt="" />` : ""}<b>${esc(t.symbol)}</b><span>${t.ui.toLocaleString("en-US", { maximumFractionDigits:4 })}</span><em>${fmtUsd(t.usd)}</em></li>`).join("")}</ul>` : "";
     Swap.chain(c);
   }
 
@@ -329,6 +346,9 @@
 
   root.addEventListener("click", async e => {
     const b = e.target.closest("[data-a]"); if (!b) return;
+    if (b.dataset.a === "rem"){ const a = read("gl_reminders", []), i = a.indexOf(b.dataset.id); if (i < 0) a.push(b.dataset.id); else a.splice(i, 1); try { localStorage.setItem("gl_reminders", JSON.stringify(a)); } catch (err) {} paintDrops(); if (i < 0 && window.glNotify && !window.glNotify.isOn()) window.glNotify.open("launch"); return; }
+    if (b.dataset.a === "toks"){ const l = $("acToks"); l.hidden = !l.hidden; b.setAttribute("aria-expanded", String(!l.hidden)); return; }
+    if (b.dataset.a === "pg"){ const p = $("acPages"), to = b.dataset.i ? +b.dataset.i : capAt + +b.dataset.d; p.scrollTo({ left: to * p.clientWidth, behavior:"smooth" }); return; }
     if (b.dataset.a === "out") window.glWallet.disconnect();
     if (b.dataset.a === "admin") $("acAdmin").scrollIntoView({ behavior:"smooth" });
     if (b.dataset.a === "switch"){ switched = window.glWallet.addr; await window.glWallet.disconnect(); openWallet(b); }
@@ -339,6 +359,8 @@
     if (!a) return gate(false);
     if (drawn !== a) draw(a); else paintMe(a);
   };
+  document.addEventListener("click", e => { const l = $("acToks"); if (l && !l.hidden && !e.target.closest("#acTok")){ l.hidden = true; root.querySelector('[data-a="toks"]').setAttribute("aria-expanded", "false"); } });
+  root.addEventListener("scroll", e => { if (e.target.id === "acPages") capMark(); }, true);
   addEventListener("gl:wallet", show);
   addEventListener("gl:auth", show);
   addEventListener("gl:chain", paintChain);
