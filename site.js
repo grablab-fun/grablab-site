@@ -559,9 +559,9 @@ window.glWallet = { addr:null, async disconnect(){
     if (!p.has(a)){ openWallet(); throw new Error("reconnect"); }
     return p;
   } };
-/* what the wallet holds: {sol, usd, solUsd, tokens, tokensUsd}. Read in the browser: balances from a public Solana RPC,
+/* what the wallet holds: {usdc, sol, lamports, usd, solUsd, tokens, otherUsd}. Plays are paid in USDC, SOL only pays network fees. Read in the browser: balances from a public Solana RPC,
    names and prices from Jupiter. "gl:chain" fires on every fresh read */
-const SOL_MINT = "So11111111111111111111111111111111111111112";
+const SOL_MINT = "So11111111111111111111111111111111111111112", USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 async function readWallet(addr){
   const rpc = (method, params) => fetch("https://solana-rpc.publicnode.com", { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ jsonrpc:"2.0", id:1, method, params }) }).then(r => r.json()).then(d => { if (d.error || !d.result) throw new Error("rpc"); return d.result; });
   const [bal, ...lists] = await Promise.all([ rpc("getBalance", [addr]),
@@ -578,7 +578,8 @@ async function readWallet(addr){
   /* only verified tokens: airdropped scam tokens stay out of the list */
   const tokens = Object.values(held).filter(h => info[h.mint]?.isVerified).map(h => { const m = info[h.mint], ui = Number(h.raw) / 10 ** h.decimals;
     return { mint:h.mint, raw:h.raw.toString(), decimals:h.decimals, ui, usd:m.usdPrice ? ui * m.usdPrice : 0, symbol:String(m.symbol || "").slice(0, 12), icon:m.icon || null }; }).sort((a, b) => b.usd - a.usd).slice(0, 20);
-  return { sol, solUsd, usd:solUsd ? sol * solUsd : null, tokens, tokensUsd:tokens.reduce((n, t) => n + t.usd, 0) };
+  const usdc = tokens.find(t => t.mint === USDC_MINT);
+  return { sol, lamports:bal.value, solUsd, usd:solUsd ? sol * solUsd : null, usdc:usdc ? usdc.ui : 0, tokens, otherUsd:tokens.reduce((n, t) => n + (t === usdc ? 0 : t.usd), 0) };
 }
 window.glChain = { data:null, addr:null, t:0, busy:null,
   async load(force){
@@ -594,6 +595,7 @@ window.glChain = { data:null, addr:null, t:0, busy:null,
     })();
   } };
 const fmtSol = v => v == null ? "..." : v >= 100 ? v.toFixed(2) : v.toFixed(v >= 1 ? 3 : 4);
+const fmtUsdc = v => v.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
 const fmtUsd = v => v == null ? "" : "$" + v.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
 /* the card under the wallet button: opens on hover or keyboard focus, on the account page too */
 (function(){
@@ -603,13 +605,14 @@ const fmtUsd = v => v == null ? "" : "$" + v.toLocaleString("en-US", { minimumFr
     if (!pop) return;
     const c = window.glChain.addr === window.glWallet.addr ? window.glChain.data : null, m = window.glAuth.me, a = window.glWallet.addr;
     const e = demoTierFor(a), me = m && m.wallet === a ? m : null;
-    pop.innerHTML = `<div class="ap-top"><img src="assets/sub/a-sol.webp" alt="" /><div><b>${c ? fmtSol(c.sol) : "..."} SOL</b><span>${c ? fmtUsd(c.usd) : "Reading balance"}</span></div></div>
-      ${c && c.tokensUsd >= .01 ? `<p class="ap-row"><span>Other tokens</span><em>${fmtUsd(c.tokensUsd)}</em></p>` : ""}
+    pop.innerHTML = `<div class="ap-top"><img src="assets/chains/usdc.png" alt="" /><div><b>${c ? fmtUsdc(c.usdc) : "..."} USDC</b><span>${c ? "To play with" : "Reading balance"}</span></div></div>
+      ${c ? `<p class="ap-row"><span>SOL for fees</span><em>${fmtSol(c.sol)}</em></p>` : ""}
+      ${c && c.otherUsd >= .01 ? `<p class="ap-row"><span>Other tokens</span><em>${fmtUsd(c.otherUsd)}</em></p>` : ""}
       <p class="ap-row"><span>Tier</span><em>${e ? e.tier : "None yet"}</em></p>
       <p class="ap-row"><span>Free plays</span><em>${e ? glTiers[e.tier].plays : 0}</em></p>
       <p class="ap-row"><span>Plays</span><em>${me ? me.plays : 0}</em></p>
       <p class="ap-row"><span>Capsules</span><em>${me ? me.capsules.length : 0}</em></p>
-      <a class="nv-go" href="account.html#swap">Add SOL</a>
+      <a class="nv-go" href="account.html#swap">Add USDC</a>
       <div class="ap-foot"><a href="account.html">My account</a><button type="button" data-ap="out">Disconnect</button></div>`;
   };
   const hide = () => { clearTimeout(timer); if (pop) pop.classList.remove("in"); };

@@ -6,6 +6,7 @@
   const CATS = { launch:"Launches", quest:"Quests", news:"News" };
   const API = "/api/v1/", JUP = "https://lite-api.jup.ag/ultra/v1/";
   const SOL = "So11111111111111111111111111111111111111112";
+  const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch(e){ return d; } };
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
   const $ = id => document.getElementById(id);
@@ -36,9 +37,9 @@
   }
   function paintChain(){
     const c = window.glChain.data, box = $("acBig"); if (!box || window.glChain.addr !== window.glWallet.addr || !c) return;
-    box.innerHTML = `${fmtSol(c.sol)} <small>SOL</small>`;
-    $("acUsd").textContent = c.usd == null ? "" : fmtUsd(c.usd);
-    $("acTok").textContent = c.tokensUsd >= .01 ? `Plus ${fmtUsd(c.tokensUsd)} in other tokens` : "";
+    box.innerHTML = `<span>${fmtUsdc(c.usdc)}</span><img src="assets/chains/usdc.png" alt="USDC" />`;
+    $("acUsd").innerHTML = `<img src="assets/chains/solana-mark.svg" alt="SOL" />${fmtSol(c.sol)} for network fees`;
+    $("acTok").textContent = c.otherUsd >= .01 ? `Plus ${fmtUsd(c.otherUsd)} in other tokens` : "";
     Swap.chain(c);
   }
 
@@ -46,19 +47,17 @@
     const e = demoTierFor(addr), t = e && glTiers[e.tier];
     drawn = addr;
     root.innerHTML = `
-    <section class="ac-hero">
+    <section class="glass ac-hero">
       <img class="ac-badge" src="assets/sub/${t ? t.img : "tier-iron"}.webp" alt="" />
       <span class="ac-k">${t ? `${e.tier} tier` : "No tier yet"}</span>
       <h1 class="chrome">Your account.</h1>
       <div class="ac-addr"><code title="${esc(addr)}">${esc(shorten(addr))}</code><button type="button" data-a="copy">Copy</button><button type="button" data-a="switch">Switch wallet</button><button type="button" data-a="out">Disconnect</button></div>
     </section>
     <section class="glass ac-card ac-bal">
-      <img src="assets/sub/a-sol.webp" alt="" />
       <h2>Your balance</h2>
       <div class="ac-big" id="acBig">...</div>
       <div class="ac-usd" id="acUsd"></div>
       <div class="ac-tok" id="acTok"></div>
-      <div class="ac-acts"><a class="nv-go" href="#swap">Add SOL</a><button type="button" class="ac-link" data-a="deposit">Copy address to deposit</button></div>
     </section>
     <section class="ac-stats">
       <div class="glass"><img src="assets/sub/a-ticket.webp" alt="" /><b>${t ? t.plays : 0}</b><span>Free plays</span></div>
@@ -68,8 +67,8 @@
     <div id="acAdmin"></div>
     <section class="glass ac-card" id="swap">
       <img src="assets/sub/a-swap.webp" alt="" />
-      <h2>Add SOL</h2>
-      <p class="ac-sub">Swap a token from your wallet to SOL.</p>
+      <h2>Add USDC</h2>
+      <p class="ac-sub">Plays are paid in USDC on Solana.</p>
       ${Swap.html()}
     </section>
     <section class="ac-grid">
@@ -92,15 +91,15 @@
   /* ---------- swap: any token in the wallet into SOL ---------- */
   const Swap = (() => {
     const BASE = [
-      { mint:"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", symbol:"USDC", decimals:6, ui:0, raw:"0", usd:0, icon:"https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png" },
+      { mint:SOL, symbol:"SOL", decimals:9, ui:0, raw:"0", usd:0, icon:"assets/chains/solana-mark.svg" },
       { mint:"Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", symbol:"USDT", decimals:6, ui:0, raw:"0", usd:0, icon:"https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.svg" }
     ];
     let tokens = BASE, tk = BASE[0], order = null, tm = 0, seq = 0, busy = false, refresh = 0;
-    let dir = "in", solRaw = 0n;   /* "in": a token becomes SOL. "out": SOL becomes the token. The arrow in the middle flips it */
-    const SOLT = { mint: SOL, symbol: "SOL", decimals: 9 };
-    const pay = () => dir === "in" ? tk : SOLT, get = () => dir === "in" ? SOLT : tk;
-    const payRaw = () => dir === "in" ? BigInt(tk.raw) : solRaw;
-    const solBtn = `<button type="button" class="sw-tk" disabled><img src="assets/sub/a-sol.webp" alt="" />SOL</button>`;
+    let dir = "in", usdcRaw = 0n;   /* "in": a token becomes USDC. "out": USDC becomes the token. The arrow in the middle flips it */
+    const USDCT = { mint: USDC_MINT, symbol: "USDC", decimals: 6 };
+    const pay = () => dir === "in" ? tk : USDCT, get = () => dir === "in" ? USDCT : tk;
+    const payRaw = () => dir === "in" ? BigInt(tk.raw) : usdcRaw;
+    const usdcBtn = `<button type="button" class="sw-tk" disabled><img src="assets/chains/usdc.png" alt="" />USDC</button>`;
     const tkBtn = `<button type="button" class="sw-tk" id="swTk" aria-haspopup="listbox"></button>`;
     const dot = '<svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>';
     const icon = t => t.icon ? `<img src="${esc(t.icon)}" alt="" onerror="this.src='assets/sub/token-silver.webp'" />` : `<img src="assets/sub/token-silver.webp" alt="" />`;
@@ -117,7 +116,7 @@
         <div class="sw-m" id="swMenu" role="listbox" hidden></div></div>
       <button type="button" class="sw-mid" id="swFlip" aria-label="Swap direction"><img src="assets/sub/a-swap.webp" alt="" /></button>
       <div class="sw-box"><span class="sw-lab">You get</span>
-        <div class="sw-row"><span class="sw-amt" id="swOut">0</span><span class="sw-side" id="swGetTk">${solBtn}</span></div>
+        <div class="sw-row"><span class="sw-amt" id="swOut">0</span><span class="sw-side" id="swGetTk">${usdcBtn}</span></div>
         <div class="sw-meta"><span id="swOutUsd"></span></div></div>
       <div class="sw-info" id="swInfo" hidden></div>
       <button type="button" class="nv-go" id="swGo" disabled>Enter an amount</button>
@@ -126,11 +125,11 @@
     const paintMenu = () => { const m = $("swMenu"); if (m) m.innerHTML = tokens.map(t => `<button type="button" role="option" data-mint="${esc(t.mint)}">${icon(t)}${esc(t.symbol)}<em>${trim(t.ui, 4)}</em></button>`).join(""); };
     const paintTk = () => {
       if (!$("swPayTk")) return;
-      $("swPayTk").innerHTML = dir === "in" ? tkBtn : solBtn; $("swGetTk").innerHTML = dir === "in" ? solBtn : tkBtn;
+      $("swPayTk").innerHTML = dir === "in" ? tkBtn : usdcBtn; $("swGetTk").innerHTML = dir === "in" ? usdcBtn : tkBtn;
       $("swTk").innerHTML = `${icon(tk)}${esc(tk.symbol)}${dot}`;
       /* the token list opens under whichever box holds the token button */
       const menu = $("swMenu"); menu.hidden = true; $("swTk").closest(".sw-box").appendChild(menu); paintMenu();
-      const p = pay(); $("swHave").textContent = `You have ${trim(dir === "in" ? tk.ui : Number(solRaw) / 1e9, 4)} ${p.symbol}`;
+      const p = pay(); $("swHave").textContent = `You have ${trim(dir === "in" ? tk.ui : Number(usdcRaw) / 1e6, 4)} ${p.symbol}`;
       $("swGo") && set(order ? `Swap to ${get().symbol}` : "Enter an amount", !!order);
     };
     const set = (label, on) => { const b = $("swGo"); if (b){ b.textContent = label; b.disabled = !on; } };
@@ -158,7 +157,7 @@
         $("swOut").textContent = trim(out, 5);
         $("swOutUsd").textContent = o.outUsdValue ? fmtUsd(o.outUsdValue) : "";
         const info = $("swInfo"); info.hidden = false;
-        const rate = dir === "in" ? `1 SOL = ${trim(inAmt / out, 2)} ${esc(tk.symbol)}` : `1 SOL = ${trim(out / inAmt, 2)} ${esc(tk.symbol)}`;
+        const rate = `1 ${esc(tk.symbol)} = ${trim(dir === "in" ? out / inAmt : inAmt / out, 4)} USDC`;
         info.innerHTML = `<p><span>Rate</span><em>${rate}</em></p>
           ${min && min < out ? `<p><span>Minimum you get</span><em>${trim(min, 5)} ${esc(G.symbol)}</em></p>` : ""}
           <p><span>Price impact</span><em>${Math.abs(+(o.priceImpactPct ?? o.priceImpact) || 0).toFixed(2)}%</em></p>`;
@@ -202,7 +201,7 @@
       if (e.target.closest("#swFlip")){ dir = dir === "in" ? "out" : "in"; $("swAmt").value = ""; clearOut(); paintTk(); set("Enter an amount", false); note(""); return; }
       if (e.target.id === "swMax"){
         /* all of it, except 0.01 SOL kept for network fees when paying in SOL */
-        const P = pay(); let r = payRaw(); if (dir === "out") r = r > 10000000n ? r - 10000000n : 0n;
+        const P = pay(); let r = payRaw(); if (P.mint === SOL) r = r > 10000000n ? r - 10000000n : 0n;
         $("swAmt").value = r === 0n ? "" : r.toString().padStart(P.decimals + 1, "0").replace(new RegExp(`(\\d{${P.decimals}})$`), ".$1").replace(/\.0*$|(\.\d*?)0+$/, "$1"); update();
       }
       if (e.target.id === "swGo") go();
@@ -210,10 +209,12 @@
     return { html,
       reset(){ tk = tokens[0]; order = null; dir = "in"; paintTk(); },
       chain(c){
-        const have = c.tokens.filter(t => !BASE.some(b => b.mint === t.mint));
-        tokens = [...BASE.map(b => c.tokens.find(t => t.mint === b.mint) ? { ...b, ...c.tokens.find(t => t.mint === b.mint), icon:b.icon } : b), ...have].sort((a, b) => b.usd - a.usd);
+        usdcRaw = BigInt(c.tokens.find(t => t.mint === USDC_MINT)?.raw || "0");
+        const sol = { ...BASE[0], ui:c.sol, raw:String(c.lamports), usd:c.usd || 0 }, usdt = c.tokens.find(t => t.mint === BASE[1].mint);
+        const have = c.tokens.filter(t => t.mint !== USDC_MINT && !BASE.some(b => b.mint === t.mint));
+        tokens = [sol, usdt ? { ...BASE[1], ...usdt, icon:BASE[1].icon } : BASE[1], ...have];
         tk = tokens.find(t => t.mint === tk.mint) || tokens[0];
-        solRaw = BigInt(Math.round((+c.sol || 0) * 1e9));
+        paintMenu();
         paintTk();
       } };
   })();
