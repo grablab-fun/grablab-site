@@ -46,28 +46,79 @@
 .ng{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:clamp(110px,14vw,150px) 0 70px}
 .ng-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center}
 .ng-hero h1{font-family:"Anton",sans-serif;font-weight:400;font-size:clamp(52px,9vw,112px);line-height:1.04;text-transform:uppercase;margin:0}
-.ng-hero p{color:var(--ink-2);font-size:clamp(16px,1.6vw,19px);max-width:30em;margin:16px 0 24px}
+.ng-hero p{color:var(--ink-2);font-size:clamp(16px,1.6vw,19px);margin:16px 0 24px}
+.ng-lead span{display:block;white-space:nowrap}
 .ng-hero .nv-go{width:auto;display:inline-block;padding:16px 34px;margin:0}
 .ng-art{position:relative;height:clamp(260px,32vw,400px)}
 .ng-art img{position:absolute;filter:drop-shadow(0 24px 50px rgba(59,123,255,.4))}
 .ng-art .a{height:100%;left:32%;top:0}.ng-art .b{width:38%;left:0;top:34%}.ng-art .c{width:42%;right:0;top:8%}
 .ng h2.ng-t{font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(32px,5vw,54px);margin:clamp(50px,7vw,84px) 0 18px}
 .ng-pings{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.ng-pings div{padding:22px;border-radius:20px}
-.ng-pings b{display:block;font-size:19px;margin-bottom:4px}.ng-pings span{color:var(--ink-2);font-size:15px}
+.ng-pings div{display:flex;align-items:center;gap:18px;padding:20px 22px;border-radius:20px}
+.ng-pings img{width:76px;height:76px;object-fit:contain;flex:none;filter:drop-shadow(0 8px 18px rgba(59,123,255,.4))}
+.ng-pings p{margin:0}
+.ng-pings b{display:block;font-size:19px;margin-bottom:4px}.ng-pings span{display:block;color:var(--ink-2);font-size:15px}
 .ng-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
 .ng-tabs button{all:unset;cursor:pointer;white-space:nowrap;padding:10px 18px;border-radius:99px;border:1px solid var(--line-2);color:var(--ink-2);font-weight:700;font-size:14.5px;transition:background .2s,color .2s}
 .ng-tabs button.on{background:var(--ink);color:#0a0c16}
 .ng-tabs button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
-.ng-pane{display:none;padding:clamp(20px,3vw,34px);border-radius:24px}
-.ng-pane.on{display:block}
-.ng-pane h3{margin:0 0 4px;font-size:22px}
-.ng-pane>p{margin:0 0 16px;color:var(--ink-2)}
-.ng-pane .nv-steps{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.ng-pane .nv-steps li{align-items:flex-start}
-.ng-pane .nv-note{font-size:14px}
-.ng-pane .nv-go{width:auto;display:inline-block;padding:14px 30px}
-@media (max-width:800px){.ng-hero{grid-template-columns:1fr}.ng-art{height:220px;order:-1}.ng-art .a{left:38%}.ng-pings{grid-template-columns:1fr}.ng-hero .nv-go{display:block;width:100%}}
+.ng-pane{display:none}
+.ng-pane.on{display:block;animation:ngIn .35s ease}
+@keyframes ngIn{from{opacity:0;transform:translateY(8px)}}
+.ng-flow{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:clamp(14px,2.4vw,30px);justify-content:start}
+.ng-flow.n4{grid-template-columns:repeat(4,minmax(0,220px))}
+.ng-flow.n3{grid-template-columns:repeat(3,minmax(0,260px))}
+.ng-flow.n3:has(.web){grid-template-columns:repeat(3,minmax(0,1fr))}
+.ng-flow.n4:has(.web){grid-template-columns:repeat(4,minmax(0,1fr))}
+.ng-flow li{min-width:0}
+.ng-flow p{display:flex;align-items:center;gap:10px;margin:14px 0 0;font-weight:700;font-size:15px;line-height:1.25;color:var(--ink)}
+.ng-flow p i{font:400 30px/1 "Anton",sans-serif;flex:none;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dv{position:relative;overflow:hidden;display:flex;flex-direction:column;font-size:11px;color:var(--ink);border:2px solid rgba(214,228,255,.55);background:linear-gradient(170deg,#101a48,#070b20);box-shadow:0 18px 44px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.06),0 0 34px rgba(59,123,255,.16)}
+.dv.mob{aspect-ratio:9/16;border-radius:26px;padding:26px 10px 12px}
+.dv.web{aspect-ratio:4/3;border-radius:14px;padding:0 0 12px}
+.dv .nt{position:absolute;top:9px;left:50%;width:34%;height:9px;border-radius:9px;background:rgba(255,255,255,.14);transform:translateX(-50%)}
+.dv .bar{display:flex;align-items:center;gap:5px;padding:8px 10px;background:rgba(255,255,255,.06)}
+.dv .bar u{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.22)}
+.dv .bar span{flex:1;margin-left:6px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.08);color:var(--ink-2)}
+.dv .bar b{display:grid;width:24px;height:24px;place-items:center;border-radius:8px}
+.dv svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.dv .pg{flex:1;min-height:0;display:grid;place-items:center}
+.dv .pg img{width:42%;max-width:82px;border-radius:22%;box-shadow:0 10px 26px rgba(59,123,255,.35)}
+.dv .pg .hotimg{box-shadow:none;border-radius:0;animation:ngGlow 2.2s ease-in-out infinite}
+.dv .pg.dim{opacity:.28}
+.dv .url{padding:6px 10px;border-radius:99px;text-align:center;background:rgba(255,255,255,.08)}
+.dv .sheet{display:grid;gap:6px;padding:10px 8px;border-radius:14px;background:rgba(255,255,255,.08)}
+.dv .rw{display:flex;align-items:center;gap:6px;min-height:28px;padding:5px 8px;border-radius:9px;background:rgba(255,255,255,.05);font-weight:700;line-height:1.15}
+.dv .rw.c{justify-content:center;font-size:13px}
+.dv .top{display:flex;justify-content:flex-end;padding:4px 8px 0}
+.dv .top span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%}
+.dv .top img{width:20px}
+.dv .hm{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-content:center;padding:0 6px}
+.dv .hm i,.dv .hm em{aspect-ratio:1;border-radius:24%;background:rgba(255,255,255,.08);overflow:hidden;display:block}
+.dv .hm img{width:100%;display:block}
+.dv .dlg{position:absolute;left:9%;right:9%;top:50%;transform:translateY(-50%);padding:12px;border-radius:14px;text-align:center;background:#18224f;border:1px solid var(--line-2);box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.dv .dlg small{display:block;font-size:10px;color:var(--ink-3)}
+.dv .dlg b{display:block;margin:2px 0 10px;font-size:12px;line-height:1.2}
+.dv .dlg div{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.dv .dlg span{padding:6px 2px;border-radius:9px;background:rgba(255,255,255,.08);font-weight:700}
+.dv .menu{position:absolute;top:44px;left:10%;width:62%;padding:6px;border-radius:10px;background:#18224f;border:1px solid var(--line-2)}
+.dv .menu small{display:block;padding:0 4px 5px;color:var(--ink-3)}
+.dv .tgh{display:flex;align-items:center;gap:7px;padding-bottom:8px;border-bottom:1px solid var(--line);font-size:12px}
+.dv .tgh img{width:20px}
+.dv .pk{flex:1;display:grid;gap:8px;align-content:center}
+.dv .pk span{display:flex;align-items:center;justify-content:space-between;padding:8px;border-radius:9px;background:rgba(255,255,255,.07);font-weight:700}
+.dv .pk i{width:24px;height:14px;border-radius:9px;background:#3b7bff;position:relative}
+.dv .pk i::after{content:"";position:absolute;right:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#fff}
+.dv .hot{color:#fff;background:#2f6bff;box-shadow:0 0 0 2px rgba(214,228,255,.8);animation:ngPulse 2.2s ease-in-out infinite}
+@keyframes ngPulse{0%,100%{box-shadow:0 0 0 2px rgba(214,228,255,.8),0 0 8px rgba(59,123,255,.5)}50%{box-shadow:0 0 0 2px #fff,0 0 24px 4px rgba(59,123,255,.95)}}
+@keyframes ngGlow{0%,100%{filter:drop-shadow(0 0 6px rgba(59,123,255,.5))}50%{filter:drop-shadow(0 0 20px rgba(59,123,255,1))}}
+.ng-foot{display:flex;align-items:center;justify-content:flex-start;gap:18px;flex-wrap:wrap;margin-top:30px}
+.ng-foot .nv-go{width:auto;display:inline-block;padding:14px 30px;margin:0}
+.dv .dlg span.hot{background:#2f6bff}
+.ng-foot small{color:var(--ink-2);font-size:13.5px}
+@media (max-width:800px){.ng-flow,.ng-flow.n4,.ng-flow.n3,.ng-flow.n3:has(.web),.ng-flow.n4:has(.web){grid-template-columns:repeat(2,minmax(0,1fr))}.ng-foot .nv-go{width:100%}}
+@media (prefers-reduced-motion:reduce){.dv .hot,.dv .pg .hotimg,.ng-pane.on{animation:none}}
+@media (max-width:800px){.ng-lead span{display:inline;white-space:normal}.ng-hero{grid-template-columns:1fr}.ng-art{height:220px;order:-1}.ng-art .a{left:38%}.ng-pings{grid-template-columns:1fr}.ng-hero .nv-go{display:block;width:100%}}
 
 /* footer legal row */
 .foot-legal{display:inline-flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
