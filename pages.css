@@ -554,12 +554,12 @@ body{background:transparent}
 .loader.open{pointer-events:none}
 /* scene inside each leaf (duplicated, each leaf shows its half) */
 .ld-glow{position:absolute;inset:0;background:radial-gradient(40% 50% at 50% 55%,rgba(59,123,255,.14),transparent 70%)}
-.ld-machine{position:absolute;left:50%;top:50%;height:74vh;aspect-ratio:3/4;transform:translate(-50%,-50%)}
+.ld-machine{position:absolute;left:50%;top:50%;height:74vh;aspect-ratio:3/4;transform:translate(-50%,-50%);--y:calc(9.3% + var(--p,0%)*.758)} /* the machine fills 9.3% to 85.1% of the poster height */
 .ld-machine img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
   mask-image:linear-gradient(180deg,transparent 0%,#000 9%,#000 84%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 9%,#000 84%,transparent 100%)}
 .ld-machine .bw{filter:grayscale(1) brightness(.55) contrast(1.1)}
-.ld-machine .col{clip-path:inset(calc(100% - var(--p,0%)) 0 0 0)}
-.ld-machine .scan{position:absolute;left:6%;right:6%;height:2px;bottom:var(--p,0%);background:linear-gradient(90deg,transparent,#9cc0ff,transparent);box-shadow:0 0 18px rgba(156,192,255,.8)}
+.ld-machine .col{clip-path:inset(calc(100% - var(--y)) 0 0 0)}
+.ld-machine .scan{position:absolute;left:6%;right:6%;height:2px;bottom:var(--y);background:linear-gradient(90deg,transparent,#9cc0ff,transparent);box-shadow:0 0 18px rgba(156,192,255,.8)}
 .ld-load{position:absolute;left:clamp(20px,3vw,48px);top:clamp(20px,3vw,40px);font-family:'Anton',Impact,sans-serif;font-size:clamp(28px,3vw,44px);letter-spacing:.02em;color:var(--ink);line-height:1}
 .ld-load i{font-style:normal;display:inline-block;width:1.2em;color:#9cc0ff}
 .ld-pct{position:absolute;font-family:'Anton',Impact,sans-serif;font-size:clamp(58px,8.5vw,140px);line-height:.82;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:.01em;white-space:nowrap;
