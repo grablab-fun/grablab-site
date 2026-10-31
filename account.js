@@ -115,7 +115,7 @@
       <div class="sw-box"><span class="sw-lab">You pay</span>
         <div class="sw-row"><input class="sw-amt" id="swAmt" inputmode="decimal" placeholder="0" aria-label="Amount to swap" autocomplete="off" /><span class="sw-side" id="swPayTk">${tkBtn}</span></div>
         <div class="sw-meta"><span id="swHave"></span><button type="button" class="sw-max" id="swMax">Max</button></div>
-        <div class="sw-m" id="swMenu" role="listbox" hidden></div></div>
+        <div class="sw-m" id="swMenu" hidden><input id="swFind" placeholder="Search name or address" aria-label="Search a token" autocomplete="off" /><div id="swList" role="listbox"></div></div></div>
       <button type="button" class="sw-mid" id="swFlip" aria-label="Swap direction"><img src="assets/sub/a-swap.webp" alt="" /></button>
       <div class="sw-box"><span class="sw-lab">You get</span>
         <div class="sw-row"><span class="sw-amt" id="swOut">0</span><span class="sw-side" id="swGetTk">${usdcBtn}</span></div>
@@ -124,7 +124,26 @@
       <button type="button" class="nv-go" id="swGo" disabled>Enter an amount</button>
       <p class="sw-note" id="swNote" role="status"></p>
       <p class="sw-fine"><img src="assets/chains/jup.png" alt="" />Routed by Jupiter. You approve every swap in your wallet.</p></div>`;
-    const paintMenu = () => { const m = $("swMenu"); if (m) m.innerHTML = tokens.map(t => `<button type="button" role="option" data-mint="${esc(t.mint)}">${icon(t)}${esc(t.symbol)}<em>${trim(t.ui, 4)}</em></button>`).join(""); };
+    /* the list: what the wallet holds, then the most traded verified tokens, or the search results */
+    const TOK = "https://lite-api.jup.ag/tokens/v2/";
+    const fromJup = t => ({ mint:t.id, symbol:String(t.symbol || "").slice(0, 12), decimals:t.decimals, icon:t.icon || null, ui:0, raw:"0", usd:0 });
+    const usable = list => list.filter(t => t.isVerified && t.id !== USDC_MINT).map(fromJup);
+    let shown = [], popular = null, found = null, findSeq = 0;
+    const paintMenu = () => {
+      const l = $("swList"); if (!l) return;
+      const held = found ? found.map(f => tokens.find(t => t.mint === f.mint) || f) : [...tokens, ...(popular || []).filter(p => !tokens.some(t => t.mint === p.mint))];
+      shown = held;
+      l.innerHTML = held.length ? held.map(t => `<button type="button" role="option" data-mint="${esc(t.mint)}">${icon(t)}${esc(t.symbol)}<em>${t.ui ? trim(t.ui, 4) : ""}</em></button>`).join("") : `<p class="sw-none">No token found.</p>`;
+    };
+    async function loadPopular(){
+      if (popular) return;
+      try { popular = usable(await (await fetch(TOK + "toporganicscore/24h?limit=30")).json()); paintMenu(); } catch (e) {}
+    }
+    async function find(q){
+      const mine = ++findSeq; q = q.trim();
+      if (!q){ found = null; return paintMenu(); }
+      try { const r = usable(await (await fetch(TOK + "search?query=" + encodeURIComponent(q))).json()); if (mine === findSeq){ found = r.slice(0, 20); paintMenu(); } } catch (e) {}
+    }
     const paintTk = () => {
       if (!$("swPayTk")) return;
       $("swPayTk").innerHTML = dir === "in" ? tkBtn : usdcBtn; $("swGetTk").innerHTML = dir === "in" ? usdcBtn : tkBtn;
@@ -193,12 +212,15 @@
         update(true);
       } finally { busy = false; }
     }
-    root.addEventListener("input", e => { if (e.target.id !== "swAmt") return; clearTimeout(tm); tm = setTimeout(update, 380); });
+    root.addEventListener("input", e => {
+      if (e.target.id === "swFind"){ clearTimeout(tm); tm = setTimeout(() => find(e.target.value), 260); return; }
+      if (e.target.id !== "swAmt") return; clearTimeout(tm); tm = setTimeout(update, 380);
+    });
     root.addEventListener("click", e => {
       const menu = $("swMenu"); if (!menu) return;
-      if (e.target.closest("#swTk")){ menu.hidden = !menu.hidden; return; }
+      if (e.target.closest("#swTk")){ menu.hidden = !menu.hidden; if (!menu.hidden){ loadPopular(); $("swFind").focus(); } return; }
       const b = e.target.closest("[data-mint]");
-      if (b){ tk = tokens.find(t => t.mint === b.dataset.mint) || tk; menu.hidden = true; paintTk(); update(); return; }
+      if (b){ tk = shown.find(t => t.mint === b.dataset.mint) || tk; $("swFind").value = ""; found = null; menu.hidden = true; paintTk(); update(); return; }
       if (!menu.hidden && !e.target.closest("#swMenu")) menu.hidden = true;
       if (e.target.closest("#swFlip")){ dir = dir === "in" ? "out" : "in"; $("swAmt").value = ""; clearOut(); paintTk(); set("Enter an amount", false); note(""); return; }
       if (e.target.id === "swMax"){
@@ -215,7 +237,7 @@
         const sol = { ...BASE[0], ui:c.sol, raw:String(c.lamports), usd:c.usd || 0 }, usdt = c.tokens.find(t => t.mint === BASE[1].mint);
         const have = c.tokens.filter(t => t.mint !== USDC_MINT && !BASE.some(b => b.mint === t.mint));
         tokens = [sol, usdt ? { ...BASE[1], ...usdt, icon:BASE[1].icon } : BASE[1], ...have];
-        tk = tokens.find(t => t.mint === tk.mint) || tokens[0];
+        tk = tokens.find(t => t.mint === tk.mint) || tk;
         paintMenu();
         paintTk();
       } };
