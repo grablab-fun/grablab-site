@@ -4,9 +4,9 @@
 .nav-bell:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
 .nav-bell img{width:22px;height:auto;display:block}
 .nav-bell.on::after{content:"";position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:#3b7bff;box-shadow:0 0 8px #3b7bff}
-.nv-wrap{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:16px;background:rgba(3,6,18,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s;overflow-y:auto}
+.nv-wrap{position:fixed;inset:0;z-index:1000;display:grid;padding:16px;background:rgba(3,6,18,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s;overflow-y:auto}
 .nv-wrap.show{opacity:1;visibility:visible}
-.nv-card{position:relative;width:min(440px,100%);padding:30px 26px 24px;border-radius:26px;border:1px solid var(--line-2);background:linear-gradient(165deg,#111a45,#080d24 62%);box-shadow:0 30px 90px rgba(0,0,0,.6);text-align:center;transform:translateY(14px) scale(.98);transition:transform .28s cubic-bezier(.2,.9,.3,1.2)}
+.nv-card{position:relative;margin:auto;width:min(440px,100%);padding:30px 26px 24px;border-radius:26px;border:1px solid var(--line-2);background:linear-gradient(165deg,#111a45,#080d24 62%);box-shadow:0 30px 90px rgba(0,0,0,.6);text-align:center;transform:translateY(14px) scale(.98);transition:transform .28s cubic-bezier(.2,.9,.3,1.2)}
 .nv-wrap.show .nv-card{transform:none}
 .nv-x{all:unset;cursor:pointer;position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%}
 .nv-x::before,.nv-x::after{content:"";position:absolute;left:10px;right:10px;top:16px;height:2px;background:var(--ink-2);transform:rotate(45deg)}
@@ -118,10 +118,24 @@
 .ng-foot small{color:var(--ink-2);font-size:13.5px}
 @media (max-width:800px){.ng-flow,.ng-flow.n4,.ng-flow.n3,.ng-flow.n3:has(.web),.ng-flow.n4:has(.web){grid-template-columns:repeat(2,minmax(0,1fr))}.ng-foot .nv-go{width:100%}}
 @media (prefers-reduced-motion:reduce){.dv .hot,.dv .pg .hotimg,.ng-pane.on{animation:none}}
-@media (max-width:800px){.ng-hero h1{font-size:11.2vw}.ng-lead span{display:inline;white-space:normal}.ng-hero{grid-template-columns:1fr}.ng-art{height:220px;order:-1}.ng-art .a{left:38%}.ng-pings{grid-template-columns:1fr}.ng-hero .nv-go{display:block;width:100%}}
+@media (max-width:800px){.ng-tabs{flex-wrap:wrap;overflow:visible}.ng-tabs button{padding:9px 15px;font-size:14px}.ng-hero{text-align:center}.ng-lead{margin-inline:auto}.ng-hero h1{font-size:11.2vw}.ng-lead span{display:inline;white-space:normal}.ng-hero{grid-template-columns:1fr}.ng-art{height:220px;order:-1}.ng-art .a{left:38%}.ng-pings{grid-template-columns:1fr}.ng-hero .nv-go{display:block;width:100%}}
 
 /* footer legal row */
 .foot-legal{display:inline-flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
 .foot-legal a,.foot-legal button{all:unset;cursor:pointer;color:inherit;font:inherit;opacity:.8;transition:opacity .2s}
 .foot-legal a:hover,.foot-legal button:hover{opacity:1;text-decoration:underline}
 .foot-legal a:focus-visible,.foot-legal button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+
+/* phones: the bell takes the wallet button's place in the bar, the wallet stays in the menu */
+@media (max-width:520px){.nav-right .flipwrap{display:none!important}}
+@media (max-width:340px){.nv-card h2{font-size:30px}}
+@media (max-width:640px){
+  .nv-card{padding:24px 18px 18px}
+  .ng h2.ng-t{line-height:1.1}
+  .dv.web{aspect-ratio:1/1}
+  .dv.web .pg img{width:38%}
+  .dv .menu{left:6%;width:88%;top:42px}
+  .dv .rw{font-size:10.5px;padding:5px 6px}
+  .dv .dlg{left:6%;right:6%;padding:9px}
+}
+@media (max-height:700px){.nv-ic{width:48px;margin-bottom:6px}.nv-sub{margin:4px 0 10px}.nv-sw{padding:7px 12px}.nv-go{margin-top:10px;padding:12px}}
