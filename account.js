@@ -14,6 +14,7 @@
 
   function gate(wait){
     drawn = null;
+    root.classList.remove("ac-room");
     root.innerHTML = `<section class="ac-gate glass"><img src="assets/sub/tier-gold.webp" alt="" /><h1 class="chrome">Your account.</h1>${wait ? `<p>Finding your wallet</p>` : `<p>Connect to see your balance, tier and capsules.</p><button type="button" class="nv-go" id="connectBtn2">Connect wallet</button>`}</section>`;
   }
   const mine = addr => (window.glAuth && window.glAuth.me && window.glAuth.me.wallet === addr) ? window.glAuth.me : null;
@@ -44,11 +45,9 @@
       pg.parentNode.classList.toggle("on", !!n.on);
       $("acPingGo").textContent = n.on ? "Manage" : "Turn on";
     }
-    const adm = $("acAdmin");
-    if (adm) adm.innerHTML = me && me.role === "admin" ? `<section class="glass ac-admin"><iframe src="/api/v1/admin/ui" title="Admin" id="adminFrame"></iframe></section>` : "";
-    /* the room sits under the panel: a link in the hero leads to it */
-    const go = $("acAdminGo"), row = root.querySelector(".ac-addr");
-    if (me && me.role === "admin"){ if (!go && row) row.insertAdjacentHTML("beforeend", `<button type="button" id="acAdminGo" data-a="admin">Admin</button>`); } else if (go) go.remove();
+    const adm = $("acAdmin"), admin = !!me && me.role === "admin";
+    root.classList.toggle("ac-room", admin);   /* the team wallet holds no money: it only sees the control room */
+    if (adm && !!adm.firstChild !== admin) adm.innerHTML = admin ? `<section class="glass ac-admin"><iframe src="/api/v1/admin/ui" title="Admin" id="adminFrame"></iframe></section>` : "";
     Ship.paint(addr);
   }
   /* capsules, three to a page: swipe them, or pick a page under the list. Past eight pages the dots become a counter */
@@ -360,7 +359,6 @@
     if (b.dataset.a === "toks"){ const l = $("acToks"); l.hidden = !l.hidden; b.setAttribute("aria-expanded", String(!l.hidden)); return; }
     if (b.dataset.a === "pg"){ const p = $("acPages"), to = b.dataset.i ? +b.dataset.i : capAt + +b.dataset.d; p.scrollTo({ left: to * p.clientWidth, behavior:"smooth" }); return; }
     if (b.dataset.a === "out") window.glWallet.disconnect();
-    if (b.dataset.a === "admin") $("acAdmin").scrollIntoView({ behavior:"smooth" });
     if (b.dataset.a === "switch"){ switched = window.glWallet.addr; await window.glWallet.disconnect(); openWallet(b); }
     if (b.dataset.a === "copy" || b.dataset.a === "deposit"){ const was = b.textContent; try { await navigator.clipboard.writeText(window.glWallet.addr); b.textContent = "Copied"; setTimeout(() => { b.textContent = was; }, 1400); } catch(err){} }
   });
