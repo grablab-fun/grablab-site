@@ -546,7 +546,7 @@ window.glAuth = { me: null, busy: false,
   async logout(){ try { await fetch(API + "auth/logout", { method:"POST", credentials:"same-origin" }); } catch (e) {} this.me = { wallet:null }; dispatchEvent(new CustomEvent("gl:auth")); }
 };
 window.glWallet = { addr:null, async disconnect(){
-  try { localStorage.removeItem("gl_wallet"); } catch (e) {}
+  try { localStorage.removeItem("gl_wallet"); localStorage.removeItem("gl_chain"); } catch (e) {}
   window.glAuth.logout();
   privyAddr = null; onConnected(null);
   const p = await loadPrivy(); if (!p) return;
@@ -564,7 +564,7 @@ window.glWallet = { addr:null, async disconnect(){
 /* what the wallet holds: {usdc, sol, lamports, usd, solUsd, tokens, otherUsd}. Plays are paid in USDC, SOL only pays network fees. Read in the browser: balances from a public Solana RPC,
    names and prices from Jupiter. "gl:chain" fires on every fresh read */
 const SOL_MINT = "So11111111111111111111111111111111111111112", USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
-async function readWallet(addr){
+async function readWallet(addr, early){
   const rpc = (method, params) => fetch("https://solana-rpc.publicnode.com", { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ jsonrpc:"2.0", id:1, method, params }) }).then(r => r.json()).then(d => { if (d.error || !d.result) throw new Error("rpc"); return d.result; });
   const [bal, ...lists] = await Promise.all([ rpc("getBalance", [addr]),
     ...["TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA", "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"].map(programId => rpc("getTokenAccountsByOwner", [addr, { programId }, { encoding:"jsonParsed" }]).catch(() => ({ value:[] }))) ]);
@@ -573,6 +573,7 @@ async function readWallet(addr){
     const i = a.account.data.parsed.info, t = i.tokenAmount; if (t.amount === "0" || i.mint === SOL_MINT) continue;
     const h = held[i.mint] || (held[i.mint] = { mint:i.mint, raw:0n, decimals:t.decimals }); h.raw += BigInt(t.amount);
   }
+  early({ sol:bal.value / 1e9, lamports:bal.value, usdc:held[USDC_MINT] ? Number(held[USDC_MINT].raw) / 1e6 : 0 });
   /* prices are extras: the balance still shows when Jupiter is down */
   const info = {}, mints = [SOL_MINT, ...Object.keys(held)];
   for (let i = 0; i < Math.min(mints.length, 150); i += 50){ try { for (const t of await (await fetch("https://lite-api.jup.ag/tokens/v2/search?query=" + mints.slice(i, i + 50).join(","))).json()) info[t.id] = t; } catch (e) {} }
@@ -583,17 +584,22 @@ async function readWallet(addr){
   const usdc = tokens.find(t => t.mint === USDC_MINT);
   return { sol, lamports:bal.value, solUsd, usd:solUsd ? sol * solUsd : null, usdc:usdc ? usdc.ui : 0, tokens, otherUsd:tokens.reduce((n, t) => n + (t === usdc ? 0 : t.usd), 0) };
 }
-window.glChain = { data:null, addr:null, t:0, busy:null,
+/* the last read shows at once from local storage, the balances replace it as soon as the RPC answers, Jupiter's names and prices last */
+window.glChain = { data:null, addr:null, t:0, busy:null, busyAddr:null,
+  put(a, d, t){ this.data = d; this.addr = a; this.t = t; dispatchEvent(new CustomEvent("gl:chain")); },
   async load(force){
     const a = window.glWallet.addr; if (!a) return null;
+    if (this.addr !== a){ let c = null; try { c = JSON.parse(localStorage.getItem("gl_chain")); } catch (e) {} if (c && c.a === a) this.put(a, c.d, c.t); }
     if (!force && this.addr === a && Date.now() - this.t < 20000) return this.data;
-    if (this.busy) return this.busy;
+    if (this.busy && this.busyAddr === a) return this.busy;
+    this.busyAddr = a;
     return this.busy = (async () => {
+      const mine = () => window.glWallet.addr === a;
       try {
-        const d = await readWallet(a);
-        if (window.glWallet.addr === a){ this.data = d; this.addr = a; this.t = Date.now(); dispatchEvent(new CustomEvent("gl:chain")); }
+        const d = await readWallet(a, f => { if (mine()) this.put(a, { tokens:[], otherUsd:0, usd:null, solUsd:null, ...(this.addr === a ? this.data : null), ...f }, this.addr === a ? this.t : 0); });
+        if (mine()){ this.put(a, d, Date.now()); try { localStorage.setItem("gl_chain", JSON.stringify({ a, d, t:this.t })); } catch (e) {} }
         return this.data;
-      } catch (e) { return this.data; } finally { this.busy = null; }
+      } catch (e) { return this.data; } finally { if (this.busyAddr === a) this.busy = null; }
     })();
   } };
 const fmtSol = v => v == null ? "..." : v >= 100 ? v.toFixed(2) : v.toFixed(v >= 1 ? 3 : 4);
@@ -644,6 +650,7 @@ function onConnected(addr, quiet){
   document.querySelectorAll("#connectBtn2").forEach(b=> { b.textContent = addr ? "My account" : "Connect wallet"; });
   dispatchEvent(new CustomEvent("gl:wallet"));
   if (!addr) return;
+  window.glChain.load();
   const input = document.getElementById("addrInput"); if (input){ input.value = addr; renderResult(addr); if (!quiet) document.getElementById("check")?.scrollIntoView({behavior:"smooth",block:"center"}); }
 }
 /* back on the site: the public address is all the site needs, it signs nothing */
