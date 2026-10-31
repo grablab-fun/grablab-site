@@ -210,7 +210,7 @@
               <span class="pc-view"><i></i><b class="vn" id="rmWatch" data-n="900">900</b> watching</span>
               <span class="sc rm-queue" id="rmQueue"></span>
               <span class="rm-camname" id="rmCam">Corner camera</span>
-              <div class="rm-pips"><button class="rm-pip" type="button" data-k="claw"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Claw camera</span></button><button class="rm-pip" type="button" data-k="chute"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Beam sensor camera</span></button></div>
+              <div class="rm-pips"><button class="rm-pip" type="button" data-k="claw"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Claw camera</span></button><button class="rm-pip" type="button" data-k="chute"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Beam sensor</span></button></div>
             </div>
             <div class="rm-info">
               <div class="rm-tiers">
@@ -438,7 +438,7 @@
     $("#rmLogo", root).src = p.logo; $("#rmName", root).textContent = p.name; $("#rmTk", root).textContent = p.tk; $("#rmCat", root).textContent = p.tags;
     $("#rmSoc", root).innerHTML = socials(p);
     /* three cameras on the same play: the stream, straight down from the top, and the beam sensor in the chute; tap a window to swap it in */
-    const CAMN = { main:"Corner camera", claw:"Claw camera", chute:"Beam sensor camera" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=8`;
+    const CAMN = { main:"Corner camera", claw:"Claw camera", chute:"Beam sensor" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=8`;
     const pips = [...root.querySelectorAll(".rm-pip")];
     if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "main"; v.src = url("main"); v.poster = `assets/feeds/feed${fn}.jpg?v=8`;
       pips.forEach(b => { const pv = b.querySelector("video"); pv.src = url(b.dataset.k); pv.dataset.k = b.dataset.k; b.querySelector("span").textContent = CAMN[b.dataset.k]; }); $("#rmCam", root).textContent = CAMN.main; }

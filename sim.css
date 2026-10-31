@@ -977,3 +977,8 @@ body.sim-lock{overflow:hidden}
 .ch-in .ch-emo button{all:unset;cursor:pointer;height:34px;border-radius:9px;display:grid;place-items:center;font-size:19px;line-height:1;font-family:var(--font);color:var(--ink)}
 .ch-in .ch-emo button:last-child{font-size:12px;font-weight:700;letter-spacing:.04em}
 .ch-in .ch-emo button:hover{background:rgba(255,255,255,.08)}
+
+/* phones: camera labels sit at the bottom of the window, on one line */
+@media (max-width:620px){
+  .rm-pip span,.s3-pip span{top:auto;bottom:5px;left:5px;max-width:calc(100% - 10px);white-space:nowrap;letter-spacing:.08em}
+}
