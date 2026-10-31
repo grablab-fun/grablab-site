@@ -30,10 +30,20 @@
     const me = mine(addr), caps = me ? me.capsules : [], n = read("gl_notify", {});
     const pl = $("acPlays"), cp = $("acCaps"), li = $("acCapList"), pg = $("acPings");
     if (pl) pl.textContent = me ? me.plays : 0;
+    const lb = $("acLvl"), lv = glLevel(me), cur = lv.tier && glTiers[lv.tier], nx = lv.next && glTiers[lv.next];
+    if (lb && lb.dataset.xp !== String(lv.xp)){
+      lb.dataset.xp = lv.xp;
+      lb.innerHTML = `${cur ? `<img class="ac-badge" src="assets/sub/${cur.img}.webp" alt="" />` : ""}<div class="ac-lvl-b"><p><b>${lv.tier ? `${lv.tier} tier` : "No tier yet"}</b><em>${lv.xp.toLocaleString("en-US")} XP</em></p><div class="ac-bar" title="10 XP a play, 40 XP a win"><i style="width:${lv.pct}%"></i></div><span>${lv.next ? `${lv.need.toLocaleString("en-US")} XP to ${lv.next}` : "Top tier reached"}</span></div>${nx ? `<img class="ac-lvl-n" src="assets/sub/${nx.img}.webp" alt="" />` : ""}`;
+      $("acFree").textContent = cur ? cur.plays : 0;
+    }
     if (cp) cp.textContent = caps.length;
     if (li) li.innerHTML = caps.length ? capPages(caps) : `<p class="ac-empty">Your first grab lands here.</p>`;
     capMark();
-    if (pg) pg.textContent = n.on ? (n.cats || []).map(c => CATS[c]).filter(Boolean).join(", ") : "Off on this device";
+    if (pg){
+      pg.textContent = n.on ? (n.cats || []).map(c => CATS[c]).filter(Boolean).join(", ") : "Off on this device";
+      pg.parentNode.classList.toggle("on", !!n.on);
+      $("acPingGo").textContent = n.on ? "Manage" : "Turn on";
+    }
     const adm = $("acAdmin");
     if (adm) adm.innerHTML = me && me.role === "admin" ? `<section class="glass ac-admin"><iframe src="/api/v1/admin/ui" title="Admin" id="adminFrame"></iframe></section>` : "";
     /* the room sits under the panel: a link in the hero leads to it */
@@ -64,14 +74,12 @@
   }
 
   function draw(addr){
-    const e = demoTierFor(addr), t = e && glTiers[e.tier];
     drawn = addr;
     const same = switched === addr; switched = null;
     root.innerHTML = `
     <section class="glass ac-hero">
-      <img class="ac-badge" src="assets/sub/${t ? t.img : "tier-iron"}.webp" alt="" />
-      <span class="ac-k">${t ? `${e.tier} tier` : "No tier yet"}</span>
       <h1 class="chrome">Your account.</h1>
+      <div class="ac-lvl" id="acLvl"></div>
       <div class="ac-addr"><code title="${esc(addr)}">${esc(shorten(addr))}</code><button type="button" data-a="copy">Copy</button><button type="button" data-a="switch">Switch wallet</button><button type="button" data-a="out">Disconnect</button></div>
       ${same ? `<p class="ac-note"><span>Your wallet gave the same account.</span><span>Disconnect grablab.fun inside the wallet, then switch again.</span></p>` : ""}
     </section>
@@ -82,13 +90,12 @@
       <div class="ac-tok" id="acTok"></div>
     </section>
     <section class="ac-stats">
-      <div class="glass"><img src="assets/sub/a-ticket.webp" alt="" /><b>${t ? t.plays : 0}</b><span>Free plays</span></div>
+      <div class="glass"><img src="assets/sub/a-ticket.webp" alt="" /><b id="acFree">0</b><span>Free plays</span></div>
       <div class="glass"><img src="assets/icons/claw.webp" alt="" /><b id="acPlays">0</b><span>Plays</span></div>
       <div class="glass"><img src="assets/parts/capsule.png" alt="" /><b id="acCaps">0</b><span>Capsules</span></div>
     </section>
     <div id="acAdmin"></div>
     <section class="glass ac-card" id="swap">
-      <img src="assets/sub/a-swap.webp" alt="" />
       <h2>Add USDC</h2>
       <p class="ac-sub">Plays are paid in <img src="assets/chains/usdc.png" alt="" />USDC on <img src="assets/chains/solana-mark.svg" alt="" />Solana.</p>
       ${Swap.html()}
@@ -103,7 +110,7 @@
       <p class="ac-sub">For prizes we ship to your door.</p>
       <div id="acShip" style="width:100%;display:grid;justify-items:center"></div>
     </section>
-    <section class="glass ac-card" id="acNotif"><img src="assets/sub/n-bell.webp" alt="" /><h2>Notifications</h2><p class="ac-empty" id="acPings"></p><button type="button" class="ac-link" data-notify>Manage</button></section>`;
+    <section class="glass ac-card" id="acNotif"><img src="assets/sub/n-bell.webp" alt="" /><h2>Notifications</h2><div class="ac-ping"><i></i><span id="acPings"></span><button type="button" class="nv-go" id="acPingGo" data-notify>Turn on</button></div></section>`;
     Swap.reset(); Ship.reset();
     paintDrops(); paintMe(addr); paintChain();
     window.glChain.load(true);
@@ -132,14 +139,14 @@
       return BigInt((m[1] || "0") + (m[2] || "").slice(0, dec).padEnd(dec, "0"));
     };
     const html = () => `<div class="sw">
-      <div class="sw-box"><span class="sw-lab">You pay</span>
+      <div class="sw-box"><div class="sw-top"><span class="sw-lab">You pay</span><span id="swHave"></span></div>
         <div class="sw-row"><input class="sw-amt" id="swAmt" inputmode="decimal" placeholder="0" aria-label="Amount to swap" autocomplete="off" /><span class="sw-side" id="swPayTk">${tkBtn}</span></div>
-        <div class="sw-meta"><span id="swHave"></span><button type="button" class="sw-max" id="swMax">Max</button></div>
+        <div class="sw-pct"><button type="button" data-pct="25">25%</button><button type="button" data-pct="50">50%</button><button type="button" data-pct="75">75%</button><button type="button" data-pct="100">Max</button></div>
         <div class="sw-m" id="swMenu" hidden><input id="swFind" placeholder="Search name or address" aria-label="Search a token" autocomplete="off" /><div id="swList" role="listbox"></div></div></div>
       <button type="button" class="sw-mid" id="swFlip" aria-label="Swap direction"><img src="assets/sub/a-swap.webp" alt="" /></button>
-      <div class="sw-box"><span class="sw-lab">You get</span>
+      <div class="sw-box"><div class="sw-top"><span class="sw-lab">You get</span><span id="swHaveGet"></span></div>
         <div class="sw-row"><span class="sw-amt" id="swOut">0</span><span class="sw-side" id="swGetTk">${usdcBtn}</span></div>
-        <div class="sw-meta"><span id="swOutUsd"></span></div></div>
+        <div class="sw-meta"><span>Worth</span><span id="swOutUsd">$0.00</span></div></div>
       <div class="sw-info" id="swInfo" hidden></div>
       <button type="button" class="nv-go" id="swGo" disabled>Enter an amount</button>
       <p class="sw-note" id="swNote" role="status"></p>
@@ -170,12 +177,13 @@
       $("swTk").innerHTML = `${icon(tk)}${esc(tk.symbol)}${dot}`;
       /* the token list opens under whichever box holds the token button */
       const menu = $("swMenu"); menu.hidden = true; $("swTk").closest(".sw-box").appendChild(menu); paintMenu();
-      const p = pay(); $("swHave").textContent = `You have ${trim(dir === "in" ? tk.ui : Number(usdcRaw) / 1e6, 4)} ${p.symbol}`;
+      const usdcNow = `You have ${trim(Number(usdcRaw) / 1e6, 4)} USDC`, tkNow = `You have ${trim(tk.ui, 4)} ${tk.symbol}`;
+      $("swHave").textContent = dir === "in" ? tkNow : usdcNow; $("swHaveGet").textContent = dir === "in" ? usdcNow : tkNow;
       $("swGo") && set(order ? `Swap to ${get().symbol}` : "Enter an amount", !!order);
     };
     const set = (label, on) => { const b = $("swGo"); if (b){ b.textContent = label; b.disabled = !on; } };
     const note = (msg, bad) => { const n = $("swNote"); if (n){ n.innerHTML = msg; n.classList.toggle("bad", !!bad); } };
-    const clearOut = () => { order = null; if ($("swOut")){ $("swOut").textContent = "0"; $("swOutUsd").textContent = ""; $("swInfo").hidden = true; } };
+    const clearOut = () => { order = null; if ($("swOut")){ $("swOut").textContent = "0"; $("swOutUsd").textContent = "$0.00"; $("swInfo").hidden = true; } };
     const REASON = { 1:"Not enough for this swap.", 2:"Not enough SOL to pay the network fee." };
 
     async function quote(raw){
@@ -196,7 +204,7 @@
         order = o;
         const out = Number(o.outAmount) / 10 ** G.decimals, min = Number(o.otherAmountThreshold) / 10 ** G.decimals, inAmt = Number(raw) / 10 ** P.decimals;
         $("swOut").textContent = trim(out, 5);
-        $("swOutUsd").textContent = o.outUsdValue ? fmtUsd(o.outUsdValue) : "";
+        $("swOutUsd").textContent = o.outUsdValue ? fmtUsd(o.outUsdValue) : "$0.00";
         const info = $("swInfo"); info.hidden = false;
         const rate = `1 ${esc(tk.symbol)} = ${trim(dir === "in" ? out / inAmt : inAmt / out, 4)} USDC`;
         info.innerHTML = `<p><span>Rate</span><em>${rate}</em></p>
@@ -244,9 +252,11 @@
       if (b){ tk = shown.find(t => t.mint === b.dataset.mint) || tk; $("swFind").value = ""; found = null; menu.hidden = true; paintTk(); update(); return; }
       if (!menu.hidden && !e.target.closest("#swMenu")) menu.hidden = true;
       if (e.target.closest("#swFlip")){ dir = dir === "in" ? "out" : "in"; $("swAmt").value = ""; clearOut(); paintTk(); set("Enter an amount", false); note(""); return; }
-      if (e.target.id === "swMax"){
-        /* all of it, except 0.01 SOL kept for network fees when paying in SOL */
+      const part = e.target.closest("[data-pct]");
+      if (part){
+        /* a share of it, with 0.01 SOL always kept for network fees when paying in SOL */
         const P = pay(); let r = payRaw(); if (P.mint === SOL) r = r > 10000000n ? r - 10000000n : 0n;
+        r = r * BigInt(part.dataset.pct) / 100n;
         $("swAmt").value = r === 0n ? "" : r.toString().padStart(P.decimals + 1, "0").replace(new RegExp(`(\\d{${P.decimals}})$`), ".$1").replace(/\.0*$|(\.\d*?)0+$/, "$1"); update();
       }
       if (e.target.id === "swGo") go();

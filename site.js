@@ -615,12 +615,12 @@ const fmtUsd = v => v == null ? "" : "$" + v.toLocaleString("en-US", { minimumFr
   const paint = () => {
     if (!pop) return;
     const c = window.glChain.addr === window.glWallet.addr ? window.glChain.data : null, m = window.glAuth.me, a = window.glWallet.addr;
-    const e = demoTierFor(a), me = m && m.wallet === a ? m : null;
+    const me = m && m.wallet === a ? m : null, e = glLevel(me);
     pop.innerHTML = `<div class="ap-top"><img src="assets/chains/usdc.png" alt="" /><div><b>${c ? fmtUsdc(c.usdc) : "..."} USDC</b><span>${c ? "To play with" : "Reading balance"}</span></div></div>
       ${c ? `<p class="ap-row"><span>SOL for fees</span><em>${fmtSol(c.sol)}</em></p>` : ""}
       ${c && c.otherUsd >= .01 ? `<p class="ap-row"><span>Other tokens</span><em>${fmtUsd(c.otherUsd)}</em></p>` : ""}
-      <p class="ap-row"><span>Tier</span><em>${e ? e.tier : "None yet"}</em></p>
-      <p class="ap-row"><span>Free plays</span><em>${e ? glTiers[e.tier].plays : 0}</em></p>
+      <p class="ap-row"><span>Tier</span><em>${e.tier || "None yet"}</em></p>
+      <p class="ap-row"><span>Free plays</span><em>${e.tier ? glTiers[e.tier].plays : 0}</em></p>
       <p class="ap-row"><span>Plays</span><em>${me ? me.plays : 0}</em></p>
       <p class="ap-row"><span>Capsules</span><em>${me ? me.capsules.length : 0}</em></p>
       <a class="nv-go" href="account.html#swap">Add USDC</a>
@@ -713,6 +713,14 @@ document.addEventListener("keydown", e=>{ if (e.key==="Escape") closeWallet(); }
 
 /* ---------------- eligibility (local, read-only) ---------------- */
 const glTiers = { Iron:{ img:"tier-iron", plays:1 }, Gold:{ img:"tier-gold", plays:3 }, Diamond:{ img:"tier-diamond", plays:5 } };
+/* points from what the wallet really did: 10 XP a play, 40 XP a win */
+const glLevels = [["Iron", 100], ["Gold", 500], ["Diamond", 1500]];
+function glLevel(me){
+  const xp = (me ? me.plays : 0) * 10 + (me ? me.wins || 0 : 0) * 40;
+  let i = -1; glLevels.forEach((l, k) => { if (xp >= l[1]) i = k; });
+  const from = i < 0 ? 0 : glLevels[i][1], next = glLevels[i + 1];
+  return { xp, tier: i < 0 ? null : glLevels[i][0], next: next ? next[0] : null, need: next ? next[1] - xp : 0, pct: next ? (xp - from) / (next[1] - from) * 100 : 100 };
+}
 function demoTierFor(addr){
   let h=0; for (let i=0;i<addr.length;i++) h=(h*31+addr.charCodeAt(i))>>>0; const r=h%100;
   if (r<8) return {tier:"Diamond", note:"5 free plays in the airdrop claw"};
