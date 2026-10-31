@@ -666,38 +666,3 @@ a.mf:hover::after{transform:translate(1px,-1px)}
   .card .ico,.prize img,.pq-h .pc-logo,.uc-head .pc-logo,.case .cico,.card .tag,.pq:not(.started) .pq-bar::after,.uc-tiles b.flip{animation:none}
   .card.live,.prize.live,.case.live{transform:none}
 }
-
-/* ---- token page (Nov 1): the coin hangs from the claw, the split bar, supply rows, the closing statement ---- */
-.tk-hero { position:relative;width:min(100%,520px);aspect-ratio:1;display:grid;place-items:center }
-.tk-hero .tk-claw { position:absolute;left:50%;top:-6%;height:46%;width:auto;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6));animation:clawBob 4s ease-in-out infinite }
-.tk-hero .tk-coin { position:relative;z-index:1;width:62%;height:auto;margin-top:34%;filter:drop-shadow(0 30px 50px rgba(0,0,0,.65)) drop-shadow(0 0 40px rgba(255,178,74,.25));animation:tkFloat 5.2s ease-in-out infinite }
-.tk-hero .tk-glow { position:absolute;left:50%;top:62%;width:70%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,178,74,.22),rgba(59,123,255,.12) 45%,transparent 70%);filter:blur(10px);pointer-events:none }
-@keyframes tkFloat { 0%,100% { transform:translateY(0) rotate(-2deg) } 50% { transform:translateY(-14px) rotate(2deg) } }
-.tk-split { max-width:860px;margin:0 auto 22px;padding:22px 24px;border-radius:20px }
-.tk-bar { display:flex;gap:4px;height:46px }
-.tk-bar i { position:relative;flex:0 0 calc(var(--w) - 3px);border-radius:10px;display:grid;place-items:center;font-family:'Anton',Impact,sans-serif;font-size:20px;color:#071029;letter-spacing:.03em }
-.tk-bar i:nth-child(1) { background:var(--blue-chrome) }
-.tk-bar i:nth-child(2) { background:linear-gradient(176deg,#fff3dd 0%,#ffd99a 35%,#ffb24a 55%,#fff0d6 75%,#f0a43f 100%) }
-.tk-bar i:nth-child(3) { background:var(--chrome) }
-.tk-bar i b { font-weight:400 }
-.tk-rows { max-width:860px }
-.tk-rows .stk { flex-wrap:nowrap }
-.tk-rows .stk-id { width:150px }
-.tk-rows .stk-id b { font-size:34px }
-.tk-rows .stk-id span { display:block;white-space:normal;margin-top:6px }
-.tk-rows .tk-why { flex:1;min-width:0;margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.45 }
-.tk-rows .stk-px { width:auto;margin-left:auto }
-.tk-rows .stk-px b { font-size:20px }
-.tk-rows .stk .lg img { filter:none;width:34px;height:34px }
-.tk-note { text-align:center;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);line-height:1.9;margin:26px 0 0 }
-.tk-not { max-width:760px;margin:0 auto;text-align:center;display:flex;flex-direction:column;gap:14px }
-.tk-not p { font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(26px,3.6vw,54px);line-height:1;letter-spacing:.01em;color:var(--ink-2);margin:0 }
-.tk-not p:last-child { color:var(--ink);background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent }
-@media (max-width:860px){
-  .tk-hero { width:min(78vw,360px) }
-  .tk-rows .stk { flex-wrap:wrap }
-  .tk-rows .stk-id { width:auto;flex:1 }
-  .tk-rows .tk-why { flex:1 1 100%;order:3 }
-  .tk-bar { height:40px }
-  .tk-bar i { font-size:16px }
-}
