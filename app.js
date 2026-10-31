@@ -9,8 +9,10 @@
   let cur = 0;
   function update(){
     if (innerWidth <= 900) return;
-    /* the ring turns with the scroll itself (continuous), the proof nearest the top is the lit one */
-    const r = root.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top/(r.height - innerHeight))), rc = Math.min(4, Math.max(0, p*5.6 - .3)), i = Math.round(rc);
+    /* roulette: the ring rests on each proof for most of its scroll span, then turns to the next one in a short eased sweep */
+    const r = root.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top/(r.height - innerHeight))), x = Math.min(4, Math.max(0, p*5.4 - .2)), j = Math.min(3, Math.floor(x)), f = x - j;
+    const k = f < .4 ? 0 : f > .7 ? 1 : (() => { const t = (f - .4)/.3; return t*t*(3 - 2*t); })();
+    const rc = j + k, i = Math.round(rc);
     orb.style.setProperty("--r", (-rc*72).toFixed(2) + "deg");
     if (i === cur) return; cur = i;
     sats.forEach((s, k) => s.classList.toggle("on", k === i)); num.textContent = i + 1;
