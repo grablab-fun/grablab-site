@@ -9,7 +9,7 @@
   /* roulette: the scroll picks the proof (five equal spans); the ring itself is driven every frame by a damped spring toward that
      proof's angle, so it spins up, glides and settles with a small overshoot, however jerky the wheel input is */
   let cur = -1, target = 0, ang = 0, vel = 0, raf = 0, last = 0;
-  const still = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  /* like the hero decode, the spin runs even when the OS asks for reduced motion: a jump from proof to proof reads as broken */
   function pick(){
     if (innerWidth <= 1100) return;
     const r = root.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top/(r.height - innerHeight))), i = Math.min(4, Math.floor(p*5));
@@ -19,8 +19,7 @@
   }
   function tick(t){
     const dt = Math.min(.05, (t - (last || t))/1000); last = t;
-    if (still){ ang = target; }
-    else { const k = 42, c = 11; vel += (-(ang - target)*k - vel*c)*dt; ang += vel*dt; }   // stiffness and damping: about .9 s to settle, a hint of overshoot
+    { const k = 42, c = 11; vel += (-(ang - target)*k - vel*c)*dt; ang += vel*dt; }   // stiffness and damping: about .9 s to settle, a hint of overshoot
     orb.style.setProperty("--r", ang.toFixed(3) + "deg");
     if (Math.abs(ang - target) > .02 || Math.abs(vel) > .05) raf = requestAnimationFrame(tick); else { ang = target; orb.style.setProperty("--r", ang + "deg"); raf = 0; last = 0; }
   }

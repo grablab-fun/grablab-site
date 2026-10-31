@@ -1016,7 +1016,7 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
   .inside-orb .mlist{display:block;margin-top:10px}.inside-orb .mlist .it{display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:center;padding:14px 0;border-top:1px solid rgba(180,186,255,.12)}
   .inside-orb .mlist img{width:52px;height:52px;mix-blend-mode:screen}.inside-orb .mlist b{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:22px;line-height:1}.inside-orb .mlist small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin-top:3px}
 }
-@media(prefers-reduced-motion:reduce){.inside-orb .orb,.inside-orb .sat,.inside-orb .sat > div{transition:none}}
+
 
 /* ============ white capsules everywhere (Oct 31): the printed shells, a seam and the small NFC dot. overrides every older glass + coin rule above ============ */
 .fall-capsule,.mini-cap,.catch-col .bin-fill .mini-cap,.fall-capsule.v,.mini-cap.v,.catch-col .bin-fill .mini-cap.v{background:radial-gradient(circle at 34% 30%,#ffffff 0%,#f4f5fa 30%,#cfd3e3 68%,#9ea4bd 100%);border:0;
