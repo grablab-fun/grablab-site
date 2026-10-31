@@ -44,13 +44,13 @@
     <div class="lg-head">
       <span class="eyebrow">Legal</span>
       <h1>Privacy <span class="hl">policy.</span></h1>
-      <div class="lg-meta">Last updated 13 October 2026</div>
+      <div class="lg-meta">Last updated 31 October 2026</div>
     </div>
 
     <div class="lg-tldr">
       <div class="glass"><b>No accounts</b><span>You don't sign up. We don't ask for your name.</span></div>
       <div class="glass"><b>No trackers</b><span>No ads, no analytics, no tracking cookies.</span></div>
-      <div class="glass"><b>Address stays local</b><span>A wallet address you connect or paste is used in your browser.</span></div>
+      <div class="glass"><b>Your data stays yours</b><span>Delivery details are kept only to ship your prize, and you can remove them.</span></div>
       <div class="glass"><b>Your rights</b><span>Ask us anything at privacy@grablab.fun.</span></div>
     </div>
 
@@ -73,6 +73,7 @@
               <tr><td>Technical logs</td><td>IP address, browser type, page and time, recorded by our host when you load a page. Used to deliver the site and keep it secure.</td><td>Legitimate interest (Art. 6(1)(f))</td><td>Short term, as set by the host (see section 3)</td></tr>
               <tr><td>Emails you send us</td><td>Your address, name if you give it, and the message. The "Book a launch night" form only opens your own email app with a draft, nothing is sent until you send it.</td><td>Steps before a contract (Art. 6(1)(b)) or legitimate interest</td><td>As long as needed to reply and follow up, at most 24 months after our last exchange</td></tr>
               <tr><td>Wallet address</td><td>When you connect a wallet or paste an address to check eligibility. The check runs in your browser and the address is not sent to our servers. Connecting goes through Privy (see section 3), which keeps your linked wallet so you stay signed in.</td><td>Your request (Art. 6(1)(b))</td><td>Not stored by us. Privy keeps it while your account exists</td></tr>
+              <tr><td>Delivery details</td><td>Name, phone and address, only if you fill them in on your account page, so we can ship a physical prize. The form needs a wallet signature and is stored against your wallet. Street searches pass through our server to the Photon address service.</td><td>Your request (Art. 6(1)(b))</td><td>Until you remove them, or as long as a shipment needs them</td></tr>
               <tr><td>Email sign in</td><td>Only if you choose "Continue with email": Privy sends you a code and creates a wallet for you. We see the email and the wallet address in our Privy dashboard.</td><td>Your request (Art. 6(1)(b))</td><td>Until you ask us to delete your account</td></tr>
               <tr><td>Browser storage</td><td>Your cookie choice and a flag that you saw the intro. Details in the <a href="cookies.html">Cookie policy</a>.</td><td>Strictly necessary</td><td>See Cookie policy</td></tr>
               <tr><td>Simulator inputs</td><td>The demo address and choices in the simulator stay in your browser tab.</td><td>Not processed by us</td><td>Until you close the tab</td></tr>
@@ -88,8 +89,9 @@
           <ul>
             <li><strong>Vercel Inc.</strong> hosts the site and processes technical logs on our behalf.</li>
             <li><strong>Namecheap</strong> hosts our email (Private Email), so it processes the emails you send us.</li>
-            <li><strong>jsDelivr</strong> serves some token logos and <strong>Jupiter</strong> (lite-api.jup.ag) serves live token prices on the Rent page. If you open the swap, the Jupiter widget (plugin.jup.ag) or, for other chains, the deBridge widget (app.debridge.com) loads in your browser and talks to them and your wallet directly. Your browser contacts them directly, so they receive your IP address.</li>
+            <li><strong>jsDelivr</strong> serves some token logos and <strong>Jupiter</strong> (lite-api.jup.ag) serves live token prices on the Rent page and the swap on your account page. If you open the swap, the Jupiter widget (plugin.jup.ag) or, for other chains, the deBridge widget (app.debridge.com) loads in your browser and talks to them and your wallet directly. Your browser contacts them directly, so they receive your IP address.</li>
             <li><strong>SimArena</strong> (app.simarena.ai, by CodecFlow) runs the physics lab. It loads only if you allow embedded content, and then it receives your IP address and may store data in your browser.</li>
+            <li><strong>Photon</strong> (photon.komoot.io, komoot GmbH) receives the street you type in the delivery form, sent from our server, without your IP address.</li>
             <li><strong>Privy</strong> (privy.io, Privy Inc.) runs wallet connection and email sign in for us as our processor. It loads only when you open the wallet window or have connected before.</li>
             <li><strong>WalletConnect</strong> (Reown) relays the connection if you pick WalletConnect to link a phone wallet.</li>
             <li><strong>Your wallet provider</strong> (for example Phantom, Solflare or Backpack) handles the connection under its own policy.</li>
@@ -119,7 +121,7 @@
         </section>
 
         <section id="security"><h2><i>07</i>Security</h2>
-          <p>The site is served only over HTTPS, keeps no user accounts and stores no wallet data on our servers. We never ask for seed phrases, private keys or signing approvals. Report a security issue to <a href="mailto:legal@grablab.fun">legal@grablab.fun</a>.</p>
+          <p>The site is served only over HTTPS. A signed-in session and any delivery details are stored against your wallet address. We never ask for seed phrases or private keys, and the only transactions you sign are the ones you start yourself, like a swap. Report a security issue to <a href="mailto:legal@grablab.fun">legal@grablab.fun</a>.</p>
         </section>
 
         <section id="changes"><h2><i>08</i>Changes</h2>

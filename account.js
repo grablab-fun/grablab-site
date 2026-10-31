@@ -116,7 +116,7 @@
       <div class="sw-info" id="swInfo" hidden></div>
       <button type="button" class="nv-go" id="swGo" disabled>Enter an amount</button>
       <p class="sw-note" id="swNote" role="status"></p>
-      <p class="sw-fine">Routed by Jupiter. You approve every swap in your wallet.</p></div>`;
+      <p class="sw-fine"><img src="assets/chains/jup.png" alt="" />Routed by Jupiter. You approve every swap in your wallet.</p></div>`;
     const paintTk = () => {
       if (!$("swTk")) return;
       $("swTk").innerHTML = `${icon(tk)}${esc(tk.symbol)}${dot}`;
@@ -133,10 +133,10 @@
       if (!r.ok || o.error) throw new Error(o.error || "quote");
       return o;
     }
-    async function update(){
+    async function update(keep){
       clearTimeout(refresh);
       const mySeq = ++seq, raw = toRaw($("swAmt").value, tk.decimals);
-      note("");
+      if (keep !== true) note("");
       if (raw <= 0n){ clearOut(); return set("Enter an amount", false); }
       if (raw > BigInt(tk.raw)){ clearOut(); return set(`Not enough ${tk.symbol}`, false); }
       set("Getting price", false);
@@ -177,7 +177,7 @@
         const m = String(e && e.message || "");
         set("Swap to SOL", false);
         note(m === "reconnect" ? "Reconnect your wallet, then swap." : /reject|cancel|denied|closed/i.test(m) ? "Swap cancelled." : "The swap didn't go through. Nothing left your wallet unless your wallet shows it.", !/cancel|reject|denied|closed/i.test(m));
-        update();
+        update(true);
       } finally { busy = false; }
     }
     root.addEventListener("input", e => { if (e.target.id !== "swAmt") return; clearTimeout(tm); tm = setTimeout(update, 380); });
@@ -204,7 +204,7 @@
   /* ---------- delivery details: the street search fills in the rest ---------- */
   const Ship = (() => {
     let state = null, tm = 0, seq = 0, hits = [], pick = -1, saved = null;
-    const F = [["name","Full name","s6","name"],["phone","Phone","s6","tel"],["street","Street","s4","off"],["number","No.","s2 m3","off"],["extra","Apartment, floor","s6","address-line2"],["city","City","s3 m3","address-level2"],["region","County or state","s3 m3","address-level1"],["postcode","Postal code","s3 m3","postal-code"],["country","Country","s3 m3","country-name"]];
+    const F = [["name","Full name","s6","name"],["phone","Phone","s6","tel"],["street","Street","s4","off"],["number","No.","s2","off"],["extra","Apartment, floor","s6","address-line2"],["city","City","s3 m3","address-level2"],["region","County or state","s3 m3","address-level1"],["postcode","Postal code","s3 m3","postal-code"],["country","Country","s3 m3","country-name"]];
     const form = () => `<form class="dl" id="dlForm" novalidate>${F.map(([k, l, c, ac]) => `<label class="dl-f ${c}" data-f="${k}"><span>${l}</span><input name="${k}" autocomplete="${ac}" ${k === "street" ? `placeholder="Start typing your street" role="combobox" aria-expanded="false" aria-autocomplete="list"` : ""} ${k === "phone" ? `inputmode="tel" placeholder="+40 700 000 000"` : ""} />${k === "street" ? `<ul class="dl-l" id="dlList" role="listbox" hidden></ul>` : ""}</label>`).join("")}<input type="hidden" name="cc" /><div class="dl-acts"><button type="submit" class="nv-go">Save details</button><p class="dl-msg" id="dlMsg" role="status"></p><button type="button" class="ac-link" id="dlDel" hidden>Remove my details</button></div></form>`;
     const msg = (t, bad) => { const m = $("dlMsg"); if (m){ m.textContent = t; m.classList.toggle("bad", !!bad); } };
     const fill = v => { const f = $("dlForm"); for (const k of Object.keys(v)) if (f.elements[k]) f.elements[k].value = v[k] || ""; };
