@@ -211,6 +211,7 @@
   .dl-f input{padding:6px 12px}
 }
 .ac-link[hidden],.ac-tok:empty{display:none}
-.ac-sub img{height:1.15em;width:auto;vertical-align:-.22em;margin:0 4px}
+.ac-sub{white-space:nowrap}
+.ac-sub img{display:inline-block;height:1.15em;width:auto;vertical-align:-.22em;margin:0 4px}
 .ac-note{margin:8px 0 0;font-size:13px;color:#9cc0ff}
 @media (min-width:1180px){.ac-hero .ac-note{grid-column:2;margin-top:5px}}
