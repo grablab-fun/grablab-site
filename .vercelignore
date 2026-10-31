@@ -16,3 +16,5 @@ assets/play/_*
 wallet-src/
 lab/*.js
 
+
+_de-*.html
