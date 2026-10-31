@@ -178,7 +178,7 @@ body:has(.ac-room) .footer{display:none}
   .ac-tok{font-size:13px}
 
   .ac-stats{grid-area:stats;margin:0;gap:12px}
-  .ac-stats div{justify-content:center;padding:clamp(8px,1.4vh,14px) 6px;border-radius:24px}
+  .ac-stats div{justify-content:space-between;padding:clamp(14px,2.2vh,24px) 6px;border-radius:24px}
   .ac-stats img{height:clamp(28px,4.4vh,40px);margin-bottom:3px}
   .ac-stats b{font-size:clamp(28px,4.2vh,38px)}
   .ac-stats span{margin-top:2px;font-size:12.5px}
