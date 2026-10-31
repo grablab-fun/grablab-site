@@ -4,7 +4,7 @@
   const API = "https://grablab-bot.grablab.workers.dev";
   const KEY = "BCHp775DXgwdChbbR9fCMnkTu26leCJ63t7tpfNBBB_wmCFzc8vv-ppl4rvS4CKsD71Lk6X7jjJFWBAerOVOC-c";
   const STORE = "gl_notify", TG = "https://t.me/Grablab_news_bot?start=all";
-  const CATS = [["launch","Launches","10 minutes before a drop"],["quest","Quests","New plays to earn"],["news","News","Big stuff, weekly at most"]];
+  const CATS = [["launch","Launches","10 minutes before a drop"],["quest","Quests","New plays to earn"],["news","News","Big stuff, never spam"]];
   const load = () => { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch(e){ return {}; } };
   const save = o => { try { localStorage.setItem(STORE, JSON.stringify(o)); } catch(e){} };
   const ua = navigator.userAgent;
@@ -24,7 +24,7 @@
   const switches = cats => CATS.map(([k, n, d]) => `<label class="nv-sw"><input type="checkbox" data-c="${k}" ${cats.includes(k) ? "checked" : ""}/><i></i><span><b>${n}</b><small>${d}</small></span></label>`).join("");
   const tgRow = `<a class="nv-tg" href="${TG}" target="_blank" rel="noopener"><img src="assets/sub/n-plane.webp" alt="" /><span><b>Prefer Telegram?</b><small>Same pings from our bot</small></span></a>`;
   /* the browser offers the prompt only sometimes, for example not right after a removal: then say where the option lives */
-  const installRow = () => standalone ? "" : installEvt ? `<button type="button" class="nv-install" data-act="install"><img src="assets/sub/n-app.webp" alt="" /><span><b>Install Grablab</b><small>Opens like an app</small></span></button>` : `<div class="nv-install"><img src="assets/sub/n-app.webp" alt="" /><span><b>Install Grablab</b><small>Browser menu, then Install</small></span></div>`;
+  const installRow = () => standalone ? "" : installEvt ? `<button type="button" class="nv-install" data-act="install"><img src="assets/sub/n-app.webp" alt="" /><span><b>Install Grablab</b><small>Opens like an app</small></span></button>` : `<a class="nv-install" href="/notify#setup" data-act="close"><img src="assets/sub/n-app.webp" alt="" /><span><b>Install Grablab</b><small>See how, step by step</small></span></a>`;
 
   function body(){
     if (needsHome) return `<ol class="nv-steps"><li><span>Tap <b>Share</b></span></li><li><span><b>Add to Home Screen</b></span></li><li><span>Open it, tap the <b>bell</b></span></li></ol><p class="nv-note">iOS 16.4 or newer</p>${tgRow}`;
