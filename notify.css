@@ -44,8 +44,8 @@
 
 /* the guide */
 .ng{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:clamp(110px,14vw,150px) 0 70px}
-.ng-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center}
-.ng-hero h1{font-family:"Anton",sans-serif;font-weight:400;font-size:clamp(52px,9vw,112px);line-height:1.04;text-transform:uppercase;margin:0}
+.ng-hero{display:grid;grid-template-columns:1.5fr 1fr;gap:30px;align-items:center}
+.ng-hero h1{font-family:"Anton",sans-serif;font-weight:400;font-size:clamp(40px,6.3vw,82px);line-height:1.1;white-space:nowrap;text-transform:uppercase;margin:0}
 .ng-hero p{color:var(--ink-2);font-size:clamp(16px,1.6vw,19px);margin:16px 0 24px}
 .ng-lead span{display:block;white-space:nowrap}
 .ng-hero .nv-go{width:auto;display:inline-block;padding:16px 34px;margin:0}
@@ -118,7 +118,7 @@
 .ng-foot small{color:var(--ink-2);font-size:13.5px}
 @media (max-width:800px){.ng-flow,.ng-flow.n4,.ng-flow.n3,.ng-flow.n3:has(.web),.ng-flow.n4:has(.web){grid-template-columns:repeat(2,minmax(0,1fr))}.ng-foot .nv-go{width:100%}}
 @media (prefers-reduced-motion:reduce){.dv .hot,.dv .pg .hotimg,.ng-pane.on{animation:none}}
-@media (max-width:800px){.ng-lead span{display:inline;white-space:normal}.ng-hero{grid-template-columns:1fr}.ng-art{height:220px;order:-1}.ng-art .a{left:38%}.ng-pings{grid-template-columns:1fr}.ng-hero .nv-go{display:block;width:100%}}
+@media (max-width:800px){.ng-hero h1{font-size:11.2vw}.ng-lead span{display:inline;white-space:normal}.ng-hero{grid-template-columns:1fr}.ng-art{height:220px;order:-1}.ng-art .a{left:38%}.ng-pings{grid-template-columns:1fr}.ng-hero .nv-go{display:block;width:100%}}
 
 /* footer legal row */
 .foot-legal{display:inline-flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
