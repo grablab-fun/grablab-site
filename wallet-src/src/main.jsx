@@ -21,7 +21,7 @@ const RPC = "solana-rpc.publicnode.com";
 const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0)), tob64 = u => btoa(String.fromCharCode(...u));
 
 const listeners = new Set();
-let current = null;
+let current = null, previous = null, standardNow = [];
 function emit(addr){ current = addr; listeners.forEach(f => { try { f(addr); } catch (e) {} }); }
 const api = { connect(){}, email(){}, logout(){}, sign(){ return Promise.reject(new Error("no wallet")); }, signTx(){ return Promise.reject(new Error("no wallet")); }, has(){ return false; }, get address(){ return current; }, onChange(f){ listeners.add(f); f(current); return () => listeners.delete(f); } };
 
@@ -32,14 +32,23 @@ function firstAddress(user){
   return (ext || w[0] || user.wallet || {}).address || null;
 }
 
+/* a wallet that shares several accounts may list the old one first: after a switch, take the other one */
+function picked(addr){
+  const old = previous; previous = null;
+  if (addr !== old) return addr;
+  const w = standardNow.find(s => s.accounts?.some(a => a.address === addr));
+  return w?.accounts.find(a => a.address !== old)?.address || addr;
+}
+
 function Bridge(){
   const { ready, authenticated, user, login } = usePrivy();
   const { logout } = useLogout({ onSuccess: () => emit(null) });
-  const { connectWallet } = useConnectWallet({ onSuccess: ({ wallet }) => emit(wallet.address) });
+  const { connectWallet } = useConnectWallet({ onSuccess: ({ wallet }) => emit(picked(wallet.address)) });
   const { wallets } = useSolanaWallets();
   const { signMessage } = useSignMessage();
   const { signTransaction } = useSignTransaction();
   const { wallets: standard } = useStandardWallets();
+  standardNow = standard;
 
   useEffect(() => {
     api.connect = id => IDS[id]
@@ -48,7 +57,7 @@ function Bridge(){
     api.email = email => login(email ? { loginMethods:["email"], prefill:{ type:"email", value:email } } : { loginMethods:["email"] });
     /* also drop the connection inside the wallet (MetaMask, Phantom...): otherwise the next connect silently hands back the same account */
     api.logout = async () => {
-      emit(null);
+      previous = current; emit(null);
       await Promise.all(standard.filter(w => w.accounts?.length).map(w => w.features["standard:disconnect"]?.disconnect().catch(() => {})));
       return logout();
     };

@@ -53,7 +53,7 @@
       <span class="ac-k">${t ? `${e.tier} tier` : "No tier yet"}</span>
       <h1 class="chrome">Your account.</h1>
       <div class="ac-addr"><code title="${esc(addr)}">${esc(shorten(addr))}</code><button type="button" data-a="copy">Copy</button><button type="button" data-a="switch">Switch wallet</button><button type="button" data-a="out">Disconnect</button></div>
-      ${same ? `<p class="ac-note">Same account. Pick another one inside your wallet, then switch again.</p>` : ""}
+      ${same ? `<p class="ac-note"><span>Your wallet gave the same account.</span><span>Disconnect grablab.fun inside the wallet, then switch again.</span></p>` : ""}
     </section>
     <section class="glass ac-card ac-bal">
       <h2>Your balance</h2>
@@ -74,7 +74,7 @@
       ${Swap.html()}
     </section>
     <section class="ac-grid">
-      <div class="glass ac-card" id="acVault"><img src="assets/sub/vault.webp" alt="" /><h2>Your capsules</h2><div id="acCapList"></div><a class="nv-go" href="participate.html">Find a drop</a></div>
+      <div class="glass ac-card" id="acVault"><img src="assets/sub/vault.webp" alt="" /><h2>Your capsules</h2><div id="acCapList"></div><a class="nv-go" href="participate.html#app">Find a drop</a></div>
       <div class="glass ac-card" id="acNext"><img src="assets/sub/a-cal.webp" alt="" /><h2>Next drops</h2><div id="acDrops"></div></div>
     </section>
     <section class="glass ac-card" id="delivery">
@@ -310,7 +310,7 @@
       async paint(addr){
         const box = $("acShip"), me = mine(addr); if (!box) return;
         if (!me){
-          if (state !== "gate"){ state = "gate"; box.innerHTML = `<button type="button" class="nv-go" id="dlSign">Verify wallet</button><p class="ac-empty" style="margin-top:8px">One signature, so only you can see them.</p>`; }
+          if (state !== "gate"){ state = "gate"; box.innerHTML = `<button type="button" class="nv-go" id="dlSign">Verify wallet</button>`; }
           return;
         }
         if (state === "form") return;
