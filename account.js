@@ -33,6 +33,9 @@
     if (pg) pg.textContent = n.on ? (n.cats || []).map(c => CATS[c]).filter(Boolean).join(", ") : "Off on this device";
     const adm = $("acAdmin");
     if (adm) adm.innerHTML = me && me.role === "admin" ? `<section class="glass ac-admin"><iframe src="/api/v1/admin/ui" title="Admin" id="adminFrame"></iframe></section>` : "";
+    /* the room sits under the panel: a link in the hero leads to it */
+    const go = $("acAdminGo"), row = root.querySelector(".ac-addr");
+    if (me && me.role === "admin"){ if (!go && row) row.insertAdjacentHTML("beforeend", `<button type="button" id="acAdminGo" data-a="admin">Admin</button>`); } else if (go) go.remove();
     Ship.paint(addr);
   }
   function paintChain(){
@@ -325,6 +328,7 @@
   root.addEventListener("click", async e => {
     const b = e.target.closest("[data-a]"); if (!b) return;
     if (b.dataset.a === "out") window.glWallet.disconnect();
+    if (b.dataset.a === "admin") $("acAdmin").scrollIntoView({ behavior:"smooth" });
     if (b.dataset.a === "switch"){ switched = window.glWallet.addr; await window.glWallet.disconnect(); openWallet(b); }
     if (b.dataset.a === "copy" || b.dataset.a === "deposit"){ const was = b.textContent; try { await navigator.clipboard.writeText(window.glWallet.addr); b.textContent = "Copied"; setTimeout(() => { b.textContent = was; }, 1400); } catch(err){} }
   });
