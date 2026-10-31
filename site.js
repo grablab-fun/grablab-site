@@ -532,11 +532,11 @@ window.glAuth = { me: null, busy: false,
     dispatchEvent(new CustomEvent("gl:auth")); return this.me;
   },
   async login(){
-    if (this.busy || !window.glWallet.addr) return null; this.busy = true;
+    if (this.busy || !window.glWallet.addr) return null; this.busy = true; this.why = null;
     try {
       const a = window.glWallet.addr, p = await window.glWallet.signer();
       const n = await (await fetch(API + "auth/nonce?wallet=" + encodeURIComponent(a), { credentials:"same-origin" })).json();
-      if (!n.message) return null;
+      if (!n.message){ this.why = n.error; return null; }
       const signature = await p.sign(n.message, a);
       const r = await fetch(API + "auth/verify", { method:"POST", credentials:"same-origin", headers:{ "content-type":"application/json" }, body: JSON.stringify({ wallet: a, message: n.message, signature }) });
       if (!r.ok) return null;
