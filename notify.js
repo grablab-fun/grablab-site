@@ -65,12 +65,16 @@
       const perm = await Notification.requestPermission();   /* first await: iOS needs it inside the tap */
       if (perm === "granted"){
         const reg = await navigator.serviceWorker.ready;
-        const sub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:b64(KEY) });
+        const join = () => reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:b64(KEY) });
+        const sub = await reg.pushManager.getSubscription() || await join().catch(() => new Promise(r => setTimeout(r, 900)).then(join));   /* the push service often fails once, then works */
         const r = await post("/push/subscribe", { sub:sub.toJSON(), cats:picked, ua:ua, hello:true });
         if (!r.ok) throw new Error(r.error);
         save({ on:true, cats:picked });
       }
-    } catch(e){ err = "Failed. Try again or use Telegram."; }
+    } catch(e){
+      console.warn("push", e);
+      err = e.name === "AbortError" ? "This browser blocks push. Try Chrome or use Telegram." : e.name === "TypeError" ? "Couldn't reach us. Try again or use Telegram." : "Failed. Try again or use Telegram.";
+    }
     busy = false; paint();
   }
   async function off(){

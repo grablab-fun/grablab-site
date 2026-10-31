@@ -4,9 +4,9 @@
 .nav-bell:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
 .nav-bell img{width:26px;height:auto;display:block}
 .nav-bell:not(.mm-bell),.nav-bell:not(.mm-bell):hover{border:0;background:none}
-/* in the menu island, after the last link */
-.nav-links .nav-bell{align-self:center;width:36px;height:36px;margin-left:calc(10px + (1 - var(--np,0)) * 2px)}
-.nav-links .nav-bell::before{content:"";position:absolute;left:-7px;top:9px;bottom:9px;width:1px;background:var(--line-2)}
+.ap-ping{all:unset;cursor:pointer;font-weight:700;color:#9cc0ff}
+.ap-ping:hover{color:var(--ink)}
+.ap-ping:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
 /* narrow desktops: the island tightens so the wallet stays on screen */
 @media (max-width:1120px){.isl.nav-links{gap:2px;padding-left:8px;padding-right:8px}.isl.nav-links a{padding:9px 8px;font-size:12px;letter-spacing:.08em}}
 .nav-bell.on::after{content:"";position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:#3b7bff;box-shadow:0 0 8px #3b7bff}

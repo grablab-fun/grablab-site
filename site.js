@@ -82,7 +82,6 @@ function navHTML(){
       ${link("anatomy.html","nav.anatomy","anatomy")}
       ${link("rent.html","nav.rent","rent")}
       ${link("participate.html","nav.participate","participate")}
-      <button type="button" class="nav-bell" data-notify aria-label="Notifications"><img src="assets/sub/n-bell.webp" alt="" /></button>
     </nav>
     <div class="nav-right">
       <span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /><img src="assets/wallets/metamask.png" alt="" /><img src="assets/wallets/okx.png" alt="" /></span></button></span>
@@ -617,6 +616,7 @@ const fmtUsd = v => v == null ? "" : "$" + v.toLocaleString("en-US", { minimumFr
     if (!pop) return;
     const c = window.glChain.addr === window.glWallet.addr ? window.glChain.data : null, m = window.glAuth.me, a = window.glWallet.addr;
     const me = m && m.wallet === a ? m : null, e = glLevel(me);
+    let pings = false; try { pings = !!JSON.parse(localStorage.getItem("gl_notify") || "{}").on; } catch (err) {}
     pop.innerHTML = `<div class="ap-top"><img src="assets/chains/usdc.png" alt="" /><div><b>${c ? fmtUsdc(c.usdc) : "..."} USDC</b><span>${c ? "To play with" : "Reading balance"}</span></div></div>
       ${c ? `<p class="ap-row"><span>SOL for fees</span><em>${fmtSol(c.sol)}</em></p>` : ""}
       ${c && c.otherUsd >= .01 ? `<p class="ap-row"><span>Other tokens</span><em>${fmtUsd(c.otherUsd)}</em></p>` : ""}
@@ -624,6 +624,7 @@ const fmtUsd = v => v == null ? "" : "$" + v.toLocaleString("en-US", { minimumFr
       <p class="ap-row"><span>Free plays</span><em>${e.tier ? glTiers[e.tier].plays : 0}</em></p>
       <p class="ap-row"><span>Plays</span><em>${me ? me.plays : 0}</em></p>
       <p class="ap-row"><span>Capsules</span><em>${me ? me.capsules.length : 0}</em></p>
+      <p class="ap-row"><span>Notifications</span><button type="button" class="ap-ping" data-notify>${pings ? "Manage" : "Turn on"}</button></p>
       <a class="nv-go" href="account.html#swap">Add USDC</a>
       <div class="ap-foot"><a href="account.html">My account</a><button type="button" data-ap="out">Disconnect</button></div>`;
   };
@@ -636,7 +637,7 @@ const fmtUsd = v => v == null ? "" : "$" + v.toLocaleString("en-US", { minimumFr
       pop = document.createElement("div"); pop.className = "acct-pop"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", "Your wallet"); document.body.appendChild(pop);
       pop.addEventListener("pointerenter", () => clearTimeout(timer)); pop.addEventListener("pointerleave", later);
       pop.addEventListener("focusout", e => { if (!pop.contains(e.relatedTarget)) later(); });
-      pop.addEventListener("click", e => { if (e.target.dataset.ap === "out"){ hide(); window.glWallet.disconnect(); } });
+      pop.addEventListener("click", e => { if (e.target.dataset.ap === "out"){ hide(); window.glWallet.disconnect(); } else if (e.target.closest("[data-notify]")) hide(); });
     }
     const r = btn.getBoundingClientRect();
     pop.style.top = r.bottom + 10 + "px"; pop.style.right = Math.max(12, innerWidth - r.right) + "px";
