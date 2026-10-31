@@ -84,7 +84,7 @@ function navHTML(){
       ${link("participate.html","nav.participate","participate")}
     </nav>
     <div class="nav-right">
-      <span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /><img src="assets/wallets/metamask.png" alt="" /><img src="assets/wallets/okx.png" alt="" /></span></button></span>
+      <button type="button" class="nav-bell" data-notify aria-label="Notifications"><img src="assets/sub/n-bell.webp" alt="" /></button><span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /><img src="assets/wallets/metamask.png" alt="" /><img src="assets/wallets/okx.png" alt="" /></span></button></span>
       <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false"><span class="bt"><span>Menu</span><span>Close</span></span><svg class="bi" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.33 16V0h1.34v16z"/><path d="M16 8.67H0V7.33h16z"/></svg></button>
     </div>
   </div>
@@ -136,7 +136,7 @@ function footHTML(){
   </div>
   <div class="foot-bottom">
     <span>© 2026 Grablab. Not financial advice.</span>
-    <span class="foot-legal"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><button type="button" data-consent-open>Cookie settings</button></span>
+    <span class="foot-legal"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><a href="notify.html">Notifications</a><button type="button" data-consent-open>Cookie settings</button></span>
   </div>`;
 }
 

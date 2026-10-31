@@ -355,7 +355,7 @@
       const id = c.querySelector(".uc-cta").dataset.id, set = on.includes(id);
       c.classList.toggle("rem", set); c.querySelector(".uc-cta").innerHTML = set ? CHECK + "Reminder set" : "Remind me";
     }); };
-    root.querySelectorAll(".uc-cta").forEach(b => b.addEventListener("click", () => { const a = getRem(); if (!a.includes(b.dataset.id)){ a.push(b.dataset.id); setRem(a); } paintRem(); }));
+    root.querySelectorAll(".uc-cta").forEach(b => b.addEventListener("click", () => { const a = getRem(); if (!a.includes(b.dataset.id)){ a.push(b.dataset.id); setRem(a); } paintRem(); if (window.glNotify && !glNotify.isOn()) glNotify.open("launch"); }));
     root.querySelectorAll(".uc-cancel").forEach(b => b.addEventListener("click", () => { setRem(getRem().filter(x => x !== b.dataset.id)); paintRem(); }));
     paintRem();
     setInterval(() => { if (root.hidden || view !== "pick") return; root.querySelectorAll(".uc-clock").forEach(c => { c.querySelector(".uc-tiles").innerHTML = clockTiles(+c.dataset.t); }); }, 1000);

@@ -19,10 +19,17 @@
 <meta name="twitter:description" content="Everything grablab.fun stores in your browser, and how to change your choice." />
 <meta name="twitter:image" content="https://grablab.fun/assets/og-share.jpg?v=4" />
 <link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
-<link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
+<link rel="manifest" href="/assets/app/manifest.webmanifest" />
+<meta name="theme-color" content="#050918" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Grablab" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-icon" href="assets/app/apple-180.png" />
 <link rel="preload" href="assets/fonts/anton-400-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="assets/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
+<link rel="stylesheet" href="notify.css?v=1" />
 <link rel="stylesheet" href="styles.css?v=nv8" />
 <link rel="stylesheet" href="pages.css?v=c23" />
 <link rel="stylesheet" href="sub.css?v=c15" />
@@ -62,6 +69,7 @@
               <tr><td><code>gl_consent</code></td><td>Local storage</td><td>Remembers your cookie choice and when you made it, so we don't ask again.</td><td>Until you change it or clear your browser</td><td>Essential</td></tr>
               <tr><td><code>gl_loaded</code></td><td>Session storage</td><td>Shows the loading intro only once per visit.</td><td>Until you close the tab</td><td>Essential</td></tr>
               <tr><td><code>gl_reminders</code></td><td>Local storage</td><td>The upcoming drops you asked to be reminded of in the simulator.</td><td>Until you cancel them or clear your browser</td><td>Functional</td></tr>
+              <tr><td><code>gl_notify</code></td><td>Local storage</td><td>Remembers that you turned on notifications on this device, and for which topics.</td><td>Until you turn them off or clear your browser data</td><td>Essential</td></tr>
               <tr><td><code>gl_lite</code></td><td>Local storage</td><td>Remembers that this device runs the lighter visuals, so pages stay smooth.</td><td>Until you clear your browser</td><td>Essential</td></tr>
               <tr><td><code>gc_lang</code></td><td>Local storage</td><td>An old language setting. The site now deletes it automatically if it finds it.</td><td>Deleted on your next visit</td><td>Essential</td></tr>
               <tr><td><code>gl_wallet</code></td><td>Local storage</td><td>Remembers that you connected a wallet, so the wallet session is restored on your next visit.</td><td>Until you disconnect or clear your browser</td><td>Essential</td></tr>
@@ -89,8 +97,9 @@
   </div>
 </main>
 <footer id="site-footer"></footer>
-<script src="site.js?v=kp5"></script>
+<script src="site.js?v=kp6"></script>
 <script src="consent.js?v=9"></script>
 <script src="legal.js?v=1"></script>
+<script src="notify.js?v=1" defer></script>
 </body>
 </html>

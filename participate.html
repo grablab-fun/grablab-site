@@ -19,10 +19,17 @@
 <meta name="twitter:description" content="Hold the token, open the stream, drive a real claw. The prize lands in your wallet." />
 <meta name="twitter:image" content="https://grablab.fun/assets/og-share.jpg?v=4" />
 <link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
-<link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
+<link rel="manifest" href="/assets/app/manifest.webmanifest" />
+<meta name="theme-color" content="#050918" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Grablab" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-icon" href="assets/app/apple-180.png" />
 <link rel="preload" href="assets/fonts/anton-400-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="assets/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
+<link rel="stylesheet" href="notify.css?v=1" />
 <link rel="stylesheet" href="styles.css?v=nv8" />
 <link rel="stylesheet" href="pages.css?v=c23" />
 <link rel="stylesheet" href="sub.css?v=c15" />
@@ -145,17 +152,18 @@
 
   <section class="callout glass reveal">
     <h2 class="chrome">Be early.</h2>
-    <a href="https://x.com/grablabfun" target="_blank" rel="noopener" class="btn btn-primary big">Get notified on X</a>
+    <button type="button" data-notify="launch" class="btn btn-primary big">Never miss a drop</button>
   </section>
 </main>
 <footer id="site-footer"></footer>
-<script src="site.js?v=kp5"></script>
+<script src="site.js?v=kp6"></script>
 <script src="consent.js?v=9"></script>
 <script src="sub.js?v=c2"></script>
-<script src="sim.js?v=c9"></script>
+<script src="sim.js?v=c10"></script>
 <script>/* size the lab title so it spans the whole card */
 (function(){ const b = document.querySelector(".ph-cta .lab-go b"), go = document.querySelector(".ph-cta .lab-go"); if (!b) return;
   const fit = () => { if (innerWidth <= 620){ b.style.removeProperty("--labfs"); return; } b.style.setProperty("--labfs", "40px"); const k = go.clientWidth/b.scrollWidth; b.style.setProperty("--labfs", Math.max(20, Math.min(64, 40*k*.99)) + "px"); };
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(fit); addEventListener("resize", fit); })();</script>
+<script src="notify.js?v=1" defer></script>
 </body>
 </html>

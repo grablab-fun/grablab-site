@@ -22,7 +22,7 @@
       "permanent": false
     },
     {
-      "source": "/((?!maintenance|assets/|api/|docs/|lab/|preview).*)",
+      "source": "/((?!maintenance|assets/|api/|docs/|lab/|preview|notify|sw\\.js|styles\\.css|pages\\.css|sub\\.css|site\\.js|consent\\.js).*)",
       "destination": "/maintenance",
       "permanent": false,
       "missing": [
@@ -49,6 +49,15 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
         }
       ]
     },
