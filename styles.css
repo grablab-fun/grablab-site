@@ -400,11 +400,26 @@ body:not(.menu-open) .mm-links a{transition-delay:0s!important}
   --privy-border-radius-mdlg:16px !important;
   --privy-border-radius-lg:26px !important;
   --privy-shadow-modal:0 50px 140px rgba(0,0,0,.75),0 0 60px rgba(59,123,255,.12) !important;
+  --privy-color-icon-muted:#7db0ff !important;
+  --privy-color-icon-success:#7db0ff !important;
+  --privy-color-success:#7db0ff !important;
+  --privy-color-success-dark:#3b7bff !important;
+  --privy-color-success-light:rgba(125,176,255,.16) !important;
+  --privy-color-success-bg:rgba(125,176,255,.12) !important;
 }
 
 
 
 
+/* the panel itself: same navy glass as the site's cards, chrome title, site fonts on every screen */
+#privy-modal-content{--privy-color-background:transparent;font-family:var(--font) !important;background:radial-gradient(120% 62% at 50% 0%,rgba(59,123,255,.26),transparent 64%),linear-gradient(170deg,#121b47,#080d24) !important;border:1px solid rgba(156,192,255,.28) !important;box-shadow:var(--privy-shadow-modal),inset 0 1px 0 rgba(255,255,255,.1) !important;animation:pop .3s cubic-bezier(.3,1.2,.5,1)}
+#privy-modal-content *{font-family:inherit !important}
+#privy-modal-content h3{font-family:var(--display) !important;font-weight:400 !important;font-size:30px !important;line-height:1.08 !important;letter-spacing:.008em;text-transform:uppercase;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent !important}
+#privy-modal-content h3 + p{color:var(--ink-2) !important;font-size:14.5px !important;line-height:1.5 !important}
+#privy-dialog-backdrop{background:rgba(5,8,22,.62) !important}
+/* styled-components names: recheck these two after a wallet-src rebuild */
+#privy-modal-content [class*="sc-fXaxWs"]{background:none !important}
+#privy-modal-content span[class*="sc-fFSSEp"]:not([class*="sc-bkblbc"]){border-top-color:#7db0ff !important;border-right-color:#7db0ff !important;filter:drop-shadow(0 0 6px rgba(125,176,255,.7))}
 .wallet-or{display:flex;align-items:center;gap:12px;margin:14px 2px 4px;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3)}
 .wallet-or::before,.wallet-or::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(180,186,255,.22),transparent)}
 .wallet-mail{display:flex;align-items:center;gap:12px;height:66px;padding:0 9px 0 14px;border-radius:14px;border:1px solid var(--line);background:rgba(244,243,238,.025);transition:border-color .2s,box-shadow .2s,background .2s}

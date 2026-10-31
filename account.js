@@ -47,7 +47,7 @@
   });
   const show = () => { const a = window.glWallet && window.glWallet.addr; if (a) render(a); else gate(false); };
   addEventListener("gl:wallet", show);
-  let saved = false; try { saved = !!localStorage.getItem("gl_wallet"); } catch(e){}
-  if (saved){ gate(true); setTimeout(() => { if (!(window.glWallet && window.glWallet.addr)) gate(false); }, 7000); } else gate(false);
+  let legacy = false; try { legacy = localStorage.getItem("gl_wallet") === "1"; } catch(e){}
+  if (legacy && !(window.glWallet && window.glWallet.addr)){ gate(true); setTimeout(() => { if (!window.glWallet.addr) gate(false); }, 7000); } else show();
   fetch("assets/drops.json?m=" + Math.floor(Date.now()/6e4)).then(r => r.json()).then(f => { drops = f.drops || []; if (window.glWallet && window.glWallet.addr) render(window.glWallet.addr); }).catch(() => {});
 })();

@@ -418,12 +418,13 @@ window.glBack = (function(){
 let privy = null, privyAddr = null;
 function loadPrivy(){
   if (!privy) privy = import("./assets/privy/wallet.js").then(() => {
-    window.GLPrivy.onChange(a => { privyAddr = a; try { a ? localStorage.setItem("gl_wallet", "1") : localStorage.removeItem("gl_wallet"); } catch (e) {} onConnected(a); });
+    /* Privy reports null on start for a wallet that only connected, so null never signs anyone out: only Disconnect does */
+    window.GLPrivy.onChange(a => { if (!a) return; privyAddr = a; try { localStorage.setItem("gl_wallet", a); } catch (e) {} onConnected(a); });
     return window.GLPrivy;
   }).catch(() => { privy = null; return null; });
   return privy;
 }
-try { if (localStorage.getItem("gl_wallet")) (window.requestIdleCallback || setTimeout)(loadPrivy); } catch (e) {}
+try { if (localStorage.getItem("gl_wallet") === "1") (window.requestIdleCallback || setTimeout)(loadPrivy); } catch (e) {}
 /* speed: fetch the Privy bundle in the background once the page is idle (download only, nothing runs),
    then start it for real as soon as the pointer or focus heads for a Connect button */
 addEventListener("load", () => setTimeout(() => (window.requestIdleCallback || setTimeout)(() => {
@@ -456,7 +457,7 @@ function buildWalletList(){
     const out = document.createElement("button");
     out.className = "wallet-item wallet-out";
     out.innerHTML = `<span class="wi-ic wi-dot"></span><span class="wi-name">${shorten(privyAddr)}</span><span class="wi-meta">Disconnect</span>`;
-    out.addEventListener("click", async () => { const p = await loadPrivy(); if (p) p.logout(); closeWallet(); });
+    out.addEventListener("click", () => { window.glWallet.disconnect(); closeWallet(); });
     walletList.appendChild(out);
   }
   WALLETS.forEach(w=>{
@@ -522,16 +523,22 @@ async function chooseWallet(w, detected){
   if (!addr) return; closeWallet(); onConnected(addr);
 }
 function shorten(a){ return a && a.length>12 ? a.slice(0,6)+"…"+a.slice(-4) : a; }
-window.glWallet = { addr:null, async disconnect(){ if (privyAddr){ const p = await loadPrivy(); if (p) p.logout(); } else onConnected(null); } };
-function onConnected(addr){
+window.glWallet = { addr:null, async disconnect(){
+  try { localStorage.removeItem("gl_wallet"); } catch (e) {}
+  privyAddr = null; onConnected(null);
+  const p = await loadPrivy(); if (p) try { await p.logout(); } catch (e) {}
+} };
+function onConnected(addr, quiet){
   window.glWallet.addr = addr || null;
   document.documentElement.classList.toggle("is-in", !!addr);
   document.querySelectorAll("#connectBtn, #connectBtnM").forEach(b=> (b.querySelector(".f") || b).textContent = addr ? shorten(addr) : t("cta.connect"));
   document.querySelectorAll("#connectBtn2").forEach(b=> { b.textContent = addr ? "My account" : "Connect wallet"; });
   dispatchEvent(new CustomEvent("gl:wallet"));
   if (!addr) return;
-  const input = document.getElementById("addrInput"); if (input){ input.value = addr; renderResult(addr); document.getElementById("check")?.scrollIntoView({behavior:"smooth",block:"center"}); }
+  const input = document.getElementById("addrInput"); if (input){ input.value = addr; renderResult(addr); if (!quiet) document.getElementById("check")?.scrollIntoView({behavior:"smooth",block:"center"}); }
 }
+/* back on the site: the public address is all the site needs, it signs nothing */
+try { const saved = localStorage.getItem("gl_wallet"); if (saved && saved !== "1") onConnected(saved, true); } catch (e) {}
 document.addEventListener("click", e=>{
   const cb = e.target.closest("#connectBtn, #connectBtn2, #connectBtnM");
   if (cb){ closeMenu(); if (window.glWallet.addr) location.href = "account.html"; else openWallet(cb); }
