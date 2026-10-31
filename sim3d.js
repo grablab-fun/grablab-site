@@ -169,7 +169,7 @@ export function createSim3D(canvas, pips, opts = {}){
       const top = []; for (let row = 0; row < n - 1; row++){ const y = -L + d/2 + row*d;
         for (let c = 0; c < n - 1; c++){ const x = -L + d/2 + c*d;
           if (hole(x, y, .03)) continue;
-          if (r() > .75 + .2*((y + L)/(2*L))) continue;
+          if (r() > .82 + .14*((y + L)/(2*L))) continue;
           const [gx, gz] = toG(x + (r() - .5)*.004, y + (r() - .5)*.004); top.push([gx, gz, 1]); } }
       spots.top = top; }
     for (let row = 0; row < n; row++){ const y = -L + row*d;
