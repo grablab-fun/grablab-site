@@ -180,3 +180,10 @@
   body.menu-open .nav-bell.mm-bell{opacity:1}
   .nav-bell.mm-bell.on::after{top:10px;right:12px}
 }
+
+/* phones: the legal row stays on one line */
+@media (max-width:640px){
+  .foot-bottom .foot-legal{display:flex!important;flex-wrap:nowrap!important;justify-content:space-between;gap:0;width:100%;font-size:clamp(9px,2.95vw,12px)!important;letter-spacing:0!important;white-space:nowrap}
+  .foot-bottom .foot-legal>*{font-size:inherit!important;letter-spacing:0!important;white-space:nowrap;margin:0!important;padding:0!important;border:0!important}
+  .foot-bottom .foot-legal>*::before,.foot-bottom .foot-legal>*::after{content:none!important}
+}
