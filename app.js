@@ -1,18 +1,17 @@
 /* ============================================================
    GRABLAB : home-only interactions
    (nav, wallet, i18n, telemetry, transitions, reveal live in site.js)
-   - inside the machine: scroll steps the countdown 1 to 5 beside the exploding machine
+   - inside the machine: scroll turns the ring of five proofs round the exploding machine
    ============================================================ */
 (function inside(){
-  const root = document.getElementById("inside"), num = document.getElementById("inNum"), st = [...document.querySelectorAll("#inStage .in-s")], dots = [...document.querySelectorAll("#inDots i")];
-  if (!root || !num) return;
+  const root = document.getElementById("inside"), orb = document.getElementById("inOrb"), num = document.getElementById("inNum"), sats = [...document.querySelectorAll("#inOrb .sat")];
+  if (!root || !orb) return;
   let cur = 0;
   function update(){
     if (innerWidth <= 900) return;
     const r = root.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top/(r.height - innerHeight))), i = Math.min(4, Math.floor(p*5));
     if (i === cur) return; cur = i;
-    num.textContent = i + 1; num.classList.remove("tick"); void num.offsetWidth; num.classList.add("tick");
-    st.forEach((s, k) => s.classList.toggle("on", k === i)); dots.forEach((d, k) => d.classList.toggle("on", k === i));
+    orb.style.setProperty("--r", (-i*72) + "deg"); sats.forEach((s, k) => s.classList.toggle("on", k === i)); num.textContent = i + 1;
   }
   addEventListener("scroll", update, { passive:true }); addEventListener("resize", update); update();
 })();

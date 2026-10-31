@@ -162,19 +162,21 @@ export function createSim3D(canvas, pips, opts = {}){
 
   /* capsule spots for the game: a loose hex pack on the floor, jittered, clear of the prize hole and its walls */
   function spots(){
-    const out = [], d = 2*RM + .0055, dy = d*Math.sqrt(3)/2, L = .475 - RM - .003; let sd = 5; const r = () => (sd = (sd*16807) % 2147483647)/2147483647;   // right up to the walls (the skins sit at 475 from the centre)
+    /* a square pack that spans the floor wall to wall: the spacing is stretched a hair so the first and last rows and columns touch the skins (at 475 from the centre) */
+    const out = [], L = .475 - RM - .002, n = Math.floor(2*L/(2*RM + .003)) + 1, d = 2*L/(n - 1); let sd = 5; const r = () => (sd = (sd*16807) % 2147483647)/2147483647;
+    const hole = (x, y, m) => x > .229 - RM - m && y < -.229 + RM + m;
     if (opts.layer2){ /* recordings: a second, uneven layer resting in the hollows of the first, thinning toward the front */
-      const top = []; for (let row = 0; ; row++){ const y = -L + dy/2 + row*dy; if (y > L - dy/2) break;
-        for (let c = 0; ; c++){ const x = -L + d/2 + (row % 2 ? d/2 : 0) + c*d; if (x > L - d/2) break;
-          if (x > .229 - RM - .03 && y < -.229 + RM + .03) continue;
+      const top = []; for (let row = 0; row < n - 1; row++){ const y = -L + d/2 + row*d;
+        for (let c = 0; c < n - 1; c++){ const x = -L + d/2 + c*d;
+          if (hole(x, y, .03)) continue;
           if (r() > .75 + .2*((y + L)/(2*L))) continue;
-          const [gx, gz] = toG(x + (r() - .5)*.006, y + (r() - .5)*.006); if (gz < .02 || gz > .98 || gx < -.98 || gx > .98) continue; top.push([gx, gz, 1]); } }
+          const [gx, gz] = toG(x + (r() - .5)*.004, y + (r() - .5)*.004); top.push([gx, gz, 1]); } }
       spots.top = top; }
-    for (let row = 0; ; row++){ const y = -L + row*dy; if (y > L) break;
-      for (let c = 0; ; c++){ const x = -L + (row % 2 ? d/2 : 0) + c*d; if (x > L) break;
-        if (x > .229 - RM - .006 && y < -.229 + RM + .006) continue;
-        const jx = x + (r() - .5)*.005, jy = y + (r() - .5)*.005;            // loose and a little uneven, so the pile does not read as a grid
-        const [gx, gz] = toG(jx, jy); if (gz < .003 || gz > .997 || gx < -.996 || gx > .996) continue; out.push([gx, gz]); } }
+    for (let row = 0; row < n; row++){ const y = -L + row*d;
+      for (let c = 0; c < n; c++){ const x = -L + c*d;
+        if (hole(x, y, .004)) continue;
+        const e = (row === 0 || row === n - 1 || c === 0 || c === n - 1) ? .0015 : .004;   // the edge rows barely move, so they stay against the walls
+        const [gx, gz] = toG(x + (r() - .5)*e, y + (r() - .5)*e); out.push([gx, gz]); } }
     return out;
   }
   return { draw, resize, spots, setMain, get main(){ return main; }, ok:() => !failed };

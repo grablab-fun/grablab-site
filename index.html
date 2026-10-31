@@ -22,7 +22,7 @@
 <link rel="apple-touch-icon" href="assets/brand/favicon-180.png" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
 <link rel="stylesheet" href="styles.css?v=nv7" />
-<link rel="stylesheet" href="pages.css?v=c13" />
+<link rel="stylesheet" href="pages.css?v=c14" />
 </head>
 <body data-page="home">
 <!-- PRELOADER : first open of the site (once per session); content is built by site.js into two door leaves -->
@@ -90,20 +90,26 @@
   </div>
 </section>
 
-<!-- INSIDE : the five parts that prove the play, one at a time, the machine opening in the middle (scroll driven, like the five proofs) -->
-<section class="inside-cd" id="inside">
-  <div class="in-pin">
-    <div class="in-head"><span class="kicker">Inside the machine</span><h2>Every part <span class="hl">has a job.</span></h2></div>
-    <div class="in-num"><b id="inNum">1</b><span>/5</span></div>
-    <div class="in-mach"><video id="heroVideo" class="av" data-webm="assets/inside-anatomy-alpha.webm?v=3" data-stacked="assets/inside-anatomy-stacked.mp4?v=3" poster="assets/inside-anatomy-poster.webp?v=3" autoplay muted loop playsinline preload="auto"></video></div>
-    <div class="in-stage" id="inStage">
-      <div class="in-s on"><img src="assets/icons/cabinet.webp" alt="" /><div><h3>A real claw</h3><p>Steel, acrylic, a 12 V claw.<br>Driven from your browser.</p></div></div>
-      <div class="in-s"><img src="assets/icons/gauge.webp" alt="" /><div><h3>Grip set on-chain</h3><p>Promised before you play.<br>Measured as you do.</p></div></div>
-      <div class="in-s"><img src="assets/icons/chip.webp" alt="" /><div><h3>It signs every play</h3><p>A secure chip on the board.<br>A key it can't fake.</p></div></div>
-      <div class="in-s"><img src="assets/icons/lens.webp" alt="" /><div><h3>Beam and camera</h3><p>Two witnesses to the drop.<br>Hashed together.</p></div></div>
-      <div class="in-s"><img src="assets/icons/wallet.webp" alt="" /><div><h3>Prize in your wallet</h3><p>Seconds. Or a refund.</p></div></div>
+<!-- INSIDE : the five proofs orbit the exploding machine; scroll turns the ring, the proof at the top lights -->
+<section class="inside-orb" id="inside">
+  <div class="st">
+    <div class="orb" id="inOrb">
+      <div class="sat on" style="--a:0deg"><div><img src="assets/icons/cabinet.webp" alt="" /><b>A real claw</b><small>Driven from your browser</small></div></div>
+      <div class="sat" style="--a:72deg"><div><img src="assets/icons/gauge.webp" alt="" /><b>Grip set on-chain</b><small>Promised, then measured</small></div></div>
+      <div class="sat" style="--a:144deg"><div><img src="assets/icons/chip.webp" alt="" /><b>It signs every play</b><small>A key it can't fake</small></div></div>
+      <div class="sat" style="--a:216deg"><div><img src="assets/icons/lens.webp" alt="" /><b>Beam and camera</b><small>The drop, proven</small></div></div>
+      <div class="sat" style="--a:288deg"><div><img src="assets/icons/wallet.webp" alt="" /><b>Prize in your wallet</b><small>Seconds. Or a refund</small></div></div>
     </div>
-    <div class="in-dots" id="inDots"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+    <div class="mach"><video id="heroVideo" class="av" data-webm="assets/inside-anatomy-alpha.webm?v=3" data-stacked="assets/inside-anatomy-stacked.mp4?v=3" poster="assets/inside-anatomy-poster.webp?v=3" autoplay muted loop playsinline preload="auto"></video></div>
+    <div class="head"><span class="kicker">Inside the machine</span><h2>Five parts that<br><span class="hl">can't lie.</span></h2></div>
+    <div class="num"><b id="inNum">1</b>/5</div>
+    <div class="mlist">
+      <div class="it"><img src="assets/icons/cabinet.webp" alt="" /><div><b>A real claw</b><small>Driven from your browser</small></div></div>
+      <div class="it"><img src="assets/icons/gauge.webp" alt="" /><div><b>Grip set on-chain</b><small>Promised, then measured</small></div></div>
+      <div class="it"><img src="assets/icons/chip.webp" alt="" /><div><b>It signs every play</b><small>A key it can't fake</small></div></div>
+      <div class="it"><img src="assets/icons/lens.webp" alt="" /><div><b>Beam and camera</b><small>The drop, proven</small></div></div>
+      <div class="it"><img src="assets/icons/wallet.webp" alt="" /><div><b>Prize in your wallet</b><small>Seconds. Or a refund</small></div></div>
+    </div>
   </div>
 </section>
 
@@ -148,6 +154,6 @@
 <script src="consent.js?v=9"></script>
 <script src="alpha-video.js?v=2"></script>
 <script src="alpha-any.js?v=2"></script>
-<script src="app.js?v=c4"></script>
+<script src="app.js?v=c5"></script>
 </body>
 </html>

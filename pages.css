@@ -989,35 +989,34 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
 @media(max-width:760px){.callout{grid-template-columns:1fr;text-align:left;min-height:0;padding-top:150px}.callout .co-art{position:absolute;left:0;right:0;top:0;height:150px;min-height:0}.callout .co-claw{top:10px;height:120px}.callout .co-line{display:none}.callout h2{font-size:clamp(32px,9vw,44px)}}
 @media(prefers-reduced-motion:reduce){.callout .co-claw,.callout .co-line,.callout .co-glow{animation:none}}
 
-/* ============ INSIDE THE MACHINE (Oct 31): the five proofs countdown, the machine opening in the middle. scroll drives it ============ */
-.inside-cd{position:relative;height:320vh}
-.inside-cd .in-pin{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.1fr) minmax(0,1.2fr);grid-template-rows:auto 1fr auto;align-items:center;column-gap:clamp(16px,3vw,48px);padding:11vh clamp(16px,4vw,48px) 6vh;max-width:1400px;margin:0 auto}
-.inside-cd .in-head{grid-column:1/-1;text-align:center;align-self:start}
-.inside-cd .in-head .kicker{text-align:center;font-size:11px;letter-spacing:.28em;color:#9cc0ff;margin-bottom:14px}
-.inside-cd .in-head h2{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(34px,5vw,84px);line-height:.92;letter-spacing:.005em;margin:0;background:none;color:var(--ink);filter:none;-webkit-text-fill-color:initial}
-.inside-cd .in-head h2 .hl{background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.inside-cd .in-num{display:flex;align-items:flex-end;justify-content:flex-end}
-.inside-cd .in-num b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(180px,22vw,340px);line-height:1.12;background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 30px rgba(5,9,24,.6))}
-.inside-cd .in-num b.tick{animation:inTick .55s cubic-bezier(.2,1.2,.3,1)}
-@keyframes inTick{0%{transform:translateY(14px);opacity:.2}100%{transform:none;opacity:1}}
-.inside-cd .in-num span{font-family:'Anton',Impact,sans-serif;font-size:clamp(40px,4vw,70px);line-height:1;color:var(--ink-3);margin:0 0 .55em .1em}
-.inside-cd .in-mach{position:relative;height:min(50vh,560px)}
-.inside-cd .in-mach video,.inside-cd .in-mach .av-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
-.inside-cd .in-stage{position:relative;height:260px}
-.inside-cd .in-s{position:absolute;inset:0;display:flex;align-items:center;gap:22px;opacity:0;transform:translateY(30px);transition:opacity .45s,transform .55s cubic-bezier(.2,.9,.3,1);pointer-events:none}
-.inside-cd .in-s.on{opacity:1;transform:none}
-.inside-cd .in-s img{height:120px;width:120px;object-fit:contain;flex:none;mix-blend-mode:screen;filter:drop-shadow(0 0 18px rgba(120,170,255,.35))}
-.inside-cd .in-s h3{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(24px,2.3vw,38px);line-height:1;margin:0 0 10px;white-space:nowrap}
-.inside-cd .in-s p{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin:0;line-height:1.7;white-space:nowrap}
-.inside-cd .in-dots{grid-column:1/-1;display:flex;justify-content:center;gap:10px}
-.inside-cd .in-dots i{width:46px;height:4px;border-radius:4px;background:rgba(180,186,255,.2);transition:.4s}
-.inside-cd .in-dots i.on{background:linear-gradient(90deg,#1f4fd1,#3b7bff 60%,#d6e4ff);box-shadow:0 0 12px rgba(59,123,255,.6)}
+/* ============ INSIDE THE MACHINE (Oct 31): ORBIT. the five proofs sit on a ring round the exploding machine; scroll turns the ring, the proof at the top lights ============ */
+.inside-orb{position:relative;height:320vh}
+.inside-orb .st{position:sticky;top:0;height:100vh;min-height:720px;overflow:hidden;display:grid;place-items:center}
+.inside-orb .mach{position:relative;width:min(56vh,500px);aspect-ratio:800/940;z-index:2}
+.inside-orb .mach video,.inside-orb .mach .av-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.inside-orb .orb{position:absolute;left:50%;top:50%;width:min(92vh,860px);aspect-ratio:1;transform:translate(-50%,-50%) rotate(var(--r,0deg));transition:transform 1.1s cubic-bezier(.2,.9,.2,1)}
+.inside-orb .orb::before{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(180,186,255,.18)}
+.inside-orb .orb::after{content:"";position:absolute;inset:14%;border-radius:50%;border:1px dashed rgba(180,186,255,.1)}
+.inside-orb .sat{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(min(92vh,860px) / -2)) rotate(calc(-1 * var(--a) - var(--r,0deg)))}
+.inside-orb .sat > div{position:absolute;left:-110px;top:-54px;width:220px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;opacity:.45;transform:scale(.8);transition:opacity .5s,transform .5s}
+.inside-orb .sat.on > div{opacity:1;transform:scale(1.08)}
+.inside-orb .sat img{width:70px;height:70px;mix-blend-mode:screen;filter:drop-shadow(0 0 16px rgba(120,170,255,.4))}
+.inside-orb .sat b{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:22px;line-height:1;white-space:nowrap}
+.inside-orb .sat small{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
+.inside-orb .head{position:absolute;left:clamp(16px,4vw,60px);bottom:8vh;max-width:520px;z-index:3}
+.inside-orb .head .kicker{font-size:11px;letter-spacing:.28em;color:#9cc0ff;margin-bottom:14px}
+.inside-orb .head h2{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(34px,4.6vw,74px);line-height:.92;letter-spacing:.005em;margin:0;background:none;color:var(--ink);filter:none;-webkit-text-fill-color:initial}
+.inside-orb .head h2 .hl{background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.inside-orb .num{position:absolute;right:clamp(16px,4vw,60px);bottom:6vh;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(80px,12vw,200px);line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(180,186,255,.35);z-index:3}
+.inside-orb .num b{font-weight:400;background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:0}
+.inside-orb .mlist{display:none}
 @media(max-width:900px){
-  .inside-cd{height:auto}.inside-cd .in-pin{position:relative;height:auto;display:block;padding:clamp(60px,9vw,100px) 16px 30px}.inside-cd .in-num,.inside-cd .in-dots{display:none}
-  .inside-cd .in-head{margin-bottom:20px}.inside-cd .in-mach{height:56vh}.inside-cd .in-stage{height:auto;display:flex;flex-direction:column;gap:20px;margin-top:22px}
-  .inside-cd .in-s{position:relative;opacity:1;transform:none;gap:16px}.inside-cd .in-s img{height:72px;width:72px}.inside-cd .in-s h3{font-size:24px;white-space:normal}.inside-cd .in-s p{white-space:normal;font-size:11px}
+  .inside-orb{height:auto}.inside-orb .st{position:relative;height:auto;min-height:0;padding:clamp(60px,9vw,100px) 16px 30px;display:block}.inside-orb .orb,.inside-orb .num{display:none}
+  .inside-orb .mach{margin:0 auto;width:min(80vw,380px)}.inside-orb .head{position:relative;left:auto;bottom:auto;margin-top:30px;max-width:none}
+  .inside-orb .mlist{display:block;margin-top:10px}.inside-orb .mlist .it{display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:center;padding:14px 0;border-top:1px solid rgba(180,186,255,.12)}
+  .inside-orb .mlist img{width:52px;height:52px;mix-blend-mode:screen}.inside-orb .mlist b{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:22px;line-height:1}.inside-orb .mlist small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin-top:3px}
 }
-@media(prefers-reduced-motion:reduce){.inside-cd .in-num b.tick{animation:none}.inside-cd .in-s{transition:none}}
+@media(prefers-reduced-motion:reduce){.inside-orb .orb,.inside-orb .sat > div{transition:none}}
 
 /* ============ white capsules everywhere (Oct 31): the printed shells, a seam and the small NFC dot. overrides every older glass + coin rule above ============ */
 .fall-capsule,.mini-cap,.catch-col .bin-fill .mini-cap,.fall-capsule.v,.mini-cap.v,.catch-col .bin-fill .mini-cap.v{background:radial-gradient(circle at 34% 30%,#ffffff 0%,#f4f5fa 30%,#cfd3e3 68%,#9ea4bd 100%);border:0;
