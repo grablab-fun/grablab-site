@@ -9,9 +9,11 @@
   let cur = 0;
   function update(){
     if (innerWidth <= 900) return;
-    const r = root.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top/(r.height - innerHeight))), i = Math.min(4, Math.floor(p*5));
+    /* the ring turns with the scroll itself (continuous), the proof nearest the top is the lit one */
+    const r = root.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top/(r.height - innerHeight))), rc = Math.min(4, Math.max(0, p*5.6 - .3)), i = Math.round(rc);
+    orb.style.setProperty("--r", (-rc*72).toFixed(2) + "deg");
     if (i === cur) return; cur = i;
-    orb.style.setProperty("--r", (-i*72) + "deg"); sats.forEach((s, k) => s.classList.toggle("on", k === i)); num.textContent = i + 1;
+    sats.forEach((s, k) => s.classList.toggle("on", k === i)); num.textContent = i + 1;
   }
   addEventListener("scroll", update, { passive:true }); addEventListener("resize", update); update();
 })();

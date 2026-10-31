@@ -1,6 +1,6 @@
 <!doctype html><html><body style="margin:0;background:transparent;overflow:hidden"><canvas id="c" style="width:100vw;height:100vh;display:block"></canvas>
 <script type="module">
-import { createSim3D, CAP_R, CHUTE } from "./sim3d.js?v=rec6";
+import { createSim3D, CAP_R, CHUTE } from "./sim3d.js?v=rec7";
 const q = new URLSearchParams(location.search), seed0 = +(q.get("seed") || 1), T = +(q.get("T") || 10), cam = JSON.parse(q.get("cam")), DX = q.has("dx") ? +q.get("dx") : .099, DZ = q.has("dz") ? +q.get("dz") : -.048;
 /* the claw hangs 44 mm left and 43 mm in front of the carriage reference the game steers: aim the carriage past the hole by that much */
 const CX = CHUTE.cx + DX, CZ = CHUTE.cz + DZ;

@@ -994,10 +994,10 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
 .inside-orb .st{position:sticky;top:0;height:100vh;min-height:720px;overflow:hidden;display:grid;place-items:center}
 .inside-orb .mach{position:relative;width:min(56vh,500px);aspect-ratio:800/940;z-index:2}
 .inside-orb .mach video,.inside-orb .mach .av-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
-.inside-orb .orb{position:absolute;left:50%;top:50%;width:min(92vh,860px);aspect-ratio:1;transform:translate(-50%,-50%) rotate(var(--r,0deg));transition:transform 1.1s cubic-bezier(.2,.9,.2,1)}
+.inside-orb .orb{position:absolute;left:50%;top:50%;width:min(92vh,860px);aspect-ratio:1;transform:translate(-50%,-50%) rotate(var(--r,0deg));transition:transform .25s linear;will-change:transform}
 .inside-orb .orb::before{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(180,186,255,.18)}
 .inside-orb .orb::after{content:"";position:absolute;inset:14%;border-radius:50%;border:1px dashed rgba(180,186,255,.1)}
-.inside-orb .sat{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(min(92vh,860px) / -2)) rotate(calc(-1 * var(--a) - var(--r,0deg)))}
+.inside-orb .sat{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(min(92vh,860px) / -2)) rotate(calc(-1 * var(--a) - var(--r,0deg)));transition:transform .25s linear;will-change:transform}
 .inside-orb .sat > div{position:absolute;left:-110px;top:-54px;width:220px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;opacity:.45;transform:scale(.8);transition:opacity .5s,transform .5s}
 .inside-orb .sat.on > div{opacity:1;transform:scale(1.08)}
 .inside-orb .sat img{width:70px;height:70px;mix-blend-mode:screen;filter:drop-shadow(0 0 16px rgba(120,170,255,.4))}
@@ -1016,7 +1016,7 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
   .inside-orb .mlist{display:block;margin-top:10px}.inside-orb .mlist .it{display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:center;padding:14px 0;border-top:1px solid rgba(180,186,255,.12)}
   .inside-orb .mlist img{width:52px;height:52px;mix-blend-mode:screen}.inside-orb .mlist b{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:22px;line-height:1}.inside-orb .mlist small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin-top:3px}
 }
-@media(prefers-reduced-motion:reduce){.inside-orb .orb,.inside-orb .sat > div{transition:none}}
+@media(prefers-reduced-motion:reduce){.inside-orb .orb,.inside-orb .sat,.inside-orb .sat > div{transition:none}}
 
 /* ============ white capsules everywhere (Oct 31): the printed shells, a seam and the small NFC dot. overrides every older glass + coin rule above ============ */
 .fall-capsule,.mini-cap,.catch-col .bin-fill .mini-cap,.fall-capsule.v,.mini-cap.v,.catch-col .bin-fill .mini-cap.v{background:radial-gradient(circle at 34% 30%,#ffffff 0%,#f4f5fa 30%,#cfd3e3 68%,#9ea4bd 100%);border:0;
