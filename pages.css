@@ -1025,5 +1025,6 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
 .fall-capsule::after,.mini-cap::after,.catch-col .bin-fill .mini-cap::after{left:10%;right:10%;top:50%;width:auto;height:1px;border-radius:0;background:rgba(80,88,120,.5);filter:none;transform:translateY(-50%) rotate(-14deg)}
 
 /* the three teasers and the CTA band use a wider stage than the text sections */
-section.section:has(.teasers){max-width:min(1400px,100%)}
-.callout{max-width:min(1400px,calc(100% - 32px))}
+section.section:has(.teasers){max-width:none;padding-left:clamp(16px,5vw,80px);padding-right:clamp(16px,5vw,80px)}
+.callout{max-width:calc(100% - 2*clamp(16px,5vw,80px))}
+.teasers{gap:clamp(18px,2vw,32px)}
