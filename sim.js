@@ -67,19 +67,25 @@
   /* upcoming drops: times are always UTC */
   const CAL = '<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>';
   const DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  /* real drops from assets/drops.json replace the demo list; while it is empty the simulator keeps its examples */
+  fetch("assets/drops.json?m=" + Math.floor(Date.now()/6e4)).then(r => r.json()).then(f => {
+    const real = f.drops.map(d => ({ id:d.id, name:d.name, tk:d.ticker || "", c:d.color || "#3b7bff", logo:d.logo || "assets/brand/mark-chrome-256.png", tags:d.tags || "", cap:d.capsules || 0, at:Date.parse(d.at.replace(" ", "T") + ":00Z") })).filter(d => d.at > Date.now()).sort((a, b) => a.at - b.at);
+    if (real.length) UPCOMING.splice(0, UPCOMING.length, ...real);
+  }).catch(() => {});
   function startOf(u){
+    if (u.at) return new Date(u.at);
     const now = new Date(), d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), u.h, 0, 0));
     if (u.day < 0){ if (d <= now) d.setUTCDate(d.getUTCDate() + 1); }
     else { let add = (u.day - d.getUTCDay() + 7) % 7; if (add === 0 && d <= now) add = 7; d.setUTCDate(d.getUTCDate() + add); }
     return d;
   }
-  const hh = d => String(d.getUTCHours()).padStart(2,"0") + ":00 UTC";
+  const hh = d => String(d.getUTCHours()).padStart(2,"0") + ":" + String(d.getUTCMinutes()).padStart(2,"0") + " UTC";
   function dayWord(u){
     const d = startOf(u), now = new Date(), day = 864e5;
     const dd = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()), nd = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
     return dd === nd ? "Tonight" : dd - nd === day ? "Tomorrow" : DAYS[d.getUTCDay()];
   }
-  const hhmm = u => String(startOf(u).getUTCHours()).padStart(2,"0") + ":00";
+  const hhmm = u => { const d = startOf(u); return String(d.getUTCHours()).padStart(2,"0") + ":" + String(d.getUTCMinutes()).padStart(2,"0"); };
   /* countdown as digit tiles: d h m when more than a day away, else h m s */
   function clockTiles(t){
     const sec = Math.max(0, Math.floor((t - Date.now()) / 1000));

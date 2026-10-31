@@ -1,0 +1,21 @@
+{
+  "_how": "Add one row per drop. at = YYYY-MM-DD HH:MM in UTC. The bot pings subscribers 10 minutes before. Quests ping once when added, or at their optional at time. Never reuse a quest id.",
+  "_drop_example": {
+    "id": "kinetic-1",
+    "name": "Kinetic Arm",
+    "ticker": "$KNTC",
+    "color": "#fd730a",
+    "logo": "assets/proj3d/kinetic.webp",
+    "tags": "Industrial arms",
+    "at": "2026-11-07 20:00",
+    "capsules": 240
+  },
+  "_quest_example": {
+    "id": "quest-1",
+    "title": "New quest is live",
+    "body": "Earn 2 extra plays this week.",
+    "url": "https://grablab.fun/participate"
+  },
+  "drops": [],
+  "quests": []
+}
