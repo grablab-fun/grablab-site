@@ -4,7 +4,7 @@
   const API = "https://grablab-bot.grablab.workers.dev";
   const KEY = "BCHp775DXgwdChbbR9fCMnkTu26leCJ63t7tpfNBBB_wmCFzc8vv-ppl4rvS4CKsD71Lk6X7jjJFWBAerOVOC-c";
   const STORE = "gl_notify", TG = "https://t.me/Grablab_news_bot?start=all";
-  const CATS = [["launch","Launches","10 minutes before every drop"],["quest","Quests","When new plays can be earned"],["news","News","The big stuff, once a week at most"]];
+  const CATS = [["launch","Launches","10 minutes before a drop"],["quest","Quests","New plays to earn"],["news","News","Big stuff, weekly at most"]];
   const load = () => { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch(e){ return {}; } };
   const save = o => { try { localStorage.setItem(STORE, JSON.stringify(o)); } catch(e){} };
   const ua = navigator.userAgent;
@@ -22,13 +22,13 @@
   const post = (path, body) => fetch(API + path, { method:"POST", headers:{ "content-type":"application/json" }, body:JSON.stringify(body) }).then(r => r.json());
   const isOn = () => !!load().on;
   const switches = cats => CATS.map(([k, n, d]) => `<label class="nv-sw"><input type="checkbox" data-c="${k}" ${cats.includes(k) ? "checked" : ""}/><i></i><span><b>${n}</b><small>${d}</small></span></label>`).join("");
-  const tgRow = `<a class="nv-tg" href="${TG}" target="_blank" rel="noopener"><img src="assets/sub/n-plane.webp" alt="" /><span><b>Prefer Telegram?</b><small>Same pings from our bot, on any device</small></span></a>`;
-  const installRow = () => installEvt ? `<button type="button" class="nv-install" data-act="install"><img src="assets/sub/n-app.webp" alt="" /><span><b>Add Grablab to this device</b><small>Opens like an app, one click from your ${innerWidth < 900 ? "home screen" : "desktop"}</small></span></button>` : "";
+  const tgRow = `<a class="nv-tg" href="${TG}" target="_blank" rel="noopener"><img src="assets/sub/n-plane.webp" alt="" /><span><b>Prefer Telegram?</b><small>Same pings from our bot</small></span></a>`;
+  const installRow = () => installEvt ? `<button type="button" class="nv-install" data-act="install"><img src="assets/sub/n-app.webp" alt="" /><span><b>Install Grablab</b><small>Opens like an app</small></span></button>` : "";
 
   function body(){
-    if (needsHome) return `<ol class="nv-steps"><li><span>Tap <b>Share</b> in the browser bar</span></li><li><span>Choose <b>Add to Home Screen</b></span></li><li><span>Open <b>Grablab</b> from your Home Screen and tap the bell</span></li></ol><p class="nv-note">Apple only allows notifications from apps on the Home Screen, iOS 16.4 or newer.</p>${tgRow}`;
-    if (!canPush) return `<p class="nv-note">This browser can't show notifications. Open grablab.fun in Chrome, Edge or Safari, or use Telegram.</p>${tgRow}`;
-    if (Notification.permission === "denied") return `<p class="nv-note">Notifications are blocked for this site.<br />Allow them in your browser's site settings, then come back.</p><a class="nv-link" href="notify.html">How to unblock them</a>${tgRow}`;
+    if (needsHome) return `<ol class="nv-steps"><li><span>Tap <b>Share</b></span></li><li><span><b>Add to Home Screen</b></span></li><li><span>Open it, tap the <b>bell</b></span></li></ol><p class="nv-note">iOS 16.4 or newer</p>${tgRow}`;
+    if (!canPush) return `<p class="nv-note">No notifications in this browser.</p>${tgRow}`;
+    if (Notification.permission === "denied") return `<p class="nv-note">Notifications are blocked.<br />Allow them in site settings.</p><a class="nv-link" href="notify.html">How to unblock</a>${tgRow}`;
     if (isOn()) return `<div class="nv-list">${switches(load().cats || [])}</div>${installRow()}<button type="button" class="nv-off" data-act="off">Turn off on this device</button>${tgRow}`;
     return `<div class="nv-list">${switches(picked)}</div><button type="button" class="nv-go" data-act="on" ${busy || !picked.length ? "disabled" : ""}>${busy ? "Turning on" : "Turn on notifications"}</button>${err ? `<p class="nv-err">${err}</p>` : ""}${installRow()}${tgRow}`;
   }
@@ -36,7 +36,7 @@
     const on = isOn();
     el.querySelector(".nv-b").innerHTML = body();
     el.querySelector("h2").textContent = on ? "You're on the list." : "Never miss a drop.";
-    el.querySelector(".nv-sub").textContent = needsHome ? "Add Grablab to your Home Screen first." : on ? "Change what pings you, anytime." : "Launches, quests and news, the moment they happen.";
+    el.querySelector(".nv-sub").textContent = needsHome ? "Add to Home Screen first." : on ? "Change your pings anytime." : "Launches, quests and news.";
     document.querySelectorAll(".nav-bell").forEach(b => b.classList.toggle("on", on));
   }
   function open(cat){
@@ -70,7 +70,7 @@
         if (!r.ok) throw new Error(r.error);
         save({ on:true, cats:picked });
       }
-    } catch(e){ err = "That didn't work. Try again, or use Telegram below."; }
+    } catch(e){ err = "Failed. Try again or use Telegram."; }
     busy = false; paint();
   }
   async function off(){
@@ -85,7 +85,7 @@
     if (a === "off") off();
     if (a === "install" && installEvt){ installEvt.prompt(); installEvt.userChoice.finally(() => { installEvt = null; paint(); }); }
   }
-  document.addEventListener("click", e => { const t = e.target.closest("[data-notify]"); if (t){ e.preventDefault(); open(t.dataset.notify || null); } });
+  document.addEventListener("click", e => { const t = e.target.closest("[data-notify]"); if (t){ e.preventDefault(); if (document.body.classList.contains("menu-open")) document.getElementById("burger")?.click(); open(t.dataset.notify || null); } });
   window.glNotify = { open, isOn };
   const mark = () => { if (isOn()) document.querySelectorAll(".nav-bell").forEach(b => b.classList.add("on")); };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mark); else mark();

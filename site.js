@@ -100,6 +100,7 @@ function navHTML(){
         <div class="mm-li">${link("participate.html","nav.participate","participate")}</div>
       </nav>
       <button class="mm-cta" id="connectBtnM" data-i18n="cta.connect">${t("cta.connect")}</button>
+      <button type="button" class="nav-bell mm-bell" data-notify><img src="assets/sub/n-bell.webp" alt="" /><span>Notifications</span></button>
     </div>
   </div>`;
 }

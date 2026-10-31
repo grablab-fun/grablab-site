@@ -139,3 +139,44 @@
   .dv .dlg{left:6%;right:6%;padding:9px}
 }
 @media (max-height:700px){.nv-ic{width:48px;margin-bottom:6px}.nv-sub{margin:4px 0 10px}.nv-sw{padding:7px 12px}.nv-go{margin-top:10px;padding:12px}}
+
+/* guide spacing, and the phone hero: icons sized from a fixed height so they can never reach the title */
+.ng{padding-bottom:110px}
+.ng h2.ng-t{margin:clamp(84px,9vw,120px) 0 24px}
+@media (max-width:800px){
+  .ng{padding-top:128px}
+  .ng-hero{gap:36px}
+  .ng-art{height:170px;width:100%;overflow:visible}
+  .ng-art .a,.ng-art .b,.ng-art .c{width:auto;right:auto}
+  .ng-art .a{height:170px;left:50%;top:0;transform:translateX(-50%)}
+  .ng-art .b{height:98px;left:calc(50% - 118px);top:72px}
+  .ng-art .c{height:84px;left:calc(50% + 22px);top:14px}
+  .ng-hero h1{margin-bottom:0}
+  .ng-hero p.ng-lead{margin:18px auto 28px;font-size:16.5px;line-height:1.5}
+  .ng-lead span,.ng-lead span+span{display:block;white-space:normal;text-wrap:balance}
+  .ng-lead span:first-child{color:var(--ink);font-weight:700}
+  .ng-pings{gap:12px}
+  .ng-tabs{margin-bottom:26px}
+}
+
+/* phones: all five tabs in one segmented bar */
+@media (max-width:800px){
+  .ng-tabs{flex-wrap:nowrap;overflow:visible;gap:2px;padding:4px;width:100%;max-width:520px;margin-inline:auto;border-radius:99px;border:1px solid var(--line-2);background:rgba(8,13,36,.6)}
+  .ng-tabs button{flex:1 1 auto;min-width:0;text-align:center;padding:9px 4px;border:0;font-size:clamp(11px,3.25vw,14px)}
+  .ng-hero .nv-go,.ng-foot .nv-go{max-width:360px;margin-inline:auto}
+  .ng-hero .nv-go{display:block}
+}
+
+/* card copy stays on one line */
+.nv-sub,.nv-note,.nv-err,.nv-sw b,.nv-sw small,.nv-tg b,.nv-tg small,.nv-install b,.nv-install small,.nv-steps li{white-space:nowrap}
+.nv-card h2{white-space:nowrap}
+@media (max-width:360px){.nav-right{gap:6px}.nav-bell{width:32px;height:32px}}
+
+/* the bell lives in the bar on desktop, and in the menu under Connect wherever the menu exists */
+.nav-bell.mm-bell{display:none}
+@media (max-width:900px){
+  .nav-right .nav-bell{display:none}
+  .nav-bell.mm-bell{display:inline-flex;align-items:center;justify-content:center;gap:10px;align-self:center;width:auto;height:auto;margin-top:14px;padding:12px 22px;border-radius:99px;color:var(--ink);font-weight:700;font-size:15px;opacity:0;transition:opacity .4s .3s}
+  body.menu-open .nav-bell.mm-bell{opacity:1}
+  .nav-bell.mm-bell.on::after{top:10px;right:12px}
+}
