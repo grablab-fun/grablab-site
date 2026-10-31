@@ -419,7 +419,7 @@ let privy = null, privyAddr = null;
 function loadPrivy(){
   if (!privy) privy = import("./assets/privy/wallet.js").then(() => {
     /* Privy reports null on start for a wallet that only connected, so null never signs anyone out: only Disconnect does */
-    window.GLPrivy.onChange(a => { if (!a) return; const fresh = a !== privyAddr; privyAddr = a; try { localStorage.setItem("gl_wallet", a); } catch (e) {} onConnected(a); if (fresh && window.glAuth.me?.wallet !== a) window.glAuth.login(); });
+    window.GLPrivy.onChange(a => { if (!a) return; const fresh = a !== privyAddr; privyAddr = a; try { localStorage.setItem("gl_wallet", a); } catch (e) {} onConnected(a); if (fresh){ window.glTrack({ a:"connect" }); if (window.glAuth.me?.wallet !== a) window.glAuth.login(); } });
     return window.GLPrivy;
   }).catch(() => { privy = null; return null; });
   return privy;
@@ -526,6 +526,9 @@ function shorten(a){ return a && a.length>12 ? a.slice(0,6)+"…"+a.slice(-4) : 
 /* the API session: the wallet signs one short text, the server sets an httpOnly cookie.
    me = {wallet, role, plays, wins, capsules} or {wallet:null}; "gl:auth" fires on every change */
 const API = "/api/v1/";
+/* anonymous counts for the team: which page, from which site, nothing that identifies a visitor. No cookie */
+window.glTrack = b => { try { navigator.sendBeacon("/api/v1/hit", new Blob([JSON.stringify(b)], { type:"application/json" })); } catch (e) {} };
+try { const first = !sessionStorage.getItem("gl_v"); sessionStorage.setItem("gl_v", "1"); let r = ""; try { r = new URL(document.referrer).hostname.replace(/^www\./, ""); } catch (e) {} window.glTrack({ p:location.pathname, v:first ? 1 : 0, r:first && r !== location.hostname ? r : "" }); } catch (e) {}
 window.glAuth = { me: null, busy: false,
   async fetch(){
     try { const r = await fetch(API + "me", { credentials:"same-origin" }); this.me = r.ok ? await r.json() : { wallet:null }; } catch (e) { this.me = { wallet:null }; }
@@ -683,6 +686,7 @@ document.addEventListener("keydown", e=>{ if (e.key==="Escape") closeWallet(); }
     if (!ok){ form.querySelector(".invalid input")?.focus(); return; }
     const g = n => (form.querySelector(`[name="${n}"]`)?.value || "").trim();
     const chosen = f => ov.querySelector(`.bk-chips[data-field="${f}"] .bk-chip.on`)?.dataset.val || "";
+    window.glTrack({ a:"rent" });
     const subject = `Launch night inquiry: ${g("project") || "new project"}`;
     const body = [
       `Project / token: ${g("project")}`,

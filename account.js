@@ -205,6 +205,7 @@
         const r = await fetch(`${JUP}execute`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ signedTransaction, requestId:o.requestId }) });
         const x = await r.json();
         if (x.status !== "Success") throw new Error("failed");
+        window.glTrack({ a:"swap" });
         $("swAmt").value = ""; clearOut(); set("Enter an amount", false);
         note(`Done. <a href="https://solscan.io/tx/${encodeURIComponent(x.signature)}" target="_blank" rel="noopener">View on Solscan</a>`);
         window.glChain.load(true);

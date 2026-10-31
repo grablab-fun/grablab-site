@@ -70,7 +70,7 @@
     d.setAttribute("role", "dialog"); d.setAttribute("aria-live", "polite"); d.setAttribute("aria-label", "Cookie choices");
     d.innerHTML = `
       <div class="glc-top"><img src="assets/brand/mark-chrome-256.png" alt="" /><div><span class="glc-k">Cookies</span><b>Your call.</b></div></div>
-      <p><span>No ads, no trackers. We only store what the site needs.</span><span>Embeds like the physics lab load only if you allow them.</span></p>
+      <p><span>No ads, no trackers. We only store what the site needs and count visits anonymously.</span><span>Embeds like the physics lab load only if you allow them.</span></p>
       <div class="glc-cats">
         <div class="glc-cat"><b>Essential</b><button class="glc-sw" type="button" role="switch" aria-checked="true" disabled aria-label="Essential, always on"></button><small>Remembers this choice and that you saw the intro. Always on.</small></div>
         <div class="glc-cat"><b>Embedded content</b><button class="glc-sw" type="button" role="switch" aria-checked="false" data-cat="embeds" aria-label="Embedded content"></button><small>The physics lab runs on SimArena (app.simarena.ai), which may store data in your browser.</small></div>

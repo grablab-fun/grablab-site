@@ -48,7 +48,7 @@
     </div>
 
     <div class="lg-tldr">
-      <div class="glass"><b>Zero trackers</b><span>No advertising, analytics or social media cookies.</span></div>
+      <div class="glass"><b>Zero trackers</b><span>No advertising, analytics or social media cookies. Visits are counted anonymously, without cookies.</span></div>
       <div class="glass"><b>Two essentials</b><span>Your cookie choice and the intro flag. Nothing else.</span></div>
       <div class="glass"><b>Embeds ask first</b><span>The physics lab loads only after you allow it.</span></div>
       <div class="glass"><b>Change anytime</b><span>One click on Cookie settings, in the footer of every page.</span></div>
@@ -69,6 +69,7 @@
               <tr><td><code>gl_consent</code></td><td>Local storage</td><td>Remembers your cookie choice and when you made it, so we don't ask again.</td><td>Until you change it or clear your browser</td><td>Essential</td></tr>
               <tr><td><code>gl_loaded</code></td><td>Session storage</td><td>Shows the loading intro only once per visit.</td><td>Until you close the tab</td><td>Essential</td></tr>
               <tr><td><code>gl_reminders</code></td><td>Local storage</td><td>The upcoming drops you asked to be reminded of in the simulator.</td><td>Until you cancel them or clear your browser</td><td>Functional</td></tr>
+              <tr><td><code>gl_v</code></td><td>Session storage</td><td>Tells a new visit from another page of the same visit, for our anonymous counts.</td><td>Until you close the tab</td></tr>
               <tr><td><code>gl_notify</code></td><td>Local storage</td><td>Remembers that you turned on notifications on this device, and for which topics.</td><td>Until you turn them off or clear your browser data</td><td>Essential</td></tr>
               <tr><td><code>gl_lite</code></td><td>Local storage</td><td>Remembers that this device runs the lighter visuals, so pages stay smooth.</td><td>Until you clear your browser</td><td>Essential</td></tr>
               <tr><td><code>gc_lang</code></td><td>Local storage</td><td>An old language setting. The site now deletes it automatically if it finds it.</td><td>Deleted on your next visit</td><td>Essential</td></tr>
@@ -98,8 +99,8 @@
   </div>
 </main>
 <footer id="site-footer"></footer>
-<script src="site.js?v=kq7"></script>
-<script src="consent.js?v=9"></script>
+<script src="site.js?v=kq8"></script>
+<script src="consent.js?v=9a"></script>
 <script src="legal.js?v=1"></script>
 <script src="notify.js?v=4" defer></script>
 </body>
