@@ -4,6 +4,14 @@
 (function(){
   const root = document.getElementById("account"); if (!root) return;
   const CATS = { launch:"Launches", quest:"Quests", news:"News" };
+  /* Add USDC: on wide screens the page stays where it is, the swap card lights up and takes the cursor; stacked on a phone it scrolls to the card */
+  function goSwap(){
+    const s = document.getElementById("swap"), a = document.getElementById("swAmt"); if (!s) return;
+    if (matchMedia("(min-width:1180px)").matches){ scrollTo({ top:0, behavior:"instant" }); a?.focus({ preventScroll:true }); }
+    else s.scrollIntoView({ behavior:"smooth", block:"start" });
+    s.classList.remove("ac-flash"); void s.offsetWidth; s.classList.add("ac-flash");
+  }
+  document.addEventListener("click", e => { if (e.target.closest?.('a[href$="#swap"]') && document.getElementById("swap")){ e.preventDefault(); goSwap(); } });
   const API = "/api/v1/", JUP = "https://lite-api.jup.ag/ultra/v1/";
   const SOL = "So11111111111111111111111111111111111111112";
   const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
@@ -113,7 +121,8 @@
     Swap.reset(); Ship.reset();
     paintDrops(); paintMe(addr); paintChain();
     window.glChain.load(true);
-    if (location.hash) { const h = document.querySelector(location.hash); if (h) h.scrollIntoView(); }
+    if (location.hash === "#swap"){ history.replaceState(null, "", location.pathname); goSwap(); }
+    else if (location.hash) { const h = document.querySelector(location.hash); if (h) h.scrollIntoView(); }
   }
 
   /* ---------- swap: any token in the wallet into SOL ---------- */
@@ -244,6 +253,11 @@
       if (e.target.id === "swFind"){ clearTimeout(tm); tm = setTimeout(() => find(e.target.value), 260); return; }
       if (e.target.id !== "swAmt") return; clearTimeout(tm); tm = setTimeout(update, 380);
     });
+    /* at either end of the token list the wheel moves the page straight away */
+    root.addEventListener("wheel", e => {
+      const l = e.target.closest?.("#swList"); if (!l) return;
+      if (e.deltaY < 0 ? l.scrollTop <= 0 : l.scrollTop + l.clientHeight >= l.scrollHeight - 1){ e.preventDefault(); scrollBy({ top:e.deltaY, behavior:"instant" }); }
+    }, { passive:false });
     root.addEventListener("click", e => {
       const menu = $("swMenu"); if (!menu) return;
       if (e.target.closest("#swTk")){ menu.hidden = !menu.hidden; if (!menu.hidden){ loadPopular(); $("swFind").focus(); } return; }

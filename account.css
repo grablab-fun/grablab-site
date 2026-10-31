@@ -68,14 +68,14 @@
 .sw-tk img{width:24px;height:24px;border-radius:50%;object-fit:cover}
 .sw-tk svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.4}
 .sw-tk:focus-visible,.sw-m button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
-.sw-m{position:absolute;z-index:6;left:8px;right:8px;top:calc(100% - 8px);max-height:260px;overflow:auto;padding:6px;border-radius:16px;background:#0d1230;border:1px solid var(--line-2);box-shadow:0 18px 40px rgba(3,6,20,.6);text-align:left}
+.sw-m{position:absolute;z-index:6;left:8px;right:8px;top:calc(100% - 8px);padding:6px;border-radius:16px;background:#0d1230;border:1px solid var(--line-2);box-shadow:0 18px 40px rgba(3,6,20,.6);text-align:left}
 .sw-m button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border-radius:11px;font-size:14.5px;font-weight:700;color:var(--ink)}
 .sw-m button:hover{background:rgba(255,255,255,.08)}
 .sw-m span{min-width:0}
 .sw-m small{display:block;max-width:190px;margin-top:1px;font-size:11.5px;font-weight:400;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sw-m{scrollbar-width:thin;scrollbar-color:rgba(156,192,255,.28) transparent}
+#swList{max-height:206px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(156,192,255,.28) transparent}
 .sw-m img{width:26px;height:26px;border-radius:50%}
-.sw-m input{all:unset;box-sizing:border-box;position:sticky;top:0;z-index:1;display:block;width:100%;margin-bottom:4px;padding:9px 12px;border-radius:11px;background:#171d42;font-size:14px;color:var(--ink)}
+.sw-m input{all:unset;box-sizing:border-box;display:block;width:100%;margin-bottom:4px;padding:9px 12px;border-radius:11px;background:#171d42;font-size:14px;color:var(--ink)}
 .sw-m input::placeholder{color:var(--ink-2)}
 .sw-none{margin:0;padding:10px;text-align:center;font-size:14px;color:var(--ink-2)}
 .sw-m em{margin-left:auto;font-style:normal;font-weight:400;color:var(--ink-2);font-size:13.5px}
@@ -301,3 +301,7 @@ body:has(.ac-room) .footer{display:none}
 @media (min-width:1180px){.ac-hero .ac-note{grid-column:1/-1;margin-top:8px}}
 /* the connect screen of the wallet stands alone, without the gate card behind it */
 body:has(#privy-dialog) .ac-gate{visibility:hidden}
+#swap{scroll-margin-top:90px}
+.ac-flash{animation:acFlash 1.5s ease-out}
+@keyframes acFlash{0%,35%{box-shadow:0 0 0 2px #9cc0ff,0 0 44px rgba(59,123,255,.55)}100%{box-shadow:0 0 0 0 transparent}}
+@media (prefers-reduced-motion:reduce){.ac-flash{animation:none}}
