@@ -549,7 +549,9 @@ window.glWallet = { addr:null, async disconnect(){
   try { localStorage.removeItem("gl_wallet"); } catch (e) {}
   window.glAuth.logout();
   privyAddr = null; onConnected(null);
-  const p = await loadPrivy(); if (p) try { await p.logout(); } catch (e) {}
+  const p = await loadPrivy(); if (!p) return;
+  for (let i = 0; i < 40 && !p.ready; i++) await new Promise(r => setTimeout(r, 50));
+  try { await p.logout(); } catch (e) {}
 },
   /* the wallet that can sign for addr. A restored address is display only, so Privy may need a moment to find the
      wallet again, and when it can't, the player reconnects: that throws, and the caller just stops */

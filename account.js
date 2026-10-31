@@ -10,7 +10,7 @@
   const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch(e){ return d; } };
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
   const $ = id => document.getElementById(id);
-  let drops = [], drawn = null;
+  let drops = [], drawn = null, switched = null;
 
   function gate(wait){
     drawn = null;
@@ -46,12 +46,14 @@
   function draw(addr){
     const e = demoTierFor(addr), t = e && glTiers[e.tier];
     drawn = addr;
+    const same = switched === addr; switched = null;
     root.innerHTML = `
     <section class="glass ac-hero">
       <img class="ac-badge" src="assets/sub/${t ? t.img : "tier-iron"}.webp" alt="" />
       <span class="ac-k">${t ? `${e.tier} tier` : "No tier yet"}</span>
       <h1 class="chrome">Your account.</h1>
       <div class="ac-addr"><code title="${esc(addr)}">${esc(shorten(addr))}</code><button type="button" data-a="copy">Copy</button><button type="button" data-a="switch">Switch wallet</button><button type="button" data-a="out">Disconnect</button></div>
+      ${same ? `<p class="ac-note">Same account. Pick another one inside your wallet, then switch again.</p>` : ""}
     </section>
     <section class="glass ac-card ac-bal">
       <h2>Your balance</h2>
@@ -68,7 +70,7 @@
     <section class="glass ac-card" id="swap">
       <img src="assets/sub/a-swap.webp" alt="" />
       <h2>Add USDC</h2>
-      <p class="ac-sub">Plays are paid in USDC on Solana.</p>
+      <p class="ac-sub">Plays are paid in <img src="assets/chains/usdc.png" alt="" />USDC on <img src="assets/chains/solana-mark.svg" alt="" />Solana.</p>
       ${Swap.html()}
     </section>
     <section class="ac-grid">
@@ -301,7 +303,7 @@
   root.addEventListener("click", async e => {
     const b = e.target.closest("[data-a]"); if (!b) return;
     if (b.dataset.a === "out") window.glWallet.disconnect();
-    if (b.dataset.a === "switch"){ await window.glWallet.disconnect(); openWallet(b); }
+    if (b.dataset.a === "switch"){ switched = window.glWallet.addr; await window.glWallet.disconnect(); openWallet(b); }
     if (b.dataset.a === "copy" || b.dataset.a === "deposit"){ const was = b.textContent; try { await navigator.clipboard.writeText(window.glWallet.addr); b.textContent = "Copied"; setTimeout(() => { b.textContent = was; }, 1400); } catch(err){} }
   });
   const show = () => {

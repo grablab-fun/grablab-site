@@ -5,7 +5,7 @@
 import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { PrivyProvider, usePrivy, useConnectWallet, useLogout } from "@privy-io/react-auth";
-import { toSolanaWalletConnectors, useWallets as useSolanaWallets, useSignMessage, useSignTransaction } from "@privy-io/react-auth/solana";
+import { toSolanaWalletConnectors, useWallets as useSolanaWallets, useSignMessage, useSignTransaction, useStandardWallets } from "@privy-io/react-auth/solana";
 import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
 
 const APP_ID = "cmv8hys5c009y0fk19wk9xl0m";
@@ -39,13 +39,19 @@ function Bridge(){
   const { wallets } = useSolanaWallets();
   const { signMessage } = useSignMessage();
   const { signTransaction } = useSignTransaction();
+  const { wallets: standard } = useStandardWallets();
 
   useEffect(() => {
     api.connect = id => IDS[id]
       ? connectWallet({ walletList:[IDS[id]], preSelectedWalletId: IDS[id], walletChainType: CHAIN_TYPE })
       : connectWallet({ walletList: DETECTED, walletChainType: CHAIN_TYPE });
     api.email = email => login(email ? { loginMethods:["email"], prefill:{ type:"email", value:email } } : { loginMethods:["email"] });
-    api.logout = () => { emit(null); return logout(); };
+    /* also drop the connection inside the wallet (MetaMask, Phantom...): otherwise the next connect silently hands back the same account */
+    api.logout = async () => {
+      emit(null);
+      await Promise.all(standard.filter(w => w.accounts?.length).map(w => w.features["standard:disconnect"]?.disconnect().catch(() => {})));
+      return logout();
+    };
     /* sign-in proof for the API: plain text, never a transaction. Returns the signature as base64 */
     api.has = addr => wallets.some(x => x.address === addr);
     api.sign = async (text, addr) => {
@@ -61,12 +67,12 @@ function Bridge(){
       const { signedTransaction } = await signTransaction({ transaction: unb64(b64), wallet: w, chain: CHAIN });
       return tob64(signedTransaction);
     };
-  }, [connectWallet, login, logout, wallets, signMessage, signTransaction]);
+  }, [connectWallet, login, logout, wallets, standard, signMessage, signTransaction]);
 
   useEffect(() => { if (ready && authenticated) emit(firstAddress(user)); }, [ready, authenticated, user]);
   /* the player picked another account in Phantom (or Solflare, Backpack): the site follows it */
   useEffect(() => { if (current && wallets.length && !wallets.some(w => w.address === current)) emit(wallets[0].address); }, [wallets]);
-  useEffect(() => { if (ready) window.dispatchEvent(new CustomEvent("gl:privy-ready")); }, [ready]);
+  useEffect(() => { if (ready){ api.ready = true; window.dispatchEvent(new CustomEvent("gl:privy-ready")); } }, [ready]);
   return null;
 }
 
