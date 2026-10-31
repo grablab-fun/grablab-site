@@ -73,8 +73,8 @@
       ${Swap.html()}
     </section>
     <section class="ac-grid">
-      <div class="glass ac-card"><img src="assets/sub/vault.webp" alt="" /><h2>Your capsules</h2><div id="acCapList"></div><a class="nv-go" href="participate.html">Find a drop</a></div>
-      <div class="glass ac-card"><img src="assets/sub/a-cal.webp" alt="" /><h2>Next drops</h2><div id="acDrops"></div></div>
+      <div class="glass ac-card" id="acVault"><img src="assets/sub/vault.webp" alt="" /><h2>Your capsules</h2><div id="acCapList"></div><a class="nv-go" href="participate.html">Find a drop</a></div>
+      <div class="glass ac-card" id="acNext"><img src="assets/sub/a-cal.webp" alt="" /><h2>Next drops</h2><div id="acDrops"></div></div>
     </section>
     <section class="glass ac-card" id="delivery">
       <img src="assets/sub/a-parcel.webp" alt="" />
@@ -82,7 +82,7 @@
       <p class="ac-sub">For prizes we ship to your door.</p>
       <div id="acShip" style="width:100%;display:grid;justify-items:center"></div>
     </section>
-    <section class="glass ac-card"><img src="assets/sub/n-bell.webp" alt="" /><h2>Notifications</h2><p class="ac-empty" id="acPings"></p><button type="button" class="ac-link" data-notify>Manage</button></section>`;
+    <section class="glass ac-card" id="acNotif"><img src="assets/sub/n-bell.webp" alt="" /><h2>Notifications</h2><p class="ac-empty" id="acPings"></p><button type="button" class="ac-link" data-notify>Manage</button></section>`;
     Swap.reset(); Ship.reset();
     paintDrops(); paintMe(addr); paintChain();
     window.glChain.load(true);
