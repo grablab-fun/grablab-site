@@ -22,7 +22,7 @@
     const box = $("acDrops"); if (!box) return;
     const on = read("gl_reminders", []), now = Date.now();
     const list = drops.map(d => ({ ...d, t:Date.parse(String(d.at).replace(" ", "T") + ":00Z") })).filter(d => d.t > now).sort((a, b) => a.t - b.t).slice(0, 3);
-    box.innerHTML = list.length ? `<ul class="ac-next">${list.map(d => `<li>${d.logo ? `<img src="${esc(d.logo)}" alt="" />` : ""}<div><a href="${esc(d.url || "participate.html#app")}">${esc(d.name)}</a><span>${new Date(d.t).toLocaleString("en-GB", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit", timeZone:"UTC" })} UTC</span></div><div class="side"><time data-t="${d.t}">${left(d.t)}</time><button type="button" class="${on.includes(d.id) ? "on" : ""}" data-a="rem" data-id="${esc(d.id)}">${on.includes(d.id) ? "Reminder set" : "Remind me"}</button></div></li>`).join("")}</ul>` : `<p class="ac-empty">No drops announced yet.</p>`;
+    box.innerHTML = list.length ? `<ul class="ac-next">${list.map(d => `<li><img src="${esc(d.logo || "assets/sub/drop-own.webp")}" alt="" /><div><a href="${esc(d.url || "participate.html#app")}">${esc(d.name)}</a><span>${new Date(d.t).toLocaleString("en-GB", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit", timeZone:"UTC" })} UTC</span></div><div class="side"><time data-t="${d.t}">${left(d.t)}</time><button type="button" class="${on.includes(d.id) ? "on" : ""}" data-a="rem" data-id="${esc(d.id)}">${on.includes(d.id) ? "Reminder set" : "Remind me"}</button></div></li>`).join("")}</ul>` : `<p class="ac-empty">No drops announced yet.</p>`;
   }
   const left = t => { const s = Math.max(0, Math.floor((t - Date.now()) / 1000)), p = n => String(n).padStart(2, "0"); return `${Math.floor(s / 86400)}d ${p(Math.floor(s / 3600) % 24)}h ${p(Math.floor(s / 60) % 60)}m ${p(s % 60)}s`; };
   setInterval(() => root.querySelectorAll(".ac-next time").forEach(c => { c.textContent = left(+c.dataset.t); }), 1000);
@@ -94,7 +94,7 @@
       ${Swap.html()}
     </section>
     <section class="ac-grid">
-      <div class="glass ac-card" id="acVault"><img src="assets/sub/vault.webp" alt="" /><h2>Your capsules</h2><div id="acCapList"></div><a class="nv-go" href="participate.html#app">Find a drop</a></div>
+      <div class="glass ac-card" id="acVault"><img src="assets/sub/vault.webp" alt="" /><h2>Your capsules</h2><div id="acCapList"></div><a class="nv-go" href="participate.html#simulate">Find a drop</a></div>
       <div class="glass ac-card" id="acNext"><img src="assets/sub/a-cal.webp" alt="" /><h2>Next drops</h2><div id="acDrops"></div></div>
     </section>
     <section class="glass ac-card" id="delivery">
