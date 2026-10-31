@@ -6,18 +6,25 @@
 (function inside(){
   const root = document.getElementById("inside"), orb = document.getElementById("inOrb"), num = document.getElementById("inNum"), sats = [...document.querySelectorAll("#inOrb .sat")];
   if (!root || !orb) return;
-  let cur = 0;
-  function update(){
-    if (innerWidth <= 900) return;
-    /* roulette: the ring rests on each proof for most of its scroll span, then turns to the next one in a short eased sweep */
-    const r = root.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top/(r.height - innerHeight))), x = Math.min(4, Math.max(0, p*5.4 - .2)), j = Math.min(3, Math.floor(x)), f = x - j;
-    const k = f < .4 ? 0 : f > .7 ? 1 : (() => { const t = (f - .4)/.3; return t*t*(3 - 2*t); })();
-    const rc = j + k, i = Math.round(rc);
-    orb.style.setProperty("--r", (-rc*72).toFixed(2) + "deg");
-    if (i === cur) return; cur = i;
-    sats.forEach((s, k) => s.classList.toggle("on", k === i)); num.textContent = i + 1;
+  /* roulette: the scroll picks the proof (five equal spans); the ring itself is driven every frame by a damped spring toward that
+     proof's angle, so it spins up, glides and settles with a small overshoot, however jerky the wheel input is */
+  let cur = -1, target = 0, ang = 0, vel = 0, raf = 0, last = 0;
+  const still = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  function pick(){
+    if (innerWidth <= 1100) return;
+    const r = root.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top/(r.height - innerHeight))), i = Math.min(4, Math.floor(p*5));
+    target = -i*72;
+    if (i !== cur){ cur = i; sats.forEach((s, k) => s.classList.toggle("on", k === i)); num.textContent = i + 1; }
+    if (!raf) raf = requestAnimationFrame(tick);
   }
-  addEventListener("scroll", update, { passive:true }); addEventListener("resize", update); update();
+  function tick(t){
+    const dt = Math.min(.05, (t - (last || t))/1000); last = t;
+    if (still){ ang = target; }
+    else { const k = 42, c = 11; vel += (-(ang - target)*k - vel*c)*dt; ang += vel*dt; }   // stiffness and damping: about .9 s to settle, a hint of overshoot
+    orb.style.setProperty("--r", ang.toFixed(3) + "deg");
+    if (Math.abs(ang - target) > .02 || Math.abs(vel) > .05) raf = requestAnimationFrame(tick); else { ang = target; orb.style.setProperty("--r", ang + "deg"); raf = 0; last = 0; }
+  }
+  addEventListener("scroll", pick, { passive:true }); addEventListener("resize", pick); pick();
 })();
 
 
