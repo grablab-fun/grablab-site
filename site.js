@@ -419,7 +419,7 @@ let privy = null, privyAddr = null;
 function loadPrivy(){
   if (!privy) privy = import("./assets/privy/wallet.js").then(() => {
     /* Privy reports null on start for a wallet that only connected, so null never signs anyone out: only Disconnect does */
-    window.GLPrivy.onChange(a => { if (!a) return; privyAddr = a; try { localStorage.setItem("gl_wallet", a); } catch (e) {} onConnected(a); });
+    window.GLPrivy.onChange(a => { if (!a) return; const fresh = a !== privyAddr; privyAddr = a; try { localStorage.setItem("gl_wallet", a); } catch (e) {} onConnected(a); if (fresh && window.glAuth.me?.wallet !== a) window.glAuth.login(); });
     return window.GLPrivy;
   }).catch(() => { privy = null; return null; });
   return privy;
@@ -523,8 +523,31 @@ async function chooseWallet(w, detected){
   if (!addr) return; closeWallet(); onConnected(addr);
 }
 function shorten(a){ return a && a.length>12 ? a.slice(0,6)+"…"+a.slice(-4) : a; }
+/* the API session: the wallet signs one short text, the server sets an httpOnly cookie.
+   me = {wallet, role, plays, wins, capsules} or {wallet:null}; "gl:auth" fires on every change */
+const API = "/api/v1/";
+window.glAuth = { me: null, busy: false,
+  async fetch(){
+    try { const r = await fetch(API + "me", { credentials:"same-origin" }); this.me = r.ok ? await r.json() : { wallet:null }; } catch (e) { this.me = { wallet:null }; }
+    dispatchEvent(new CustomEvent("gl:auth")); return this.me;
+  },
+  async login(){
+    if (this.busy || !privyAddr) return null; this.busy = true;
+    try {
+      const p = await loadPrivy(); if (!p) return null;
+      const n = await (await fetch(API + "auth/nonce?wallet=" + encodeURIComponent(privyAddr), { credentials:"same-origin" })).json();
+      if (!n.message) return null;
+      const signature = await p.sign(n.message);
+      const r = await fetch(API + "auth/verify", { method:"POST", credentials:"same-origin", headers:{ "content-type":"application/json" }, body: JSON.stringify({ wallet: privyAddr, message: n.message, signature }) });
+      if (!r.ok) return null;
+      return await this.fetch();
+    } catch (e) { return null; } finally { this.busy = false; }
+  },
+  async logout(){ try { await fetch(API + "auth/logout", { method:"POST", credentials:"same-origin" }); } catch (e) {} this.me = { wallet:null }; dispatchEvent(new CustomEvent("gl:auth")); }
+};
 window.glWallet = { addr:null, async disconnect(){
   try { localStorage.removeItem("gl_wallet"); } catch (e) {}
+  window.glAuth.logout();
   privyAddr = null; onConnected(null);
   const p = await loadPrivy(); if (p) try { await p.logout(); } catch (e) {}
 } };
@@ -539,6 +562,7 @@ function onConnected(addr, quiet){
 }
 /* back on the site: the public address is all the site needs, it signs nothing */
 try { const saved = localStorage.getItem("gl_wallet"); if (saved && saved !== "1") onConnected(saved, true); } catch (e) {}
+window.glAuth.fetch();
 document.addEventListener("click", e=>{
   const cb = e.target.closest("#connectBtn, #connectBtn2, #connectBtnM");
   if (cb){ closeMenu(); if (window.glWallet.addr) location.href = "account.html"; else openWallet(cb); }

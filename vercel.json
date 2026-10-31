@@ -119,6 +119,10 @@
     {
       "source": "/preview",
       "destination": "/api/preview"
+    },
+    {
+      "source": "/api/v1/:path*",
+      "destination": "https://grablab-api.grablab.workers.dev/v1/:path*"
     }
   ]
 }

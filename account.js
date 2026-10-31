@@ -19,6 +19,8 @@
   }
   function render(addr){
     const e = demoTierFor(addr), t = e && TIERS[e.tier], n = read("gl_notify", {});
+    const me = (window.glAuth && window.glAuth.me && window.glAuth.me.wallet === addr) ? window.glAuth.me : null;
+    const caps = me ? me.capsules : [];
     const pings = n.on ? (n.cats || []).map(c => CATS[c]).filter(Boolean).join(", ") : "Off on this device";
     root.innerHTML = `
     <section class="ac-hero">
@@ -31,11 +33,12 @@
     </section>
     <section class="ac-stats">
       <div class="glass"><b>${t ? t.plays : 0}</b><span>Free plays</span></div>
-      <div class="glass"><b>0</b><span>Plays</span></div>
-      <div class="glass"><b>0</b><span>Capsules</span></div>
+      <div class="glass"><b>${me ? me.plays : 0}</b><span>Plays</span></div>
+      <div class="glass"><b>${caps.length}</b><span>Capsules</span></div>
     </section>
+    ${me && me.role === "admin" ? `<section class="glass ac-admin"><iframe src="/api/v1/admin/ui" title="Admin" id="adminFrame"></iframe></section>` : ""}
     <section class="ac-grid">
-      <div class="glass ac-card ac-wide"><img src="assets/parts/capsule.png" alt="" /><div><h2>Your capsules</h2><p class="ac-empty">Your first grab lands here.</p><a class="nv-go" href="participate.html">Find a drop</a></div></div>
+      <div class="glass ac-card ac-wide"><img src="assets/parts/capsule.png" alt="" /><div><h2>Your capsules</h2>${caps.length ? `<ul class="ac-drops">${caps.map(c => `<li><b>${esc(c.label)}</b><span>${esc(c.status)}</span></li>`).join("")}</ul>` : `<p class="ac-empty">Your first grab lands here.</p>`}<a class="nv-go" href="participate.html">Find a drop</a></div></div>
       <div class="glass ac-card"><div><h2>Next drops</h2>${next()}</div></div>
       <div class="glass ac-card"><img src="assets/sub/n-bell.webp" alt="" /><div><h2>Notifications</h2><p class="ac-empty">${esc(pings)}</p><button type="button" class="ac-link" data-notify>Manage</button></div></div>
     </section>`;
@@ -47,6 +50,9 @@
   });
   const show = () => { const a = window.glWallet && window.glWallet.addr; if (a) render(a); else gate(false); };
   addEventListener("gl:wallet", show);
+  addEventListener("gl:auth", show);
+  /* the admin room sizes itself */
+  addEventListener("message", e => { if (e.origin === location.origin && e.data && e.data.glAdminHeight){ const f = document.getElementById("adminFrame"); if (f) f.style.height = e.data.glAdminHeight + "px"; } });
   let legacy = false; try { legacy = localStorage.getItem("gl_wallet") === "1"; } catch(e){}
   if (legacy && !(window.glWallet && window.glWallet.addr)){ gate(true); setTimeout(() => { if (!window.glWallet.addr) gate(false); }, 7000); } else show();
   fetch("assets/drops.json?m=" + Math.floor(Date.now()/6e4)).then(r => r.json()).then(f => { drops = f.drops || []; if (window.glWallet && window.glWallet.addr) render(window.glWallet.addr); }).catch(() => {});

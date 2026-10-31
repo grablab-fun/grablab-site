@@ -4,7 +4,7 @@
 import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { PrivyProvider, usePrivy, useConnectWallet, useLogout } from "@privy-io/react-auth";
-import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
+import { toSolanaWalletConnectors, useWallets as useSolanaWallets, useSignMessage } from "@privy-io/react-auth/solana";
 
 const APP_ID = "cmv8hys5c009y0fk19wk9xl0m";
 const WC_PROJECT = "e0d66ac468a740af5b8fdecbc14874fa";   /* Reown (WalletConnect) project, public */
@@ -18,7 +18,7 @@ const CHAIN_TYPE = "solana-only";
 const listeners = new Set();
 let current = null;
 function emit(addr){ current = addr; listeners.forEach(f => { try { f(addr); } catch (e) {} }); }
-const api = { connect(){}, email(){}, logout(){}, get address(){ return current; }, onChange(f){ listeners.add(f); f(current); return () => listeners.delete(f); } };
+const api = { connect(){}, email(){}, logout(){}, sign(){ return Promise.reject(new Error("no wallet")); }, get address(){ return current; }, onChange(f){ listeners.add(f); f(current); return () => listeners.delete(f); } };
 
 function firstAddress(user){
   if (!user) return null;
@@ -31,6 +31,8 @@ function Bridge(){
   const { ready, authenticated, user, login } = usePrivy();
   const { logout } = useLogout({ onSuccess: () => emit(null) });
   const { connectWallet } = useConnectWallet({ onSuccess: ({ wallet }) => emit(wallet.address) });
+  const { wallets } = useSolanaWallets();
+  const { signMessage } = useSignMessage();
 
   useEffect(() => {
     api.connect = id => IDS[id]
@@ -38,7 +40,14 @@ function Bridge(){
       : connectWallet({ walletList: DETECTED, walletChainType: CHAIN_TYPE });
     api.email = email => login(email ? { loginMethods:["email"], prefill:{ type:"email", value:email } } : { loginMethods:["email"] });
     api.logout = () => { emit(null); return logout(); };
-  }, [connectWallet, login, logout]);
+    /* sign-in proof for the API: plain text, never a transaction. Returns the signature as base64 */
+    api.sign = async text => {
+      const w = wallets.find(x => x.address === current) || wallets[0];
+      if (!w) throw new Error("no wallet");
+      const { signature } = await signMessage({ message: new TextEncoder().encode(text), wallet: w, options: { uiOptions: { showWalletUIs: false } } });
+      return btoa(String.fromCharCode(...signature));
+    };
+  }, [connectWallet, login, logout, wallets, signMessage]);
 
   useEffect(() => { if (ready && authenticated) emit(firstAddress(user)); }, [ready, authenticated, user]);
   useEffect(() => { if (ready) window.dispatchEvent(new CustomEvent("gl:privy-ready")); }, [ready]);
