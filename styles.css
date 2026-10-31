@@ -522,3 +522,19 @@ html.lite .page-atmosphere{transform:none!important;filter:none!important}
 /* logo and Connect wallet sit free at the top (only the links have a glass island); scrolled, the one bar holds all three */
 .islands .brand-isl .brand{padding:8px 16px 8px 10px;min-height:52px;box-sizing:border-box}
 .islands .nav-right .flipwrap{display:flex;align-items:center;padding:8px;min-height:52px;box-sizing:border-box}
+
+/* the wallet card under the connected button */
+.acct-pop{position:fixed;z-index:120;width:270px;padding:16px;border-radius:20px;text-align:center;background:rgba(14,18,44,.72);border:1px solid var(--line-2);-webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);box-shadow:0 18px 50px rgba(3,6,20,.55);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .18s ease,transform .18s ease,visibility .18s}
+.acct-pop.in{opacity:1;visibility:visible;transform:none}
+.ap-top{display:flex;flex-direction:column;align-items:center;gap:6px;padding-bottom:12px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.ap-top img{width:52px;height:auto}
+.ap-top b{display:block;font:400 28px/1.1 "Anton",sans-serif;letter-spacing:.01em}
+.ap-top span{display:block;color:var(--ink-2);font-size:14px;margin-top:2px}
+.ap-row{display:flex;justify-content:space-between;margin:0;padding:5px 2px;font-size:14px;color:var(--ink-2)}
+.ap-row em{font-style:normal;font-weight:700;color:var(--ink)}
+.acct-pop .nv-go{margin-top:12px;padding:11px;font-size:14.5px}
+.ap-foot{display:flex;justify-content:center;gap:18px;margin-top:11px;font-size:13.5px}
+.ap-foot a,.ap-foot button{all:unset;cursor:pointer;color:var(--ink-2);font-weight:700}
+.ap-foot a:hover,.ap-foot button:hover{color:var(--ink)}
+.ap-foot a:focus-visible,.ap-foot button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.acct-pop{transition:none}}

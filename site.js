@@ -532,13 +532,13 @@ window.glAuth = { me: null, busy: false,
     dispatchEvent(new CustomEvent("gl:auth")); return this.me;
   },
   async login(){
-    if (this.busy || !privyAddr) return null; this.busy = true;
+    if (this.busy || !window.glWallet.addr) return null; this.busy = true;
     try {
-      const p = await loadPrivy(); if (!p) return null;
-      const n = await (await fetch(API + "auth/nonce?wallet=" + encodeURIComponent(privyAddr), { credentials:"same-origin" })).json();
+      const a = window.glWallet.addr, p = await window.glWallet.signer();
+      const n = await (await fetch(API + "auth/nonce?wallet=" + encodeURIComponent(a), { credentials:"same-origin" })).json();
       if (!n.message) return null;
-      const signature = await p.sign(n.message);
-      const r = await fetch(API + "auth/verify", { method:"POST", credentials:"same-origin", headers:{ "content-type":"application/json" }, body: JSON.stringify({ wallet: privyAddr, message: n.message, signature }) });
+      const signature = await p.sign(n.message, a);
+      const r = await fetch(API + "auth/verify", { method:"POST", credentials:"same-origin", headers:{ "content-type":"application/json" }, body: JSON.stringify({ wallet: a, message: n.message, signature }) });
       if (!r.ok) return null;
       return await this.fetch();
     } catch (e) { return null; } finally { this.busy = false; }
@@ -550,7 +550,69 @@ window.glWallet = { addr:null, async disconnect(){
   window.glAuth.logout();
   privyAddr = null; onConnected(null);
   const p = await loadPrivy(); if (p) try { await p.logout(); } catch (e) {}
-} };
+},
+  /* the wallet that can sign for addr. A restored address is display only, so Privy may need a moment to find the
+     wallet again, and when it can't, the player reconnects: that throws, and the caller just stops */
+  async signer(){
+    const a = this.addr, p = await loadPrivy(); if (!p) throw new Error("no wallet");
+    for (let i = 0; i < 40 && !p.has(a); i++) await new Promise(r => setTimeout(r, 100));
+    if (!p.has(a)){ openWallet(); throw new Error("reconnect"); }
+    return p;
+  } };
+/* what the wallet holds, from the API: {sol, usd, solUsd, tokens, tokensUsd}. "gl:chain" fires on every fresh read */
+window.glChain = { data:null, addr:null, t:0, busy:null,
+  async load(force){
+    const a = window.glWallet.addr; if (!a) return null;
+    if (!force && this.addr === a && Date.now() - this.t < 20000) return this.data;
+    if (this.busy) return this.busy;
+    return this.busy = (async () => {
+      try {
+        const r = await fetch(API + "chain/wallet?wallet=" + encodeURIComponent(a) + (force ? "&f=" + Date.now() : ""));
+        const d = r.ok ? await r.json() : null;
+        if (d && d.ok && window.glWallet.addr === a){ this.data = d; this.addr = a; this.t = Date.now(); dispatchEvent(new CustomEvent("gl:chain")); }
+        return this.data;
+      } catch (e) { return this.data; } finally { this.busy = null; }
+    })();
+  } };
+const fmtSol = v => v == null ? "..." : v >= 100 ? v.toFixed(2) : v.toFixed(v >= 1 ? 3 : 4);
+const fmtUsd = v => v == null ? "" : "$" + v.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
+/* the card under the wallet button: opens on hover or keyboard focus, on the account page too */
+(function(){
+  if (!matchMedia("(hover:hover)").matches) return;
+  let pop = null, timer = 0, btn = null;
+  const paint = () => {
+    if (!pop) return;
+    const c = window.glChain.addr === window.glWallet.addr ? window.glChain.data : null, m = window.glAuth.me, a = window.glWallet.addr;
+    const e = demoTierFor(a), me = m && m.wallet === a ? m : null;
+    pop.innerHTML = `<div class="ap-top"><img src="assets/sub/a-sol.webp" alt="" /><div><b>${c ? fmtSol(c.sol) : "..."} SOL</b><span>${c ? fmtUsd(c.usd) : "Reading balance"}</span></div></div>
+      ${c && c.tokensUsd >= .01 ? `<p class="ap-row"><span>Other tokens</span><em>${fmtUsd(c.tokensUsd)}</em></p>` : ""}
+      <p class="ap-row"><span>Tier</span><em>${e ? e.tier : "None yet"}</em></p>
+      <p class="ap-row"><span>Free plays</span><em>${e ? glTiers[e.tier].plays : 0}</em></p>
+      <p class="ap-row"><span>Plays</span><em>${me ? me.plays : 0}</em></p>
+      <p class="ap-row"><span>Capsules</span><em>${me ? me.capsules.length : 0}</em></p>
+      <a class="nv-go" href="account.html#swap">Add SOL</a>
+      <div class="ap-foot"><a href="account.html">My account</a><button type="button" data-ap="out">Disconnect</button></div>`;
+  };
+  const hide = () => { clearTimeout(timer); if (pop) pop.classList.remove("in"); };
+  const later = () => { clearTimeout(timer); timer = setTimeout(hide, 220); };
+  const show = () => {
+    if (!window.glWallet.addr) return;
+    clearTimeout(timer);
+    if (!pop){
+      pop = document.createElement("div"); pop.className = "acct-pop"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", "Your wallet"); document.body.appendChild(pop);
+      pop.addEventListener("pointerenter", () => clearTimeout(timer)); pop.addEventListener("pointerleave", later);
+      pop.addEventListener("focusout", e => { if (!pop.contains(e.relatedTarget)) later(); });
+      pop.addEventListener("click", e => { if (e.target.dataset.ap === "out"){ hide(); window.glWallet.disconnect(); } });
+    }
+    const r = btn.getBoundingClientRect();
+    pop.style.top = r.bottom + 10 + "px"; pop.style.right = Math.max(12, innerWidth - r.right) + "px";
+    paint(); pop.classList.add("in"); window.glChain.load();
+  };
+  addEventListener("gl:chain", paint); addEventListener("gl:auth", paint);
+  ["pointerover", "focusin"].forEach(ev => document.addEventListener(ev, e => { const b = e.target.closest && e.target.closest("#connectBtn"); if (b){ btn = b; show(); } }, { passive:true }));
+  ["pointerout", "focusout"].forEach(ev => document.addEventListener(ev, e => { if (e.target.closest && e.target.closest("#connectBtn") && !(pop && pop.contains(e.relatedTarget))) later(); }, { passive:true }));
+  addEventListener("scroll", hide, { passive:true });
+})();
 function onConnected(addr, quiet){
   window.glWallet.addr = addr || null;
   document.documentElement.classList.toggle("is-in", !!addr);
@@ -615,6 +677,7 @@ document.addEventListener("keydown", e=>{ if (e.key==="Escape") closeWallet(); }
 })();
 
 /* ---------------- eligibility (local, read-only) ---------------- */
+const glTiers = { Iron:{ img:"tier-iron", plays:1 }, Gold:{ img:"tier-gold", plays:3 }, Diamond:{ img:"tier-diamond", plays:5 } };
 function demoTierFor(addr){
   let h=0; for (let i=0;i<addr.length;i++) h=(h*31+addr.charCodeAt(i))>>>0; const r=h%100;
   if (r<8) return {tier:"Diamond", note:"5 free plays in the airdrop claw"};

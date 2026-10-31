@@ -1,10 +1,12 @@
 /* Grablab wallet island: Privy (Solana only) behind the site's own wallet modal.
    Built with `npm run build` (in wallet-src/) into assets/privy/. site.js loads it on demand and talks to it
-   through window.GLPrivy; nothing here signs or sends a transaction. */
+   through window.GLPrivy. It signs two things, always on the player's click: the sign-in text and a swap
+   transaction built by Jupiter. It never sends a transaction itself and holds no keys. */
 import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { PrivyProvider, usePrivy, useConnectWallet, useLogout } from "@privy-io/react-auth";
-import { toSolanaWalletConnectors, useWallets as useSolanaWallets, useSignMessage } from "@privy-io/react-auth/solana";
+import { toSolanaWalletConnectors, useWallets as useSolanaWallets, useSignMessage, useSignTransaction } from "@privy-io/react-auth/solana";
+import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
 
 const APP_ID = "cmv8hys5c009y0fk19wk9xl0m";
 const WC_PROJECT = "e0d66ac468a740af5b8fdecbc14874fa";   /* Reown (WalletConnect) project, public */
@@ -14,11 +16,14 @@ const IDS = { phantom:"phantom", solflare:"solflare", backpack:"backpack", metam
 const DETECTED = ["detected_solana_wallets", "wallet_connect_qr"];
 /* Grablab is Solana only: every wallet connects on Solana, no network picker */
 const CHAIN_TYPE = "solana-only";
+const CHAIN = "solana:mainnet";
+const RPC = "solana-rpc.publicnode.com";
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0)), tob64 = u => btoa(String.fromCharCode(...u));
 
 const listeners = new Set();
 let current = null;
 function emit(addr){ current = addr; listeners.forEach(f => { try { f(addr); } catch (e) {} }); }
-const api = { connect(){}, email(){}, logout(){}, sign(){ return Promise.reject(new Error("no wallet")); }, get address(){ return current; }, onChange(f){ listeners.add(f); f(current); return () => listeners.delete(f); } };
+const api = { connect(){}, email(){}, logout(){}, sign(){ return Promise.reject(new Error("no wallet")); }, signTx(){ return Promise.reject(new Error("no wallet")); }, has(){ return false; }, get address(){ return current; }, onChange(f){ listeners.add(f); f(current); return () => listeners.delete(f); } };
 
 function firstAddress(user){
   if (!user) return null;
@@ -33,6 +38,7 @@ function Bridge(){
   const { connectWallet } = useConnectWallet({ onSuccess: ({ wallet }) => emit(wallet.address) });
   const { wallets } = useSolanaWallets();
   const { signMessage } = useSignMessage();
+  const { signTransaction } = useSignTransaction();
 
   useEffect(() => {
     api.connect = id => IDS[id]
@@ -41,15 +47,25 @@ function Bridge(){
     api.email = email => login(email ? { loginMethods:["email"], prefill:{ type:"email", value:email } } : { loginMethods:["email"] });
     api.logout = () => { emit(null); return logout(); };
     /* sign-in proof for the API: plain text, never a transaction. Returns the signature as base64 */
-    api.sign = async text => {
-      const w = wallets.find(x => x.address === current) || wallets[0];
+    api.has = addr => wallets.some(x => x.address === addr);
+    api.sign = async (text, addr) => {
+      const w = wallets.find(x => x.address === (addr || current)) || (addr ? null : wallets[0]);
       if (!w) throw new Error("no wallet");
       const { signature } = await signMessage({ message: new TextEncoder().encode(text), wallet: w, options: { uiOptions: { showWalletUIs: false } } });
-      return btoa(String.fromCharCode(...signature));
+      return tob64(signature);
     };
-  }, [connectWallet, login, logout, wallets, signMessage]);
+    /* a Jupiter swap: the wallet shows it, the player approves, Jupiter lands the signed bytes */
+    api.signTx = async (b64, addr) => {
+      const w = wallets.find(x => x.address === addr);
+      if (!w) throw new Error("no wallet");
+      const { signedTransaction } = await signTransaction({ transaction: unb64(b64), wallet: w, chain: CHAIN });
+      return tob64(signedTransaction);
+    };
+  }, [connectWallet, login, logout, wallets, signMessage, signTransaction]);
 
   useEffect(() => { if (ready && authenticated) emit(firstAddress(user)); }, [ready, authenticated, user]);
+  /* the player picked another account in Phantom (or Solflare, Backpack): the site follows it */
+  useEffect(() => { if (current && wallets.length && !wallets.some(w => w.address === current)) emit(wallets[0].address); }, [wallets]);
   useEffect(() => { if (ready) window.dispatchEvent(new CustomEvent("gl:privy-ready")); }, [ready]);
   return null;
 }
@@ -70,7 +86,8 @@ createRoot(host).render(
       walletList: ["phantom", "solflare", "backpack", "metamask", "coinbase_wallet", "okx_wallet", "detected_solana_wallets", "wallet_connect"]
     },
     embeddedWallets: { ethereum: { createOnLogin: "off" }, solana: { createOnLogin: "users-without-wallets" } },
-    externalWallets: { solana: { connectors: toSolanaWalletConnectors() } }
+    externalWallets: { solana: { connectors: toSolanaWalletConnectors() } },
+    solana: { rpcs: { [CHAIN]: { rpc: createSolanaRpc(`https://${RPC}`), rpcSubscriptions: createSolanaRpcSubscriptions(`wss://${RPC}`), blockExplorerUrl: "https://solscan.io" } } }
   }}>
     <Bridge />
   </PrivyProvider>

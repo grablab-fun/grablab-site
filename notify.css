@@ -206,51 +206,15 @@
 .is-in .flipwrap:hover .btn-flip,.is-in .btn-flip:focus-visible{transform:none}
 .is-in .btn-flip .k{display:none}
 /* account */
-.ac{width:min(1100px,calc(100% - 32px));margin:0 auto;padding:clamp(120px,14vw,150px) 0 110px;min-height:70vh}
-.ac-gate{max-width:480px;margin:0 auto;padding:36px 26px;border-radius:26px;text-align:center}
-.ac-gate img{width:96px;filter:drop-shadow(0 10px 24px rgba(226,170,70,.35))}
-.ac h1{font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;line-height:1.05;font-size:clamp(38px,6vw,76px);margin:6px 0;white-space:nowrap}
-.ac-gate p{color:var(--ink-2);margin:8px 0 6px}
-.ac-hero{display:flex;align-items:center;gap:clamp(18px,4vw,40px)}
-.ac-badge{width:clamp(96px,18vw,190px);height:auto;flex:none;filter:drop-shadow(0 16px 40px rgba(59,123,255,.45));animation:trFloat 5s ease-in-out infinite}
-.ac-k{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9cc0ff}
-.ac-addr{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;font-size:14px}
-.ac-addr code{padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.08);color:var(--ink)}
-.ac-addr button,.ac-link{all:unset;cursor:pointer;color:var(--ink-2);font-weight:700;font-size:14px;text-decoration:underline;text-underline-offset:3px}
-.ac-addr button:hover,.ac-link:hover{color:var(--ink)}
-.ac-addr button:focus-visible,.ac-link:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
-.ac-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(34px,5vw,56px)}
-.ac-stats div{padding:clamp(16px,2.6vw,26px);border-radius:20px;text-align:center}
-.ac-stats b{display:block;font:400 clamp(38px,6vw,62px)/1 "Anton",sans-serif;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
-.ac-stats span{display:block;margin-top:6px;color:var(--ink-2);font-size:clamp(12.5px,2vw,15px);white-space:nowrap}
-.ac-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
-.ac-card{display:flex;align-items:center;gap:20px;padding:clamp(20px,3vw,30px);border-radius:22px;min-width:0}
-.ac-card>img{width:clamp(70px,10vw,104px);height:auto;flex:none;filter:drop-shadow(0 10px 22px rgba(59,123,255,.4))}
-.ac-card>div{min-width:0;flex:1}
-.ac-wide{grid-column:1/-1}
-.ac-card h2{font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(22px,3vw,30px);margin:0 0 6px}
-.ac-empty{margin:0 0 10px;color:var(--ink-2);font-size:15px}
-.ac-card .nv-go{display:inline-block;width:auto;margin:0;padding:12px 26px;font-size:14.5px}
-.ac-drops{margin:0;padding:0;list-style:none;display:grid;gap:8px}
-.ac-drops li{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline}
-.ac-drops span{color:var(--ink-2);font-size:13.5px}.ac-drops em{font-style:normal;color:#9cc0ff;font-size:12.5px}
-@media (max-width:640px){.ac-grid{grid-template-columns:1fr}.ac-stats{gap:8px}.check-result.ok{gap:14px}}
-@media (prefers-reduced-motion:reduce){.check-result.ok,.tr-badge,.ac-badge{animation:none}}
+@media (max-width:640px){.check-result.ok{gap:14px}}
+@media (prefers-reduced-motion:reduce){.check-result.ok,.tr-badge{animation:none}}
 .check-result.ok{max-width:100%;box-sizing:border-box}
 @media (max-width:640px){
-  .ac-hero{gap:14px}
-  .ac-badge{width:21vw}
-  .ac h1{font-size:clamp(30px,10vw,60px)}
-  .ac-addr{gap:6px 10px;font-size:13px}
-  .ac-addr code{padding:5px 8px;font-size:12px}
-  .ac-addr button{font-size:13px}
   .tr-badge{width:70px}
   .tr-b p{font-size:clamp(12.5px,3.6vw,15px)}
 }
 .is-in .btn-flip,.is-in .flipwrap:hover .btn-flip{transform:none!important}
 .check2,.check2>*{min-width:0}
-@media (max-width:360px){.tr-badge{width:56px}.check-result.ok{gap:10px;padding:14px}.check-result.ok .tier{font-size:28px}.tr-b p{white-space:normal}.ac-addr{gap:4px 8px}}
+@media (max-width:360px){.tr-badge{width:56px}.check-result.ok{gap:10px;padding:14px}.check-result.ok .tier{font-size:28px}.tr-b p{white-space:normal}}
 
 /* admin room on the account page: the panel itself comes from the API, only for admin sessions */
-.ac-admin{margin-top:14px;padding:0;border-radius:22px;overflow:hidden;background:#0b1130}
-.ac-admin iframe{display:block;width:100%;height:520px;border:0;background:#0b1130;color-scheme:dark}
