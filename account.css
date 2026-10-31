@@ -225,6 +225,17 @@ body:has(.ac-room) .footer{display:none}
   .ac-drops li{flex-direction:row;align-items:baseline;justify-content:space-between;gap:12px;text-align:left}
   .ac-drops b{min-width:0;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ac-drops span{flex:none}
+  /* a full account keeps the same height: pager and button share a row, each drop stays on one line */
+  #acVault:has(.ac-pager) .ac-pager{grid-column:1/span 2;justify-self:start;margin-top:5px}
+  #acVault:has(.ac-pager) .nv-go{grid-column:3;justify-self:end;margin-top:5px;padding:7px 18px;font-size:13px}
+  .ac-next{gap:3px;margin-top:2px}
+  .ac-next li{gap:8px}
+  .ac-next img{width:26px;height:26px}
+  .ac-next a{font-size:14px}
+  .ac-next span{font-size:12px}
+  .ac-next .side{flex-direction:row;align-items:center;gap:8px}
+  .ac-next time{font-size:11.5px}
+  .ac-next button{padding:2px 9px;font-size:11.5px}
 }
 @media (min-width:1180px) and (max-height:760px){
   .ac-stats img{display:none}

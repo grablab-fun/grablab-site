@@ -52,7 +52,7 @@
   }
   /* capsules, three to a page: swipe them, or pick a page under the list. Past eight pages the dots become a counter */
   function capPages(caps){
-    const pages = []; for (let i = 0; i < caps.length; i += 3) pages.push(caps.slice(i, i + 3));
+    const pages = []; for (let i = 0; i < caps.length; i += 2) pages.push(caps.slice(i, i + 2));
     const n = pages.length, mid = n > 8 ? `<span id="acPgN"></span>` : pages.map((_, i) => `<button type="button" class="dot" data-a="pg" data-i="${i}" aria-label="Page ${i + 1}"></button>`).join("");
     return `<div class="ac-pages" id="acPages">${pages.map(p => `<ul class="ac-drops">${p.map(c => `<li><b>${esc(c.label)}</b><span>${esc(c.status)}</span></li>`).join("")}</ul>`).join("")}</div>${n > 1 ? `<div class="ac-pager"><button type="button" data-a="pg" data-d="-1" aria-label="Previous page">‹</button>${mid}<button type="button" data-a="pg" data-d="1" aria-label="Next page">›</button></div>` : ""}`;
   }
