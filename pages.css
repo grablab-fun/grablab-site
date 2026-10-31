@@ -1023,3 +1023,6 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
   box-shadow:0 4px 12px rgba(0,0,0,.45),inset 0 -7px 13px rgba(90,100,140,.35),inset 0 2px 4px rgba(255,255,255,.9)}
 .fall-capsule::before,.mini-cap::before,.catch-col .bin-fill .mini-cap::before,.fall-capsule.v::before,.mini-cap.v::before,.catch-col .bin-fill .mini-cap.v::before{left:30%;top:33%;width:13%;height:13%;margin:0;transform:none;background:#4a5070;box-shadow:none}
 .fall-capsule::after,.mini-cap::after,.catch-col .bin-fill .mini-cap::after{left:10%;right:10%;top:50%;width:auto;height:1px;border-radius:0;background:rgba(80,88,120,.5);filter:none;transform:translateY(-50%) rotate(-14deg)}
+
+/* the three teasers and the CTA band use a wider stage than the text sections */
+section:has(.teasers){max-width:min(1400px,100%)}
