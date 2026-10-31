@@ -307,7 +307,7 @@
       if (e.target.id === "dlSign"){
         e.target.disabled = true; e.target.textContent = "Open your wallet";
         try { await window.glAuth.login(); } catch (err){}
-        if (!mine(window.glWallet.addr) && $("dlSign")){ e.target.disabled = false; e.target.textContent = window.glAuth.why === "slow down" ? "Too many tries, wait 10 minutes" : "Verify wallet"; }
+        if (!mine(window.glWallet.addr) && $("dlSign")){ e.target.disabled = false; const why = window.glAuth.why; e.target.textContent = why === "slow down" ? "Too many tries, wait 10 minutes" : why === "reconnect" ? "Verify wallet" : location.hostname === "localhost" ? "Works only on grablab.fun" : "Couldn't verify, try again"; }
       }
     });
     return {

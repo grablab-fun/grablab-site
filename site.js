@@ -542,9 +542,9 @@ window.glAuth = { me: null, busy: false,
       if (!n.message){ this.why = n.error; return null; }
       const signature = await p.sign(n.message, a);
       const r = await fetch(API + "auth/verify", { method:"POST", credentials:"same-origin", headers:{ "content-type":"application/json" }, body: JSON.stringify({ wallet: a, message: n.message, signature }) });
-      if (!r.ok) return null;
+      if (!r.ok){ this.why = "failed"; return null; }
       return await this.fetch();
-    } catch (e) { return null; } finally { this.busy = false; }
+    } catch (e) { this.why = e.message || "failed"; return null; } finally { this.busy = false; }
   },
   async logout(){ try { await fetch(API + "auth/logout", { method:"POST", credentials:"same-origin" }); } catch (e) {} this.me = { wallet:null }; dispatchEvent(new CustomEvent("gl:auth")); }
 };
