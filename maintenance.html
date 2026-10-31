@@ -159,7 +159,7 @@
     /* anonymous counts for the team: which page, from which site, no cookie */
     var track = function(b){ try { navigator.sendBeacon("/api/v1/hit", new Blob([JSON.stringify(b)], { type:"application/json" })); } catch (e) {} };
     var first = true, r = ""; try { first = !sessionStorage.getItem("gl_v"); sessionStorage.setItem("gl_v", "1"); r = new URL(document.referrer).hostname.replace(/^www\./, ""); } catch (e) {}
-    track({ p:location.pathname, v:first ? 1 : 0, r:first && r !== location.hostname ? r : "" });
+    var q = new URLSearchParams(location.search); r = (q.get("ref") || q.get("utm_source") || r).toLowerCase(); track({ p:location.pathname, v:first ? 1 : 0, r:first && r !== location.hostname ? r : "" });
     var sh = document.getElementById("sheet"), f = document.getElementById("inq"), msg = document.getElementById("msg");
     var open = function(){ sh.classList.add("on"); setTimeout(function(){ document.getElementById("f-name").focus(); }, 60); };
     var close = function(){ sh.classList.remove("on"); };

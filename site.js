@@ -419,7 +419,7 @@ let privy = null, privyAddr = null;
 function loadPrivy(){
   if (!privy) privy = import("./assets/privy/wallet.js").then(() => {
     /* Privy reports null on start for a wallet that only connected, so null never signs anyone out: only Disconnect does */
-    window.GLPrivy.onChange(a => { if (!a) return; const fresh = a !== privyAddr; privyAddr = a; try { localStorage.setItem("gl_wallet", a); } catch (e) {} onConnected(a); if (fresh){ window.glTrack({ a:"connect" }); if (window.glAuth.me?.wallet !== a) window.glAuth.login(); } });
+    window.GLPrivy.onChange(a => { if (!a) return; const fresh = a !== privyAddr; privyAddr = a; try { localStorage.setItem("gl_wallet", a); } catch (e) {} onConnected(a); if (fresh){ try { if (sessionStorage.getItem("gl_c") !== a){ sessionStorage.setItem("gl_c", a); window.glTrack({ a:"connect" }); } } catch (e) {} if (window.glAuth.me?.wallet !== a) window.glAuth.login(); } });
     return window.GLPrivy;
   }).catch(() => { privy = null; return null; });
   return privy;
@@ -528,7 +528,7 @@ function shorten(a){ return a && a.length>12 ? a.slice(0,6)+"…"+a.slice(-4) : 
 const API = "/api/v1/";
 /* anonymous counts for the team: which page, from which site, nothing that identifies a visitor. No cookie */
 window.glTrack = b => { try { navigator.sendBeacon("/api/v1/hit", new Blob([JSON.stringify(b)], { type:"application/json" })); } catch (e) {} };
-try { const first = !sessionStorage.getItem("gl_v"); sessionStorage.setItem("gl_v", "1"); let r = ""; try { r = new URL(document.referrer).hostname.replace(/^www\./, ""); } catch (e) {} window.glTrack({ p:location.pathname, v:first ? 1 : 0, r:first && r !== location.hostname ? r : "" }); } catch (e) {}
+try { const first = !sessionStorage.getItem("gl_v"); sessionStorage.setItem("gl_v", "1"); let r = ""; try { r = new URL(document.referrer).hostname.replace(/^www\./, ""); } catch (e) {} const q = new URLSearchParams(location.search); r = (q.get("ref") || q.get("utm_source") || r).toLowerCase(); window.glTrack({ p:location.pathname, v:first ? 1 : 0, r:first && r !== location.hostname ? r : "" }); } catch (e) {}
 window.glAuth = { me: null, busy: false,
   async fetch(){
     try { const r = await fetch(API + "me", { credentials:"same-origin" }); this.me = r.ok ? await r.json() : { wallet:null }; } catch (e) { this.me = { wallet:null }; }
