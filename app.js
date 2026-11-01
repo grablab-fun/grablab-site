@@ -30,6 +30,8 @@ const I = (() => {
     x: s('<path d="m4 4 16 16M20 4 4 20"/>', 'stroke-width="2.2"'),
     wallet: s('<path d="M4 7.5A2.500 2.500 0 0 1 6.500 5H18v3M4 7.500V17a3 3 0 0 0 3 3h13V8H6.500A2.500 2.500 0 0 1 4 7.500z"/><path d="M16.500 14h.01"/>'),
     chev: s('<path d="m6 9 6 6 6-6"/>', 'stroke-width="2.2"'),
+    mail: s('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7.500 8 6 8-6"/>'),
+    image: s('<rect x="3.500" y="4.500" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.700"/><path d="m4 17 5-4.500 3.500 3 3-2.500 4.500 4"/>'),
     prev: s('<path d="m15 5-7 7 7 7"/>', 'stroke-width="2.2"'),
     next: s('<path d="m9 5 7 7-7 7"/>', 'stroke-width="2.2"'),
     discord: s('<path d="M8.5 7C7 7.3 5.8 7.8 5 8.5 3.5 11.5 3 14.5 3.2 17.5c1.4 1 2.9 1.7 4.5 2l1-1.800M15.5 7c1.5.3 2.7.8 3.5 1.5 1.5 3 2 6 1.8 9-1.4 1-2.9 1.7-4.5 2l-1-1.800M7.5 16.5c3 1.3 6 1.3 9 0"/><circle cx="9.5" cy="12.5" r="1.2"/><circle cx="14.5" cy="12.5" r="1.2"/>'),
@@ -146,16 +148,17 @@ function toggleWatch(ref) {
   $$(`.star[data-star="${ref}"]`).forEach(b => b.classList.toggle('on', watch.has(ref)));
   renderWatch();
 }
-const WALLETS = [['Phantom', '#ab9ff2'], ['Solflare', '#fc7227'], ['Backpack', '#e33e3f'], ['Email or social', '#8a8a94']];
+const WALLETS = [['Phantom', '#ab9ff2', 'phantom.svg'], ['Solflare', '#fc7227', 'solflare.svg'], ['Backpack', '#e33e3f', 'backpack.png'], ['Email or social', '#8a8a94']];
+const walletTile = w => `<span class="cw-tile" style="--c:${w[1]}">${w[2] ? `<img src="/assets/wallets/${w[2]}" alt="">` : I.mail}</span>`;
 let cw = null, cwTimers = [];
 function drawConnect() {
   $('.cw-body', cw).innerHTML = `<div class="cw-head"><span class="cw-mark"><i></i></span><h2 class="display">Connect to machine.fun</h2><p>One wallet for trading, rewards and launches.</p></div>
-    <div class="cw-list">${WALLETS.map((w, i) => `<button data-w="${i}"><span class="cw-tile" style="--c:${w[1]}">${w[0][0]}</span><b>${w[0]}</b>${I.next}</button>`).join('')}</div>
+    <div class="cw-list">${WALLETS.map((w, i) => `<button data-w="${i}">${walletTile(w)}<b>${w[0]}</b>${I.next}</button>`).join('')}</div>
     <p class="cw-note">Concept demo. No extension is contacted and nothing is signed.</p>`;
 }
 function pickWallet(w) {
   const body = $('.cw-body', cw);
-  body.innerHTML = `<div class="cw-wait"><span class="cw-ring" style="--c:${w[1]}"><span class="cw-tile" style="--c:${w[1]}">${w[0][0]}</span></span><h2 class="display">Waiting for ${esc(w[0])}</h2>
+  body.innerHTML = `<div class="cw-wait"><span class="cw-ring" style="--c:${w[1]}">${walletTile(w)}</span><h2 class="display">Waiting for ${esc(w[0])}</h2>
     <div class="cw-steps"><div>${I.check}Request account</div><div>${I.check}Sign the welcome message</div><div>${I.check}Load your points</div></div></div>`;
   $$('.cw-steps div', body).forEach((d, i) => cwTimers.push(setTimeout(() => d.classList.add('ok'), 420 * (i + 1))));
   cwTimers.push(setTimeout(() => {
@@ -216,7 +219,7 @@ function renderTop() {
     </nav>
     <div class="right">
       <button class="btn ico" data-search aria-label="Search projects">${I.search}</button>
-      <a class="btn metal" href="/launch" data-l><span style="display:flex;gap:8px;align-items:center">${I.rocket}Launch Project</span></a>
+      <a class="btn metal" href="/launch" data-l aria-label="Launch Project"><span class="m-in">${I.rocket}<em class="lbl">Launch Project</em></span></a>
       <button class="btn conn ${wallet ? 'on' : 'cta'}" id="conn">${wallet ? `<span class="av"></span><span>${esc(wallet.addr)}</span>${I.chev}` : `<span>${I.wallet}Connect</span>`}</button>
     </div>`;
   $('#conn').onclick = () => wallet ? toggleAccount() : connect();
@@ -277,11 +280,25 @@ function renderChrome() {
     document.body.classList.add('has-terms');
     const t = document.createElement('div');
     t.className = 'terms';
-    t.innerHTML = `<b>Browse first</b><p>Terms now apply when you sign in or trade, not before.</p>
-      <div class="a"><button class="btn sm primary" id="tok">Got it</button><a class="btn sm sm-hide" href="https://machine.fun/terms" target="_blank" rel="noopener">Read Terms</a></div>`;
+    t.innerHTML = `<span class="t-mark"><i></i></span><div class="t-copy"><b>Browse freely</b><p>Terms apply only when you sign in or trade.</p></div>
+      <a class="t-read" href="https://machine.fun/terms" target="_blank" rel="noopener">Read terms</a><button class="btn sm primary" id="tok">Got it</button>`;
     lay.append(t);
-    $('#tok').onclick = () => { store.set('terms', true); t.remove(); document.body.classList.remove('has-terms'); };
+    $('#tok').onclick = () => { store.set('terms', true); t.classList.add('out'); document.body.classList.remove('has-terms'); setTimeout(() => t.remove(), 320); };
   }
+}
+
+/* Generated robot face for a wallet, the same address always gets the same one */
+function avatar(seed) {
+  let h = 7;
+  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const pick = (a, s) => a[(h >>> s) % a.length];
+  const col = pick([['#c60925', '#ff6a2b'], ['#2b5cff', '#27c4ff'], ['#7a3cff', '#ff4fa3'], ['#0fa37f', '#c6ff3b'], ['#ff9f1c', '#ffe066'], ['#39424e', '#b6c2cf'], ['#e0115f', '#ffb27a']], 0);
+  const head = pick(['<rect x="9" y="11" width="22" height="21" rx="7"/>', '<circle cx="20" cy="21.500" r="11.500"/>', '<rect x="10" y="10" width="20" height="23" rx="10"/>', '<path d="M12 11h16l4 8v9a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5v-9z"/>'], 3);
+  const top = pick(['', '<path d="M20 11V6" stroke="#0f0f14" stroke-width="2"/><circle cx="20" cy="5" r="2" fill="#0f0f14"/>', '<rect x="4.500" y="18" width="4" height="8" rx="2" fill="#0f0f14"/><rect x="31.500" y="18" width="4" height="8" rx="2" fill="#0f0f14"/>'], 7);
+  const eyes = pick(['<circle cx="15.500" cy="20" r="2.600"/><circle cx="24.500" cy="20" r="2.600"/>', '<rect x="12.500" y="18" width="15" height="4.500" rx="2.200"/>', '<rect x="13" y="17.500" width="5" height="5" rx="1.500"/><rect x="22" y="17.500" width="5" height="5" rx="1.500"/>', '<circle cx="20" cy="20" r="3.600"/>'], 11);
+  const mouth = pick(['<path d="M15 26q5 3.600 10 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>', '<rect x="15" y="25.500" width="10" height="2.200" rx="1.100"/>', '<circle cx="20" cy="26.800" r="1.800"/>'], 15);
+  const id = 'av' + h.toString(36);
+  return `<svg class="ava" viewBox="0 0 40 40" aria-hidden="true" style="color:${col[1]}"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${col[0]}"/><stop offset="1" stop-color="${col[1]}"/></linearGradient></defs><circle cx="20" cy="20" r="20" fill="url(#${id})"/>${top}<g fill="#0f0f14">${head}</g><g fill="currentColor">${eyes}${mouth}</g></svg>`;
 }
 
 /* cards */
@@ -303,9 +320,64 @@ const proofMinis = p => {
   return o.join('');
 };
 const tagsRow = p => proofMinis(p) + (p.tags || []).slice(0, 3).map(t => `<span class="mini">${esc(t)}</span>`).join('');
+/* Simulated market on top of the snapshot: the real values stay in P */
+const live = new Map();
+let liveTimer = 0;
+const fmtChange = n => (n < 0 ? '' : '+') + n.toFixed(1) + '%';
+function liveOf(p) {
+  if (!live.has(p.ref)) {
+    const mc = p.mc || 1, chg = parseFloat(p.change) || 0;
+    live.set(p.ref, { mc, base: mc / (1 + chg / 100), vol: p.vol || 0, change: p.change || '', prog: p.prog || 0, mig: p.mig, spark: p.spark?.length > 1 ? [...p.spark] : [mc, mc] });
+  }
+  return live.get(p.ref);
+}
+const heat = v => v.mig ? '' : v.prog >= .9 ? 'forge' : v.prog >= .7 ? 'hot' : '';
+const stageLabel = v => v.mig ? 'Migrated' : (v.prog >= .9 ? 'Forging ' : v.prog >= .7 ? 'Heating ' : 'Curve ') + Math.min(99, v.prog * 100).toFixed(0) + '%';
+// A few projects run close to the bond so the forge state is always on show
+function seedForge() {
+  const bond = tokens().filter(p => !p.mig).sort((a, b) => (b.mc || 0) - (a.mc || 0));
+  [[0, .955], [1, .9], [3, .93], [4, .76], [6, .82]].forEach(([i, v]) => { if (bond[i]) liveOf(bond[i]).prog = v; });
+}
+function paintLive(e, p, v, d) {
+  const set = (k, t) => { const x = $(`[data-f=${k}]`, e); if (x) x.textContent = t; };
+  set('mc', usd(v.mc)); set('vol', usd(v.vol)); set('stage', stageLabel(v));
+  const chg = $('[data-f=chg]', e);
+  if (chg) { chg.textContent = v.change; chg.classList.remove('mut2'); chg.classList.toggle('up', !v.change.startsWith('-')); chg.classList.toggle('down', v.change.startsWith('-')); }
+  const n = $('[data-f=mc]', e);
+  n.classList.remove('tk-up', 'tk-dn'); void n.offsetWidth; n.classList.add(d < 0 ? 'tk-dn' : 'tk-up');
+  const bar = $('.bar', e);
+  if (bar) { bar.className = `bar ${v.mig ? 'done' : heat(v)}`; $('i', bar).style.width = Math.max(v.mig ? 100 : v.prog * 100, .6) + '%'; }
+  const sp = $('svg.sp', e);
+  if (sp) sp.outerHTML = spark({ ...p, ...v });
+  e.classList.toggle('forge', heat(v) === 'forge');
+}
+function tickLive() {
+  if (document.hidden || location.pathname !== '/') return;
+  const page = $$('.page')[ex.page];
+  if (!page) return;
+  $$('[data-live]', page).forEach(e => {
+    if (Math.random() > .55) return;
+    const p = byRef.get(e.dataset.live), v = liveOf(p), hot = !!heat(v);
+    const d = (Math.random() - (hot ? .3 : .5)) * (hot ? .018 : .03);
+    v.mc *= 1 + d;
+    v.vol += v.mc * Math.abs(d) * .6;
+    v.spark = [...v.spark.slice(-39), v.spark[v.spark.length - 1] * (1 + d)];
+    v.change = fmtChange((v.mc / v.base - 1) * 100);
+    if (!v.mig) v.prog = Math.min(1, v.prog + (hot ? Math.random() * .006 : Math.max(0, d) * .04));
+    if (!v.mig && v.prog >= 1) {
+      v.mig = true;
+      e.classList.add('bonded');
+      setTimeout(() => e.classList.remove('bonded'), 1200);
+      const next = tokens().find(q => !liveOf(q).mig && liveOf(q).prog < .7);
+      if (next) liveOf(next).prog = .84;
+    }
+    paintLive(e, p, v, d);
+  });
+}
 function card(p, opts = {}) {
+  if (p.mint && !opts.preview) p = { ...p, ...liveOf(p) };
   const st = stageOf(p), dup = p.ticker && dupCount[p.ticker.toUpperCase()] > 1;
-  return `<a class="card" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}">
+  return `<a class="card ${heat(p) === 'forge' ? 'forge' : ''}" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}"${p.mint && !opts.preview ? ` data-live="${esc(p.ref)}"` : ''}>
     <div class="c-top"><img class="bg" src="${coverSrc(p)}" alt="" loading="lazy" decoding="async">
       ${spark(p)}
       <img class="logo" data-vt="${esc(p.ref)}" src="${logoSrc(p)}" alt="" loading="lazy" decoding="async" width="84" height="84">
@@ -316,19 +388,20 @@ function card(p, opts = {}) {
       <div class="c-tick"><span>$${esc(p.ticker || '')}</span>${opts.preview ? '' : `<button class="copy-ca" data-copy="${esc(p.mint)}" aria-label="Copy contract address">${I.copy}</button>`}${dup ? `<span class="dup" title="${dupCount[p.ticker.toUpperCase()]} projects use this ticker">dup x${dupCount[p.ticker.toUpperCase()]}</span>` : ''}</div>
       <div class="c-name">${esc(p.name)}</div>
       <div class="c-tags">${tagsRow(p)}</div>
-      <div class="c-mc"><span class="num">${usd(p.mc)}</span><span class="pair">/ ${esc(p.quote || 'SOL')}</span></div>
-      <div class="bar ${st === 'mig' ? 'done' : ''}"><i style="width:${Math.max(pct(p), .6)}%"></i></div>
-      <div class="c-ft"><span>${st === 'mig' ? 'Migrated' : 'Curve ' + pct(p).toFixed(0) + '%'}</span>
-        <span class="${p.change ? (isUp(p) ? 'up' : 'down') : ''}">${p.change || 'No trades'}</span><span>${usd(p.vol)}</span></div>
+      <div class="c-mc"><span class="num" data-f="mc">${usd(p.mc)}</span><span class="pair">/ ${esc(p.quote || 'SOL')}</span></div>
+      <div class="bar ${st === 'mig' ? 'done' : heat(p)}"><i style="width:${Math.max(pct(p), .6)}%"></i></div>
+      <div class="c-ft"><span data-f="stage">${stageLabel(p)}</span>
+        <span data-f="chg" class="${p.change ? (isUp(p) ? 'up' : 'down') : ''}">${p.change || 'No trades'}</span><span data-f="vol">${usd(p.vol)}</span></div>
     </div></a>`;
 }
 function rowItem(p) {
-  return `<a class="row-l" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}">
+  p = { ...p, ...liveOf(p) };
+  return `<a class="row-l" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}" data-live="${esc(p.ref)}">
     <img class="logo" data-vt="${esc(p.ref)}" src="${logoSrc(p)}" alt="" loading="lazy">
     <div class="n"><b>${esc(p.name)}</b><span>$${esc(p.ticker)} ${stageTxt[stageOf(p)]}</span></div>
-    <span class="num" style="font-size:15px">${usd(p.mc)}</span>
-    <span class="h ${p.change ? (isUp(p) ? 'up' : 'down') : 'mut2'}">${p.change || '-'}</span>
-    <span class="h">${usd(p.vol)}</span><span class="h">${int(p.holders)}</span>
+    <span class="num" style="font-size:15px" data-f="mc">${usd(p.mc)}</span>
+    <span class="h ${p.change ? (isUp(p) ? 'up' : 'down') : 'mut2'}" data-f="chg">${p.change || '-'}</span>
+    <span class="h" data-f="vol">${usd(p.vol)}</span><span class="h">${int(p.holders)}</span>
     <button class="star ${watch.has(p.ref) ? 'on' : ''}" data-star="${esc(p.ref)}" aria-label="Add to watchlist">${I.star}</button></a>`;
 }
 
@@ -427,6 +500,7 @@ function dragScroll(w, step) {
     if (!on) return;
     on = false;
     if (!moved) return;
+    if (!step) return w.classList.remove('dragging');
     const st = step();
     w.scrollTo({ left: Math.round(w.scrollLeft / st + (dx < 0 ? .3 : -.3)) * st, behavior: reduced ? 'auto' : 'smooth' });
     setTimeout(() => w.classList.remove('dragging'), 460);
@@ -462,7 +536,6 @@ function buildHome() {
     <div class="copy">
       <h1 class="display"><span class="l">Fund the <span class="rot">${words.map((w, i) => `<b class="${i ? '' : 'on'}">${w}</b>`).join('')}</span></span><span class="l">that actually get built</span></h1>
       <p>Launch a physical product, prove it works, raise on chain through verifiable milestones.</p>
-      <div class="cta"><a class="btn lg metal" href="/launch" data-l><span style="display:flex;gap:8px;align-items:center">${I.rocket}Launch Project</span></a><a class="btn lg" href="/#explore" data-l data-anchor="explore">Explore projects</a></div>
     </div>
   </section>
   <div class="panel grainy stats">
@@ -477,7 +550,7 @@ function buildHome() {
     <div class="rail" id="rail">${preRail().map(preCard).join('')}</div></div>
   </section>
   <section class="panel block grainy" id="explore"><div>
-    <div class="head"><h2 class="display">Explore</h2><span class="count" id="ex-count">0</span><div class="grow pgn-top" id="pgn-top"></div></div>
+    <div class="head"><h2 class="display">Explore</h2><span class="count" id="ex-count">0</span><span class="live"><i></i>Simulated prices</span><div class="grow pgn-top" id="pgn-top"></div></div>
     <div class="controls">
       <button class="search" type="button" data-search>${I.search}<span>Search projects</span><kbd>/</kbd></button>
       <div class="seg">${[['all', 'All'], ['bond', 'Bonding'], ['mig', 'Migrated']].map(s => `<button data-stage="${s[0]}">${s[1]}</button>`).join('')}</div>
@@ -490,6 +563,8 @@ function buildHome() {
     <div class="pgn" id="pgn"></div></div>
   </section>`;
   homeEl = el; gridBox = $('#gridbox', el);
+  seedForge();
+  dragScroll($('#watch', el));
   const rail = $('#rail', el);
   dragScroll(rail, () => rail.firstElementChild.offsetWidth + 12);
   rail.addEventListener('scroll', markRail, { passive: true });
@@ -539,6 +614,8 @@ function viewHome() {
   syncControls(); drawGrid(); renderWatch(); startRot(); markRail();
   addEventListener('resize', fitPages, { passive: true });
   onLeave(() => removeEventListener('resize', fitPages));
+  liveTimer = setInterval(tickLive, 900);
+  onLeave(() => clearInterval(liveTimer));
   onLeave(() => clearInterval(heroTimer));
 }
 
@@ -591,10 +668,10 @@ function buildSearch() {
   el.className = 'fnd';
   el.setAttribute('aria-label', 'Search projects');
   el.innerHTML = `<div class="fnd-box panel grainy">
-    <div class="fnd-bar"><label class="search">${I.search}<span class="sr">Search projects</span><input id="fq" type="search" role="combobox" aria-expanded="true" aria-controls="fnd-list" autocomplete="off" placeholder="Name, ticker, contract or tag"></label><button class="btn sm" id="fnd-x">Close</button></div>
+    <div class="fnd-bar"><label class="search">${I.search}<span class="sr">Search projects</span><input id="fq" type="search" role="combobox" aria-expanded="true" aria-controls="fnd-list" autocomplete="off" placeholder="Search name, ticker, contract or tag"></label><button class="fnd-x" id="fnd-x" aria-label="Close search">${I.x}</button></div>
     <div class="fnd-tabs"><div class="seg sm">${[['all', 'All'], ['bond', 'Bonding'], ['mig', 'Migrated'], ['pre', 'Pre launch']].map(t => `<button data-fnd="${t[0]}">${t[1]} <i></i></button>`).join('')}</div></div>
     <div class="fnd-list" id="fnd-list" role="listbox"></div>
-    <div class="fnd-ft"><span><kbd>Up</kbd><kbd>Down</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></div></div>`;
+    <div class="fnd-ft"><span><kbd>\u2191</kbd><kbd>\u2193</kbd>Navigate</span><span><kbd>\u21B5</kbd>Open</span><span><kbd>esc</kbd>Close</span></div></div>`;
   document.body.append(el);
   $('#fq', el).addEventListener('input', drawSearch);
   $('#fnd-list', el).addEventListener('pointermove', e => {
@@ -992,8 +1069,8 @@ function viewLaunch() {
       <div class="f"><label for="f-name">Project name</label><input class="input" id="f-name" maxlength="40" value="${esc(d.name)}" placeholder="Sixth Sense Labs"></div>
       <div class="f"><label for="f-pitch">One line</label><input class="input" id="f-pitch" maxlength="90" value="${esc(d.pitch)}" placeholder="What the machine does, for whom"><small>Shown on cards. 90 characters.</small></div>
       <div class="f"><label for="f-brief">Brief</label><textarea class="ta" id="f-brief" placeholder="The problem, the machine, how far along you are, what the raise pays for.">${esc(d.brief)}</textarea><small>The brief is your project page. Four sentences are enough.</small></div>
-      <div class="two"><label class="drop" id="d-logo"><input type="file" accept="image/*" data-up="logo"><b>Logo</b><span>Square, 512 px or more</span></label>
-      <label class="drop" id="d-ban"><input type="file" accept="image/*" data-up="banner"><b>Banner</b><span>1500 x 500 px</span></label></div></div>`;
+      <div class="two"><label class="drop" id="d-logo"><input type="file" accept="image/*" data-up="logo"><span class="d-ico">${I.image}</span><b>Add logo</b><span>Square, 512 px or more</span></label>
+      <label class="drop" id="d-ban"><input type="file" accept="image/*" data-up="banner"><span class="d-ico">${I.image}</span><b>Add banner</b><span>1500 x 500 px</span></label></div></div>`;
     if (step === 2) {
       b.innerHTML = `<div class="form">
       <div class="f"><span class="flabel">Links</span><div class="lk-icons">${LINK_ICONS.map(k => `<button data-pick="${k}" aria-label="${k}">${I[k]}</button>`).join('')}</div>
@@ -1087,12 +1164,13 @@ function viewRewards() {
       </div></div>
     </section>
     <section class="panel block grainy r-board"><img src="/assets/art/podium.webp" alt="" decoding="async"><div>
-      <div class="head"><h2 class="display">Leaderboard</h2><span class="note">Sample wallets</span></div>
-      <table class="lb"><tbody>${list.map((r, i) => `<tr class="${r[0] === 'You' ? 'me' : ''}"><td>${r[0] === 'You' ? '1,204' : i + 1}</td><td class="mono">${esc(r[0])}</td><td>${int(r[1])}</td></tr>`).join('')}</tbody></table></div>
+      <div class="head"><h2 class="display">Leaderboard</h2><span class="note">Season one, sample wallets</span></div>
+      <table class="lb"><thead><tr><th>Rank</th><th>Wallet</th><th>Points</th></tr></thead><tbody>${list.map((r, i) => `<tr class="${r[0] === 'You' ? 'me' : ''}"><td>${r[0] === 'You' ? '1,204' : i + 1}</td><td class="mono"><span class="who">${avatar(r[0])}${esc(r[0])}</span></td><td>${int(r[1])} <em class="unit">pts</em></td></tr>`).join('')}</tbody></table></div>
     </section>
     <section class="panel block grainy"><div class="art-grid slim">
-      ${[['medal', 'What you get', 'Points decide your share when a season closes.'], ['hourglass', 'When', 'Your counter updates after every trade. Seasons close on a date shown here.'], ['loupe', 'How to check', 'Every point links to the trade that earned it.']].map(a => `<article class="art-c"><img src="/assets/art/${a[0]}.webp" alt="" decoding="async"><div><h3>${a[1]}</h3><p>${a[2]}</p></div></article>`).join('')}
+      ${[['medal', 'What you get', 'Points decide your share when a season closes.'], ['hourglass', 'When', 'Your counter updates after every trade.<br>Seasons close on a date shown here.'], ['loupe', 'How to check', 'Every point links to the trade that earned it.']].map(a => `<article class="art-c"><img src="/assets/art/${a[0]}.webp" alt="" decoding="async"><div><h3>${a[1]}</h3><p>${a[2]}</p></div></article>`).join('')}
     </div></section></div>`;
+    requestAnimationFrame(reveal);
   };
   draw();
   const c = e => { if (e.target.closest('[data-conn]')) connect(); };
@@ -1132,6 +1210,23 @@ function render() {
   else if (p === '/changes') viewChanges();
   else { $('#view').innerHTML = `<div class="wrap enter"><section class="panel block"><div class="empty"><b>Nothing here</b><a class="btn sm" href="/" data-l>Back to Explore</a></div></section></div>`; }
   markNav();
+  requestAnimationFrame(reveal);
+}
+// Anything below the fold rises in as it arrives; what is already on screen never waits
+let revealIO = null;
+function reveal() {
+  if (reduced) return;
+  revealIO ||= new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    revealIO.unobserve(e.target);
+  }), { rootMargin: '0px 0px -7% 0px' });
+  $$('#view section.panel,#view .stats,#view .art-c,#view .lb tbody tr,#foot .panel').forEach(e => {
+    if (e.classList.contains('rv') || e.getBoundingClientRect().top < innerHeight * .93) return;
+    e.classList.add('rv');
+    if (!e.matches('section,.stats,#foot .panel')) e.style.setProperty('--d', Math.min([...e.parentElement.children].indexOf(e), 7) * 70 + 'ms');
+    revealIO.observe(e);
+  });
 }
 function scrollAfter() {
   const y = history.state?.y;
@@ -1224,7 +1319,16 @@ addEventListener('popstate', () => {
   if (fnd.el?.open) { fnd.el.close(); return; }
   route();
 });
-addEventListener('scroll', () => $('#top')?.classList.toggle('stuck', scrollY > 30), { passive: true });
+// The nav narrows on the way down and opens again on the way up
+let lastY = 0;
+addEventListener('scroll', () => {
+  const top = $('#top'), y = scrollY;
+  top.classList.toggle('stuck', y > 30);
+  if (y < 240) top.classList.remove('slim');
+  if (Math.abs(y - lastY) < 5) return;
+  if (y >= 240) top.classList.toggle('slim', y > lastY);
+  lastY = y;
+}, { passive: true });
 addEventListener('resize', markNav, { passive: true });
 history.scrollRestoration = 'manual';
 
