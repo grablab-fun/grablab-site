@@ -1307,3 +1307,9 @@ html.lite .bar.forge i::after,html.lite .conn.cta::after{animation:none}
   .ft-pw img{height:clamp(10px,3vw,13px)}
   .ft-pw i{font-size:10px}
 }
+@media (max-width:760px){
+  .controls .search{flex:1 1 100%}
+  .controls .seg:not(.view){flex:1 1 0;min-width:0}
+  .controls .seg:not(.view) button{flex:1 1 auto;min-width:0;padding:0 4px;font-size:clamp(11.5px,3.2vw,13px)}
+  .controls .seg.sort{flex:1 1 100%;overflow:visible}
+}
