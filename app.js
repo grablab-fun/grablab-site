@@ -1635,6 +1635,7 @@ addEventListener('popstate', () => {
 const wiggle = el => { if (el && !reduced) el.animate([{ rotate: '0deg', scale: 1 }, { rotate: '-18deg', scale: 1.25 }, { rotate: '14deg', scale: 1.25 }, { rotate: '-9deg', scale: 1.1 }, { rotate: '5deg', scale: 1.04 }, { rotate: '0deg', scale: 1 }], { duration: 480, easing: 'ease-out' }); };
 function fitNav() {
   const t = $('#top');
+  document.documentElement.style.setProperty('--sb', innerWidth - document.documentElement.clientWidth + 'px');
   if (!t) return;
   const w = t.offsetWidth, need = [...t.children].reduce((n, e) => n + e.offsetWidth, 0) + 72;
   const pill = innerWidth > 1020 ? Math.min(w, need) : w;

@@ -199,7 +199,7 @@ main:focus{outline:0}
 .h-sky::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,12,40,.5),rgba(0,12,40,.28) 34%,transparent 56%)}
 .h-sky .fly{right:calc((100vw - min(100vw - var(--gut)*2,var(--wrap)))/2 + 410px);top:calc(var(--hh)*.12);height:max(200px,min(calc(var(--hh)*.72),calc((100vw - 1040px)*.62)));width:auto;--d:34px;filter:drop-shadow(0 26px 34px rgba(0,10,40,.5))}
 .h-grain{inset:0;background-image:var(--grain);background-size:220px;opacity:.2;mix-blend-mode:overlay}
-.h-in{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,400px);grid-template-rows:minmax(0,1fr) auto;gap:18px 40px;width:min(calc(100% - var(--gut)*2),var(--wrap));height:100%;margin-inline:auto;padding:104px 0 22px}
+.h-in{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,400px);grid-template-rows:minmax(0,1fr) auto;gap:18px 40px;width:min(calc(100% - var(--gut)*2 - var(--sb,0px)),var(--wrap));height:100%;margin-inline:auto;padding:104px 0 22px}
 .hero .copy{display:grid;align-content:center;justify-items:start;gap:14px;min-width:0}
 .hero h1{font-size:clamp(28px,2.65vw,88px);white-space:nowrap;background:none;filter:drop-shadow(0 1px 0 rgba(255,70,70,.3)) drop-shadow(0 3px 10px rgba(0,8,30,.75))}
 .hero .chr{background:var(--chrome) 0 0/100% 1lh;-webkit-background-clip:text;background-clip:text}
