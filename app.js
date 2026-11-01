@@ -1779,7 +1779,6 @@ function navApply() {
   t.dataset.np = navS.toFixed(4);
 }
 let navS = 0, navRaf = 0;
-// Locked to the scroll position, the page itself provides the easing
 /* the wheel moves the page in 100px jumps, so the pill runs on its own compositor transition instead of following the scroll */
 function navStep() {
   navRaf = 0;
