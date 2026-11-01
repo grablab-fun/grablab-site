@@ -723,18 +723,12 @@ function glLevel(me){
   const from = i < 0 ? 0 : glLevels[i][1], next = glLevels[i + 1];
   return { xp, tier: i < 0 ? null : glLevels[i][0], next: next ? next[0] : null, need: next ? next[1] - xp : 0, pct: next ? (xp - from) / (next[1] - from) * 100 : 100 };
 }
-function demoTierFor(addr){
-  let h=0; for (let i=0;i<addr.length;i++) h=(h*31+addr.charCodeAt(i))>>>0; const r=h%100;
-  if (r<8) return {tier:"Diamond", note:"5 free plays in the airdrop claw"};
-  if (r<28) return {tier:"Gold", note:"3 free plays in the airdrop claw"};
-  if (r<60) return {tier:"Iron", note:"1 free play in the airdrop claw"};
-  return null;
-}
+/* only what the wallet really did counts: no activity, no place on the list */
 function renderResult(addr){
   const box = document.getElementById("checkResult"); if (!box) return;
-  const e = demoTierFor(addr); box.hidden = false;
-  if (e){ box.className=`check-result ok t-${e.tier.toLowerCase()}`; box.innerHTML = `<img class="tr-badge" src="assets/sub/tier-${e.tier.toLowerCase()}.webp" alt="" /><div class="tr-b"><small>You're eligible</small><span class="tier">${e.tier} tier</span><p><b>${e.note.split(" ")[0]} free play${e.note.startsWith("1 ") ? "" : "s"}</b> in the airdrop claw</p><code>${shorten(addr)}</code></div>`; }
-  else { box.className="check-result no"; box.innerHTML = `<span class="tier">Not on the snapshot yet</span><div><code>${shorten(addr)}</code> isn't on the list for this draw.<br>Be early for the next launch.</div>`; }
+  const me = window.glAuth && window.glAuth.me && window.glAuth.me.wallet === addr ? window.glAuth.me : null, tier = glLevel(me).tier; box.hidden = false;
+  if (tier){ const n = glTiers[tier].plays; box.className=`check-result ok t-${tier.toLowerCase()}`; box.innerHTML = `<img class="tr-badge" src="assets/sub/${glTiers[tier].img}.webp" alt="" /><div class="tr-b"><small>You're eligible</small><span class="tier">${tier} tier</span><p><b>${n} free play${n === 1 ? "" : "s"}</b> in the airdrop claw</p><code>${shorten(addr)}</code></div>`; }
+  else { box.className="check-result no"; box.innerHTML = `<span class="tier">Not on the list</span><div><code>${shorten(addr)}</code> hasn't interacted with Grablab yet.<br>Play a drop to get on it.</div>`; }
 }
 document.addEventListener("click", e=>{
   if (e.target.id === "checkBtn"){
