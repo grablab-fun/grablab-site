@@ -247,15 +247,16 @@ function renderFoot() {
     <div class="ft-cta"><h2 class="display">Fund the hardware<br>that actually gets built</h2>
       <div class="ft-acts"><a class="btn primary lg" href="/launch" data-l>Launch a project</a><a class="btn lg" href="/" data-l>Explore</a></div></div>
     <div class="ft-cols">
-      <div class="ft-brand"><a class="brand mark" href="/" data-l aria-label="machine.fun"><i></i></a>
-        <div class="ft-soc"><a href="https://twitter.com/machinedotfun" ${ex} aria-label="X">${I.x}</a><a href="https://github.com/machinedotfun" ${ex} aria-label="GitHub">${I.github}</a></div></div>
-      <div><h4>Product</h4><ul>
-        <li><a href="/" data-l>Explore</a></li><li><a href="/launch" data-l>Launch</a></li><li><a href="/rewards" data-l>Rewards</a></li>
-        <li><a href="https://foundry.machine.fun" ${ex}>Foundry</a></li><li><a href="https://app.simarena.ai" ${ex}>SimArena</a></li></ul></div>
-      <div><h4>Company</h4><ul>
-        <li><a href="https://docs.machine.fun" ${ex}>Docs</a></li><li><a href="https://machine.fun/terms" ${ex}>Terms</a></li><li><a href="https://machine.fun/privacy" ${ex}>Privacy</a></li></ul></div>
-      <div class="ft-risk"><h4>Risk notice</h4><p>Tokens can be volatile or lose all value. Transactions cannot be reversed. A listing is not an endorsement. Nothing on this page is financial advice.</p></div>
+      <a class="brand mark" href="/" data-l aria-label="machine.fun"><i></i></a>
+      <div class="ft-links">
+        <div><h4>Product</h4><ul>
+          <li><a href="/" data-l>Explore</a></li><li><a href="/launch" data-l>Launch</a></li><li><a href="/rewards" data-l>Rewards</a></li><li><a href="https://foundry.machine.fun" ${ex}>Foundry</a></li></ul></div>
+        <div><h4>Resources</h4><ul>
+          <li><a href="https://app.simarena.ai" ${ex}>SimArena</a></li><li><a href="https://docs.machine.fun" ${ex}>Docs</a></li><li><a href="https://machine.fun/terms" ${ex}>Terms</a></li><li><a href="https://machine.fun/privacy" ${ex}>Privacy</a></li></ul></div>
+      </div>
+      <div class="ft-soc"><a href="https://twitter.com/machinedotfun" ${ex} aria-label="X">${I.x}</a><a href="https://github.com/machinedotfun" ${ex} aria-label="GitHub">${I.github}</a></div>
     </div>
+    <p class="ft-risk">Tokens can be volatile or lose all value. Transactions cannot be reversed. A listing is not an endorsement. Nothing on this page is financial advice.</p>
     <div class="ft-base">
       <div class="ft-pw"><span>Powered by</span>
         <a href="https://codecflow.ai" ${ex}><img src="/assets/art/codecflow-white.svg" alt="">codecflow</a><i>×</i>
@@ -408,7 +409,7 @@ function tickLive() {
   const page = $$('.page')[ex.page];
   if (!page) return;
   const groups = new Map();
-  [...$$('[data-live]', page), ...$$('#hlive [data-live]'), ...$$('#watch [data-live]')].forEach(e => {
+  [...$$('[data-live]', page), ...$$('#watch [data-live]')].forEach(e => {
     const r = e.dataset.live;
     groups.has(r) ? groups.get(r).push(e) : groups.set(r, [e]);
   });
@@ -631,7 +632,6 @@ function preCard(p) {
     <p>${esc(p.desc)}</p>
     <div class="ft"><span class="mono mut2" style="font-size:11.5px">Date TBD</span><button class="btn sm" data-remind="${esc(p.ref)}">${I.bell}${on ? 'Reminder set' : 'Remind me'}</button></div></a>`;
 }
-const hotList = () => tokens().filter(p => !liveOf(p).mig).sort((a, b) => liveOf(b).prog - liveOf(a).prog).slice(0, 5);
 function buildHome() {
   const t = tokens(), allTags = {};
   t.forEach(p => p.tags.forEach(x => allTags[x] = (allTags[x] || 0) + 1));
@@ -654,9 +654,6 @@ function buildHome() {
         <h1 class="display"><span class="l"><span class="chr">Fund the </span><span class="rot">${words.map((w, i) => `<b class="${i ? '' : 'on'}">${w}</b>`).join('')}</span></span><span class="l"><span class="chr">that actually get built</span></span></h1>
         <p class="sub">Launch a physical product, prove it works, raise on chain through verifiable milestones.</p>
       </div>
-      <aside class="h-live" id="hlive"><div class="h-lh"><span class="eyebrow">Closest to the bond</span></div>
-        ${hotList().map(p => { const v = liveOf(p); return `<a class="h-r" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}" data-live="${esc(p.ref)}"><img src="${logoSrc(p)}" alt=""><div class="n"><b>${esc(p.name)}</b><span data-f="stage">${stageLabel(v)}</span></div><span class="num" data-f="mc">${usd(v.mc)}</span><div class="bar ${heat(v)}"><i style="width:${v.prog * 100}%"></i></div></a>`; }).join('')}
-      </aside>
       <div class="h-strip">
         <div><div class="eyebrow">Live projects</div><div class="num">${t.length}</div></div>
         <div><div class="eyebrow">Migrated</div><div class="num">${t.filter(p => p.mig).length}</div></div>
@@ -1295,7 +1292,7 @@ const upf = (id, key, ph, accept) => `<div class="up-f"><input class="input" id=
 const IGN_CURVE = 'M40 250C240 250 300 236 420 206S600 164 640 150 800 104 860 86 980 52 1040 36';
 const ignBlock = on => `<div class="ign ${on ? 'on' : ''}">
   <div class="ign-h"><div class="ign-ti"><span class="eyebrow">Optional and permanent</span><h3 class="display">Ignition</h3></div>
-    <p>Lock supply in sell orders above the launch price.<br>The project funds itself as the market grows.</p>
+    <p>Set sell orders at market cap levels above launch.<br>Nothing goes live until you launch the token yourself.</p>
     <div class="tg"><button data-ign="0" aria-pressed="${!on}">Off</button><button data-ign="1" aria-pressed="${on}">On</button></div></div>
   <svg class="ign-c" viewBox="0 0 1400 284" role="img" aria-label="Price rises through locked sell orders, and each one that fills adds to the project treasury">
     <defs>
