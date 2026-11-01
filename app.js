@@ -514,8 +514,9 @@ function pgSlots(n, at) {
   return [0, null, at - 1, at, at + 1, null, n - 1];
 }
 function markPager() {
-  const nums = $('#pg-n');
+  const nums = $('#pg-n'), held = document.activeElement?.dataset?.pgTo;
   if (nums) nums.innerHTML = pgSlots(ex.pages, ex.page).map(i => i === null ? '<span class="pg gap">...</span>' : `<button class="pg ${i === ex.page ? 'on' : ''}" data-pg-to="${i}" aria-label="Page ${i + 1}">${i + 1}</button>`).join('');
+  if (held !== undefined) $('#pg-n .on')?.focus({ preventScroll: true });
   $$('[data-pg]').forEach(b => { const to = ex.page + +b.dataset.pg; b.disabled = to < 0 || to >= ex.pages; });
   const t = $('#pg-now');
   if (t) t.textContent = ex.page + 1;
@@ -1286,12 +1287,35 @@ const RV = {
   ignition: '<path d="M12 3c1 4 6 6 6 11a6 6 0 0 1-12 0c0-2 1-3.500 2-4.500 0 2 1 3 2 3 1-3 0-6 2-9.500z"/>'
 };
 const rv = (d, l, v) => `<div><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>${l}</span><b>${v}</b></div>`;
+let launchD = {};
+const d0 = k => launchD[k] || '';
+const upf = (id, key, ph, accept) => `<div class="up-f"><input class="input" id="${id}" value="${esc(d0(key))}" placeholder="${ph}"><label class="btn up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V5M7.500 9.500 12 5l4.500 4.500M4 19h16"/></svg><input type="file" data-file="${key}" accept="${accept}">Upload</label></div>`;
+const ignBlock = on => `<div class="ign ${on ? 'on' : ''}">
+  <div class="ign-t"><span class="flabel">Ignition</span>
+    <p>Optional and permanent. Lock supply in sell orders above the launch price, so the project funds itself as the market grows.</p>
+    <div class="seg" style="justify-self:start"><button data-ign="0" class="${on ? '' : 'on'}">Off</button><button data-ign="1" class="${on ? 'on' : ''}">On</button></div>
+    <ol class="ign-k"><li><b>Lock</b><span>Part of the supply sits in sell orders.</span></li><li><b>Rise</b><span>Buyers push the price through them.</span></li><li><b>Fund</b><span>Each filled order pays the project.</span></li></ol></div>
+  <svg class="ign-c" viewBox="0 0 440 236" role="img" aria-label="Price rises through locked sell orders, and each one that fills adds to the project treasury">
+    <defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity=".35"/><stop offset="1" stop-color="#ffae2c"/></linearGradient></defs>
+    ${[[35, 425, 4], [70, 365, 3], [105, 300, 2], [140, 200, 1]].map(([y, x, n]) => `<path class="lv" d="M20 ${y}H430"/><text x="20" y="${y - 6}">Sell order ${n}</text><circle class="o o${n}" cx="${x}" cy="${y}" r="5"/>`).join('')}
+    <path class="base" d="M20 180H430"/><text x="20" y="196">Launch price</text>
+    <path class="cv" pathLength="100" d="M20 180C120 180 150 150 200 140S280 115 300 105 350 75 365 70 410 42 425 35"/>
+    <text x="238" y="196" class="tr">Project treasury</text><rect class="tb" x="238" y="204" width="182" height="6" rx="1"/><rect class="tf" x="238" y="204" width="182" height="6" rx="1"/>
+    <text x="238" y="226" class="st">${on ? 'Orders locked at launch' : 'No orders locked'}</text>
+  </svg></div>`;
+const afterBlock = pair => `<div class="after-pub"><div class="eyebrow">After you publish</div><ol class="ap">
+  ${[['<path d="M4 5h16v14H4zM4 9h16"/>', 'Page goes live', 'Your proofs are public, no token yet.'],
+    ['<path d="M12 3c4 2 6 6 6 11l-3 3H9l-3-3c0-5 2-9 6-11zM9 17l-2 4M15 17l2 4"/><circle cx="12" cy="10" r="2"/>', 'You launch', 'The token opens when you are ready.'],
+    ['<path d="M4 18a8 8 0 1 1 16 0M12 18l4-6"/>', 'Curve fills', `Buyers fill the curve up to 100 ${esc(pair)}.`],
+    ['<path d="m4 8 8-5 8 5v8l-8 5-8-5zM4 8l8 5 8-5M12 13v8"/>', 'Raydium', 'At 100 ' + esc(pair) + ' on the curve it migrates.']]
+    .map(([d, t, c], i) => `<li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg></i><small>Step ${i + 1}</small><b>${t}</b><span>${c}</span></li>`).join('')}
+</ol></div>`;
 const LINK_ICONS = ['globe', 'github', 'x', 'discord', 'telegram', 'doc'];
 const detect = u => (LINK_RULES.find(r => r[1].test(u)) || ['globe'])[0];
 function viewLaunch() {
   const saved = store.get('draft', {});
-  const d = Object.assign({ name: '', pitch: '', brief: '', ticker: '', pair: 'SOL', links: [], sim: '', d3: '', pcb: '', video: '', founder: '', ignition: false }, saved);
-  let logo = null, banner = null, done = false;
+  const d = launchD = Object.assign({ name: '', pitch: '', brief: '', ticker: '', pair: 'SOL', links: [], sim: '', d3: '', pcb: '', video: '', founder: '', ignition: false, fx: false, draftAt: 0, logo: null, banner: null }, saved);
+  let logo = d.logo, banner = d.banner, done = false;
   let step = Math.min(4, Math.max(1, parseInt(new URLSearchParams(location.search).get('step')) || 1)), picked = 'globe';
   const STEPS = ['Project', 'Proof', 'Token', 'Review'];
   const $v = $('#view');
@@ -1303,13 +1327,13 @@ function viewLaunch() {
       <div class="preview"><div class="eyebrow">Live preview</div><div id="pv"></div></div>
       <div class="l-ready"><div class="eyebrow">Ready to publish</div><div class="check" id="chk"></div></div>
     </div></aside></div></div>`;
-  const save = () => store.set('draft', d);
+  const save = () => { try { store.set('draft', d); } catch { toast('Draft too large for this browser.'); } };
   const pvObj = () => ({ ref: 'draft', name: d.name || 'Your project', ticker: d.ticker || 'TICKER', tags: [], at: new Date(SNAP - 60000).toISOString(), mc: 4600, quote: d.pair, prog: 0, proof: { sim: d.sim, d3: d.d3, pcb: d.pcb }, spark: [], logo: false, cover: false });
   const drawPv = () => {
     const c = $('#pv');
     c.innerHTML = card(pvObj(), { preview: true });
     if (logo) $('.logo', c).src = logo;
-    if (banner) $('.bg', c).src = banner;
+    if (banner) { $('.bg', c).src = banner; $('.c-top', c).classList.add('has-b'); }
     const ck = [[d.name && d.pitch, 'Name and one line'], [d.brief.length >= 40, 'Brief of 40+ characters'], [d.links.length, 'At least one link'], [d.sim || d.d3 || d.pcb, 'One proof of work'], [/^[A-Z0-9]{2,10}$/.test(d.ticker), 'Ticker set']];
     $('#chk').innerHTML = ck.map(k => `<div class="${k[0] ? 'ok' : ''}"><i>${k[0] ? I.check : ''}</i>${k[1]}</div>`).join('');
   };
@@ -1356,31 +1380,31 @@ function viewLaunch() {
       <div class="f"><span class="flabel">Proof of work</span><small>Each filled proof adds a tab to your page and a badge to your card. Empty ones stay hidden.</small></div>
       <div class="two">
         <div class="f"><div class="f-l"><label for="f-sim">Simulation</label>${tip('A SimArena scene or any public simulation of the machine. Backers can run it on your page.')}</div><input class="input" id="f-sim" value="${esc(d.sim)}" placeholder="SimArena scene link"></div>
-        <div class="f"><div class="f-l"><label for="f-d3">3D model</label>${tip('A GLB file or viewer link. It opens in the 3D view tab so people can inspect the design.')}</div><input class="input" id="f-d3" value="${esc(d.d3)}" placeholder="GLB or viewer link"></div>
-        <div class="f"><div class="f-l"><label for="f-pcb">PCB</label>${tip('Gerber files or a KiCad repo. Shows the electronics exist and can be checked.')}</div><input class="input" id="f-pcb" value="${esc(d.pcb)}" placeholder="Gerber or KiCad repo"></div>
-        <div class="f"><div class="f-l"><label for="f-video">Video</label>${tip('A clip of the real machine running. It is the strongest proof you can add.')}</div><input class="input" id="f-video" value="${esc(d.video)}" placeholder="The machine, running"></div>
-      </div><div class="f"><div class="f-l"><label for="f-founder">Founder</label>${tip('Your name or handle, shown on the project page. Projects with a named founder rank higher.')}</div><input class="input" id="f-founder" value="${esc(d.founder)}" placeholder="Name or handle"></div></div>`;
+        <div class="f"><div class="f-l"><label for="f-d3">3D model</label>${tip('A GLB file or a viewer link. It opens in the 3D view tab so people can inspect the design.')}</div>${upf('f-d3', 'd3', 'GLB file or viewer link', '.glb,.gltf')}</div>
+        <div class="f"><div class="f-l"><label for="f-pcb">PCB</label>${tip('Gerber files or a KiCad repo. Shows the electronics exist and can be checked.')}</div>${upf('f-pcb', 'pcb', 'Gerber zip or KiCad repo', '.zip,.kicad_pcb,.gbr')}</div>
+        <div class="f"><div class="f-l"><label for="f-video">Video</label>${tip('A clip of the real machine running, uploaded or linked. It is the strongest proof you can add.')}</div>${upf('f-video', 'video', 'Upload a clip or paste a link', 'video/*')}</div>
+      </div><div class="f"><div class="f-l"><label for="f-founder">Founder</label>${tip('Your name or handle, shown on the project page. Projects with a named founder rank higher.')}</div><div class="up-f"><input class="input" id="f-founder" value="${esc(d.founder)}" placeholder="Name or handle"><button type="button" class="btn up x-c ${d.fx ? 'on' : ''}" data-fx>${I.x}${d.fx ? 'Connected' : 'Connect X'}</button></div></div></div>`;
       drawLinks(); syncPick();
     }
     if (step === 3) { b.innerHTML = `<div class="form">
       <div class="two"><div class="f"><label for="f-tick">Ticker</label><input class="input mono" id="f-tick" maxlength="10" value="${esc(d.ticker)}" placeholder="SENSE" autocapitalize="characters"><div class="hint" id="tick-h"></div></div>
       <div class="f"><label for="f-pair">Paired with</label>${tokenPick(d.pair, ['SOL', 'USDC', 'PEAQ', 'CODEC'], 'pair', 'Paired with', 'id="f-pair"')}</div></div>
-      <div class="f"><span class="flabel">Ignition</span><small>Optional and permanent. Lock supply in sell orders above the launch price, so the project funds itself as the market grows.</small>
-        <div class="seg" style="justify-self:start"><button data-ign="0" class="${d.ignition ? '' : 'on'}">Off</button><button data-ign="1" class="${d.ignition ? 'on' : ''}">On</button></div></div>
-      <div class="after-pub"><div class="eyebrow">After you publish</div><span><b>1.</b> Your page goes live with its proofs.</span><span><b>2.</b> You launch the token when you are ready.</span><span><b>3.</b> At 100 ${esc(d.pair)} on the curve it migrates to Raydium.</span></div></div>`; dupHint(); }
+      ${ignBlock(d.ignition)}${afterBlock(d.pair)}</div>`; dupHint(); }
     if (step === 4) b.innerHTML = `<div class="form"><div class="flabel">Ready to publish</div>
-      <div class="t-rows rv">
+      <div class="t-rows t-rev">
         ${rv(RV.project, 'Project', esc(d.name || '-'))}${rv(RV.ticker, 'Ticker', d.ticker ? '$' + esc(d.ticker) : '-')}
         ${rv(RV.pair, 'Paired with', tokenIcon(d.pair) + esc(d.pair))}${rv(RV.links, 'Links', d.links.length)}
         ${rv(RV.proofs, 'Proofs', [d.sim, d.d3, d.pcb, d.video].filter(Boolean).length + ' of 4')}${rv(RV.ignition, 'Ignition', d.ignition ? 'On' : 'Off')}
-      </div><p class="t-note">Your draft is saved in this browser.</p></div>`;
+      </div><p class="t-note">${d.draftAt ? 'Draft saved at ' + clock(d.draftAt / 1000, true) + ' in this browser.' : 'Your draft stays in this browser.'}</p></div>`;
     const a = document.createElement('div');
     a.className = 'f-actions';
-    a.innerHTML = `<button class="btn" data-go="-1" ${step === 1 ? 'style="visibility:hidden"' : ''}>Back</button>` + (step < 4
-      ? `<button class="btn primary" data-go="1">Continue</button>` : `<button class="btn primary" id="pub">${wallet ? 'Publish preview' : 'Sign in to publish'}</button>`);
+    a.innerHTML = `<button class="btn" data-go="-1" ${step === 1 ? 'style="visibility:hidden"' : ''}>Back</button>` + `<span class="l-acts"><button class="btn" data-draft>Save draft</button>${step < 4
+      ? '<button class="btn primary" data-go="1">Continue</button>' : `<button class="btn primary" id="pub">${wallet ? 'Publish preview' : 'Sign in to publish'}</button>`}</span>`;
     b.append(a);
-    if (logo && $('#d-logo')) $('#d-logo').style.backgroundImage = `url(${logo})`;
-    if (banner && $('#d-ban')) $('#d-ban').style.backgroundImage = `url(${banner})`;
+    [['#d-logo', logo], ['#d-ban', banner]].forEach(([id, u]) => {
+      const z = $(id);
+      if (z && u) { z.style.backgroundImage = `url(${u})`; z.classList.add('set'); $('b', z).textContent = 'Replace'; }
+    });
   }
   const root = $v.firstElementChild;
   root.addEventListener('input', e => {
@@ -1390,10 +1414,23 @@ function viewLaunch() {
     if (id === 'lk') { picked = detect(e.target.value); syncPick(); }
   });
   root.addEventListener('change', e => {
+    const up = e.target.dataset.file;
+    if (up && e.target.files[0]) { d[up] = e.target.files[0].name; save(); body(); drawPv(); return; }
     const k = e.target.dataset.up; if (!k) return;
     const f = e.target.files[0]; if (!f) return;
     const r = new FileReader();
-    r.onload = () => { if (k === 'logo') logo = r.result; else banner = r.result; body(); drawPv(); };
+    r.onload = () => {
+      const im = new Image();
+      im.onload = () => {
+        const c = document.createElement('canvas'), z = Math.min(1, (k === 'logo' ? 512 : 1500) / im.width);
+        c.width = im.width * z; c.height = im.height * z;
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        const u = c.toDataURL('image/webp', .82);
+        if (k === 'logo') logo = d.logo = u; else banner = d.banner = u;
+        save(); body(); drawPv();
+      };
+      im.src = r.result;
+    };
     r.readAsDataURL(f);
   });
   root.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'lk') { e.preventDefault(); addLink(); } });
@@ -1405,6 +1442,12 @@ function viewLaunch() {
     if (pk) { picked = pk.dataset.pick; syncPick(); $('#lk').focus(); }
     if (rm) { d.links.splice(+rm.dataset.rm, 1); save(); drawLinks(); drawPv(); }
     if (ig) { d.ignition = ig.dataset.ign === '1'; save(); body(); }
+    if (t.closest('[data-fx]')) {
+      d.fx = !d.fx;
+      if (d.fx) { d.founder = d.founder || '@your_handle'; toast('Demo. The real build opens X sign in.'); }
+      save(); body(); drawPv();
+    }
+    if (t.closest('[data-draft]')) { d.draftAt = Date.now(); save(); body(); toast('Draft saved.'); }
     const pr = t.closest('[data-pair]');
     if (pr) { d.pair = pr.dataset.pair; save(); body(); drawPv(); }
     if (t.closest('#lk-add')) addLink();
