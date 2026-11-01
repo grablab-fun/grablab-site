@@ -803,12 +803,13 @@ function drawSearch() {
     <span class="num chg"><small>${p.mint ? '24h' : ''}</small><b ${p.mint ? 'data-f="chg"' : ''} class="${v.change ? (v.change.startsWith('-') ? 'down' : 'up') : 'flat'}">${p.mint ? esc(v.change || '0.0%') : ''}</b></span></a>`; }).join('')
     : `<div class="empty"><b>Nothing matches "${esc($('#fq').value)}"</b><span>Search covers names, tickers, contracts, tags and descriptions.</span></div>`;
   box.scrollTop = 0;
+  fnd.on = null; fnd.hl = $('.fnd-hl', box);
   markSearch();
 }
 function markSearch(scroll) {
-  $('.fnd-row[aria-selected]', fnd.el)?.removeAttribute('aria-selected');
-  const r = $('#fnd-' + fnd.i), h = $('.fnd-hl', fnd.el);
-  if (r) { r.setAttribute('aria-selected', 'true'); h.style.transform = `translateY(${r.offsetTop}px)`; if (scroll) r.scrollIntoView({ block: 'nearest' }); }
+  fnd.on?.removeAttribute('aria-selected');
+  const r = fnd.on = $('#fnd-' + fnd.i), h = fnd.hl;
+  if (r) { r.setAttribute('aria-selected', 'true'); h.style.transform = `translate3d(0,${fnd.i * 62 + 8}px,0)`; if (scroll) r.scrollIntoView({ block: 'nearest' }); }
   $('#fq').setAttribute('aria-activedescendant', r ? r.id : '');
 }
 function buildSearch() {
@@ -822,7 +823,7 @@ function buildSearch() {
     <div class="fnd-ft"><span><kbd>\u2191</kbd><kbd>\u2193</kbd>Navigate</span><span><kbd>\u21B5</kbd>Open</span><span><kbd>esc</kbd>Close</span></div></div>`;
   document.body.append(el);
   $('#fq', el).addEventListener('input', drawSearch);
-  $('#fnd-list', el).addEventListener('pointermove', e => {
+  $('#fnd-list', el).addEventListener('pointerover', e => {
     const r = e.target.closest('.fnd-row');
     if (r && +r.id.slice(4) !== fnd.i) { fnd.i = +r.id.slice(4); markSearch(); }
   });
@@ -1069,7 +1070,7 @@ function renderProject(ref) {
   const SCENE = 'https://app.simarena.ai/editor?scene=' + encodeURIComponent('https://grablab.fun/lab/grablab-claw-revb.scene.json?v=16');
   const NONE = { sim: ['No simulation published yet', 'A simulation appears here once a project shares one.'], d3: ['No 3D model published yet', 'An orbitable model appears here once a project shares one.'], pcb: ['No PCB published yet', 'Board files appear here once a project shares them.'], video: ['No video published yet', 'A demo video appears here once a project shares one.'] };
   const media = [...(p.pre ? [] : [['chart', 'Chart', I.chart]]), ['sim', 'Simulation', I.sim], ['d3', '3D View', I.cube], ['pcb', 'PCB', I.chip], ['video', 'Video', I.play]];
-  const secs = [['overview', 'Overview'], ...(p.pre ? [] : [['trades', 'Trades'], ['holders', 'Holders'], ['token', 'Token']]), ['links', 'Links'], ['simulation', 'Simulation', pr.sim ? 1 : 0], ['machines', 'Machines', 0], ['verify', 'Verify'], ['milestones', 'Milestones'], ['team', 'Team']];
+  const secs = [['overview', 'Overview'], ...(p.pre ? [] : [['trades', 'Trades'], ['holders', 'Holders'], ['token', 'Token']]), ['links', 'Links'], ['simulation', 'Simulation', pr.sim ? 1 : 0], ['machines', 'Machines', 0], ['verify', 'Verify'], ['milestones', 'Milestones', p.milestones ? p.milestones.filter(m => m.s === 'done').length + '/' + p.milestones.length : 0], ['team', 'Team']];
   const q = new URLSearchParams(location.search);
   let mediaTab = media[0][0], secTab = q.get('tab') && secs.some(s => s[0] === q.get('tab')) ? q.get('tab') : 'overview';
   let amt = '0.5', state = p.pre ? 'ready' : net === 'ok' ? 'ready' : 'loading', chart = null, pxNow = p.price;
@@ -1112,7 +1113,7 @@ function renderProject(ref) {
           <div id="mpane"></div></div>
         </section>
         <section class="panel grainy p-sec" style="overflow:hidden"><div>
-          <div class="tabs" id="stabs">${secs.map(s => `<button data-s="${s[0]}">${s[1]}${s[0] === 'milestones' && p.milestones ? '<i class="dot"></i>' : ''}${s.length > 2 ? `<i class="bd">${s[2]}</i>` : ''}</button>`).join('')}</div>
+          <div class="tabs" id="stabs">${secs.map(s => `<button data-s="${s[0]}">${s[1]}${s.length > 2 ? `<i class="bd">${s[2]}</i>` : ''}</button>`).join('')}</div>
           <div class="pane" id="spane"></div></div>
         </section>
       </div>
@@ -1222,7 +1223,9 @@ function renderProject(ref) {
     const linkCards = () => p.links?.length ? `<div class="lk-e">${p.links.map(l => `<a class="lk-c" href="${l[2]}" target="_blank" rel="noopener"><span class="th">${l[4] ? `<img src="${l[4]}" alt="" loading="lazy">` : `<i>${linkIc(l[0])}</i>`}</span><span class="tx"><small>${linkIc(l[0])}${LK[l[0]] || 'Link'}</small><b>${esc(l[1])}</b>${l[3] ? `<span>${esc(l[3])}</span>` : ''}</span><em>${I.ext}</em></a>`).join('')}</div>` : '';
     if (secTab === 'overview') {
       const empties = ['Simulation', '3D View', 'PCB', 'Video'].filter((n, i) => !pr[['sim', 'd3', 'pcb', 'video'][i]]);
+      const ml = p.milestones, cur = ml && (ml.find(m => m.s === 'now') || ml.find(m => m.s === 'next'));
       box.innerHTML = `<p style="max-width:68ch">${esc(p.desc || 'The founder has not written a description yet.')}</p>
+        ${cur ? `<button class="ms-sum" data-s="milestones"><span class="ms-bar">${ml.map(m => `<i class="${m.s}"></i>`).join('')}</span><span class="ms-tx"><small>Milestone ${ml.indexOf(cur) + 1} of ${ml.length}, ${cur.s === 'now' ? 'in progress' : 'next'}</small><b>${esc(cur.t)}</b></span><em>All milestones${I.arrow}</em></button>` : ''}
         ${p.links ? `<div style="margin-top:14px">${linkList()}</div>` : ''}
         ${empties.length ? `<p class="t-note" style="margin-top:16px">Not published yet: ${empties.join(', ')}. The founder sees an Add proof button here.</p>` : ''}`;
     } else if (secTab === 'trades') {
