@@ -7,7 +7,7 @@ const store = {
   get(k, d) { try { const v = localStorage.getItem('mfc:' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
   set(k, v) { try { localStorage.setItem('mfc:' + k, JSON.stringify(v)); } catch {} },
 };
-const reduced = matchMedia('(prefers-reduced-motion:reduce)').matches;
+const reduced = false; // Motion is the review here, so it does not follow the OS setting
 
 const I = (() => {
   const s = (d, x = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ${x}>${d}</svg>`;
@@ -1292,34 +1292,32 @@ const rv = (d, l, v) => `<div><span><svg viewBox="0 0 24 24" fill="none" stroke=
 let launchD = {};
 const d0 = k => launchD[k] || '';
 const upf = (id, key, ph, accept) => `<div class="up-f"><input class="input" id="${id}" value="${esc(d0(key))}" placeholder="${ph}"><label class="btn up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V5M7.500 9.500 12 5l4.500 4.500M4 19h16"/></svg><input type="file" data-file="${key}" accept="${accept}">Upload</label></div>`;
-const IGN_CURVE = 'M40 320C240 320 300 300 420 262S600 208 640 190 800 130 860 108 1000 66 1060 46';
+const IGN_CURVE = 'M40 250C240 250 300 236 420 206S600 164 640 150 800 104 860 86 980 52 1040 36';
 const ignBlock = on => `<div class="ign ${on ? 'on' : ''}">
-  <div class="ign-h"><div><span class="eyebrow">Optional and permanent</span><h3 class="display">Ignition</h3>
-    <p>Lock supply in sell orders above the launch price.<br>The project funds itself as the market grows.</p></div>
-    <div class="seg"><button data-ign="0" class="${on ? '' : 'on'}">Off</button><button data-ign="1" class="${on ? 'on' : ''}">On</button></div></div>
-  <svg class="ign-c" viewBox="0 0 1400 372" role="img" aria-label="Price rises through locked sell orders, and each one that fills adds to the project treasury">
+  <div class="ign-h"><div class="ign-ti"><span class="eyebrow">Optional and permanent</span><h3 class="display">Ignition</h3></div>
+    <p>Lock supply in sell orders above the launch price.<br>The project funds itself as the market grows.</p>
+    <div class="tg"><button data-ign="0" aria-pressed="${!on}">Off</button><button data-ign="1" aria-pressed="${on}">On</button></div></div>
+  <svg class="ign-c" viewBox="0 0 1400 284" role="img" aria-label="Price rises through locked sell orders, and each one that fills adds to the project treasury">
     <defs>
-      <linearGradient id="ig-ch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdfdff"/><stop offset=".3" stop-color="#8ea3c8"/><stop offset=".46" stop-color="#4f6286"/><stop offset=".6" stop-color="#e3edff"/><stop offset=".7" stop-color="#fff"/><stop offset="1" stop-color="#8195ba"/></linearGradient>
       <linearGradient id="ig-cv" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f6bff" stop-opacity=".25"/><stop offset=".55" stop-color="#7fb0ff"/><stop offset="1" stop-color="#fff"/></linearGradient>
       <linearGradient id="ig-ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a86ff" stop-opacity=".3"/><stop offset="1" stop-color="#4a86ff" stop-opacity="0"/></linearGradient>
-      <linearGradient id="ig-lq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe0ff"/><stop offset=".2" stop-color="#6da2ff"/><stop offset="1" stop-color="#143a9e"/></linearGradient>
       <radialGradient id="ig-hd"><stop offset="0" stop-color="#fff"/><stop offset=".22" stop-color="#a9c8ff" stop-opacity=".75"/><stop offset="1" stop-color="#4a86ff" stop-opacity="0"/></radialGradient>
-      <clipPath id="ig-cl"><rect class="cl" x="0" y="0" width="0" height="372"/></clipPath>
-      <clipPath id="ig-vs"><rect x="1200" y="52" width="130" height="258" rx="5"/></clipPath>
+      <radialGradient id="ig-vg"><stop offset="0" stop-color="#7fb0ff" stop-opacity=".75"/><stop offset="1" stop-color="#2f6bff" stop-opacity="0"/></radialGradient>
+      <clipPath id="ig-cl"><rect class="cl" x="0" y="0" width="0" height="284"/></clipPath>
     </defs>
+    <image class="vt" href="/assets/art/ig-vault.webp" x="1150" y="22" width="240" height="216"/>
     <g class="dyn">
-      <path class="base" d="M40 320H1130"/><text class="lb" x="40" y="344">Launch price</text>
-      <path class="ar" clip-path="url(#ig-cl)" d="${IGN_CURVE}L1060 320H40Z"/>
+      <path class="base" d="M40 250H1120"/><text class="lb" x="40" y="272">Launch price</text>
+      <path class="ar" clip-path="url(#ig-cl)" d="${IGN_CURVE}L1040 250H40Z"/>
       ${[1, 2, 3, 4].map(n => `<g class="ord"><path class="lv"/><text class="lb" x="40">Order ${n}</text></g>`).join('')}
       <path class="gl" pathLength="1" d="${IGN_CURVE}"/><path class="cv" pathLength="1" d="${IGN_CURVE}"/>
-      ${[1, 2, 3, 4].map(() => `<g class="ing"><rect x="-36" y="-13" width="72" height="26" rx="2" fill="url(#ig-ch)"/><rect class="fl" x="-36" y="-13" width="72" height="26" rx="2"/></g><path class="arc" pathLength="1"/>`).join('')}
+      <circle class="vg" cx="1238" cy="126" r="62" fill="url(#ig-vg)"/>
+      <circle class="rg" cx="1238" cy="126" r="60" pathLength="1" transform="rotate(-90 1238 126)"/>
+      ${[1, 2, 3, 4].map(() => `<path class="arc" pathLength="1"/><g class="ing"><image href="/assets/art/ig-ingot.webp" x="-48" y="-27" width="96" height="53"/></g>`).join('')}
       <g class="hd"><circle r="30" fill="url(#ig-hd)"/></g>
-      <g clip-path="url(#ig-vs)"><rect class="lq" x="1200" y="310" width="130" height="0" fill="url(#ig-lq)"/></g>
     </g>
-    <rect class="vs" x="1200" y="52" width="130" height="258" rx="5"/>
-    <path class="nt" d="M1316 116.500h14M1316 181h14M1316 245.500h14"/>
-    <text class="ct" x="1265" y="196" text-anchor="middle">${on ? '0/4' : 'Off'}</text>
-    <text class="lb vl" x="1265" y="336" text-anchor="middle">Project treasury</text>
+    <text class="ct" x="1238" y="138" text-anchor="middle">${on ? '0/4' : 'Off'}</text>
+    <text class="lb vl" x="1238" y="266" text-anchor="middle">Project treasury</text>
   </svg>
   <div class="ign-b">${[['Lock', 'Part of the supply sits in sell orders.'], ['Rise', 'Buyers push the price through them.'], ['Fund', 'Each filled order pays the project.']].map(([t, c]) => `<div><i></i><b>${t}</b><span>${c}</span></div>`).join('')}</div>
 </div>`;
@@ -1330,23 +1328,26 @@ function ignStart() {
   if (!root) return;
   const on = root.classList.contains('on'), cv = $('.cv', root), gl = $('.gl', root), len = cv.getTotalLength();
   const ings = $$('.ing', root), arcs = $$('.arc', root), ords = $$('.ord', root), beats = $$('.ign-b>div', root), dyn = $('.dyn', root);
-  const hd = $('.hd', root), cl = $('.cl', root), lq = $('.lq', root), ct = $('.ct', root);
+  const hd = $('.hd', root), cl = $('.cl', root), rg = $('.rg', root), vg = $('.vg', root), ct = $('.ct', root);
   const cut = (a, b, x) => Math.min(1, Math.max(0, (x - a) / (b - a))), ease = x => x * x * (3 - 2 * x);
   // Each order sits on the curve, so the price really runs into it
   const stops = [420, 640, 860, 1000].map((x, i) => {
     let lo = 0, hi = len;
     for (let k = 0; k < 18; k++) { const m = (lo + hi) / 2; cv.getPointAtLength(m).x < x ? lo = m : hi = m; }
     const y = cv.getPointAtLength(lo).y;
-    $('.lv', ords[i]).setAttribute('d', `M40 ${y}H${x - 44}`);
+    $('.lv', ords[i]).setAttribute('d', `M40 ${y}H${x - 54}`);
     $('text', ords[i]).setAttribute('y', y - 8);
-    arcs[i].setAttribute('d', `M${x} ${y - 16}Q${(x + 1265) / 2} ${Math.max(4, Math.min(y, 52) - 46)} 1265 70`);
-    return { x, y, at: lo / len };
+    arcs[i].setAttribute('d', `M${x} ${y}Q${(x + 1238) / 2} ${Math.max(0, Math.min(y, 126) - 70)} 1238 126`);
+    return { x, y, at: lo / len, long: arcs[i].getTotalLength() };
   });
   root.style.setProperty('--ign', on ? 1 : .4);
   ings.concat(arcs, ords).forEach(n => { n.style.display = on ? '' : 'none'; });
+  rg.style.display = vg.style.display = on ? '' : 'none';
+  $$('[data-ign]', root).forEach(b => b.setAttribute('aria-pressed', (b.dataset.ign === '1') === on));
   let shown = '';
+  if (!on) ct.textContent = 'Off';
   const draw = t => {
-    const run = ease(cut(.13, .78, t)), p = cv.getPointAtLength(run * len);
+    const run = ease(cut(.13, .78, t)), rt = run + cut(.78, .95, t) * .28, p = cv.getPointAtLength(run * len);
     [cv, gl].forEach(n => { n.style.strokeDashoffset = 1 - run; });
     cl.setAttribute('width', p.x);
     hd.setAttribute('transform', `translate(${p.x} ${p.y})`);
@@ -1354,17 +1355,18 @@ function ignStart() {
     dyn.setAttribute('opacity', 1 - cut(.95, 1, t));
     let level = 0;
     stops.forEach((o, i) => {
-      const drop = ease(cut(.01 + i * .02, .1 + i * .02, t)), hit = cut(o.at, o.at + .05, run), fly = cut(o.at, o.at + .16, run);
-      ings[i].setAttribute('transform', `translate(${o.x} ${o.y + (1 - drop) * -22}) scale(${1 + hit * .12} ${1 - ease(hit)})`);
-      ings[i].setAttribute('opacity', drop);
-      $('.fl', ings[i]).setAttribute('opacity', Math.sin(Math.PI * hit));
+      const drop = ease(cut(.01 + i * .02, .1 + i * .02, t)), hit = cut(o.at, o.at + .04, rt), fly = ease(cut(o.at + .02, o.at + .2, rt));
+      const at = fly ? arcs[i].getPointAtLength(fly * o.long) : o;
+      ings[i].setAttribute('transform', `translate(${at.x} ${at.y + (1 - drop) * -20}) scale(${1 - fly * .62})`);
+      ings[i].setAttribute('opacity', drop * (1 - cut(.82, 1, fly)));
+      ings[i].style.filter = `brightness(${1 + Math.sin(Math.PI * hit) * .9})`;
       $('.lv', ords[i]).style.opacity = 1 - hit * .6;
       arcs[i].style.strokeDashoffset = 1.2 - fly * 1.4;
-      arcs[i].setAttribute('opacity', Math.sin(Math.PI * fly));
-      if (on) level += ease(cut(o.at + .12, o.at + .2, run)) / 4;
+      arcs[i].setAttribute('opacity', Math.sin(Math.PI * fly) * .8);
+      if (on) level += ease(cut(o.at + .18, o.at + .24, rt)) / 4;
     });
-    lq.setAttribute('y', 310 - 258 * level);
-    lq.setAttribute('height', 258 * level);
+    rg.style.strokeDasharray = `${level} 1`;
+    vg.setAttribute('opacity', level);
     if (on) { const c = `${Math.round(level * 4 - .25)}/4`; if (c !== shown) ct.textContent = shown = c; }
     const first = .13 + .65 * .34, ends = [.13, first, .95], from = [0, .13, first];
     beats.forEach((b, i) => {
@@ -1372,7 +1374,6 @@ function ignStart() {
       $('i', b).style.transform = `scaleX(${on ? cut(from[i], ends[i], t) * (t < .95 ? 1 : 1 - cut(.95, 1, t)) : 0})`;
     });
   };
-  if (reduced) return draw(.9);
   const t0 = performance.now();
   const frame = now => { if (!root.isConnected) return; draw(((now - t0) % 9500) / 9500); ignRaf = requestAnimationFrame(frame); };
   ignRaf = requestAnimationFrame(frame);
@@ -1515,7 +1516,7 @@ function viewLaunch() {
     if (s) { step = +s.dataset.step; body(); }
     if (pk) { picked = pk.dataset.pick; syncPick(); $('#lk').focus(); }
     if (rm) { d.links.splice(+rm.dataset.rm, 1); save(); drawLinks(); drawPv(); }
-    if (ig) { d.ignition = ig.dataset.ign === '1'; save(); body(); }
+    if (ig) { d.ignition = ig.dataset.ign === '1'; save(); $('.ign').classList.toggle('on', d.ignition); ignStart(); }
     if (t.closest('[data-fx]')) {
       d.fx = !d.fx;
       if (d.fx) { d.founder = d.founder || '@your_handle'; toast('Demo. The real build opens X sign in.'); }
