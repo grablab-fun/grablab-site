@@ -569,10 +569,12 @@ function markWatch() {
   const max = w.scrollWidth - w.clientWidth, start = w.scrollLeft <= 1, end = w.scrollLeft >= max - 1;
   w.classList.toggle('at-start', start);
   w.classList.toggle('at-end', end);
-  $('[data-wa="-1"]').hidden = start;
-  $('[data-wa="1"]').hidden = end;
+  $('.w-nav').hidden = max <= 1;
+  $('[data-wa="-1"]').disabled = start;
+  $('[data-wa="1"]').disabled = end;
 }
 function watchRail(w) {
+  let goal = null, goalT = 0;
   dragScroll(w);
   w.addEventListener('wheel', e => {
     const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY, max = w.scrollWidth - w.clientWidth;
@@ -584,7 +586,14 @@ function watchRail(w) {
   new ResizeObserver(markWatch).observe(w);
   w.parentElement.addEventListener('click', e => {
     const a = e.target.closest('[data-wa]');
-    if (a) w.scrollBy({ left: +a.dataset.wa * Math.max(200, w.clientWidth * .7), behavior: reduced ? 'auto' : 'smooth' });
+    if (!a) return;
+    // Quick clicks add up from the last target and always land on a whole chip
+    const unit = $('.chip-w', w).offsetWidth + 10, page = Math.max(1, Math.floor((w.clientWidth + 10) / unit));
+    const from = goal ?? w.scrollLeft, max = w.scrollWidth - w.clientWidth;
+    goal = Math.max(0, Math.min(max, (Math.round(from / unit) + +a.dataset.wa * page) * unit));
+    w.scrollTo({ left: goal, behavior: reduced ? 'auto' : 'smooth' });
+    clearTimeout(goalT);
+    goalT = setTimeout(() => { goal = null; }, 600);
   });
 }
 function preRail() {
@@ -672,13 +681,13 @@ function buildHome() {
       </div>
     </div>
   </section>
-  <div class="watch" id="watch"><span class="w-ic">${I.star}</span><button class="w-arr" data-wa="-1" aria-label="Scroll left" hidden>${I.prev}</button><div class="w-rail" id="wrail"></div><button class="w-arr" data-wa="1" aria-label="Scroll right" hidden>${I.next}</button></div>
+  <div class="watch" id="watch"><span class="w-ic">${I.star}</span><div class="w-rail" id="wrail"></div><div class="w-nav" hidden><button class="w-arr" data-wa="-1" aria-label="Scroll left">${I.prev}</button><button class="w-arr" data-wa="1" aria-label="Scroll right">${I.next}</button></div></div>
   <section class="panel block grainy" id="prelaunch"><div>
-    <div class="head"><div class="ttl"><p class="kick">Up next.</p><h2 class="display">Pre launch</h2></div><span class="note">On the list. Not an endorsement.</span><div class="grow"><button class="pg" data-rail="-1" aria-label="Previous projects">${I.prev}</button><button class="pg" data-rail="1" aria-label="More projects">${I.next}</button></div></div>
+    <div class="head"><div class="ttl"><p class="kick">Up next.</p><h2 class="display">Pre launch</h2></div><div class="grow"><button class="pg" data-rail="-1" aria-label="Previous projects">${I.prev}</button><button class="pg" data-rail="1" aria-label="More projects">${I.next}</button></div></div>
     <div class="rail" id="rail">${preRail().map(preCard).join('')}</div></div>
   </section>
   <section class="panel block grainy" id="explore"><div>
-    <div class="head"><div class="ttl"><p class="kick">On the curve.</p><h2 class="display">Explore</h2></div><span class="count" id="ex-count">0</span><span class="live"><i></i>Simulated prices</span><div class="grow pgn-top" id="pgn-top"></div></div>
+    <div class="head"><div class="ttl"><p class="kick">On the curve.</p><h2 class="display">Explore</h2></div><span class="count" id="ex-count">0</span><div class="grow pgn-top" id="pgn-top"></div></div>
     <div class="controls">
       <button class="search" type="button" data-search>${I.search}<span>Search projects</span><kbd>/</kbd></button>
       <div class="seg">${[['all', 'All'], ['bond', 'Bonding'], ['mig', 'Migrated']].map(s => `<button data-stage="${s[0]}">${s[1]}</button>`).join('')}</div>
@@ -1299,7 +1308,7 @@ function viewLaunch() {
   const STEPS = ['Project', 'Proof', 'Token', 'Review'];
   const $v = $('#view');
   $v.innerHTML = `<div class="wrap enter"><div class="l-grid">
-    <section class="panel l-hero grainy"><img src="/assets/art/bench.webp" alt=""><div>
+    <section class="panel l-hero grainy"><img src="/assets/art/bench-wide.webp" alt=""><div>
       <h1 class="display">Put your machine on chain</h1><p>No account needed to start. Four steps, and you sign in only to publish.</p></div></section>
     <section class="panel block grainy" style="margin:0"><div><div class="steps" id="steps"></div><div id="sbody"></div></div></section>
     <aside class="panel grainy l-side"><div class="side-sticky">
