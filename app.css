@@ -1281,7 +1281,7 @@ html.lite .bar.forge i::after,html.lite .conn.cta::after{animation:none}
   .right .burger{display:grid;place-items:center;width:44px;height:44px;padding:0}
   .h-in{padding-top:128px;gap:10px}
   .hero .copy{gap:7px}
-  .hero h1{font-size:clamp(14px,5.1vw,30px);white-space:nowrap;filter:none}
+  .hero h1{font-size:clamp(14px,4.3vw,26px);white-space:nowrap;filter:none}
   .hero .chr{background:none;-webkit-text-fill-color:#fff;color:#fff}
   .h-sky .fly{left:auto;right:8px;top:58px;width:min(42vw,250px);height:auto;opacity:1}
   .h-sky::after{background:linear-gradient(180deg,rgba(6,14,44,.1) 22%,rgba(6,14,44,.62) 42%,rgba(6,14,44,.78))}
