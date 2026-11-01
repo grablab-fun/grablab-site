@@ -1004,7 +1004,7 @@ function mountChart(box, raw, p, onTick, cfg) {
   });
   let t = 0;
   const seed = base.length ? base[base.length - 1][4] : 0;
-  const timer = !reduced && base.length ? setInterval(() => {
+  const timer = !reduced && !p.pre && base.length ? setInterval(() => {
     const c = base[base.length - 1];
     const drift = (seed - c[4]) / seed * .06, chg = drift + (Math.random() - .5) * .006;
     const v = c[4] * (1 + chg);
@@ -1055,9 +1055,18 @@ function seedHolders(p) {
   return { big, held };
 }
 function tradeHTML(p, state, amt, o) {
-  if (p.pre) return `<div class="t-curve"><div class="eyebrow">Not live yet</div></div>
-    <p class="t-note">No token exists for this project. The founder decides when it launches, and buying only opens then.</p>
-    <button class="btn full ${reminds.has(p.ref) ? '' : 'primary'}" data-remind="${esc(p.ref)}">${I.bell}${reminds.has(p.ref) ? 'Reminder set' : 'Remind me at launch'}</button>`;
+  if (p.pre) {
+    const pf = p.proof || {}, list = [['sim', 'Simulation'], ['d3', '3D model'], ['pcb', 'PCB'], ['video', 'Video']], n = list.filter(x => pf[x[0]]).length, ml = p.milestones;
+    const cur = ml && (ml.find(m => m.s === 'now') || ml.find(m => m.s === 'next'));
+    return `<div class="pl-b"><div class="eyebrow">Not live yet</div>
+        <p class="t-note">No token exists for this project. The founder decides when it launches, and buying only opens then.</p></div>
+      <div class="pl-b"><div class="pl-h"><span class="eyebrow">Proof published</span><b>${n} of ${list.length}</b></div>
+        <div class="pl-l">${list.map(x => `<div class="${pf[x[0]] ? 'on' : ''}"><i>${pf[x[0]] ? I.check : ''}</i>${x[1]}</div>`).join('')}</div></div>
+      ${cur ? `<div class="pl-b"><div class="pl-h"><span class="eyebrow">Milestone</span><b>${ml.indexOf(cur) + 1} of ${ml.length}</b></div><span class="ms-bar">${ml.map(m => `<i class="${m.s}"></i>`).join('')}</span><span class="pl-m">${esc(cur.t)}</span></div>` : ''}
+      <div class="pl-b"><div class="eyebrow">At launch</div>
+        <dl class="pl-d"><div><dt>Curve target</dt><dd>100 SOL</dd></div><div><dt>Then</dt><dd>Raydium</dd></div><div><dt>Per trade</dt><dd>1.25%</dd></div></dl></div>
+      <button class="btn full pl-cta ${reminds.has(p.ref) ? '' : 'primary'}" data-remind="${esc(p.ref)}">${I.bell}${reminds.has(p.ref) ? 'Reminder set' : 'Remind me at launch'}</button>`;
+  }
   if (state === 'loading') return `<div class="sk" style="height:42px"></div><div class="sk" style="height:44px"></div><div class="sk" style="height:52px"></div><div class="sk" style="height:34px"></div><div class="sk" style="height:84px"></div><button class="btn full lg" disabled>Reading pool state</button>`;
   if (state === 'error') return `<div class="t-err">${I.alert}<b>Could not reach the pool</b><span class="t-note">We will not show a price we cannot confirm. Your funds are not affected.</span><button class="btn sm" data-retry>Retry</button></div>`;
   const quote = p.quote || 'SOL', pays = [...new Set([quote, 'SOL', 'USDC'])], buy = o.side === 'buy', q = o.pay, sym = '$' + esc(p.ticker);
@@ -1111,7 +1120,7 @@ function renderProject(ref) {
     <div class="m-bar"><span><img src="/assets/art/simarena-white.svg" alt="">Recorded in SimArena, real physics</span><button class="btn sm" data-run>${I.next}Run it live</button></div></div></div>`;
   const SCENE = 'https://app.simarena.ai/editor?scene=' + encodeURIComponent('https://grablab.fun/lab/grablab-claw-final.scene.json?v=3');
   const NONE = { sim: ['No simulation published yet', 'A simulation appears here once a project shares one.'], d3: ['No 3D model published yet', 'An orbitable model appears here once a project shares one.'], pcb: ['No PCB published yet', 'Board files appear here once a project shares them.'], video: ['No video published yet', 'A demo video appears here once a project shares one.'] };
-  const media = [...(p.pre ? [] : [['chart', 'Chart', I.chart]]), ['sim', 'Simulation', I.sim], ['d3', '3D View', I.cube], ['pcb', 'PCB', I.chip], ['video', 'Video', I.play]];
+  const media = [['chart', 'Chart', I.chart], ['sim', 'Simulation', I.sim], ['d3', '3D View', I.cube], ['pcb', 'PCB', I.chip], ['video', 'Video', I.play]];
   const secs = [['overview', 'Overview'], ...(p.pre ? [] : [['trades', 'Trades'], ['holders', 'Holders'], ['token', 'Token']]), ['links', 'Links'], ['simulation', 'Simulation', pr.sim ? 1 : 0], ['machines', 'Machines', 0], ['verify', 'Verify'], ['milestones', 'Milestones', p.milestones ? p.milestones.filter(m => m.s === 'done').length + '/' + p.milestones.length : 0], ['team', 'Team']];
   const q = new URLSearchParams(location.search);
   let mediaTab = media[0][0], secTab = q.get('tab') && secs.some(s => s[0] === q.get('tab')) ? q.get('tab') : 'overview';
@@ -1125,7 +1134,7 @@ function renderProject(ref) {
   v.innerHTML = `<div class="wrap enter">
     ${p.draft ? '<div class="dr-bar"><span>This is your page as visitors will see it.</span><a class="btn sm" href="/launch" data-l>Back to editing</a></div>' : ''}
     <div id="pbanner"></div>
-    <div class="p-grid ${p.pre ? 'pre' : ''}">
+    <div class="p-grid ${p.pre ? 'pl' : ''}">
       <div class="p-main">
         <section class="panel p-head grainy">
           <div class="p-cover ${p.bannerData ? 'real' : ''}"><img src="${p.bannerData || logoSrc(p)}" alt="" decoding="async"></div>
@@ -1208,19 +1217,19 @@ function renderProject(ref) {
           <span class="grow"></span>
           <button class="c-ic" data-full aria-label="Full screen">${I.full}</button><button class="c-ic" data-save aria-label="Save as image">${I.save}</button>
         </div>
-        <div class="c-leg"><span class="c-name2">${pair} on machinefun</span><span id="ohlc"></span><span class="c-vol">Volume <b id="lvol">-</b></span></div>
-        <div id="chartbox"><div class="sk"></div></div>
+        <div class="c-leg"><span class="c-name2">${p.pre ? `${esc(p.name)} sample` : `${pair} on machinefun`}</span><span id="ohlc"></span><span class="c-vol">Volume <b id="lvol">-</b></span></div>
+        <div id="chartbox"><div class="sk"></div>${p.pre ? `<span class="c-demo">Sample chart. Real candles start when the token launches.</span>` : ''}</div>
         ${chartFoot()}</div>`;
       paintClock();
       try {
-        const data = await market(p.ref);
+        const data = p.pre ? [] : await market(p.ref);
         if (!$('#chartbox') || mediaTab !== 'chart') return;
         state = 'ready'; drawTrade(); banner();
-        if (!data.length && !p.price) { $('#chartbox').innerHTML = `<div class="empty" style="height:300px;align-content:center"><b>No trades yet</b><span>The first buy opens the chart.</span></div>`; return; }
+        if (!p.pre && !data.length && !p.price) { $('#chartbox').innerHTML = `<div class="empty" style="height:300px;align-content:center"><b>No trades yet</b><span>The first buy opens the chart.</span></div>`; return; }
         await loadChart();
         if (!$('#chartbox') || mediaTab !== 'chart') return;
-        $('#chartbox').innerHTML = '<div id="chart" role="img" aria-label="Price chart"></div>';
-        chart = mountChart($('#chart'), data, p, tick, cfg);
+        $('#chartbox .sk').outerHTML = '<div id="chart" role="img" aria-label="Price chart"></div>';
+        chart = mountChart($('#chart'), data, p.pre ? { ...p, price: 2.4e-5, mc: 2.4e-5 * SUPPLY, vol: 3200 } : p, tick, cfg);
       } catch {
         if (!$('#chartbox')) return;
         state = 'error'; drawTrade(); banner();
@@ -1325,7 +1334,7 @@ function renderProject(ref) {
     if (d) { if (d.unit) cfg.unit = d.unit; if (d.cur) cfg.cur = d.cur; if (d.rng) cfg.range = d.rng; if (d.mode) cfg.mode = d.mode; setChart(); }
     if (e.target.closest('[data-full]')) { document.fullscreenElement ? document.exitFullscreen() : $('#cw').requestFullscreen?.(); }
     if (e.target.closest('[data-save]')) {
-      chart?.shot().toBlob(b => { const u = URL.createObjectURL(b), l = document.createElement('a'); l.href = u; l.download = `${p.ticker}-chart.png`; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1000); });
+      chart?.shot().toBlob(b => { const u = URL.createObjectURL(b), l = document.createElement('a'); l.href = u; l.download = `${p.ticker || p.ref}-chart.png`; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1000); });
     }
     const pay = e.target.closest('[data-pay]');
     if (pay) { e.preventDefault(); trade.pay = pay.dataset.pay; drawTrade(); }
