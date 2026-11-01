@@ -1780,12 +1780,14 @@ function navApply() {
 }
 let navS = 0, navRaf = 0;
 // Locked to the scroll position, the page itself provides the easing
+/* the wheel moves the page in 100px jumps, so the pill runs on its own compositor transition instead of following the scroll */
 function navStep() {
-  const r = Math.min(1, scrollY / 260);
-  navS = r * r * (3 - 2 * r);
-  navApply();
-  $('#top').classList.toggle('stuck', navS > .5);
   navRaf = 0;
+  const on = scrollY > 24 ? 1 : 0;
+  if (on === navS) return;
+  navS = on;
+  navApply();
+  $('#top').classList.toggle('stuck', !!on);
 }
 addEventListener('scroll', () => { if (!navRaf) navRaf = requestAnimationFrame(navStep); }, { passive: true });
 addEventListener('resize', fitNav, { passive: true });
