@@ -1285,7 +1285,8 @@ html.lite .bar.forge i::after,html.lite .conn.cta::after{animation:none}
   .hero .chr{background:none;-webkit-text-fill-color:#fff;color:#fff}
   .h-sky .fly{left:auto;right:8px;top:58px;width:min(42vw,250px);height:auto;opacity:1}
   .h-sky::after{background:linear-gradient(180deg,rgba(6,14,44,.1) 22%,rgba(6,14,44,.62) 42%,rgba(6,14,44,.78))}
-  .hero .sub{font-size:13px;line-height:1.4}
+  .hero .sub{max-width:none;font-size:clamp(10.5px,3.2vw,15px);line-height:1.4;white-space:nowrap}
+  .h-tail{display:none}
   .hero p.kick{font-size:12px}
   .h-strip>div{padding:6px 10px}
   .h-strip .eyebrow{font-size:9.5px}

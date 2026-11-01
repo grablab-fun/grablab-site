@@ -701,7 +701,7 @@ function buildHome() {
       <div class="copy">
         <p class="kick">Back the build.</p>
         <h1 class="display"><span class="l"><span class="chr">Fund the </span><span class="rot">${words.map((w, i) => `<b class="${i ? '' : 'on'}">${w}</b>`).join('')}</span></span><span class="l"><span class="chr">that actually get built</span></span></h1>
-        <p class="sub">Launch a physical product, prove it works, raise on chain through verifiable milestones.</p>
+        <p class="sub">Launch a physical product, prove it works, raise on chain<span class="h-tail"> through verifiable milestones</span>.</p>
       </div>
       <div class="h-strip">
         <div><div class="eyebrow">Live projects</div><div class="num">${t.length}</div></div>
