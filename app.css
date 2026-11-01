@@ -85,7 +85,7 @@ main:focus{outline:0}
 
 /* Hero: every piece on one axis, word has a fixed slot */
 .hero{position:relative;margin-top:14px;height:430px;display:grid;align-items:center;overflow:hidden;background:#040405}
-.hero .plate{position:absolute;right:-5%;top:-6%;width:70%;height:112%;object-fit:cover;object-position:50% 50%;animation:hover-fly 9s ease-in-out infinite alternate;-webkit-mask-image:linear-gradient(90deg,transparent 2%,#000 26%);mask-image:linear-gradient(90deg,transparent 2%,#000 26%)}
+.hero .plate{position:absolute;right:-9%;top:-6%;width:66%;height:112%;object-fit:cover;object-position:50% 50%;animation:hover-fly 9s ease-in-out infinite alternate;-webkit-mask-image:linear-gradient(90deg,transparent 2%,#000 26%);mask-image:linear-gradient(90deg,transparent 2%,#000 26%)}
 @keyframes hover-fly{from{transform:translate3d(-1%,1%,0) rotate(-.7deg)}to{transform:translate3d(1%,-1.4%,0) scale(1.03) rotate(.7deg)}}
 .hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,#040405 30%,rgba(4,4,5,.7) 50%,rgba(4,4,5,0) 72%)}
 .hero .copy{position:relative;z-index:2;display:grid;justify-items:start;gap:16px;padding:0 54px;max-width:760px}
