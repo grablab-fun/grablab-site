@@ -549,6 +549,7 @@ function markPager() {
   $$('[data-pg]').forEach(b => { const to = ex.page + +b.dataset.pg; b.disabled = to < 0 || to >= ex.pages; });
   const t = $('#pg-now');
   if (t) t.textContent = ex.page + 1;
+  $$('.page').forEach((p, i) => p.classList.toggle('cur', i === ex.page));
 }
 function goPage(i, instant) {
   const w = $('#pages');
