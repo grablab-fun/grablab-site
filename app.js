@@ -25,8 +25,13 @@ const I = (() => {
     alert: s('<path d="M12 4 2.5 20h19zM12 10v4.5M12 17.5h.01"/>'),
     bell: s('<path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 21h4"/>'),
     sliders: s('<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>'),
-    globe: s('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>'),
-    github: s('<path d="M9 19c-4 1.3-4-2-6-2.5M15 21v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.200s-1.1-.3-3.5 1.300a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.100a4.3 4.3 0 0 0-.1 3.200A4.7 4.7 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>'),
+    globe: s('<circle cx="12" cy="12" r="9.2"/><ellipse cx="12" cy="12" rx="4" ry="9.2"/><path d="M3.4 9h17.2M3.4 15h17.2"/>', 'stroke-width="1.5"'),
+    xb: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+    flag: s('<path d="M5 21V4c5-2.5 9 2.5 14 0v10c-5 2.5-9-2.5-14 0"/>'),
+    shield: s('<path d="M12 3 5 5.5v6c0 4.5 3 7.5 7 9.5 4-2 7-5 7-9.5v-6z"/><path d="m9 12 2.2 2.2 4-4.2"/>'),
+    claw: s('<path d="M12 2v6M9 8h6v3H9zM10 11l-4 3v3l2.5 3M14 11l4 3v3l-2.5 3M12 11v5"/>'),
+    arrow: s('<path d="M5 12h14M13 6l6 6-6 6"/>'),
+    github: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>`,
     x: s('<path d="m4 4 16 16M20 4 4 20"/>', 'stroke-width="2.2"'),
     wallet: s('<path d="M4 7.5A2.500 2.500 0 0 1 6.500 5H18v3M4 7.500V17a3 3 0 0 0 3 3h13V8H6.500A2.500 2.500 0 0 1 4 7.500z"/><path d="M16.500 14h.01"/>'),
     chev: s('<path d="m6 9 6 6 6-6"/>', 'stroke-width="2.2"'),
@@ -34,8 +39,8 @@ const I = (() => {
     image: s('<rect x="3.500" y="4.500" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.700"/><path d="m4 17 5-4.500 3.500 3 3-2.500 4.500 4"/>'),
     prev: s('<path d="m15 5-7 7 7 7"/>', 'stroke-width="2.2"'),
     next: s('<path d="m9 5 7 7-7 7"/>', 'stroke-width="2.2"'),
-    discord: s('<path d="M8.5 7C7 7.3 5.8 7.8 5 8.5 3.5 11.5 3 14.5 3.2 17.5c1.4 1 2.9 1.7 4.5 2l1-1.800M15.5 7c1.5.3 2.7.8 3.5 1.5 1.5 3 2 6 1.8 9-1.4 1-2.9 1.7-4.5 2l-1-1.800M7.5 16.5c3 1.3 6 1.3 9 0"/><circle cx="9.5" cy="12.5" r="1.2"/><circle cx="14.5" cy="12.5" r="1.2"/>'),
-    telegram: s('<path d="M21 4 3 11.5l6 2.200L18 7l-6.5 8.5 6 4.5z"/>'),
+    discord: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`,
+    telegram: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`,
     doc: s('<path d="M14 3H6v18h12V7zM14 3v4h4M9 13h6M9 17h6"/>'),
     youtube: s('<rect x="3" y="6" width="18" height="12" rx="3"/><path d="m10.5 9.5 4 2.5-4 2.5z"/>'),
     clock: s('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
@@ -57,10 +62,10 @@ const SAMPLE = {
   tags: ['robotics', 'machine', 'simulation'],
   proof: { sim: 1, d3: 1 },
   founder: { name: 'Grablab team', role: 'Founders', img: '/assets/logos/grablab.webp' },
-  links: [['globe', 'grablab.fun', 'https://grablab.fun'], ['x', '@grablabfun', 'https://x.com/grablabfun']],
+  links: [['globe', 'grablab.fun', 'https://grablab.fun', 'The site, the live machine and the provably fair page.', '/assets/art/gl-threequarter.webp'], ['x', '@grablabfun', 'https://x.com/grablabfun', 'Build updates, renders and proof drops.', '/assets/logos/grablab.webp']],
   milestones: [
-    { s: 'done', t: 'Simulation of the full machine', d: 'Physics scene built and playable in SimArena.', proof: 'Simulation tab' },
-    { s: 'done', t: 'Interactive 3D model', d: 'Every part of the metal build, exploded and labelled.', proof: '3D View tab' },
+    { s: 'done', t: 'Simulation of the full machine', d: 'Physics scene built and playable in SimArena.', proof: 'See the simulation', to: 'sim' },
+    { s: 'done', t: 'Interactive 3D model', d: 'Every part of the metal build, exploded and labelled.', proof: 'See the 3D model', to: 'd3' },
     { s: 'now', t: 'Prototype 01 hardware build', d: 'Frame, gantry and claw module on the bench.' },
     { s: 'next', t: 'Plays signed by the machine', d: 'peaqOS identity, every play signed with a key it cannot fake.' },
     { s: 'next', t: 'First public claw night', d: 'Live stream, escrow public, receipts for every play.' },
@@ -254,7 +259,7 @@ function renderFoot() {
         <div><h4>Resources</h4><ul>
           <li><a href="https://app.simarena.ai" ${ex}>SimArena</a></li><li><a href="https://docs.machine.fun" ${ex}>Docs</a></li><li><a href="https://machine.fun/terms" ${ex}>Terms</a></li><li><a href="https://machine.fun/privacy" ${ex}>Privacy</a></li></ul></div>
       </div>
-      <div class="ft-soc"><a href="https://twitter.com/machinedotfun" ${ex} aria-label="X">${I.x}</a><a href="https://github.com/machinedotfun" ${ex} aria-label="GitHub">${I.github}</a></div>
+      <div class="ft-soc"><a href="https://twitter.com/machinedotfun" ${ex} aria-label="X">${I.xb}</a><a href="https://github.com/machinedotfun" ${ex} aria-label="GitHub">${I.github}</a></div>
     </div>
     <p class="ft-risk">Tokens can be volatile or lose all value. Transactions cannot be reversed. A listing is not an endorsement. Nothing on this page is financial advice.</p>
     <div class="ft-base">
@@ -1060,6 +1065,10 @@ function renderProject(ref) {
     return;
   }
   const pr = p.proof || {}, st = stageOf(p), quote = p.quote || 'SOL', pair = `${esc(p.ticker)}/${esc(quote)}`;
+  const emp = (ic, t, d, x = '') => `<div class="empty"><span class="e-ic">${I[ic]}</span><b>${t}</b><span>${d}</span>${x}</div>`;
+  const simPane = () => `<div class="media-pane"><div class="m-stage"><video class="m-fill" src="/assets/art/simarena-run.mp4" poster="/assets/art/simarena-run.webp" autoplay muted loop playsinline></video>
+    <div class="m-bar"><span><img src="/assets/art/simarena-white.svg" alt="">Recorded in SimArena, real physics</span><button class="btn sm" data-run>${I.next}Run it live</button></div></div></div>`;
+  const SCENE = 'https://app.simarena.ai/editor?scene=' + encodeURIComponent('https://grablab.fun/lab/grablab-claw-revb.scene.json?v=16');
   const NONE = { sim: ['No simulation published yet', 'A simulation appears here once a project shares one.'], d3: ['No 3D model published yet', 'An orbitable model appears here once a project shares one.'], pcb: ['No PCB published yet', 'Board files appear here once a project shares them.'], video: ['No video published yet', 'A demo video appears here once a project shares one.'] };
   const media = [...(p.pre ? [] : [['chart', 'Chart', I.chart]]), ['sim', 'Simulation', I.sim], ['d3', '3D View', I.cube], ['pcb', 'PCB', I.chip], ['video', 'Video', I.play]];
   const secs = [['overview', 'Overview'], ...(p.pre ? [] : [['trades', 'Trades'], ['holders', 'Holders'], ['token', 'Token']]), ['links', 'Links'], ['simulation', 'Simulation', pr.sim ? 1 : 0], ['machines', 'Machines', 0], ['verify', 'Verify'], ['milestones', 'Milestones'], ['team', 'Team']];
@@ -1177,11 +1186,12 @@ function renderProject(ref) {
         $('#chartbox').innerHTML = `<div class="t-err" style="height:300px;align-content:center">${I.alert}<b>Chart unavailable</b><span class="t-note">The price feed did not answer.</span><button class="btn sm" data-retry>Retry</button></div>`;
       }
     } else if (mediaTab === 'sim' && pr.sim) {
-      box.innerHTML = `<div class="media-pane"><video src="/assets/art/gl-feed.mp4" autoplay muted loop playsinline></video><p class="media-note">Simulation proof. In production this is the live SimArena embed.</p></div>`;
+      box.innerHTML = simPane();
     } else if (mediaTab === 'd3' && pr.d3) {
-      box.innerHTML = `<div class="media-pane"><img src="/assets/art/gl-threequarter.webp" alt="Grablab metal build, three quarter view"><p class="media-note">3D proof. In production this is the orbitable model.</p></div>`;
+      box.innerHTML = `<div class="media-pane"><div class="m-stage d3"><video class="m-fit" src="/assets/art/model-spin.webm" poster="/assets/art/model-spin.webp" autoplay muted loop playsinline></video>
+        <div class="m-bar"><span>${I.cube}Every part of the build. In production you orbit it yourself.</span></div></div></div>`;
     } else {
-      box.innerHTML = `<div class="empty" style="min-height:300px;align-content:center"><b>${NONE[mediaTab][0]}</b><span>${NONE[mediaTab][1]}</span></div>`;
+      box.innerHTML = emp({ sim: 'sim', d3: 'cube', pcb: 'chip', video: 'play' }[mediaTab], NONE[mediaTab][0], NONE[mediaTab][1]);
     }
   }
   const redrawFoot = () => { const f = $('.c-foot'); if (f) { f.outerHTML = chartFoot(); paintClock(); } };
@@ -1209,7 +1219,9 @@ function renderProject(ref) {
     $$('#stabs [data-s]').forEach(b => b.classList.toggle('on', b.dataset.s === secTab));
     const box = $('#spane');
     const R = (t, s, url, todo) => `<div class="v-row"><div><b>${t}</b><span class="${todo ? 'todo' : ''}">${s}</span></div>${url ? `<a class="btn sm" href="${url}" target="_blank" rel="noopener">${I.ext}Verify</a>` : ''}</div>`;
-    const linkList = () => p.links?.length ? `<div class="p-meta">${p.links.map(l => `<a class="ca" href="${l[2]}" target="_blank" rel="noopener">${I[l[0]]}${esc(l[1])}</a>`).join('')}</div>` : '';
+    const linkList = () => p.links?.length ? `<div class="p-meta">${p.links.map(l => `<a class="ca" href="${l[2]}" target="_blank" rel="noopener">${linkIc(l[0])}${esc(l[1])}</a>`).join('')}</div>` : '';
+    const LK = { globe: 'Website', x: 'X', github: 'GitHub', discord: 'Discord', telegram: 'Telegram', doc: 'Docs', youtube: 'YouTube' };
+    const linkCards = () => p.links?.length ? `<div class="lk-e">${p.links.map(l => `<a class="lk-c" href="${l[2]}" target="_blank" rel="noopener"><span class="th ${l[4] ? '' : 'ic'}">${l[4] ? `<img src="${l[4]}" alt="" loading="lazy">` : ''}<i>${linkIc(l[0])}</i></span><span class="tx"><small>${LK[l[0]] || 'Link'}</small><b>${esc(l[1])}</b>${l[3] ? `<span>${esc(l[3])}</span>` : ''}</span><em>${I.ext}</em></a>`).join('')}</div>` : '';
     if (secTab === 'overview') {
       const empties = ['Simulation', '3D View', 'PCB', 'Video'].filter((n, i) => !pr[['sim', 'd3', 'pcb', 'video'][i]]);
       box.innerHTML = `<p style="max-width:68ch">${esc(p.desc || 'The founder has not written a description yet.')}</p>
@@ -1234,12 +1246,11 @@ function renderProject(ref) {
           ${share('Creator', 35.21, fees.creator)}${share('Platform', 47.19, fees.platform)}${share('Rewards', 17.6, fees.rewards)}
           <p class="t-note" style="margin-top:12px">The project earns a share of every trade. Buying here funds the team building it.<br>Fee figures are estimated in this concept.</p></div></div>`;
     } else if (secTab === 'links') {
-      box.innerHTML = linkList() || `<div class="empty"><b>No links published</b><span>Website, X, GitHub and docs show here once the founder adds them.</span></div>`;
+      box.innerHTML = linkCards() || emp('globe', 'No links published', 'Website, X, GitHub and docs show here once the founder adds them.');
     } else if (secTab === 'simulation') {
-      box.innerHTML = pr.sim ? `<div class="media-pane" style="padding:0"><video src="/assets/art/gl-feed.mp4" autoplay muted loop playsinline></video><p class="media-note">Simulation proof. In production this is the live SimArena embed.</p></div>`
-        : `<div class="empty"><b>No simulation published for this project yet</b><span>A simulation appears here once a project shares one.</span></div>`;
+      box.innerHTML = pr.sim ? simPane() : emp('sim', 'No simulation published for this project yet', 'A simulation appears here once a project shares one.');
     } else if (secTab === 'machines') {
-      box.innerHTML = `<div class="empty"><b>No machines attached</b><span>A project can point at machines registered on peaq. Their identity, bond and event log are read from chain state.</span></div>`;
+      box.innerHTML = emp('claw', 'No machines attached', 'A project can point at machines registered on peaq. Their identity, bond and event log are read from chain state.');
     } else if (secTab === 'verify') {
       box.innerHTML = p.mint ? `<div class="verify">
         ${R('Token mint', esc(p.mint), 'https://solscan.io/token/' + encodeURIComponent(p.mint))}
@@ -1248,10 +1259,11 @@ function renderProject(ref) {
         ${R('Independent chart', 'DexScreener', 'https://dexscreener.com/solana/' + encodeURIComponent(p.mint))}
         ${p.mig ? R('Migration transaction', 'Needs one API field: migration tx signature', '', 1) : ''}
         ${R('Fee escrow', 'Needs one API field: escrow address behind the Collected figure', '', 1)}
-      </div>` : `<div class="empty"><b>Nothing on chain yet</b><span>This tab fills up at launch: mint, pool, migration, escrow.</span></div>`;
+      </div>` : emp('shield', 'Nothing on chain yet', 'This tab fills up at launch: mint, pool, migration, escrow.');
     } else if (secTab === 'milestones') {
-      box.innerHTML = p.milestones ? `<div class="ms">${p.milestones.map(m => `<div class="ms-i ${m.s}"><span class="d">${m.s === 'done' ? I.check : m.s === 'now' ? I.clock : ''}</span><div><b>${esc(m.t)}</b><p>${esc(m.d)}</p></div>${m.proof ? `<span class="mini hw">${esc(m.proof)}</span>` : ''}</div>`).join('')}</div>`
-        : `<div class="empty"><b>No milestones published</b><span>Milestones are how a founder shows the money turned into hardware. Each one carries a proof link.</span><a class="btn sm" href="/project/grablab?tab=milestones" data-l>See a full example</a></div>`;
+      const ml = p.milestones, reach = ml ? ml.filter(m => m.s !== 'next').length : 0;
+      box.innerHTML = ml ? `<div class="ms" style="--n:${ml.length};--reach:${(reach - .5) / ml.length}"><i class="ms-rail"></i>${ml.map((m, i) => `<article class="ms-i ${m.s}" style="--i:${i}"><span class="d">${m.s === 'done' ? I.check : ''}</span><span class="ms-n">${String(i + 1).padStart(2, '0')}</span><small>${{ done: 'Done', now: 'In progress', next: 'Next' }[m.s]}</small><b>${esc(m.t)}</b><p>${esc(m.d)}</p>${m.proof ? `<button class="ms-p" data-m="${m.to}">${esc(m.proof)}${I.arrow}</button>` : ''}</article>`).join('')}</div>`
+        : emp('flag', 'No milestones published', 'Milestones are how a founder shows the money turned into hardware. Each one carries a proof link.', '<a class="btn sm" href="/project/grablab?tab=milestones" data-l>See a full example</a>');
     } else if (secTab === 'team') {
       box.innerHTML = p.founder ? `<div class="team"><span class="ava"><img src="${p.founder.img}" alt=""></span><div><b>${esc(p.founder.name)}</b><div class="mut" style="font-size:13px">${esc(p.founder.role)}</div></div></div>`
         : `<div class="team"><span class="ava"><img src="/assets/art/anon.svg" alt=""></span><div><b>Founder not disclosed</b><div class="mut" style="font-size:13px">Projects with a named founder rank higher in Explore.</div></div></div>`;
@@ -1262,7 +1274,8 @@ function renderProject(ref) {
   root.addEventListener('click', e => {
     const m = e.target.closest('[data-m]'), s = e.target.closest('[data-s]'), t = e.target.closest('[data-tz]'), a = e.target.closest('[data-amt]');
     const d = e.target.closest('[data-unit],[data-cur],[data-rng],[data-mode]')?.dataset;
-    if (m) { mediaTab = m.dataset.m; drawMedia(); }
+    if (m) { mediaTab = m.dataset.m; drawMedia(); if (m.matches('.ms-p')) $('.p-media').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    if (e.target.closest('[data-run]')) e.target.closest('.m-stage').innerHTML = `<iframe class="m-fill" src="${SCENE}" title="Grablab claw in SimArena" allow="fullscreen; clipboard-write"></iframe>`;
     if (s) { secTab = s.dataset.s; drawSec(); }
     if (t) { tz = t.dataset.tz; store.set('tz', tz); redrawFoot(); chart?.redraw(); if (secTab === 'trades') drawRows(); }
     if (a) { amt = a.dataset.amt; drawTrade(); }
@@ -1420,6 +1433,7 @@ const afterBlock = pair => `<div class="after-pub"><div class="eyebrow">After yo
     .map(([t, c], i) => `<li style="--i:${i}"><i class="display">${i + 1}</i><b>${t}</b><span>${c}</span></li>`).join('')}
 </ol></div>`;
 const LINK_ICONS = ['globe', 'github', 'x', 'discord', 'telegram', 'doc'];
+const linkIc = k => k === 'x' ? I.xb : I[k];
 const detect = u => (LINK_RULES.find(r => r[1].test(u)) || ['globe'])[0];
 function viewLaunch() {
   const saved = store.get('draft', {});
@@ -1445,7 +1459,7 @@ function viewLaunch() {
       <div class="mp-id"><img class="logo" src="${logo || logoSrc(p)}" alt=""><div class="mp-t"><h4 class="c-name">${esc(p.name)}</h4><span>$${esc(p.ticker)} / ${esc(p.quote)}</span></div></div>
       <div class="mp-tags"><span class="stage pre">Pre launch</span>${proofs.map(k => `<span class="mini hw">${k[0]}</span>`).join('')}</div>
       <p>${esc(d.pitch || 'Your one line shows here.')}</p>
-      <div class="mp-f"><img src="/assets/art/anon.svg" alt=""><span>${esc(d.founder || 'Anonymous')}</span><i>${d.links.map(u => I[detect(u)]).join('')}</i></div>
+      <div class="mp-f"><img src="/assets/art/anon.svg" alt=""><span>${esc(d.founder || 'Anonymous')}</span><i>${d.links.map(u => linkIc(detect(u))).join('')}</i></div>
     </div>`;
     const ck = [[d.name && d.pitch, 'Name and one line'], [d.brief.length >= 40, 'Brief of 40+ characters'], [d.links.length, 'At least one link'], [d.sim || d.d3 || d.pcb, 'One proof of work'], [/^[A-Z0-9]{2,10}$/.test(d.ticker), 'Ticker set']];
     $('#chk').innerHTML = ck.map(k => `<div class="${k[0] ? 'ok' : ''}"><i>${k[0] ? I.check : ''}</i>${k[1]}</div>`).join('');
@@ -1460,7 +1474,7 @@ function viewLaunch() {
   };
   const drawLinks = () => {
     const b = $('#lks'); if (!b) return;
-    b.innerHTML = d.links.map((u, i) => `<div>${I[detect(u)]}<span>${esc(u)}</span><button class="copy-ca" data-rm="${i}" aria-label="Remove">${I.x}</button></div>`).join('');
+    b.innerHTML = d.links.map((u, i) => `<div>${linkIc(detect(u))}<span>${esc(u)}</span><button class="copy-ca" data-rm="${i}" aria-label="Remove">${I.x}</button></div>`).join('');
   };
   const addLink = () => {
     const i = $('#lk'); let u = i.value.trim();
@@ -1470,7 +1484,7 @@ function viewLaunch() {
   };
   const syncPick = () => {
     $$('[data-pick]').forEach(b => b.classList.toggle('on', b.dataset.pick === picked));
-    const e = $('#lk-i'); if (e) e.innerHTML = I[picked];
+    const e = $('#lk-i'); if (e) e.innerHTML = linkIc(picked);
   };
   function body() {
     $('#steps').innerHTML = STEPS.map((s, i) => `<button data-step="${i + 1}" class="${i + 1 === step ? 'on' : i + 1 < step ? 'done' : ''}">${i + 1}. ${s}</button>`).join('');
@@ -1487,7 +1501,7 @@ function viewLaunch() {
       <label class="drop" id="d-ban"><input type="file" accept="image/*" data-up="banner"><span class="d-ico">${I.image}</span><b>Add banner</b><span>1500 x 500 px</span></label></div></div>`;
     if (step === 2) {
       b.innerHTML = `<div class="form">
-      <div class="f"><span class="flabel">Links</span><div class="lk-icons">${LINK_ICONS.map(k => `<button data-pick="${k}" aria-label="${k}">${I[k]}</button>`).join('')}</div>
+      <div class="f"><span class="flabel">Links</span><div class="lk-icons">${LINK_ICONS.map(k => `<button data-pick="${k}" aria-label="${k}">${linkIc(k)}</button>`).join('')}</div>
         <div class="lk-add"><span class="lk-i" id="lk-i">${I.globe}</span><input class="input" id="lk" placeholder="Paste a URL, the platform is detected"><button class="btn" id="lk-add" style="height:46px">Add</button></div>
         <div class="lk-list" id="lks"></div></div>
       <div class="f"><span class="flabel">Proof of work</span><small>Each filled proof adds a tab to your page and a badge to your card. Empty ones stay hidden.</small></div>
@@ -1593,8 +1607,8 @@ function viewRewards() {
     <section class="panel block grainy"><div>
       <div class="head"><h2 class="display">How you earn</h2></div>
       <div class="art-grid">
-        ${[['earn-trade', 'Trade', 'Any project, buy or sell. FOMO and PUMP count on the same wallet.', [['machine.fun', '10 per $100'], ['FOMO or PUMP', '5 per $100']]],
-          ['earn-hold', 'Hold and back', 'Counted daily on your balance. Buy before a project migrates to double it.', [['Holding', '2 per $100 a day'], ['Bonding', 'x2 multiplier']]],
+        ${[['earn-trade', 'Trade', 'Any project, buy or sell. FOMO and PUMP count on the same wallet.', [['machine.fun', '10 points per $100'], ['FOMO or PUMP', '5 points per $100']]],
+          ['earn-hold', 'Hold and back', 'Counted daily on your balance. Buy before a project migrates to double it.', [['Holding', '2 points per $100 a day'], ['Bonding', 'x2 points']]],
           ['earn-vault', 'Project rewards', 'Founders can add their own rewards on top of the season.', [['Set by each founder', 'Varies']]]].map(a => `<article class="art-c"><img src="/assets/art/${a[0]}-cut.webp" alt="" loading="lazy" decoding="async"><div><h3>${a[1]}</h3><p>${a[2]}</p><dl>${a[3].map(r => `<div><dt>${earnLogos[r[0]] || ''}${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl></div></article>`).join('')}
       </div></div>
     </section>
