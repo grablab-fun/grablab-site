@@ -1643,7 +1643,7 @@ function fitNav() {
 }
 let navT = 0, navS = 0, navAt = 0, navRaf = 0;
 function navStep(now) {
-  const top = $('#top'), k = 1 - Math.exp(-Math.min(48, now - navAt) / 130);
+  const top = $('#top'), k = 1 - Math.exp(-Math.min(48, Math.max(0, now - navAt)) / 130);
   navAt = now;
   navS = reduced ? navT : navS + (navT - navS) * k;
   if (Math.abs(navT - navS) < .002) navS = navT;
