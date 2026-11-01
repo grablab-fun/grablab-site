@@ -1156,3 +1156,5 @@ html:has(dialog.fnd[open]) body *:not(dialog.fnd,dialog.fnd *){animation-play-st
   .p-grid.pre{--fit:max(560px,calc(100dvh - 126px))}
   .wrap:has(.dr-bar) .p-grid.pre{--fit:max(540px,calc(100dvh - 192px))}
 }
+/* the section tabs are part of the first screen, so they are there from the start */
+.p-sec.rv{opacity:1;transform:none;transition:none}
