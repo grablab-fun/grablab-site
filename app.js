@@ -1413,7 +1413,7 @@ function viewLaunch() {
   const STEPS = ['Project', 'Proof', 'Token', 'Review'];
   const $v = $('#view');
   $v.innerHTML = `<div class="wrap enter"><div class="l-grid">
-    <section class="panel l-hero grainy"><img src="/assets/art/bench-full.webp" alt=""><div>
+    <section class="panel l-hero grainy"><img src="/assets/art/bench-sky.webp" alt=""><div>
       <h1 class="display">Put your machine on chain</h1><p>No account needed to start. Four steps, and you sign in only to publish.</p></div></section>
     <section class="panel block grainy" style="margin:0"><div><div class="steps" id="steps"></div><div id="sbody"></div></div></section>
     <aside class="panel grainy l-side"><div class="side-sticky">
