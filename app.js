@@ -39,6 +39,13 @@ const I = (() => {
     doc: s('<path d="M14 3H6v18h12V7zM14 3v4h4M9 13h6M9 17h6"/>'),
     youtube: s('<rect x="3" y="6" width="18" height="12" rx="3"/><path d="m10.5 9.5 4 2.5-4 2.5z"/>'),
     clock: s('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+    chart: s('<path d="M4 4v16h16M8 15l4-5 3 3 5-7"/>'),
+    sim: s('<path d="m4 8 8-4 8 4-8 4zM4 13l8 4 8-4M4 18l8 4 8-4"/>'),
+    cube: s('<path d="M12 3 4 7.500v9L12 21l8-4.500v-9zM4 7.500l8 4.500 8-4.500M12 12v9"/>'),
+    chip: s('<rect x="7" y="7" width="10" height="10" rx="1"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>'),
+    play: s('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/>'),
+    full: s('<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>'),
+    save: s('<path d="M12 4v11M7.500 10.500 12 15l4.500-4.500M5 20h14"/>'),
     dots: s('<circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/>'),
   };
 })();
@@ -213,7 +220,7 @@ function activeNav() {
 }
 function renderTop() {
   $('#top').innerHTML = `
-    <a class="brand" href="/" data-l aria-label="Home"><i></i>machine.fun<small>concept</small></a>
+    <a class="brand mark" href="/" data-l aria-label="machine.fun home"><i></i></a>
     <nav class="pill" aria-label="Primary"><span class="slide"></span>
       ${NAV.map(n => `<a href="${n[0]}" data-l data-nav="${n[0]}">${I[n[2]]}<span>${n[1]}</span></a>`).join('')}
     </nav>
@@ -240,7 +247,7 @@ function renderFoot() {
   $('#foot').innerHTML = `<div class="panel grainy in"><div>
     <div class="f-cols">
       <div><a class="brand" href="/" data-l style="padding:0;height:auto;background:none;box-shadow:none"><i></i>machine.fun</a>
-        <p style="margin-top:10px">Fund the hardware that actually gets built.<br>This page is an unofficial concept by Grablab.</p></div>
+        <p style="margin-top:10px">Fund the hardware that actually gets built.<br>This page is an unofficial concept by Rony.</p></div>
       <div><h4>Product</h4><ul>
         <li><a href="/" data-l>Explore</a></li><li><a href="/launch" data-l>Launch</a></li><li><a href="/rewards" data-l>Rewards</a></li>
         <li><a href="https://foundry.machine.fun" target="_blank" rel="noopener">Foundry</a></li><li><a href="https://app.simarena.ai" target="_blank" rel="noopener">SimArena</a></li></ul></div>
@@ -303,14 +310,17 @@ function avatar(seed) {
 
 /* cards */
 function spark(p) {
-  const v = p.spark || [], up = isUp(p), col = up ? '#c6ff3b' : '#ff5c3a';
-  if (v.length < 2) return `<svg class="sp" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30H100" stroke="rgba(255,255,255,.2)" stroke-dasharray="3 3" vector-effect="non-scaling-stroke" fill="none"/></svg>`;
+  const v = p.spark || [], up = isUp(p), col = up ? '#c6ff3b' : '#ff3f3f';
+  if (v.length < 2) return `<div class="sp"><svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30H100" stroke="rgba(255,255,255,.2)" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/></svg></div>`;
   const min = Math.min(...v), max = Math.max(...v), r = max - min || 1;
   const pts = v.map((y, i) => [(i / (v.length - 1)) * 100, 36 - ((y - min) / r) * 32]);
-  const d = pts.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join('');
+  const f = n => n.toFixed(1), end = pts[pts.length - 1];
+  let d = `M${f(pts[0][0])} ${f(pts[0][1])}`;
+  for (let i = 1; i < pts.length - 1; i++) d += `Q${f(pts[i][0])} ${f(pts[i][1])} ${f((pts[i][0] + pts[i + 1][0]) / 2)} ${f((pts[i][1] + pts[i + 1][1]) / 2)}`;
+  d += `L${f(end[0])} ${f(end[1])}`;
   const id = 'g' + p.ref.replace(/[^a-z0-9]/gi, '');
-  return `<svg class="sp" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".32"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
-    <path d="${d}L100 40L0 40Z" fill="url(#${id})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`;
+  return `<div class="sp"><svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".3"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${d}L100 40L0 40Z" fill="url(#${id})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg><i style="top:${(end[1] / 40 * 100).toFixed(1)}%;background:${col}"></i></div>`;
 }
 const proofMinis = p => {
   const o = [];
@@ -347,15 +357,15 @@ function paintLive(e, p, v, d) {
   n.classList.remove('tk-up', 'tk-dn'); void n.offsetWidth; n.classList.add(d < 0 ? 'tk-dn' : 'tk-up');
   const bar = $('.bar', e);
   if (bar) { bar.className = `bar ${v.mig ? 'done' : heat(v)}`; $('i', bar).style.width = Math.max(v.mig ? 100 : v.prog * 100, .6) + '%'; }
-  const sp = $('svg.sp', e);
-  if (sp) sp.outerHTML = spark({ ...p, ...v });
+  const sp = $('.sp', e);
+  if (sp) { const t = document.createElement('template'); t.innerHTML = spark({ ...p, ...v }); sp.replaceChildren(...t.content.firstElementChild.childNodes); }
   e.classList.toggle('forge', heat(v) === 'forge');
 }
 function tickLive() {
   if (document.hidden || location.pathname !== '/') return;
   const page = $$('.page')[ex.page];
   if (!page) return;
-  $$('[data-live]', page).forEach(e => {
+  [...$$('[data-live]', page), ...$$('#hlive [data-live]')].forEach(e => {
     if (Math.random() > .55) return;
     const p = byRef.get(e.dataset.live), v = liveOf(p), hot = !!heat(v);
     const d = (Math.random() - (hot ? .3 : .5)) * (hot ? .018 : .03);
@@ -420,7 +430,7 @@ function exploreList() {
   return l.sort(s);
 }
 // Four rows a page: the column count comes from the same breakpoints as .grid
-const perPage = () => ex.view === 'list' ? 10 : innerWidth > 1180 ? 16 : innerWidth > 820 ? 12 : 8;
+const perPage = () => ex.view === 'list' ? 10 : 4 * +getComputedStyle(document.documentElement).getPropertyValue('--cols');
 function drawGrid() {
   const list = exploreList(), box = gridBox;
   ex.size = perPage();
@@ -522,6 +532,8 @@ function preCard(p) {
     <p>${esc(p.desc)}</p>
     <div class="ft"><span class="mono mut2" style="font-size:11.5px">Date TBD</span><button class="btn sm" data-remind="${esc(p.ref)}">${I.bell}${on ? 'Reminder set' : 'Remind me'}</button></div></a>`;
 }
+const FD = 'https://foundry.machine.fun/_astro/';
+const hotList = () => tokens().filter(p => !liveOf(p).mig).sort((a, b) => liveOf(b).prog - liveOf(a).prog).slice(0, 5);
 function buildHome() {
   const t = tokens(), allTags = {};
   t.forEach(p => p.tags.forEach(x => allTags[x] = (allTags[x] || 0) + 1));
@@ -530,27 +542,44 @@ function buildHome() {
   const words = ['machines', 'robots', 'hardware', 'inventions', 'devices', 'ideas', 'agents'];
   const el = document.createElement('div');
   el.className = 'wrap enter';
+  seedForge();
   el.innerHTML = `
-  <section class="panel hero grainy">
-    <img class="plate" src="/assets/art/fly-macro.webp" alt="" fetchpriority="high" decoding="async">
-    <div class="copy">
-      <h1 class="display"><span class="l">Fund the <span class="rot">${words.map((w, i) => `<b class="${i ? '' : 'on'}">${w}</b>`).join('')}</span></span><span class="l">that actually get built</span></h1>
-      <p>Launch a physical product, prove it works, raise on chain through verifiable milestones.</p>
+  <section class="hero">
+    <div class="h-sky" aria-hidden="true">
+      <i class="g1"></i><i class="g2"></i>
+      <img class="cl c1" src="${FD}cloud-bed-2.QrNSmXu9_ZHFR6E.webp" alt="">
+      <img class="cl c2" src="${FD}cloud-bed-1.D2Jw04k9_23PHSQ.webp" alt="">
+      <img class="cl c3" src="${FD}cloud-bed-2.QrNSmXu9_ZHFR6E.webp" alt="">
+      <img class="mt" src="${FD}snow-mountain.kbiKW45J_ZXRQUl.webp" alt="">
+      <img class="rock" src="${FD}astronaut-on-rock.Drw44E2q_bFBKt.webp" alt="">
+      <img class="fly" src="/assets/art/fly-cut.webp" alt="" fetchpriority="high" decoding="async">
+      <i class="g3"></i><i class="h-grain"></i>
+    </div>
+    <div class="h-in">
+      <div class="copy">
+        <p class="kick">Back the build.</p>
+        <h1 class="display"><span class="l"><span class="chr">Fund the </span><span class="rot">${words.map((w, i) => `<b class="${i ? '' : 'on'}">${w}</b>`).join('')}</span></span><span class="l chr">that actually get built</span></h1>
+        <p class="sub">Launch a physical product, prove it works, raise on chain through verifiable milestones.</p>
+      </div>
+      <aside class="h-live" id="hlive"><div class="h-lh"><span class="eyebrow">Closest to the bond</span><span class="live"><i></i>Simulated</span></div>
+        ${hotList().map(p => { const v = liveOf(p); return `<a class="h-r" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}" data-live="${esc(p.ref)}"><img src="${logoSrc(p)}" alt=""><div class="n"><b>${esc(p.name)}</b><span data-f="stage">${stageLabel(v)}</span></div><span class="num" data-f="mc">${usd(v.mc)}</span><div class="bar ${heat(v)}"><i style="width:${v.prog * 100}%"></i></div></a>`; }).join('')}
+      </aside>
+      <div class="h-strip">
+        <div><div class="eyebrow">Live projects</div><div class="num">${t.length}</div></div>
+        <div><div class="eyebrow">Migrated</div><div class="num">${t.filter(p => p.mig).length}</div></div>
+        <div><div class="eyebrow">Total market cap</div><div class="num">${usd(sum('mc'))}</div></div>
+        <div><div class="eyebrow">Holders</div><div class="num">${int(sum('holders'))}</div></div>
+        <div class="h-by"><div class="eyebrow">In collaboration with</div><div class="logos"><span><img src="/assets/art/codecflow-white.svg" alt="">codecflow</span><img src="/assets/art/peaq-white.svg" alt="peaq"><span><img src="/assets/art/simarena-white.svg" alt="">SimArena</span></div></div>
+      </div>
     </div>
   </section>
-  <div class="panel grainy stats">
-    <div><div class="eyebrow">Live projects</div><div class="num">${t.length}</div></div>
-    <div><div class="eyebrow">Migrated</div><div class="num">${t.filter(p => p.mig).length}</div></div>
-    <div><div class="eyebrow">Total market cap</div><div class="num">${usd(sum('mc'))}</div></div>
-    <div><div class="eyebrow">Holders</div><div class="num">${int(sum('holders'))}</div></div>
-  </div>
   <div class="watch" id="watch"></div>
   <section class="panel block grainy" id="prelaunch"><div>
-    <div class="head"><h2 class="display">Pre launch</h2><span class="note">On the list. Not an endorsement.</span><div class="grow"><button class="pg" data-rail="-1" aria-label="Previous projects">${I.prev}</button><button class="pg" data-rail="1" aria-label="More projects">${I.next}</button></div></div>
+    <div class="head"><div class="ttl"><p class="kick">Up next.</p><h2 class="display">Pre launch</h2></div><span class="note">On the list. Not an endorsement.</span><div class="grow"><button class="pg" data-rail="-1" aria-label="Previous projects">${I.prev}</button><button class="pg" data-rail="1" aria-label="More projects">${I.next}</button></div></div>
     <div class="rail" id="rail">${preRail().map(preCard).join('')}</div></div>
   </section>
   <section class="panel block grainy" id="explore"><div>
-    <div class="head"><h2 class="display">Explore</h2><span class="count" id="ex-count">0</span><span class="live"><i></i>Simulated prices</span><div class="grow pgn-top" id="pgn-top"></div></div>
+    <div class="head"><div class="ttl"><p class="kick">On the curve.</p><h2 class="display">Explore</h2></div><span class="count" id="ex-count">0</span><span class="live"><i></i>Simulated prices</span><div class="grow pgn-top" id="pgn-top"></div></div>
     <div class="controls">
       <button class="search" type="button" data-search>${I.search}<span>Search projects</span><kbd>/</kbd></button>
       <div class="seg">${[['all', 'All'], ['bond', 'Bonding'], ['mig', 'Migrated']].map(s => `<button data-stage="${s[0]}">${s[1]}</button>`).join('')}</div>
@@ -563,7 +592,11 @@ function buildHome() {
     <div class="pgn" id="pgn"></div></div>
   </section>`;
   homeEl = el; gridBox = $('#gridbox', el);
-  seedForge();
+  const hero = $('.hero', el);
+  if (!reduced) hero.addEventListener('pointermove', e => {
+    hero.style.setProperty('--px', (e.clientX / innerWidth - .5).toFixed(3));
+    hero.style.setProperty('--py', (e.clientY / innerHeight - .5).toFixed(3));
+  }, { passive: true });
   dragScroll($('#watch', el));
   const rail = $('#rail', el);
   dragScroll(rail, () => rail.firstElementChild.offsetWidth + 12);
@@ -729,66 +762,88 @@ async function market(ref) {
 }
 
 /* chart */
-function mountChart(cv, raw, p, onTick) {
-  const scale = raw.length ? (p.price || raw[raw.length - 1][4]) / raw[raw.length - 1][4] : 1;
+function mountChart(cv, raw, p, onTick, cfg) {
+  const scale = raw.length ? (p.price || raw[raw.length - 1][4]) / raw[raw.length - 1][4] : 1, rnd = seeded(p.ref);
   // Buckets with one trade are flat, so each candle opens at the previous close
-  const data = raw.map((c, i) => {
+  const base = raw.map((c, i) => {
     const close = c[4] * scale, open = i ? raw[i - 1][4] * scale : c[1] * scale;
-    return [c[0], open, Math.max(c[2] * scale, open, close), Math.min(c[3] * scale, open, close), close];
-  }).slice(-64);
+    return [c[0], open, Math.max(c[2] * scale, open, close), Math.min(c[3] * scale, open, close), close, (Math.abs(close - open) / (open || 1) * 40 + rnd()) * (p.vol || 100) * .02];
+  });
   const ctx = cv.getContext('2d');
-  let W = 0, H = 0, hover = -1, raf = 0;
-  const up = '#c6ff3b', dn = '#ff5c3a';
+  let W = 0, H = 0, hover = -1, raf = 0, data = [];
+  const up = '#c6ff3b', dn = '#ff3f3f';
+  const rebuild = () => {
+    const iv = cfg.iv, end = base[base.length - 1]?.[0] || 0, from = end - RANGES[cfg.range], out = new Map();
+    base.forEach(c => {
+      if (c[0] < from) return;
+      const k = Math.floor(c[0] / iv) * iv, o = out.get(k);
+      if (!o) out.set(k, [k, c[1], c[2], c[3], c[4], c[5]]);
+      else { o[2] = Math.max(o[2], c[2]); o[3] = Math.min(o[3], c[3]); o[4] = c[4]; o[5] += c[5]; }
+    });
+    data = [...out.values()].slice(-140);
+  };
+  const factor = () => (cfg.unit === 'mcap' ? (p.mc || 0) / (p.price || 1) : 1) / (cfg.cur === 'SOL' ? SOL_USD : 1);
+  const fmt = v => {
+    const n = v * factor();
+    if (cfg.cur === 'SOL') return (cfg.unit === 'mcap' ? compact(n) : price(n).slice(1)) + ' SOL';
+    return cfg.unit === 'mcap' ? usd(n) : price(n);
+  };
   const size = () => {
     const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
     W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); draw();
   };
-  const axisR = 72, axisB = 22;
+  const axisR = 84, axisB = 22, volH = 54;
   const geom = () => {
-    const n = Math.max(data.length, 24), step = (W - axisR - 8) / n;
-    const hi = Math.max(...data.map(c => c[2])), lo = Math.min(...data.map(c => c[3]));
-    const pad0 = (hi - lo || hi * .02) * .14, top = hi + pad0, bot = lo - pad0;
-    const y = v => 10 + (top - v) / (top - bot) * (H - axisB - 20);
+    const n = Math.max(data.length, 30), step = (W - axisR - 8) / n, log = cfg.mode === 'log';
+    const f = v => log ? Math.log(v) : v;
+    const hi = Math.max(...data.map(c => f(c[2]))), lo = Math.min(...data.map(c => f(c[3])));
+    const pad0 = (hi - lo || Math.abs(hi) * .02 || 1) * .14, top = hi + pad0, bot = lo - pad0;
+    const y = v => 10 + (top - f(v)) / (top - bot) * (H - axisB - volH - 24);
     const x = i => W - axisR - 8 - (data.length - 1 - i + .5) * step;
-    return { step, y, x, top, bot };
+    const un = t => log ? Math.exp(t) : t;
+    return { step, y, x, top, bot, un };
   };
   function draw() {
-    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#0c0c0c'; ctx.fillRect(0, 0, W, H);
     if (!data.length) return;
-    const g = geom();
+    const g = geom(), first = data[0][1] || 1;
     ctx.font = '500 11px "IBM Plex Mono",monospace'; ctx.textBaseline = 'middle';
+    const axisTxt = v => cfg.mode === 'pct' ? (v >= first ? '+' : '') + ((v / first - 1) * 100).toFixed(2) + '%' : fmt(v);
     for (let i = 0; i <= 4; i++) {
-      const v = g.bot + (g.top - g.bot) * i / 4, y = g.y(v);
+      const v = g.un(g.bot + (g.top - g.bot) * i / 4), y = g.y(v);
       ctx.strokeStyle = 'rgba(255,255,255,.055)'; ctx.beginPath(); ctx.moveTo(0, y + .5); ctx.lineTo(W - axisR, y + .5); ctx.stroke();
-      ctx.fillStyle = '#74747e'; ctx.textAlign = 'left'; ctx.fillText(price(v), W - axisR + 6, y);
+      ctx.fillStyle = '#7a7a84'; ctx.textAlign = 'left'; ctx.fillText(axisTxt(v), W - axisR + 6, y);
     }
-    const bw = Math.max(2, Math.min(g.step * .64, 16));
+    const bw = Math.max(2, Math.min(g.step * .64, 16)), maxV = Math.max(...data.map(c => c[5]), 1e-9);
     data.forEach((c, i) => {
-      const x = g.x(i), isUpC = c[4] >= c[1], col = isUpC ? up : dn;
-      ctx.strokeStyle = col; ctx.fillStyle = col; ctx.globalAlpha = hover === i || hover < 0 ? 1 : .55;
+      const x = g.x(i), isUpC = c[4] >= c[1], col = isUpC ? up : dn, vh = c[5] / maxV * (volH - 6);
+      ctx.strokeStyle = col; ctx.fillStyle = col;
+      ctx.globalAlpha = (hover === i || hover < 0 ? 1 : .55) * .34;
+      ctx.fillRect(x - bw / 2, H - axisB - vh, bw, vh);
+      ctx.globalAlpha = hover === i || hover < 0 ? 1 : .55;
       ctx.beginPath(); ctx.moveTo(Math.round(x) + .5, g.y(c[2])); ctx.lineTo(Math.round(x) + .5, g.y(c[3])); ctx.stroke();
       const a = g.y(Math.max(c[1], c[4])), b = g.y(Math.min(c[1], c[4]));
       ctx.fillRect(x - bw / 2, a, bw, Math.max(1.5, b - a));
     });
     ctx.globalAlpha = 1;
     const every = Math.max(1, Math.ceil(data.length / Math.max(3, Math.floor(W / 130))));
-    ctx.fillStyle = '#74747e'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#7a7a84'; ctx.textAlign = 'center';
     data.forEach((c, i) => { if ((data.length - 1 - i) % every === 0 && g.x(i) > 20) ctx.fillText(clock(c[0]), g.x(i), H - 9); });
     const last = data[data.length - 1], ly = g.y(last[4]), lc = last[4] >= last[1] ? up : dn;
     ctx.setLineDash([3, 4]); ctx.strokeStyle = lc; ctx.globalAlpha = .6;
     ctx.beginPath(); ctx.moveTo(0, ly + .5); ctx.lineTo(W - axisR, ly + .5); ctx.stroke();
     ctx.setLineDash([]); ctx.globalAlpha = 1;
     ctx.fillStyle = lc; ctx.fillRect(W - axisR + 1, ly - 10, axisR - 1, 20);
-    ctx.fillStyle = '#0a0a0d'; ctx.textAlign = 'left'; ctx.fillText(price(last[4]), W - axisR + 6, ly);
+    ctx.fillStyle = '#060608'; ctx.textAlign = 'left'; ctx.fillText(axisTxt(last[4]), W - axisR + 6, ly);
     if (hover >= 0 && data[hover]) {
       const x = g.x(hover);
       ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.setLineDash([3, 3]);
       ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H - axisB); ctx.stroke(); ctx.setLineDash([]);
     }
   }
-  const readout = () => {
+  const readout = trade => {
     const c = data[hover >= 0 ? hover : data.length - 1];
-    if (c) onTick(c, data, hover >= 0);
+    if (c) onTick({ c, data, hovering: hover >= 0, trade, fmt, last: base[base.length - 1][4] });
   };
   const paint = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); };
   const move = e => {
@@ -801,49 +856,89 @@ function mountChart(cv, raw, p, onTick) {
   cv.addEventListener('pointerleave', leave);
   const ro = new ResizeObserver(size); ro.observe(cv);
   let t = 0;
-  const seed = data.length ? data[data.length - 1][4] : 0;
-  const timer = !reduced && data.length ? setInterval(() => {
-    const c = data[data.length - 1];
+  const seed = base.length ? base[base.length - 1][4] : 0;
+  const timer = !reduced && base.length ? setInterval(() => {
+    const c = base[base.length - 1];
     const drift = (seed - c[4]) / seed * .06, chg = drift + (Math.random() - .5) * .006;
     const v = c[4] * (1 + chg);
-    c[4] = v; c[2] = Math.max(c[2], v); c[3] = Math.min(c[3], v);
-    if (++t % 14 === 0) { data.push([c[0] + 60, v, v, v, v]); if (data.length > 64) data.shift(); }
-    readout(); paint();
-    if (Math.random() < .5) onTick(c, data, hover >= 0, { side: chg >= 0 ? 'Buy' : 'Sell', px: v });
+    c[4] = v; c[2] = Math.max(c[2], v); c[3] = Math.min(c[3], v); c[5] += Math.abs(chg) * (p.vol || 100) * .4;
+    if (++t % 14 === 0) base.push([c[0] + 60, v, v, v, v, 0]);
+    rebuild(); paint();
+    readout(Math.random() < .5 ? { side: chg >= 0 ? 'Buy' : 'Sell', px: v } : undefined);
   }, 900) : 0;
-  size(); readout();
-  return { redraw: () => { draw(); readout(); }, stop() { clearInterval(timer); ro.disconnect(); cv.removeEventListener('pointermove', move); cv.removeEventListener('pointerleave', leave); } };
+  rebuild(); size(); readout();
+  return { redraw: () => { rebuild(); draw(); readout(); }, stop() { clearInterval(timer); ro.disconnect(); cv.removeEventListener('pointermove', move); cv.removeEventListener('pointerleave', leave); } };
 }
 
 /* project */
-const SOL_USD = 185, RATES = { SOL: SOL_USD, USDC: 1 };
-function tradeHTML(p, state, amt) {
+const SOL_USD = 185, RATES = { SOL: SOL_USD, USDC: 1 }, SUPPLY = 984e6;
+const RANGES = { '1D': 864e2, '5D': 432e3, '1M': 2592e3, '3M': 7776e3, '6M': 15552e3, '1Y': 31536e3 };
+const IVS = [['1m', 60], ['5m', 300], ['1h', 3600], ['1d', 86400]];
+// Same project, same numbers on every load
+function seeded(s) {
+  let h = 7;
+  for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return () => { h = (h + 0x6D2B79F5) >>> 0; let t = Math.imul(h ^ h >>> 15, 1 | h); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+}
+const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+const fakeAddr = r => { const c = n => Array.from({ length: n }, () => B58[Math.floor(r() * 58)]).join(''); return c(4) + '...' + c(4); };
+const since = s => s < 60 ? Math.max(1, Math.round(s)) + 's' : s < 3600 ? Math.round(s / 60) + 'm' : s < 86400 ? Math.round(s / 3600) + 'h' : Math.round(s / 86400) + 'd';
+const feesOf = p => { const all = (p.trades || 0) * .0133; return { all, creator: all * .3521, platform: all * .4719, rewards: all * .176 }; };
+function seedTrades(p) {
+  const r = seeded(p.ref + 't'), now = Date.now() / 1000, who = Array.from({ length: 14 }, () => fakeAddr(r));
+  let t = now - 90;
+  return Array.from({ length: 40 }, () => {
+    t -= r() * r() * 3600;
+    const sz = r() ** 3 * 6 + .002, px = (p.price || 0) * (1 + (r() - .5) * .1);
+    return { t, side: r() < .54 ? 'Buy' : 'Sell', sz, px, who: who[Math.floor(r() * who.length)] };
+  });
+}
+function seedHolders(p) {
+  const r = seeded(p.ref + 'h'), n = Math.min(20, p.holders || 0);
+  let w = 22 + r() * 8;
+  const big = Array.from({ length: n }, () => { const o = { who: fakeAddr(r), pct: w }; w *= .72 + r() * .2; return o; });
+  const top = big.slice(0, 10).reduce((a, o) => a + o.pct, 0), fit = (58 + r() * 24) / (top || 1);
+  big.forEach(o => { o.pct *= fit; });
+  const held = big.map(o => ({ ...o, sec: o.pct * (.72 + r() * .56) })).sort((a, b) => b.sec - a.sec);
+  return { big, held };
+}
+function tradeHTML(p, state, amt, o) {
   if (p.pre) return `<div class="t-curve"><div class="eyebrow">Not live yet</div></div>
     <p class="t-note">No token exists for this project. The founder decides when it launches, and buying only opens then.</p>
     <button class="btn full ${reminds.has(p.ref) ? '' : 'primary'}" data-remind="${esc(p.ref)}">${I.bell}${reminds.has(p.ref) ? 'Reminder set' : 'Remind me at launch'}</button>`;
   if (state === 'loading') return `<div class="sk" style="height:42px"></div><div class="sk" style="height:44px"></div><div class="sk" style="height:52px"></div><div class="sk" style="height:34px"></div><div class="sk" style="height:84px"></div><button class="btn full lg" disabled>Reading pool state</button>`;
   if (state === 'error') return `<div class="t-err">${I.alert}<b>Could not reach the pool</b><span class="t-note">We will not show a price we cannot confirm. Your funds are not affected.</span><button class="btn sm" data-retry>Retry</button></div>`;
-  const q = p.quote || 'SOL', rate = RATES[q], left = p.mig ? Infinity : Math.max(0, (1 - (p.prog || 0)) * 100);
-  const a = parseFloat(amt) || 0, usdIn = rate ? a * rate : 0, got = rate && p.price ? usdIn / p.price * .985 : 0;
+  const quote = p.quote || 'SOL', pays = [...new Set([quote, 'SOL', 'USDC'])], buy = o.side === 'buy', q = o.pay, sym = '$' + esc(p.ticker);
+  const rate = RATES[q], left = p.mig ? Infinity : Math.max(0, (1 - (p.prog || 0)) * 100);
+  const a = parseFloat(amt) || 0, usdIn = !rate ? 0 : buy ? a * rate : a * (p.price || 0);
+  const got = !rate || !p.price ? 0 : buy ? usdIn / p.price * .985 : usdIn * .985 / rate;
   const impact = rate ? Math.min(usdIn / Math.max(p.mc || 1, 1) * 100, 99) : 0;
-  const tooBig = !p.mig && q === 'SOL' && a > left;
-  const go = !wallet ? 'Connect to buy' : tooBig ? 'Too large for the curve' : a <= 0 ? 'Enter an amount' : 'Simulate buy';
+  const slip = o.slip === 'auto' ? .5 : parseFloat(o.custom) || 0, floor = got * (1 - slip / 100);
+  const fee = rate ? usdIn * .015 / rate : 0, unit = buy ? sym : esc(q);
+  const inSol = rate ? usdIn / SOL_USD : 0, tooBig = buy && !p.mig && inSol > left;
+  const bal = !wallet ? null : buy ? (q === 'SOL' ? 12.4 : 842) : 0;
+  const verb = buy ? 'Buy' : 'Sell', go = !wallet ? 'Connect to ' + verb.toLowerCase() : tooBig ? 'Too large for the curve' : a <= 0 ? 'Enter an amount' : `${verb} ${sym}`;
   return `<div class="t-curve">
       <div class="l"><span>${p.mig ? 'Raydium pool' : 'Bonding curve'}</span><b>${p.mig ? 'Migrated' : pct(p).toFixed(1) + '%'}</b></div>
       <div class="bar ${p.mig ? 'done' : ''}" style="margin:0"><i style="width:${Math.max(pct(p), .6)}%"></i></div>
-      ${p.mig ? '' : `<div class="l mono" style="font-size:11.5px"><span>${left.toFixed(1)} ${q} left</span><span>Target 100 ${q}</span></div>`}
+      ${p.mig ? '' : `<div class="l mono" style="font-size:11.5px"><span>${left.toFixed(1)} SOL left</span><span>Target 100 SOL</span></div>`}
     </div>
-    <div class="seg" style="width:100%;display:grid;grid-template-columns:1fr 1fr"><button class="on">Buy</button><button data-sell>Sell</button></div>
-    <label class="field"><span class="sr">Amount</span><input id="amt" inputmode="decimal" value="${esc(amt)}" autocomplete="off"><span>${esc(q)}</span></label>
-    <div class="quick">${[.1, .5, 1, 5].map(v => `<button data-amt="${v}">${v}</button>`).join('')}</div>
+    <div class="seg t-side"><button class="${buy ? 'on' : ''}" data-side="buy">Buy</button><button class="${buy ? '' : 'on'}" data-side="sell">Sell</button></div>
+    <div class="t-pair"><span>${esc(p.ticker)}/${esc(quote)}</span><span>Balance <b>${bal == null ? '-' : bal}</b><button data-max ${bal ? '' : 'disabled'}>MAX</button></span></div>
+    <label class="field"><span class="sr">Amount</span><input id="amt" inputmode="decimal" value="${esc(amt)}" autocomplete="off">
+      ${buy ? `<select id="pay" aria-label="Pay with">${pays.map(x => `<option ${x === q ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select>` : `<span>${sym}</span>`}</label>
+    <div class="quick">${(buy ? [.1, .5, 1, 5] : [1000, 10000, 100000, 1000000]).map(v => `<button data-amt="${v}">${buy ? v : compact(v).replace('.00', '')}</button>`).join('')}</div>
+    <div class="t-est"><b>${rate ? '≈ ' + compact(got) + ' ' + unit : 'Quoted at signing'}</b><span>${rate ? usd(usdIn) : ''}</span></div>
+    <div class="t-slip"><span>Slippage</span><div class="seg sm"><button class="${o.slip === 'auto' ? 'on' : ''}" data-slip="auto">Auto</button><button class="${o.slip === 'auto' ? '' : 'on'}" data-slip="custom">Custom</button></div>
+      ${o.slip === 'auto' ? '' : `<label class="t-cust"><span class="sr">Custom slippage</span><input id="slipv" inputmode="decimal" value="${esc(o.custom)}" autocomplete="off">%</label>`}</div>
     <div class="t-rows">
-      <div>You get<b>${rate ? '≈ ' + compact(got) + ' ' + esc(p.ticker) : 'Quoted at signing'}</b></div>
-      <div>Price impact<b>${rate ? impact.toFixed(2) + '%' : '-'}</b></div>
-      <div>Fee (1.5%)<b>${(a * .015).toFixed(4)} ${esc(q)}</b></div>
+      <div>Price Impact<b>${rate ? '+' + impact.toFixed(2) + '%' : '-'}</b></div>
+      <div>Min. Received<b>${rate ? compact(floor) + ' ' + unit : '-'}</b></div>
+      <div>Fee<b>${fee.toFixed(4)} ${esc(q)}</b></div>
     </div>
-    ${tooBig ? `<p class="t-note" style="color:var(--down)">Only ${left.toFixed(1)} ${q} left on the curve. Lower the amount.</p>` : ''}
+    ${tooBig ? `<p class="t-note" style="color:var(--down)">Only ${left.toFixed(1)} SOL left on the curve. Lower the amount.</p>` : ''}
     <button class="btn full lg primary" data-buy ${wallet && (tooBig || a <= 0) ? 'disabled' : ''}>${go}</button>
-    <p class="t-note">Preview quote. No wallet, no transaction.</p>`;
+    <p class="t-note">Priced from the pool as of <span id="asof">${clock(Date.now() / 1000, true)}</span>. The floor is enforced on chain.<br>Preview quote. No wallet, no transaction.</p>`;
 }
 function renderProject(ref) {
   const p = ref === 'grablab' ? SAMPLE : byRef.get(ref);
@@ -852,12 +947,18 @@ function renderProject(ref) {
     v.innerHTML = `<div class="wrap enter"><section class="panel block"><div class="empty"><b>Project not found</b><a class="btn sm" href="/" data-l>Back to Explore</a></div></section></div>`;
     return;
   }
-  const pr = p.proof || {}, st = stageOf(p);
-  const media = [['chart', 'Chart', !p.pre], ['sim', 'Simulation', pr.sim], ['d3', '3D View', pr.d3], ['pcb', 'PCB', pr.pcb], ['video', 'Video', pr.video]].filter(m => m[2]);
-  const secs = [['overview', 'Overview'], ...(p.pre ? [] : [['trades', 'Trades'], ['holders', 'Holders']]), ['verify', 'Verify'], ['milestones', 'Milestones'], ['team', 'Team']];
+  const pr = p.proof || {}, st = stageOf(p), quote = p.quote || 'SOL', pair = `${esc(p.ticker)}/${esc(quote)}`;
+  const NONE = { sim: ['No simulation published yet', 'A simulation appears here once a project shares one.'], d3: ['No 3D model published yet', 'An orbitable model appears here once a project shares one.'], pcb: ['No PCB published yet', 'Board files appear here once a project shares them.'], video: ['No video published yet', 'A demo video appears here once a project shares one.'] };
+  const media = [...(p.pre ? [] : [['chart', 'Chart', I.chart]]), ['sim', 'Simulation', I.sim], ['d3', '3D View', I.cube], ['pcb', 'PCB', I.chip], ['video', 'Video', I.play]];
+  const secs = [['overview', 'Overview'], ...(p.pre ? [] : [['trades', 'Trades'], ['holders', 'Holders'], ['token', 'Token']]), ['links', 'Links'], ['simulation', 'Simulation', pr.sim ? 1 : 0], ['machines', 'Machines', 0], ['verify', 'Verify'], ['milestones', 'Milestones'], ['team', 'Team']];
   const q = new URLSearchParams(location.search);
-  let mediaTab = media[0]?.[0], secTab = q.get('tab') && secs.some(s => s[0] === q.get('tab')) ? q.get('tab') : 'overview';
-  let amt = '0.5', state = p.pre ? 'ready' : net === 'ok' ? 'ready' : 'loading', chart = null, rows = [], pxNow = p.price;
+  let mediaTab = media[0][0], secTab = q.get('tab') && secs.some(s => s[0] === q.get('tab')) ? q.get('tab') : 'overview';
+  let amt = '0.5', state = p.pre ? 'ready' : net === 'ok' ? 'ready' : 'loading', chart = null, pxNow = p.price;
+  const trade = { side: 'buy', pay: quote, slip: 'auto', custom: '1' }, cfg = { iv: 60, unit: 'price', cur: 'USD', range: '1Y', mode: 'auto' };
+  const tf = { who: '', side: 'all', size: 0 };
+  let rows = p.pre ? [] : seedTrades(p), holders = null;
+  const initials = n => n.split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  const fName = p.founder?.name || 'Anonymous', fees = feesOf(p);
 
   v.innerHTML = `<div class="wrap enter">
     <div id="pbanner"></div>
@@ -867,100 +968,157 @@ function renderProject(ref) {
           <div class="p-cover"><img src="${coverSrc(p)}" alt="" decoding="async"></div>
           <div class="p-id"><img class="p-logo" data-vt="${esc(p.ref)}" src="${logoSrc(p)}" alt="">
             <div class="p-title">
+              ${p.mint ? `<div class="p-pair"><b>$${esc(p.ticker)}</b> / ${esc(quote)}<button class="ca" data-copy="${esc(p.mint)}">CA ${short(p.mint)} ${I.copy}</button></div>` : ''}
               <div class="line"><h1 class="display">${esc(p.name)}</h1><span class="stage ${st}">${stageTxt[st]}</span></div>
-              ${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
               <div class="p-meta">
-                ${p.mint ? `<button class="ca" data-copy="${esc(p.mint)}">$${esc(p.ticker)} ${short(p.mint)} ${I.copy}</button>` : '<span class="ca">No token yet</span>'}
+                ${p.mint ? '' : '<span class="ca">No token yet</span>'}
                 <button class="ca star-inline" data-star-p="${esc(p.ref)}">${I.star}${watch.has(p.ref) ? 'Watching' : 'Watch'}</button>
                 ${proofMinis(p)}${(p.tags || []).map(t => `<span class="mini">${esc(t)}</span>`).join('')}
               </div>
-            </div></div>
+              ${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
+            </div>
+            <div class="p-founder"><img src="${coverSrc(p)}" alt=""><div class="f-who"><span class="f-av">${p.founder?.img ? `<img src="${p.founder.img}" alt="">` : esc(initials(fName))}</span><div><b>${esc(fName)}</b><span>${esc(p.founder?.role || 'Founder')}</span></div></div></div>
+          </div>
         </section>
         ${p.pre ? '' : `<section class="panel kpis grainy">
-          <div><div class="eyebrow">Market cap</div><div class="num">${usd(p.mc)}</div></div>
-          <div><div class="eyebrow">Volume</div><div class="num">${usd(p.vol)}</div></div>
-          <div><div class="eyebrow">Holders</div><div class="num">${int(p.holders)}</div></div>
-          <div><div class="eyebrow">Trades</div><div class="num">${int(p.trades)}</div></div>
-          <div><div class="eyebrow">Price</div><div class="num" id="kpx">${price(p.price)}</div></div>
+          <div><div class="eyebrow">Price</div><div class="num" id="kpx">${price(p.price)}</div><small class="${p.change ? (isUp(p) ? 'up' : 'down') : ''}">${p.change ? (isUp(p) ? '↑ ' : '↓ ') + esc(p.change) + ' 24h' : 'No trades'}</small></div>
+          <div><div class="eyebrow">Market cap</div><div class="num">${usd(p.mc)}</div><small>Circ. Supply</small></div>
+          <div><div class="eyebrow">Holders</div><div class="num">${int(p.holders)}</div><small>Wallets</small></div>
+          <div><div class="eyebrow">24H Volume</div><div class="num">${usd(p.vol)}</div><small>Traded</small></div>
+          <div><div class="eyebrow">Collected</div><div class="num">${fees.creator.toFixed(fees.creator < 10 ? 4 : 3)}</div><small>SOL fees</small></div>
         </section>`}
-        ${media.length ? `<section class="panel grainy p-media" style="overflow:hidden"><div>
-          ${media.length > 1 ? `<div class="tabs" id="mtabs">${media.map(m => `<button data-m="${m[0]}">${m[1]}</button>`).join('')}</div>` : ''}
+        <section class="panel grainy p-media" style="overflow:hidden"><div>
+          <div class="tabs" id="mtabs">${media.map(m => `<button data-m="${m[0]}">${m[2]}${m[1]}</button>`).join('')}</div>
           <div id="mpane"></div></div>
-        </section>` : ''}
+        </section>
         <section class="panel grainy p-sec" style="overflow:hidden"><div>
-          <div class="tabs" id="stabs">${secs.map(s => `<button data-s="${s[0]}">${s[1]}${s[0] === 'milestones' && p.milestones ? '<i class="dot"></i>' : ''}</button>`).join('')}</div>
+          <div class="tabs" id="stabs">${secs.map(s => `<button data-s="${s[0]}">${s[1]}${s[0] === 'milestones' && p.milestones ? '<i class="dot"></i>' : ''}${s.length > 2 ? `<i class="bd">${s[2]}</i>` : ''}</button>`).join('')}</div>
           <div class="pane" id="spane"></div></div>
         </section>
       </div>
       <aside class="p-side"><section class="panel trade" id="trade"></section></aside>
     </div></div>`;
 
-  const drawTrade = () => { $('#trade').innerHTML = tradeHTML(p, state, amt); };
+  const drawTrade = () => { $('#trade').innerHTML = tradeHTML(p, state, amt, trade); };
   const banner = () => {
     $('#pbanner').innerHTML = state === 'error' ? `<div class="err-banner" style="margin-top:14px">${I.alert.replace('<svg', '<svg width="18" height="18"')}<span>Market data is unavailable right now. Numbers on this page are from the last snapshot.</span><button class="btn sm" data-retry>Retry</button></div>` : '';
   };
-  const stamp = c => {
-    const e = $('#stamp'); if (!e) return;
-    e.textContent = `O ${price(c[1])}  H ${price(c[2])}  L ${price(c[3])}  C ${price(c[4])}  ${clock(c[0])} ${tz}`;
+  const legend = (c, fmt) => {
+    const e = $('#ohlc'); if (!e) return;
+    const ch = c[1] ? (c[4] / c[1] - 1) * 100 : 0, cl = ch >= 0 ? 'up' : 'down';
+    e.innerHTML = ['O', 'H', 'L', 'C'].map((n, i) => `<span>${n}<b class="${cl}">${fmt(c[i + 1])}</b></span>`).join('') + `<b class="${cl}">${ch >= 0 ? '+' : ''}${ch.toFixed(2)}%</b>`;
+    $('#lvol').textContent = usd(c[5]);
   };
-  const tick = (c, data, hovering, trade) => {
-    if (!hovering) { pxNow = data[data.length - 1][4]; const k = $('#kpx'); if (k) k.textContent = price(pxNow); }
-    stamp(c);
-    const asof = $('#asof'); if (asof) asof.textContent = 'Priced from the pool at ' + clock(Date.now() / 1000, true) + ' ' + tz;
-    if (trade) {
+  const tick = ({ c, hovering, trade: tr, fmt, last }) => {
+    if (!hovering) { pxNow = last; const k = $('#kpx'); if (k) k.textContent = price(pxNow); }
+    legend(c, fmt);
+    if (tr) {
       const sz = (Math.random() ** 2 * 1.8 + .04);
-      rows.unshift({ t: Date.now() / 1000, side: trade.side, sz, px: trade.px });
-      rows.length = Math.min(rows.length, 30);
-      if (secTab === 'trades') drawSec(true);
+      rows.unshift({ t: Date.now() / 1000, side: tr.side, sz, px: tr.px, who: fakeAddr(Math.random) });
+      rows.length = Math.min(rows.length, 60);
+      if (secTab === 'trades') drawRows(true);
     }
   };
+  const seg = (attr, on, items) => `<div class="seg sm">${items.map(i => `<button class="${i[0] === on ? 'on' : ''}" data-${attr}="${i[0]}">${i[1]}</button>`).join('')}</div>`;
+  const chartFoot = () => `<div class="c-foot"><div class="c-rng">${Object.keys(RANGES).map(r => `<button class="${r === cfg.range ? 'on' : ''}" data-rng="${r}">${r}</button>`).join('')}</div>
+    <span class="grow"></span><span id="cclock"></span>
+    ${seg('tz', tz, [['UTC', 'UTC'], ['Local', 'Local']])}
+    <div class="c-rng">${[['pct', '%'], ['log', 'Log'], ['auto', 'Auto']].map(m => `<button class="${m[0] === cfg.mode ? 'on' : ''}" data-mode="${m[0]}">${m[1]}</button>`).join('')}</div></div>`;
+  const paintClock = () => { const c = $('#cclock'); if (c) c.textContent = `${clock(Date.now() / 1000, true)} (${tz})`; const a = $('#asof'); if (a) a.textContent = clock(Date.now() / 1000, true); };
+  const clockT = setInterval(paintClock, 1000);
   async function drawMedia() {
     $$('#mtabs [data-m]').forEach(b => b.classList.toggle('on', b.dataset.m === mediaTab));
     chart?.stop(); chart = null;
     const box = $('#mpane');
     if (mediaTab === 'chart') {
-      box.innerHTML = `<div class="chart-wrap">
-        <div class="chart-top"><span class="live"><i></i>Live</span><span id="stamp"></span>
-          <div class="grow"><div class="seg sm"><button data-tz="UTC">UTC</button><button data-tz="Local">Local</button></div></div></div>
-        <div id="chartbox"><div class="sk" style="height:340px"></div></div>
-        <div class="chart-top" style="margin:10px 0 0"><span id="asof"></span><span class="mut2" style="margin-left:auto">Ticks simulated in this concept</span></div></div>`;
-      syncTz();
+      box.innerHTML = `<div class="chart-wrap" id="cw">
+        <div class="c-tools">
+          <label class="c-iv"><span class="sr">Interval</span><select id="civ">${IVS.map(i => `<option value="${i[1]}" ${i[1] === cfg.iv ? 'selected' : ''}>${i[0]}</option>`).join('')}</select></label>
+          ${seg('unit', cfg.unit, [['price', 'Price'], ['mcap', 'Mcap']])}${seg('cur', cfg.cur, [['USD', 'USD'], ['SOL', 'SOL']])}
+          <span class="grow"></span><span class="live"><i></i>Simulated ticks</span>
+          <button class="c-ic" data-full aria-label="Full screen">${I.full}</button><button class="c-ic" data-save aria-label="Save as image">${I.save}</button>
+        </div>
+        <div class="c-leg"><span class="c-name2">${pair} on machinefun</span><span id="ohlc"></span><span class="c-vol">Volume <b id="lvol">-</b></span></div>
+        <div id="chartbox"><div class="sk" style="height:420px"></div></div>
+        ${chartFoot()}</div>`;
+      paintClock();
       try {
         const data = await market(p.ref);
         if (!$('#chartbox') || mediaTab !== 'chart') return;
         state = 'ready'; drawTrade(); banner();
         if (!data.length) { $('#chartbox').innerHTML = `<div class="empty" style="height:300px;align-content:center"><b>No trades yet</b><span>The first buy opens the chart.</span></div>`; return; }
         $('#chartbox').innerHTML = '<canvas id="chart" role="img" aria-label="Price chart"></canvas>';
-        chart = mountChart($('#chart'), data, p, tick);
+        chart = mountChart($('#chart'), data, p, tick, cfg);
       } catch {
         if (!$('#chartbox')) return;
         state = 'error'; drawTrade(); banner();
         $('#chartbox').innerHTML = `<div class="t-err" style="height:300px;align-content:center">${I.alert}<b>Chart unavailable</b><span class="t-note">The price feed did not answer.</span><button class="btn sm" data-retry>Retry</button></div>`;
       }
-    } else if (mediaTab === 'sim') {
+    } else if (mediaTab === 'sim' && pr.sim) {
       box.innerHTML = `<div class="media-pane"><video src="/assets/art/gl-feed.mp4" autoplay muted loop playsinline></video><p class="media-note">Simulation proof. In production this is the live SimArena embed.</p></div>`;
-    } else if (mediaTab === 'd3') {
+    } else if (mediaTab === 'd3' && pr.d3) {
       box.innerHTML = `<div class="media-pane"><img src="/assets/art/gl-threequarter.webp" alt="Grablab metal build, three quarter view"><p class="media-note">3D proof. In production this is the orbitable model.</p></div>`;
+    } else {
+      box.innerHTML = `<div class="empty" style="min-height:300px;align-content:center"><b>${NONE[mediaTab][0]}</b><span>${NONE[mediaTab][1]}</span></div>`;
     }
   }
-  const syncTz = () => $$('[data-tz]').forEach(b => b.classList.toggle('on', b.dataset.tz === tz));
-  function drawSec(soft) {
+  const redrawFoot = () => { const f = $('.c-foot'); if (f) { f.outerHTML = chartFoot(); paintClock(); } };
+  function drawRows(soft) {
+    const box = $('#tl'); if (!box) return;
+    const needle = tf.who.toLowerCase(), l = rows.filter(r => (tf.side === 'all' || r.side === tf.side) && r.sz >= tf.size && (!needle || r.who.toLowerCase().includes(needle)));
+    const now = Date.now() / 1000;
+    box.innerHTML = l.length ? l.map((r, i) => `<div class="${soft && i === 0 ? 'new' : ''}"><span class="mut">${since(now - r.t)}</span><span class="${r.side === 'Buy' ? 'up' : 'down'}">${r.side.toLowerCase()}</span><span>${compact(r.sz * SOL_USD / (r.px || 1))}</span><span>${r.sz.toFixed(4)}</span><span class="mut">${r.who}</span></div>`).join('') : '<p class="t-note" style="padding:12px 8px">No trades match these filters.</p>';
+  }
+  function drawTradesTab() {
+    const sp = p.spark || [], last = sp[sp.length - 1], ch = k => sp.length > k && sp[sp.length - 1 - k] ? (last / sp[sp.length - 1 - k] - 1) * 100 : null;
+    const cf = n => n == null ? '-' : (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+    const f = [['5m', ch(1)], ['1h', ch(3)], ['6h', ch(12)], ['24h', parseFloat(p.change) || null]];
+    const buys = rows.filter(r => r.side === 'Buy').length, r = buys / (rows.length || 1), tx = Math.min(p.trades || 0, Math.max(rows.length, Math.round((p.vol || 0) / SOL_USD / .46)));
+    $('#spane').innerHTML = `<div class="t-sum">${f.map(x => `<div><span>${x[0]}</span><b class="${x[1] == null ? '' : x[1] >= 0 ? 'up' : 'down'}">${cf(x[1])}</b></div>`).join('')}
+        <div><span>Volume</span><b>${compact((p.vol || 0) / SOL_USD)} SOL</b></div><div><span>Txns</span><b>${int(tx)}</b></div><div><span>Buys</span><b>${int(Math.round(tx * r))}</b></div><div><span>Sells</span><b>${int(tx - Math.round(tx * r))}</b></div></div>
+      <div class="t-filter"><label class="search"><span class="sr">Filter by trader</span>${I.search}<input id="tfw" placeholder="Filter by trader" value="${esc(tf.who)}" autocomplete="off"></label>
+        <span class="eyebrow">Side</span>${seg('fside', tf.side, [['all', 'All'], ['Buy', 'Buys'], ['Sell', 'Sells']])}
+        <span class="eyebrow">Size</span>${seg('fsize', tf.size, [[0, 'Any'], [1, '≥1 SOL'], [10, '≥10 SOL'], [100, '≥100 SOL']])}</div>
+      <div class="trades"><div class="th"><span>When</span><span>Side</span><span>Tokens</span><span>${esc(quote)}</span><span>Trader</span></div><div class="tb" id="tl"></div></div>
+      <p class="t-note" style="margin-top:10px">Sample stream that follows the chart. The real build reads the pool.</p>`;
+    drawRows();
+  }
+  function drawSec() {
     $$('#stabs [data-s]').forEach(b => b.classList.toggle('on', b.dataset.s === secTab));
     const box = $('#spane');
+    const R = (t, s, url, todo) => `<div class="v-row"><div><b>${t}</b><span class="${todo ? 'todo' : ''}">${s}</span></div>${url ? `<a class="btn sm" href="${url}" target="_blank" rel="noopener">${I.ext}Verify</a>` : ''}</div>`;
+    const linkList = () => p.links?.length ? `<div class="p-meta">${p.links.map(l => `<a class="ca" href="${l[2]}" target="_blank" rel="noopener">${I[l[0]]}${esc(l[1])}</a>`).join('')}</div>` : '';
     if (secTab === 'overview') {
       const empties = ['Simulation', '3D View', 'PCB', 'Video'].filter((n, i) => !pr[['sim', 'd3', 'pcb', 'video'][i]]);
       box.innerHTML = `<p style="max-width:68ch">${esc(p.desc || 'The founder has not written a description yet.')}</p>
-        ${p.links ? `<div class="p-meta" style="margin-top:14px">${p.links.map(l => `<a class="ca" href="${l[2]}" target="_blank" rel="noopener">${I[l[0]]}${esc(l[1])}</a>`).join('')}</div>` : ''}
-        ${empties.length ? `<p class="t-note" style="margin-top:16px">Hidden because empty: ${empties.join(', ')}. The founder sees an Add proof button here.</p>` : ''}`;
+        ${p.links ? `<div style="margin-top:14px">${linkList()}</div>` : ''}
+        ${empties.length ? `<p class="t-note" style="margin-top:16px">Not published yet: ${empties.join(', ')}. The founder sees an Add proof button here.</p>` : ''}`;
     } else if (secTab === 'trades') {
-      if (!rows.length) { box.innerHTML = `<p class="t-note">Waiting for the next trade.</p>`; return; }
-      const q = esc(p.quote || 'SOL');
-      box.innerHTML = `<p class="t-note" style="margin-bottom:10px">Sample stream that follows the chart.</p><div class="trades">${rows.map((r, i) => `<div class="${soft && i === 0 ? 'new' : ''}"><span class="mut">${clock(r.t, true)}</span><span class="${r.side === 'Buy' ? 'up' : 'down'}">${r.side}</span><span>${r.sz.toFixed(3)} ${q}</span><span>${price(r.px)}</span></div>`).join('')}</div>`;
+      drawTradesTab();
     } else if (secTab === 'holders') {
-      box.innerHTML = `<div class="pts"><span class="num">${int(p.holders)}</span><span class="mut">holders</span></div>
-        <a class="btn sm" style="margin-top:14px" href="https://solscan.io/token/${esc(p.mint)}#holders" target="_blank" rel="noopener">${I.ext}Open holder list</a>`;
+      holders ||= seedHolders(p);
+      const top = holders.big.slice(0, 10).reduce((a, h) => a + h.pct, 0);
+      const line = (h, i, val, mv) => `<div><span class="mut">${i + 1}</span><span>${h.who}${mv || ''}</span><span>${val}</span><span class="mut">${compact(h.pct / 100 * SUPPLY)}</span></div>`;
+      box.innerHTML = `<div class="h-kpi"><div><span class="eyebrow">Holders</span><b class="num">${int(p.holders)}</b><small>Wallets</small></div><div><span class="eyebrow">Top 10</span><b class="num">${top.toFixed(1)}%</b><small>Of supply</small></div><div><span class="eyebrow">Window</span><b class="num">30 days</b><small>Token-seconds</small></div></div>
+        <div class="h-cols"><div><h3>Largest holders now</h3><div class="h-list">${holders.big.map((h, i) => line(h, i, h.pct.toFixed(2) + '%')).join('')}</div></div>
+        <div><h3>Longest held 30 days</h3><div class="h-list">${holders.held.map((h, i) => { const was = holders.big.indexOf(holders.big.find(b => b.who === h.who)), d = was - i; return line(h, i, h.sec.toFixed(1) + '%', d ? ` <i class="${d > 0 ? 'up' : 'down'}">${d > 0 ? '↑' : '↓'}${Math.abs(d)}</i>` : ''); }).join('')}</div></div></div>
+        <div class="t-foot"><p class="t-note">Sample wallets in this concept. The real build reads them from chain.</p><a class="btn sm" href="https://solscan.io/token/${esc(p.mint)}#holders" target="_blank" rel="noopener">${I.ext}Open holder list</a></div>`;
+    } else if (secTab === 'token') {
+      const share = (n, pc, sol) => `<div class="f-share"><span>${n}</span><i><b style="width:${pc}%"></b></i><span class="mono">${pc}%</span><span class="mono">${sol.toFixed(4)} SOL</span></div>`;
+      box.innerHTML = `<div class="tk-grid"><div><h3>Token relay</h3><div class="verify">
+          ${R('Status', p.mig ? 'Live' : 'Bonding')}${R('Mint', esc(p.mint))}${p.pool ? R('Curve', esc(p.pool)) : ''}${p.mig && p.pool ? R('Pool', esc(p.pool)) : ''}</div>
+          <a class="btn sm" style="margin-top:10px" href="https://solscan.io/token/${esc(p.mint)}" target="_blank" rel="noopener">${I.ext}View on Solscan</a></div>
+        <div><h3>Trading fees</h3><div class="tk-fee"><div><span class="eyebrow">Per trade</span><b class="num">1.25%</b></div><div><span class="eyebrow">Fees generated</span><b class="num">${fees.all.toFixed(4)} SOL</b></div></div>
+          ${share('Creator', 35.21, fees.creator)}${share('Platform', 47.19, fees.platform)}${share('Rewards', 17.6, fees.rewards)}
+          <p class="t-note" style="margin-top:12px">The project earns a share of every trade. Buying here funds the team building it.<br>Fee figures are estimated in this concept.</p></div></div>`;
+    } else if (secTab === 'links') {
+      box.innerHTML = linkList() || `<div class="empty"><b>No links published</b><span>Website, X, GitHub and docs show here once the founder adds them.</span></div>`;
+    } else if (secTab === 'simulation') {
+      box.innerHTML = pr.sim ? `<div class="media-pane" style="padding:0"><video src="/assets/art/gl-feed.mp4" autoplay muted loop playsinline></video><p class="media-note">Simulation proof. In production this is the live SimArena embed.</p></div>`
+        : `<div class="empty"><b>No simulation published for this project yet</b><span>A simulation appears here once a project shares one.</span></div>`;
+    } else if (secTab === 'machines') {
+      box.innerHTML = `<div class="empty"><b>No machines attached</b><span>A project can point at machines registered on peaq. Their identity, bond and event log are read from chain state.</span></div>`;
     } else if (secTab === 'verify') {
-      const R = (t, s, url, todo) => `<div class="v-row"><div><b>${t}</b><span class="${todo ? 'todo' : ''}">${s}</span></div>${url ? `<a class="btn sm" href="${url}" target="_blank" rel="noopener">${I.ext}Verify</a>` : ''}</div>`;
       box.innerHTML = p.mint ? `<div class="verify">
         ${R('Token mint', esc(p.mint), 'https://solscan.io/token/' + encodeURIComponent(p.mint))}
         ${p.pool ? R(p.mig ? 'Raydium pool' : 'Curve pool', esc(p.pool), 'https://solscan.io/account/' + encodeURIComponent(p.pool)) : ''}
@@ -978,33 +1136,56 @@ function renderProject(ref) {
     }
   }
   const root = $('#view').firstElementChild;
+  const setChart = () => { $$('[data-unit]').forEach(b => b.classList.toggle('on', b.dataset.unit === cfg.unit)); $$('[data-cur]').forEach(b => b.classList.toggle('on', b.dataset.cur === cfg.cur)); redrawFoot(); chart?.redraw(); };
   root.addEventListener('click', e => {
     const m = e.target.closest('[data-m]'), s = e.target.closest('[data-s]'), t = e.target.closest('[data-tz]'), a = e.target.closest('[data-amt]');
+    const d = e.target.closest('[data-unit],[data-cur],[data-rng],[data-mode]')?.dataset;
     if (m) { mediaTab = m.dataset.m; drawMedia(); }
     if (s) { secTab = s.dataset.s; drawSec(); }
-    if (t) { tz = t.dataset.tz; store.set('tz', tz); syncTz(); chart?.redraw(); if (secTab === 'trades') drawSec(); }
+    if (t) { tz = t.dataset.tz; store.set('tz', tz); redrawFoot(); chart?.redraw(); if (secTab === 'trades') drawRows(); }
     if (a) { amt = a.dataset.amt; drawTrade(); }
-    if (e.target.closest('[data-sell]')) toast('Sell mirrors Buy in this concept');
+    if (d) { if (d.unit) cfg.unit = d.unit; if (d.cur) cfg.cur = d.cur; if (d.rng) cfg.range = d.rng; if (d.mode) cfg.mode = d.mode; setChart(); }
+    if (e.target.closest('[data-full]')) { document.fullscreenElement ? document.exitFullscreen() : $('#cw').requestFullscreen?.(); }
+    if (e.target.closest('[data-save]')) {
+      $('#chart')?.toBlob(b => { const u = URL.createObjectURL(b), l = document.createElement('a'); l.href = u; l.download = `${p.ticker}-chart.png`; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1000); });
+    }
+    const side = e.target.closest('[data-side]');
+    if (side) { trade.side = side.dataset.side; amt = trade.side === 'buy' ? '0.5' : '10000'; drawTrade(); }
+    const sl = e.target.closest('[data-slip]');
+    if (sl) { trade.slip = sl.dataset.slip; drawTrade(); }
+    if (e.target.closest('[data-max]')) { amt = trade.pay === 'SOL' ? '12.4' : '842'; drawTrade(); }
+    const fs = e.target.closest('[data-fside],[data-fsize]');
+    if (fs) {
+      if (fs.dataset.fside) tf.side = fs.dataset.fside; else tf.size = +fs.dataset.fsize;
+      fs.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === fs));
+      drawRows();
+    }
     const sp = e.target.closest('[data-star-p]');
     if (sp) { toggleWatch(p.ref); sp.innerHTML = I.star + (watch.has(p.ref) ? 'Watching' : 'Watch'); }
     if (e.target.closest('[data-buy]')) {
       if (!wallet) return connect();
-      rows.unshift({ t: Date.now() / 1000, side: 'Buy', sz: parseFloat(amt) || 0, px: pxNow });
-      if (secTab === 'trades') drawSec(true);
+      const sol = (parseFloat(amt) || 0) * (trade.side === 'sell' ? pxNow / SOL_USD : RATES[trade.pay] / SOL_USD);
+      rows.unshift({ t: Date.now() / 1000, side: trade.side === 'buy' ? 'Buy' : 'Sell', sz: sol, px: pxNow, who: 'You' });
+      if (secTab === 'trades') drawRows(true);
       toast('Simulated. Nothing was signed or sent.');
     }
   });
+  root.addEventListener('change', e => {
+    if (e.target.id === 'pay') { trade.pay = e.target.value; drawTrade(); }
+    if (e.target.id === 'civ') { cfg.iv = +e.target.value; chart?.redraw(); }
+  });
   root.addEventListener('input', e => {
-    if (e.target.id !== 'amt') return;
-    amt = e.target.value.replace(/[^0-9.]/g, '');
-    const pos = e.target.selectionStart;
+    if (e.target.id === 'tfw') { tf.who = e.target.value; return drawRows(); }
+    if (e.target.id !== 'amt' && e.target.id !== 'slipv') return;
+    const id = e.target.id, val = e.target.value.replace(/[^0-9.]/g, ''), pos = e.target.selectionStart;
+    if (id === 'amt') amt = val; else trade.custom = val;
     drawTrade();
-    const n = $('#amt'); n.focus(); n.setSelectionRange(pos, pos);
+    const n = $('#' + id); n.focus(); n.setSelectionRange(pos, pos);
   });
   const onW = () => drawTrade();
   document.addEventListener('wallet', onW);
-  onLeave(() => { chart?.stop(); document.removeEventListener('wallet', onW); });
-  drawTrade(); banner(); drawSec(); if (media.length) drawMedia();
+  onLeave(() => { chart?.stop(); clearInterval(clockT); document.removeEventListener('wallet', onW); });
+  drawTrade(); banner(); drawSec(); drawMedia();
 }
 
 /* launch */
@@ -1066,7 +1247,7 @@ function viewLaunch() {
       return;
     }
     if (step === 1) b.innerHTML = `<div class="form">
-      <div class="f"><label for="f-name">Project name</label><input class="input" id="f-name" maxlength="40" value="${esc(d.name)}" placeholder="Sixth Sense Labs"></div>
+      <div class="f"><label for="f-name">Project name</label><input class="input" id="f-name" maxlength="40" value="${esc(d.name)}" placeholder="Grablab"></div>
       <div class="f"><label for="f-pitch">One line</label><input class="input" id="f-pitch" maxlength="90" value="${esc(d.pitch)}" placeholder="What the machine does, for whom"><small>Shown on cards. 90 characters.</small></div>
       <div class="f"><label for="f-brief">Brief</label><textarea class="ta" id="f-brief" placeholder="The problem, the machine, how far along you are, what the raise pays for.">${esc(d.brief)}</textarea><small>The brief is your project page. Four sentences are enough.</small></div>
       <div class="two"><label class="drop" id="d-logo"><input type="file" accept="image/*" data-up="logo"><span class="d-ico">${I.image}</span><b>Add logo</b><span>Square, 512 px or more</span></label>
@@ -1150,7 +1331,7 @@ function viewRewards() {
     if (wallet) list.push(['You', me]);
     v.innerHTML = `<div class="wrap enter">
     <section class="panel r-hero grainy"><div class="t">
-      <div class="eyebrow">Season one</div>
+      <div class="kick">Season one</div>
       <h1 class="display">Every trade is already counted</h1>
       <p class="mut">Points track your trading and holding from your wallet, on FOMO and PUMP too. Projects can add their own rewards on top.</p>
       ${wallet ? `<div class="pts"><span class="num">${int(me)}</span><span class="mut">points, rank #1,204</span></div>` : '<div><button class="btn primary" data-conn>Connect to see your points</button></div>'}
@@ -1184,7 +1365,7 @@ function viewChanges() {
   const groups = ['Bugs', 'UX', 'Product'], labels = { Bugs: 'Bugs', UX: 'UX and design', Product: 'Product ideas' };
   let n = 0;
   $('#view').innerHTML = `<div class="wrap enter">
-    <section class="panel ch-hero grainy"><img class="art" src="/assets/art/fly-macro.webp" alt=""><div class="eyebrow">By Grablab, for the machine.fun team</div>
+    <section class="panel ch-hero grainy"><img class="art" src="/assets/art/fly-macro.webp" alt=""><div class="kick">By Rony, for the machine.fun team</div>
       <h1 class="display">25 changes, all clickable</h1>
       <p>A working concept built on a public snapshot of your data from 1 Nov 2026. We use the product daily, this is how we would like it to feel. Everything runs without a wallet, and nothing is sent on chain.</p></section>
     ${groups.map(g => `<section class="panel block grainy"><div><div class="head"><h2 class="display">${labels[g]}</h2></div><div class="ch">
