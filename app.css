@@ -208,7 +208,8 @@ main:focus{outline:0}
 .h-strip>div:first-child{border-left:0}
 .h-strip .eyebrow{color:rgba(245,245,245,.8)}
 .h-strip .num{font-size:clamp(20px,1.7vw,28px);margin-top:3px}
-.h-by .logos{display:flex;align-items:center;gap:clamp(14px,2vw,32px);margin-top:9px}
+.h-by{text-align:center}
+.h-by .logos{display:flex;align-items:center;justify-content:center;gap:clamp(14px,2vw,32px);margin-top:9px}
 .h-by img{height:18px;width:auto;opacity:.9}
 .h-by .logos span{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:500}
 .rot{display:inline-grid;vertical-align:bottom;height:1.08em;overflow:hidden;color:var(--brand-2);text-align:left}
