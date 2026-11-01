@@ -672,10 +672,10 @@ td small{display:block;color:var(--mut);font-size:12px}
 @media (min-width:2100px){:root{--cols:5}}
 @media (min-width:2700px){:root{--cols:6}}
 @media (min-width:3300px){:root{--cols:7}}
-html{background:#0c0c0c}
+html{background:#070d20}
 body{font-family:Archivo,sans-serif}
 ::selection{background:var(--brand);color:var(--ink)}
-.sky{background:#09090b}
+.sky{background:linear-gradient(180deg,#0c1b3e,#0a1533 46%,#070d20)}
 .panel{background:rgba(19,19,19,.88);border:1px solid var(--edge);box-shadow:none}
 .display{font-weight:900;font-stretch:125%;line-height:1.08;letter-spacing:-.01em;text-transform:uppercase;background:var(--chrome) 0 0/100% 1lh;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(255,70,70,.3)) drop-shadow(0 2px 5px rgba(0,0,0,.45))}
 .rot{color:inherit}
