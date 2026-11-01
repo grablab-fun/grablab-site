@@ -156,12 +156,28 @@ function toggleWatch(ref) {
   const chip = !watch.has(ref) && $(`.chip-w[data-live="${ref}"]`);
   if (chip) { chip.classList.add('out'); setTimeout(renderWatch, 260); } else renderWatch();
 }
-const WALLETS = [['Phantom', '#ab9ff2', 'phantom.svg'], ['Solflare', '#fc7227', 'solflare.svg'], ['Backpack', '#e33e3f', 'backpack.png'], ['Email or social', '#8a8a94']];
-const walletTile = w => `<span class="cw-tile" style="--c:${w[1]}">${w[2] ? `<img src="/assets/wallets/${w[2]}" alt="">` : I.mail}</span>`;
+const WALLETS = [
+  ['Brave Wallet', '#ff5500', 'brave.png', () => window.ethereum?.isBraveWallet || !!window.braveSolana],
+  ['Phantom', '#ab9ff2', 'phantom.svg', () => !!window.phantom?.solana],
+  ['MetaMask', '#f6851b', 'metamask.png', () => window.ethereum?.isMetaMask && !window.ethereum?.isBraveWallet],
+  ['Solflare', '#fc7227', 'solflare.svg', () => !!window.solflare],
+  ['Backpack', '#e33e3f', 'backpack.png', () => !!window.backpack]];
+const SOCIALS = [
+  ['Google', '#f5f5f5', 0, '<svg viewBox="0 0 24 24"><path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>'],
+  ['X', '#f5f5f5', 0, '<svg viewBox="0 0 24 24" fill="#fff"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.9-6.4L6.3 22H3.2l7.3-8.3L1 2h6.4l4.4 5.8zm-1.1 18.2h1.7L6.7 3.7H4.9z"/></svg>'],
+  ['Discord', '#5865f2', 0, '<svg viewBox="0 0 24 24" fill="#fff"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>'],
+  ['GitHub', '#f5f5f5', 0, '<svg viewBox="0 0 16 16" fill="#fff"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>']];
+const MAIL = ['Email', '#f5f5f5'];
+const walletTile = w => `<span class="cw-tile">${w[2] ? `<img src="/assets/wallets/${w[2]}" alt="">` : w[3] || I.mail}</span>`;
 let cw = null, cwTimers = [];
 function drawConnect() {
-  $('.cw-body', cw).innerHTML = `<div class="cw-head"><span class="cw-mark"><i></i></span><h2 class="display">Connect to machine.fun</h2><p>One wallet for trading, rewards and launches.</p></div>
-    <div class="cw-list">${WALLETS.map((w, i) => `<button data-w="${i}">${walletTile(w)}<b>${w[0]}</b>${I.next}</button>`).join('')}</div>
+  // Reading these globals only tells us what is installed. Nothing is requested from them.
+  const list = WALLETS.map((w, i) => ({ w, i, on: !!w[3]() })).sort((a, b) => b.on - a.on);
+  $('.cw-body', cw).innerHTML = `<div class="cw-head"><span class="cw-mark"><i></i></span><div><h2>Sign in</h2><p>Connect a wallet, or use email. A wallet can be added later.</p></div></div>
+    <div class="cw-list">${list.map(({ w, i, on }) => `<button data-w="${i}">${walletTile(w)}<b>${w[0]}</b>${on ? '<em>Detected</em>' : I.next}</button>`).join('')}</div>
+    <div class="cw-or"><span>or</span></div>
+    <form class="cw-mail" novalidate><label>${I.mail}<span class="sr">Email address</span><input id="cw-em" type="email" autocomplete="email" placeholder="you@example.com"></label><button class="btn primary" type="submit" disabled>Continue with email</button></form>
+    <div class="cw-soc">${SOCIALS.map((s, i) => `<button data-soc="${i}" aria-label="Continue with ${s[0]}" title="${s[0]}">${s[3]}</button>`).join('')}</div>
     <p class="cw-note">Concept demo. No extension is contacted and nothing is signed.</p>`;
 }
 function pickWallet(w) {
@@ -183,14 +199,20 @@ function connect() {
   if (!cw) {
     cw = document.createElement('dialog');
     cw.className = 'cw';
-    cw.setAttribute('aria-label', 'Connect wallet');
-    cw.innerHTML = `<div class="cw-box panel grainy"><button class="cw-x" aria-label="Close">${I.x}</button><div class="cw-body"></div></div>`;
+    cw.setAttribute('aria-label', 'Sign in');
+    cw.innerHTML = `<div class="cw-box"><button class="cw-x" aria-label="Close">${I.x}</button><div class="cw-body"></div></div>`;
     document.body.append(cw);
     cw.addEventListener('click', e => {
       if (e.target === cw || e.target.closest('.cw-x')) return cw.close();
       const b = e.target.closest('[data-w]');
-      if (b) pickWallet(WALLETS[+b.dataset.w]);
+      if (b) return pickWallet(WALLETS[+b.dataset.w]);
+      const s = e.target.closest('[data-soc]');
+      if (s) pickWallet(SOCIALS[+s.dataset.soc]);
     });
+    cw.addEventListener('input', e => {
+      if (e.target.id === 'cw-em') $('.cw-mail button', cw).disabled = !e.target.validity.valid || !e.target.value;
+    });
+    cw.addEventListener('submit', e => { e.preventDefault(); pickWallet(MAIL); });
     cw.addEventListener('close', () => cwTimers.splice(0).forEach(clearTimeout));
   }
   drawConnect();
@@ -336,10 +358,20 @@ const tagsRow = p => proofMinis(p) + (p.tags || []).slice(0, 3).map(t => `<span 
 const live = new Map();
 let liveTimer = 0;
 const fmtChange = n => (n < 0 ? '' : '+') + n.toFixed(1) + '%';
+function walk(mc, base, ref) {
+  let h = [...ref].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 1009, 7);
+  const out = Array.from({ length: 40 }, (_, i) => {
+    h = (h * 31 + 7) % 1009;
+    const t = i / 39;
+    return base + (mc - base) * t + mc * .09 * (h / 1009 - .5) * Math.sin(Math.PI * t);
+  });
+  out[39] = mc;
+  return out;
+}
 function liveOf(p) {
   if (!live.has(p.ref)) {
-    const mc = p.mc || 1, chg = parseFloat(p.change) || 0;
-    live.set(p.ref, { mc, base: mc / (1 + chg / 100), vol: p.vol || 0, change: p.change || '', prog: p.prog || 0, mig: p.mig, spark: p.spark?.length > 1 ? [...p.spark] : [mc, mc] });
+    const mc = p.mc || 1, chg = parseFloat(p.change) || 0, base = mc / (1 + chg / 100);
+    live.set(p.ref, { mc, base, vol: p.vol || 0, change: p.change || '', prog: p.prog || 0, mig: p.mig, spark: p.spark?.length >= 24 ? [...p.spark] : walk(mc, base, p.ref) });
   }
   return live.get(p.ref);
 }
@@ -1542,15 +1574,22 @@ addEventListener('popstate', () => {
   if (fnd.el?.open) { fnd.el.close(); return; }
   route();
 });
-// The nav narrows on the way down and opens again on the way up
-let lastY = 0;
+// The nav trails the scroll on a soft spring, from open bar to floating pill
+let navS = 0, navT = 0, navAt = 0, navRaf = 0;
+function navStep(now) {
+  navRaf = 0;
+  navS += (navT - navS) * (1 - Math.exp(-Math.min(48, now - navAt) / 120));
+  navAt = now;
+  if (reduced || Math.abs(navT - navS) < .002) navS = navT;
+  else navRaf = requestAnimationFrame(navStep);
+  $('#top').style.setProperty('--s', navS.toFixed(3));
+}
 addEventListener('scroll', () => {
   const top = $('#top'), y = scrollY;
-  top.classList.toggle('stuck', y > 30);
-  if (y < 240) top.classList.remove('slim');
-  if (Math.abs(y - lastY) < 5) return;
-  if (y >= 240) top.classList.toggle('slim', y > lastY);
-  lastY = y;
+  navT = Math.min(1, y / 220);
+  top.classList.toggle('stuck', y > 4);
+  top.classList.toggle('slim', y > 170);
+  if (!navRaf) { navAt = performance.now(); navRaf = requestAnimationFrame(navStep); }
 }, { passive: true });
 addEventListener('resize', markNav, { passive: true });
 history.scrollRestoration = 'manual';
