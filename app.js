@@ -494,7 +494,7 @@ function card(p, opts = {}) {
       ${opts.preview ? '' : `<button class="star ${watch.has(p.ref) ? 'on' : ''}" data-star="${esc(p.ref)}" aria-label="Add to watchlist">${I.star}</button>`}
     </div>
     <div class="c-body">
-      <div class="c-tick"><span>$${esc(p.ticker || '')}</span>${opts.preview ? '' : `<button class="copy-ca" data-copy="${esc(p.mint)}" aria-label="Copy contract address">${I.copy}</button>`}${dup ? `<span class="dup" title="${dupCount[p.ticker.toUpperCase()]} projects use this ticker">dup x${dupCount[p.ticker.toUpperCase()]}</span>` : ''}</div>
+      <div class="c-tick"><span>$${esc(p.ticker || '')}</span>${opts.preview ? '' : `<button class="copy-ca" data-copy="${esc(p.mint)}" aria-label="Copy contract address">${I.copy}</button>`}${dup ? `<span class="dup" title="${dupCount[p.ticker.toUpperCase()]} projects use this ticker">Dup<b>${dupCount[p.ticker.toUpperCase()]}</b></span>` : ''}</div>
       <div class="c-name">${esc(p.name)}</div>
       <div class="c-tags">${tagsRow(p)}</div>
       <div class="c-mc"><span class="num" data-f="mc">${usd(p.mc)}</span><span class="pair">/ ${esc(p.quote || 'SOL')}</span></div>
