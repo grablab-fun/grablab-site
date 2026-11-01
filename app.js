@@ -1438,7 +1438,7 @@ function viewRewards() {
       ${wallet ? `<div class="pts"><span class="num">${int(me)}</span><span class="mut">points, rank #1,204</span></div>` : '<div><button class="btn primary" data-conn>Connect to see your points</button></div>'}
     </div><img src="/assets/art/medal-cut.webp" alt="" decoding="async"></section>
     <section class="panel block grainy"><div>
-      <div class="head"><h2 class="display">How you earn</h2><span class="note">Sample numbers</span></div>
+      <div class="head"><h2 class="display">How you earn</h2></div>
       <div class="art-grid">
         ${[['earn-trade', 'Trade', 'Any project, buy or sell. FOMO and PUMP count on the same wallet.', [['machine.fun', '10 per $100'], ['FOMO or PUMP', '5 per $100']]],
           ['earn-hold', 'Hold and back', 'Counted daily on your balance. Buy before a project migrates to double it.', [['Holding', '2 per $100 a day'], ['Bonding', 'x2 multiplier']]],
