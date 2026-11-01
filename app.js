@@ -8,6 +8,9 @@ const store = {
   set(k, v) { try { localStorage.setItem('mfc:' + k, JSON.stringify(v)); } catch {} },
 };
 const reduced = false; // Motion is the review here, so it does not follow the OS setting
+// Weak machines keep the layout and drop the per frame luxuries: blur, moving edges, ticking numbers
+const lite = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
+document.documentElement.classList.toggle('lite', lite);
 
 const I = (() => {
   const s = (d, x = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ${x}>${d}</svg>`;
@@ -365,19 +368,22 @@ function seedForge() {
 const tweens = new Map();
 let tweenRaf = 0;
 function tween(n, from, to, fmt) {
-  if (reduced) { n.textContent = fmt(to); return; }
+  if (reduced || lite) { n.textContent = fmt(to); return; }
   const s = tweens.get(n), start = s ? s.v : from;
   tweens.set(n, { a: start, b: to, v: start, t: performance.now(), fmt });
   tweenRaf ||= requestAnimationFrame(stepTweens);
 }
+let tweenAt = 0;
 function stepTweens(now) {
   tweenRaf = 0;
+  if (now - tweenAt < 30) { tweenRaf = requestAnimationFrame(stepTweens); return; }
+  tweenAt = now;
   tweens.forEach((s, n) => {
     const k = Math.min(1, Math.max(0, (now - s.t) / 900));
     s.v = s.a + (s.b - s.a) * (1 - (1 - k) ** 3);
     const t = s.fmt(s.v);
     if (n.textContent !== t) n.textContent = t;
-    if (k === 1) tweens.delete(n);
+    if (k === 1 || !n.isConnected) tweens.delete(n);
   });
   if (tweens.size) tweenRaf = requestAnimationFrame(stepTweens);
 }
@@ -407,13 +413,15 @@ function paintLive(e, p, v, d, was) {
   else if (sp) paintSpark(sp, p, v);
   e.classList.toggle('forge', heat(v) === 'forge');
 }
+let liveBeat = 0;
 function tickLive() {
-  if (fnd.el?.open) return;
   if (document.hidden || location.pathname !== '/' || fnd.el?.open) return;
   const page = $$('.page')[ex.page];
-  if (!page) return;
+  if (!page || (lite && ++liveBeat % 3)) return;
   const groups = new Map();
   [...$$('[data-live]', page), ...$$('#watch [data-live]')].forEach(e => {
+    const b = e.getBoundingClientRect();
+    if (b.bottom < 0 || b.top > innerHeight) return;
     const r = e.dataset.live;
     groups.has(r) ? groups.get(r).push(e) : groups.set(r, [e]);
   });
@@ -426,7 +434,8 @@ function tickLive() {
 function tickSearch() {
   if (!fnd.el?.open) { clearInterval(fnd.live); fnd.live = 0; return; }
   if (document.hidden) return;
-  const box = $('#fnd-list'), first = Math.floor(box.scrollTop / 62);
+  const box = $('#fnd-list'), first = Math.floor(box.scrollTop / ROW);
+  if (lite && ++liveBeat % 3) return;
   for (let i = first; i < first + 10; i++) {
     const p = fnd.rows[i];
     if (!p?.mint || Math.random() > .6) continue;
@@ -516,6 +525,7 @@ function drawGrid() {
     pageTimer = setTimeout(() => { ex.page = Math.round(e.target.scrollLeft / (e.target.clientWidth + 24)); markPager(); }, 90);
   }, { passive: true });
   dragScroll($('#pages'), () => $('#pages').clientWidth + 24);
+  $('#pages').style.setProperty('--ph', $('.page').offsetHeight + 'px');
   drawPager(pages.length);
   goPage(ex.page, true);
 }
@@ -660,7 +670,7 @@ function buildHome() {
   el.innerHTML = `
   <section class="hero">
     <div class="h-mask" aria-hidden="true"><div class="h-sky">
-      <img class="plate" src="/assets/art/sky-hero.webp" alt="" fetchpriority="high" decoding="async">
+      <img class="plate" src="/assets/art/sky-hero.webp" srcset="/assets/art/sky-hero-m.webp 1800w,/assets/art/sky-hero.webp 3840w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
       <img class="fly" src="/assets/art/fly-cut.webp" alt="" fetchpriority="high" decoding="async">
       <i class="h-grain"></i>
     </div></div>
@@ -758,7 +768,8 @@ function viewHome() {
 }
 
 /* search tab: every project, filtered on the client */
-const fnd = { el: null, tab: 'all', i: 0, rows: [], skip: false };
+const ROW = 62;
+const fnd = { el: null, tab: 'all', i: 0, rows: [], map: new Map(), skip: false };
 function searchPool() {
   const seen = new Set();
   return [SAMPLE, ...P].filter(p => p.mint || (!seen.has(p.name.toLowerCase()) && seen.add(p.name.toLowerCase())));
@@ -795,21 +806,46 @@ function drawSearch() {
   $$('[data-fnd]').forEach(b => { b.classList.toggle('on', b.dataset.fnd === fnd.tab); $('i', b).textContent = count[b.dataset.fnd]; });
   fnd.rows = hits.map(a => a[0]).filter(p => fnd.tab === 'all' || stageOf(p) === fnd.tab);
   fnd.i = 0;
-  box.innerHTML = fnd.rows.length ? '<i class="fnd-hl"></i>' + fnd.rows.map((p, i) => { const v = p.mint ? liveOf(p) : p; return `<a class="fnd-row" role="option" id="fnd-${i}" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}"${p.mint ? ` data-live="${esc(p.ref)}"` : ''}>
-    <img src="${logoSrc(p)}" alt="" loading="lazy" width="40" height="40">
-    <div class="n"><b>${hl(p.name, q)}</b><span>${p.ticker ? '$' + hl(p.ticker, q) + ' ' : ''}${p.sample ? 'Full sample' : stageTxt[stageOf(p)]}</span></div>
-    ${miniSpark(p)}
-    <span class="num"><small>${p.mint ? 'Mcap' : 'Launch'}</small><b ${p.mint ? 'data-f="mc"' : ''}>${p.mint ? usd(v.mc) : 'Date TBD'}</b></span>
-    <span class="num chg"><small>${p.mint ? '24h' : ''}</small><b ${p.mint ? 'data-f="chg"' : ''} class="${v.change ? (v.change.startsWith('-') ? 'down' : 'up') : 'flat'}">${p.mint ? esc(v.change || '0.0%') : ''}</b></span></a>`; }).join('')
+  fnd.q = q; fnd.map = new Map();
+  box.innerHTML = fnd.rows.length ? `<i class="fnd-hl"></i><i class="fnd-sp" style="height:${fnd.rows.length * ROW}px"></i>`
     : `<div class="empty"><b>Nothing matches "${esc($('#fq').value)}"</b><span>Search covers names, tickers, contracts, tags and descriptions.</span></div>`;
   box.scrollTop = 0;
   fnd.on = null; fnd.hl = $('.fnd-hl', box);
+  winSearch();
   markSearch();
+}
+function searchRow(p, i) {
+  const v = p.mint ? liveOf(p) : p, q = fnd.q;
+  return `<a class="fnd-row" role="option" id="fnd-${i}" style="transform:translate3d(0,${i * ROW + 8}px,0)" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}"${p.mint ? ` data-live="${esc(p.ref)}"` : ''}>
+    <img src="${logoSrc(p)}" alt="" decoding="async" width="40" height="40">
+    <div class="n"><b>${hl(p.name, q)}</b><span>${p.ticker ? '$' + hl(p.ticker, q) + ' ' : ''}${p.sample ? 'Full sample' : stageTxt[stageOf(p)]}</span></div>
+    ${miniSpark(p)}
+    <span class="num"><small>${p.mint ? 'Mcap' : 'Launch'}</small><b ${p.mint ? 'data-f="mc"' : ''}>${p.mint ? usd(v.mc) : 'Date TBD'}</b></span>
+    <span class="num chg"><small>${p.mint ? '24h' : ''}</small><b ${p.mint ? 'data-f="chg"' : ''} class="${v.change ? (v.change.startsWith('-') ? 'down' : 'up') : 'flat'}">${p.mint ? esc(v.change || '0.0%') : ''}</b></span></a>`;
+}
+function winSearch() {
+  const box = $('#fnd-list'), n = fnd.rows.length;
+  if (!n) return;
+  const a = Math.max(0, Math.floor(box.scrollTop / ROW) - 3), b = Math.min(n, a + Math.ceil(box.clientHeight / ROW) + 7);
+  fnd.map.forEach((e, i) => { if (i < a || i >= b) { e.remove(); fnd.map.delete(i); } });
+  let html = '';
+  for (let i = a; i < b; i++) if (!fnd.map.has(i)) html += searchRow(fnd.rows[i], i);
+  if (!html) return;
+  box.insertAdjacentHTML('beforeend', html);
+  for (let i = a; i < b; i++) if (!fnd.map.has(i)) fnd.map.set(i, document.getElementById('fnd-' + i));
+  const r = fnd.map.get(fnd.i);
+  if (r && r !== fnd.on) { fnd.on?.removeAttribute('aria-selected'); fnd.on = r; r.setAttribute('aria-selected', 'true'); }
 }
 function markSearch(scroll) {
   fnd.on?.removeAttribute('aria-selected');
-  const r = fnd.on = $('#fnd-' + fnd.i), h = fnd.hl;
-  if (r) { r.setAttribute('aria-selected', 'true'); h.style.transform = `translate3d(0,${fnd.i * 62 + 8}px,0)`; if (scroll) r.scrollIntoView({ block: 'nearest' }); }
+  const box = $('#fnd-list'), y = fnd.i * ROW + 8;
+  if (scroll && fnd.rows.length) {
+    if (y < box.scrollTop) box.scrollTop = y - 8;
+    else if (y + ROW > box.scrollTop + box.clientHeight) box.scrollTop = y + ROW + 8 - box.clientHeight;
+    winSearch();
+  }
+  const r = fnd.on = fnd.map.get(fnd.i), h = fnd.hl;
+  if (r) { r.setAttribute('aria-selected', 'true'); h.style.transform = `translate3d(0,${y}px,0)`; }
   $('#fq').setAttribute('aria-activedescendant', r ? r.id : '');
 }
 function buildSearch() {
@@ -827,6 +863,9 @@ function buildSearch() {
     const r = e.target.closest('.fnd-row');
     if (r && +r.id.slice(4) !== fnd.i) { fnd.i = +r.id.slice(4); markSearch(); }
   });
+  $('#fnd-list', el).addEventListener('scroll', () => { fnd.sc ||= requestAnimationFrame(() => { fnd.sc = 0; winSearch(); }); }, { passive: true });
+  // The page behind holds still while the panel is up
+  el.addEventListener('close', () => { fnd.held?.forEach(a => a.play()); fnd.held = null; });
   el.addEventListener('click', e => {
     if (e.target === el || e.target.closest('#fnd-x')) return closeSearch();
     const t = e.target.closest('[data-fnd]');
@@ -840,8 +879,8 @@ function buildSearch() {
       if (fnd.rows.length) { fnd.i = (fnd.i + (e.key === 'ArrowDown' ? 1 : -1) + fnd.rows.length) % fnd.rows.length; markSearch(true); }
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      const r = $('#fnd-' + fnd.i);
-      if (r) go(r.href);
+      const p = fnd.rows[fnd.i];
+      if (p) go(location.origin + '/project/' + encodeURIComponent(p.ref));
     }
   });
 }
@@ -853,6 +892,8 @@ function openSearch() {
   // Its own history entry, so Back closes the tab instead of leaving the page
   history.pushState({ search: 1, y: scrollY }, '');
   fnd.tab = 'all'; $('#fq').value = '';
+  fnd.held = document.getAnimations().filter(a => a.playState === 'running' && a.effect?.getTiming().iterations === Infinity);
+  fnd.held.forEach(a => a.pause());
   fnd.el.showModal();
   drawSearch();
   fnd.live ||= setInterval(tickSearch, 900);
@@ -1740,9 +1781,11 @@ document.addEventListener('click', e => {
   pressed = null;
   go(a.href);
 });
+let preT = 0;
 const prefetch = e => {
   const c = e.target.closest?.('[data-pre]');
-  if (c && byRef.get(c.dataset.pre)?.mint) candles(c.dataset.pre);
+  clearTimeout(preT);
+  if (c && byRef.get(c.dataset.pre)?.mint) preT = setTimeout(() => candles(c.dataset.pre), 140);
 };
 document.addEventListener('pointerover', prefetch, { passive: true });
 document.addEventListener('touchstart', prefetch, { passive: true });
