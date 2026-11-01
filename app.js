@@ -62,7 +62,7 @@ const SAMPLE = {
   tags: ['robotics', 'machine', 'simulation'],
   proof: { sim: 1, d3: 1 },
   founder: { name: 'Grablab team', role: 'Founders', img: '/assets/logos/grablab.webp' },
-  links: [['globe', 'grablab.fun', 'https://grablab.fun', 'The site, the live machine and the provably fair page.', '/assets/art/gl-threequarter.webp'], ['x', '@grablabfun', 'https://x.com/grablabfun', 'Build updates, renders and proof drops.', '/assets/art/x-card.webp']],
+  links: [['globe', 'grablab.fun', 'https://grablab.fun', 'The site, the live machine and the provably fair page.', '/assets/art/gl-threequarter.webp'], ['x', '@grablabfun', 'https://x.com/grablabfun', 'Build updates, renders and proof drops.', '/assets/art/x-claw.webp']],
   milestones: [
     { s: 'done', t: 'Simulation of the full machine', d: 'Physics scene built and playable in SimArena.', proof: 'See the simulation', to: 'sim' },
     { s: 'done', t: 'Interactive 3D model', d: 'Every part of the metal build, exploded and labelled.', proof: 'See the 3D model', to: 'd3' },
