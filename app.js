@@ -543,8 +543,10 @@ function drawGrid() {
   for (let i = 0; i < list.length; i += ex.size) pages.push(list.slice(i, i + ex.size));
   box.innerHTML = `<div class="pages" id="pages">${pages.map(g => `<div class="page">${ex.view === 'grid' ? `<div class="grid">${g.map(p => card(p)).join('')}</div>` : `<div class="list">${g.map(rowItem).join('')}</div>`}</div>`).join('')}</div>`;
   $('#pages').addEventListener('scroll', e => {
+    const now = Math.round(e.target.scrollLeft / (e.target.clientWidth + 24)), t = $('#pg-now');
+    if (t) t.textContent = now + 1;
     clearTimeout(pageTimer);
-    pageTimer = setTimeout(() => { ex.page = Math.round(e.target.scrollLeft / (e.target.clientWidth + 24)); markPager(); }, 90);
+    pageTimer = setTimeout(() => { ex.page = now; markPager(); }, 90);
   }, { passive: true });
   dragScroll($('#pages'), () => $('#pages').clientWidth + 24);
   drawPager(pages.length);
@@ -554,7 +556,7 @@ function drawGrid() {
 function drawPager(n) {
   ex.pages = n;
   const arrow = d => `<button class="pg" data-pg="${d}" aria-label="${d < 0 ? 'Previous' : 'Next'} page">${d < 0 ? I.prev : I.next}</button>`;
-  $('#pgn-top').innerHTML = n > 1 ? `<span class="mono mut">Page <span id="pg-now"></span> of ${n}</span>${arrow(-1)}${arrow(1)}` : '';
+  $('#pgn-top').innerHTML = n > 1 ? `<span class="mono pg-c" aria-label="Page"><span id="pg-now"></span>/${n}</span>${arrow(-1)}${arrow(1)}` : '';
   $('#pgn').innerHTML = n > 1 ? `${arrow(-1)}<div class="pg-n" id="pg-n"></div>${arrow(1)}` : '';
 }
 // Seven slots at most, so the pager never changes width as pages are added
@@ -571,7 +573,7 @@ function markPager() {
   $$('[data-pg]').forEach(b => { const to = ex.page + +b.dataset.pg; b.disabled = to < 0 || to >= ex.pages; });
   const t = $('#pg-now');
   if (t) t.textContent = ex.page + 1;
-  $$('.page').forEach((p, i) => p.classList.toggle('cur', i === ex.page));
+  $$('.page').forEach((p, i) => { p.classList.toggle('cur', i === ex.page); p.classList.toggle('near', Math.abs(i - ex.page) === 1); });
 }
 function goPage(i, instant) {
   const w = $('#pages');
