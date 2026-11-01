@@ -1227,7 +1227,7 @@ section.block.r-board{background:radial-gradient(62% 86% at 21% 58%,rgba(62,120,
 @media (pointer:coarse){
   .star,.copy-ca{position:relative}
   .star::after,.copy-ca::after{content:"";position:absolute;inset:-9px}
-  .ft-cols a{display:inline-block;padding:7px 0}
+  .ft-cols ul a{padding:7px 0}
 }
 html.lite .top-bg,html.lite .h-strip,html.lite .pill,html.lite .terms,html.lite .tg,html.lite .m-bar>span,html.lite .cw-list,html.lite .cw-mail label,html.lite .cw-mail .btn[disabled]{-webkit-backdrop-filter:none;backdrop-filter:none}
 html.lite .top-bg,html.lite .terms{background:#101831}
@@ -1295,4 +1295,12 @@ html.lite .bar.forge i::after,html.lite .conn.cta::after{animation:none}
   .p-title .line::-webkit-scrollbar,.p-title .p-meta::-webkit-scrollbar{display:none}
   .p-title .line>*,.p-title .p-meta>*{flex:none}
   .p-title p{margin-top:6px;font-size:12.5px}
+}
+@media (max-width:760px){
+  .ft-base{justify-content:center}
+  .ft-pw{flex-wrap:nowrap;justify-content:center;gap:clamp(5px,1.8vw,8px);width:100%}
+  .ft-pw span{font-size:9.5px;letter-spacing:.03em;white-space:nowrap}
+  .ft-pw a{gap:4px;font-size:clamp(10.5px,3.1vw,12.5px);white-space:nowrap}
+  .ft-pw img{height:clamp(10px,3vw,13px)}
+  .ft-pw i{font-size:10px}
 }
