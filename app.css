@@ -1214,3 +1214,6 @@ html:has(dialog.fnd[open]) body *:not(dialog.fnd,dialog.fnd *){animation-play-st
 /* empty tabs: one icon tile above the line */
 .e-ic{display:grid;place-items:center;width:62px;height:62px;margin-bottom:4px;border-radius:4px;color:#dbe7ff;background:linear-gradient(160deg,rgba(120,165,255,.24),rgba(120,165,255,.04) 70%),#121623;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 0 1px rgba(255,255,255,.1),0 14px 34px -12px rgba(80,130,255,.6)}
 .e-ic svg{width:27px;height:27px;stroke-width:1.5}
+/* .p-grid.pre also matches the launch rail's .pre img rule */
+.lk-c .th img{background:none;border-radius:0}
+.m-bar img{background:none;border-radius:0;object-fit:contain}
