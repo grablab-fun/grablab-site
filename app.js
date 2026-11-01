@@ -216,7 +216,7 @@ function activeNav() {
 const comet = c => [[34, .3], [20, .6], [9, 1]].map(([d, o]) => `<rect class="c${d}" pathLength="100" style="stroke:${c};opacity:${o}"/>`).join('');
 const EDGE = `<svg class="m-edge" aria-hidden="true"><rect class="base" pathLength="100"/><g class="glow">${comet('#ffae2c')}</g><g class="glow late">${comet('#9ebfff')}</g><g>${comet('#ffe0a7')}</g><g class="late">${comet('#fff')}</g></svg>`;
 function renderTop() {
-  $('#top').innerHTML = `
+  $('#top').innerHTML = `<i class="top-bg" aria-hidden="true"></i>
     <a class="brand mark" href="/" data-l aria-label="machine.fun home"><i></i></a>
     <nav class="pill" aria-label="Primary"><span class="slide"></span>
       ${NAV.map(n => `<a href="${n[0]}" data-l data-nav="${n[0]}">${I[n[2]]}<span>${n[1]}</span></a>`).join('')}
@@ -1392,7 +1392,7 @@ function viewLaunch() {
   const STEPS = ['Project', 'Proof', 'Token', 'Review'];
   const $v = $('#view');
   $v.innerHTML = `<div class="wrap enter"><div class="l-grid">
-    <section class="panel l-hero grainy"><img src="/assets/art/bench-wide.webp" alt=""><div>
+    <section class="panel l-hero grainy"><img src="/assets/art/bench-navy.webp" alt=""><div>
       <h1 class="display">Put your machine on chain</h1><p>No account needed to start. Four steps, and you sign in only to publish.</p></div></section>
     <section class="panel block grainy" style="margin:0"><div><div class="steps" id="steps"></div><div id="sbody"></div></div></section>
     <aside class="panel grainy l-side"><div class="side-sticky">
@@ -1462,8 +1462,8 @@ function viewLaunch() {
       <div class="two"><div class="f"><label for="f-tick">Ticker</label><input class="input mono" id="f-tick" maxlength="10" value="${esc(d.ticker)}" placeholder="SENSE" autocapitalize="characters"><div class="hint" id="tick-h"></div></div>
       <div class="f"><label for="f-pair">Paired with</label>${tokenPick(d.pair, ['SOL', 'USDC', 'PEAQ', 'CODEC'], 'pair', 'Paired with', 'id="f-pair"')}</div></div>
       ${ignBlock(d.ignition)}${afterBlock(d.pair)}</div>`; dupHint(); ignStart(); }
-    if (step === 4) b.innerHTML = `<div class="form"><div class="flabel">Ready to publish</div>
-      <div class="t-rows t-rev">
+    if (step === 4) b.innerHTML = `<div class="form rev-f"><h3 class="display">Ready to publish</h3>
+      <div class="t-rev">
         ${rv(RV.project, 'Project', esc(d.name || '-'))}${rv(RV.ticker, 'Ticker', d.ticker ? '$' + esc(d.ticker) : '-')}
         ${rv(RV.pair, 'Paired with', tokenIcon(d.pair) + esc(d.pair))}${rv(RV.links, 'Links', d.links.length)}
         ${rv(RV.proofs, 'Proofs', [d.sim, d.d3, d.pcb, d.video].filter(Boolean).length + ' of 4')}${rv(RV.ignition, 'Ignition', d.ignition ? 'On' : 'Off')}
@@ -1707,17 +1707,29 @@ function fitNav() {
   const t = $('#top');
   document.documentElement.style.setProperty('--sb', innerWidth - document.body.clientWidth + 'px');
   if (!t) return;
-  const w = t.offsetWidth, need = [...t.children].reduce((n, e) => n + e.offsetWidth, 0) + 72;
+  const w = t.offsetWidth, need = [...t.children].reduce((n, e) => n + (e.matches('.top-bg') ? 0 : e.offsetWidth), 0) + 72;
   const pill = innerWidth > 1020 ? Math.min(w, need) : w;
-  t.style.setProperty('--dx', (w - pill) / 2 + 'px');
+  navDx = (w - pill) / 2; navW = w;
+  navApply();
+}
+let navDx = 0, navW = 1;
+function navApply() {
+  const t = $('#top'), bg = $('.top-bg', t), br = $('.brand', t), r = $('.right', t), m = $('.brand.mark i', t);
+  if (!bg) return;
+  bg.style.opacity = Math.min(1, navS * 2.4).toFixed(3);
+  bg.style.transform = `scaleX(${(1 - 2 * navDx * navS / navW).toFixed(4)})`;
+  br.style.transform = `translate3d(${(navDx * navS).toFixed(2)}px,0,0)`;
+  r.style.transform = `translate3d(${(-navDx * navS).toFixed(2)}px,0,0)`;
+  if (m) m.style.transform = `scale(${(1 - navS * .16).toFixed(4)})`;
+  t.dataset.np = navS.toFixed(4);
 }
 let navT = 0, navS = 0, navAt = 0, navRaf = 0;
 function navStep(now) {
-  const top = $('#top'), k = 1 - Math.exp(-Math.min(48, Math.max(0, now - navAt)) / 130);
+  const top = $('#top'), k = 1 - Math.exp(-Math.min(48, Math.max(0, now - navAt)) / 70);
   navAt = now;
   navS = reduced ? navT : navS + (navT - navS) * k;
   if (Math.abs(navT - navS) < .002) navS = navT;
-  top.style.setProperty('--np', navS.toFixed(4));
+  navApply();
   top.classList.toggle('stuck', navS > .5);
   navRaf = navS === navT ? 0 : requestAnimationFrame(navStep);
 }
