@@ -625,18 +625,6 @@ td small{display:block;color:var(--mut);font-size:12px}
 .unit{font:500 11px var(--mono);font-style:normal;color:var(--mut)}
 
 /* Change list */
-.ch-hero{margin-top:14px;padding:30px;display:grid;gap:10px}
-.ch-hero h1{font-size:clamp(26px,3.8vw,42px)}
-.ch-hero p{max-width:66ch;color:var(--mut)}
-.ch{display:grid;gap:6px}
-.ch details{border-radius:var(--r-m);background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px var(--edge)}
-.ch summary{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:10px;align-items:center;min-height:54px;padding:8px 13px;cursor:pointer;list-style:none}
-.ch summary::-webkit-details-marker{display:none}
-.ch summary .n{font:500 12px var(--mono);color:var(--mut)}
-.ch summary b{font-size:14px;font-weight:600}
-.ch .body{display:grid;gap:10px;padding:0 13px 13px 55px;font-size:13.5px;color:var(--mut)}
-.ch .body img{width:100%;max-width:640px;border-radius:var(--r-s);box-shadow:inset 0 0 0 1px var(--edge)}
-.ch .body em{font-style:normal;color:var(--text)}
 
 /* Footer */
 .foot{width:min(100%,calc(var(--wrap) + var(--gut)*2));margin:12px auto 0;padding:0 var(--gut) 24px}
@@ -762,7 +750,7 @@ body{font-family:Archivo,sans-serif}
 .toast{background:#1f1f1f}
 .review{background:#171717;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.03em}
 .drawer{background:#131313}
-.r-hero,.l-hero,.ch-hero{background:radial-gradient(120% 130% at 12% 120%,#003677,transparent 62%),#0a0a0e}
+.r-hero,.l-hero{background:radial-gradient(120% 130% at 12% 120%,#003677,transparent 62%),#0a0a0e}
 .l-hero::before{background:linear-gradient(90deg,rgba(6,6,8,.6) 0,rgba(6,6,8,.3) 40%,rgba(6,6,8,0) 60%)}
 
 /* Project */
@@ -942,11 +930,6 @@ body{font-family:Archivo,sans-serif}
 @media (max-width:1040px){.has-terms .review{display:none}}
 .ca.star-inline svg{width:13px;height:13px}
 
-.ch-hero{position:relative;overflow:hidden}
-.ch-hero>*{position:relative;z-index:2}
-.ch-hero .art{position:absolute;right:-30px;top:50%;width:440px;transform:translateY(-50%);z-index:0;opacity:.7;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent);mask-image:radial-gradient(closest-side,#000 62%,transparent)}
-.ch-hero p{max-width:56ch}
-@media (max-width:900px){.ch-hero .art{opacity:.2}}
 @media (min-width:1021px){
   .p-grid{--fit:max(650px,calc(100dvh - 130px));--k:82px}
   .p-grid.pre{--k:-12px}

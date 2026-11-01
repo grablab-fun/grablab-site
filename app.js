@@ -67,34 +67,6 @@ const SAMPLE = {
   ],
 };
 
-const CHANGES = [
-  { g: 'Bugs', t: 'Project page never renders fake defaults', d: 'Live: a fresh load shows Bonding Curve 0.0% and "Too Large For The Curve" on $SENSE, a migrated token. Here the market state ships with the page, and the trade widget has real loading and error states.', l: '/project/zweAAsj6sIj', img: '2-project-stuck-bonding-state', demo: 1 },
-  { g: 'Bugs', t: 'Chart moves between polls', d: 'Live: polling /api/rpc every 15 s. Here the last candle streams. Ticks are simulated in this concept, the real build needs a websocket.', l: '/project/zweAAsj6sIj' },
-  { g: 'Bugs', t: 'One request per project open', d: 'Live: about 10 sequential /api/rpc calls. Here the page opens from a single payload, candles arrive in one extra file, prefetched on hover.', l: '/project/zweAAsj6sIj' },
-  { g: 'Bugs', t: 'One time zone everywhere', d: 'Live: chart in UTC, price text in local 12 h. Here a single UTC / Local switch drives the axis, the crosshair and the price stamp.', l: '/project/zweAAsj6sIj' },
-  { g: 'Bugs', t: 'Explore grid aligned', d: 'Live: cards are 197 or 226 px and flow in columns. Here rows are real and the tag row is always reserved.', l: '/#explore', img: '1-explore-alignment' },
-  { g: 'Bugs', t: 'Launch button answers the cursor', d: 'Live: hover:brightness-125 on a near black button shows nothing. Here the metal edge lights and a sheen crosses it.', l: '/', img: '4-launch-hover' },
-  { g: 'Bugs', t: 'Terms no longer hide the site', d: 'Live: main is visibility:hidden until you tick the box. Here you browse first and accept in a small card.', l: '/' },
-  { g: 'Bugs', t: 'Duplicate tickers flagged', d: 'Live: three $BUG, two $CLANKER. Here cards carry a duplicate flag and Launch warns while you type the ticker.', l: '/launch' },
-  { g: 'Bugs', t: 'Mobile bar stays out of the way', d: 'Live: it covers search and filters and has no active state on project pages. Here the page reserves its space and every route lights its tab.', l: '/' },
-  { g: 'Bugs', t: 'Real error states', d: 'Live: skeleton forever when RPC fails. Here a clear message and a Retry. Try it with Review controls, bottom right.', l: '/project/zweAAsj6sIj', demo: 1 },
-  { g: 'UX', t: 'Launch flow in four steps', d: 'Open without an account, sign in only to publish. Every field says what is expected, and a live preview shows the final card.', l: '/launch' },
-  { g: 'UX', t: 'Add a link in one paste', d: 'A row of icons, and a URL field that detects the platform from the domain.', l: '/launch?step=2' },
-  { g: 'UX', t: 'Floating nav pill', d: 'Live: a flat full width black band on scroll. Here a detached pill with blur and a sliding active state.', l: '/', img: '3-sticky-header' },
-  { g: 'UX', t: 'Hero holds still', d: 'The rotating word has a fixed slot, the dragonfly sits behind, subtitle and buttons share one axis.', l: '/' },
-  { g: 'UX', t: 'Numbers with character', d: 'Archivo expanded with tabular figures for prices and market caps, a mono face for small data.', l: '/#explore' },
-  { g: 'UX', t: 'A footer that works', d: 'Linked CodecFlow, peaq and SimArena logos, full navigation, contact and a risk notice.', l: '/', img: '5-footer' },
-  { g: 'UX', t: 'Foundry grain everywhere', d: 'Grain and a soft metal gradient on the backdrop, panels and cards. No flat surfaces left.', l: '/' },
-  { g: 'UX', t: 'Founders get a face', d: 'Team has its own tab, and a project with no founder shows what is missing and how to add it.', l: '/project/grablab' },
-  { g: 'Product', t: 'Rewards that explain themselves', d: 'Action to points table, leaderboard and your own counter. Numbers are samples.', l: '/rewards', img: '6-rewards' },
-  { g: 'Product', t: 'Pre launch rail', d: 'Separate from permissionless launches. Not an endorsement, just on the list, with Remind me.', l: '/#prelaunch' },
-  { g: 'Product', t: 'Media tabs only when real, badges on cards', d: 'Empty tabs disappear. Sim, 3D and PCB badges separate builders from memes in a second.', l: '/project/grablab', img: '7-empty-tabs' },
-  { g: 'Product', t: 'A public Verify tab', d: 'Mint, pool, Raydium and explorer links in one place. Migration tx and fee escrow are marked where the API must expose them.', l: '/project/zweAAsj6sIj?tab=verify' },
-  { g: 'Product', t: 'Milestones with proof', d: 'The pitch promises verifiable milestones. This tab makes them the core of a project page.', l: '/project/grablab?tab=milestones' },
-  { g: 'Product', t: 'Search that finds things', d: 'Opens its own tab with every project, pre launch included. Name, ticker, contract, tags and description, with no network call. Press / anywhere.', l: '/#search' },
-  { g: 'Product', t: 'Feed instead of pagination', d: 'Explore loads as you scroll.', l: '/#explore' },
-];
-
 let P = [], SNAP = 0, byRef = new Map(), dupCount = {};
 let wallet = store.get('wallet', null), watch = new Set(store.get('watch', [])), reminds = new Set(store.get('remind', []));
 let net = 'ok', tz = store.get('tz', 'UTC');
@@ -235,7 +207,7 @@ function disconnect() {
 }
 
 /* shell */
-const NAV = [['/', 'Explore', 'compass'], ['/rewards', 'Rewards', 'gift'], ['/launch', 'Launch', 'rocket'], ['/changes', 'Changes', 'list']];
+const NAV = [['/', 'Explore', 'compass'], ['/rewards', 'Rewards', 'gift'], ['/launch', 'Launch', 'rocket']];
 function activeNav() {
   const p = location.pathname;
   if (p === '/' || p.startsWith('/project')) return '/';
@@ -302,8 +274,7 @@ function renderChrome() {
     const draw = () => {
       e.innerHTML = `<div class="eyebrow">Simulate the network</div>
       <p>Shows how the page behaves when RPC is slow or down.</p>
-      <div class="seg sm" style="justify-self:start">${[['ok', 'Normal'], ['slow', 'Slow'], ['down', 'Down']].map(n => `<button data-n="${n[0]}" class="${net === n[0] ? 'on' : ''}">${n[1]}</button>`).join('')}</div>
-      <a class="btn sm" href="/changes" data-l>All 25 changes</a>`;
+      <div class="seg sm" style="justify-self:start">${[['ok', 'Normal'], ['slow', 'Slow'], ['down', 'Down']].map(n => `<button data-n="${n[0]}" class="${net === n[0] ? 'on' : ''}">${n[1]}</button>`).join('')}</div>`;
       $$('[data-n]', e).forEach(b => b.onclick = () => { net = b.dataset.n; draw(); route(true); });
     };
     draw();
@@ -1480,20 +1451,6 @@ function viewRewards() {
   onLeave(() => { v.removeEventListener('click', c); document.removeEventListener('wallet', draw); });
 }
 
-/* changes */
-function viewChanges() {
-  const groups = ['Bugs', 'UX', 'Product'], labels = { Bugs: 'Bugs', UX: 'UX and design', Product: 'Product ideas' };
-  let n = 0;
-  $('#view').innerHTML = `<div class="wrap enter">
-    <section class="panel ch-hero grainy"><img class="art" src="/assets/art/fly-macro.webp" alt=""><div class="kick">By Rony, for the machine.fun team</div>
-      <h1 class="display">25 changes, all clickable</h1>
-      <p>A working concept built on a public snapshot of your data from 1 Nov 2026. We use the product daily, this is how we would like it to feel. Everything runs without a wallet, and nothing is sent on chain.</p></section>
-    ${groups.map(g => `<section class="panel block grainy"><div><div class="head"><h2 class="display">${labels[g]}</h2></div><div class="ch">
-      ${CHANGES.filter(c => c.g === g).map(c => { n++; return `<details><summary><span class="n">${pad(n)}</span><b>${esc(c.t)}</b><a class="btn sm" href="${c.l}" data-l>See it</a></summary>
-        <div class="body"><span>${esc(c.d)}</span>${c.img ? `<div><div class="eyebrow" style="margin-bottom:6px">Live site, 29 Oct</div><img src="/assets/before/${c.img}.webp" alt="Live site before" loading="lazy"></div>` : ''}</div></details>`; }).join('')}
-    </div></div></section>`).join('')}</div>`;
-}
-
 /* router */
 function saveY() {
   try { history.replaceState({ ...(history.state || {}), y: scrollY }, ''); } catch {}
@@ -1508,7 +1465,6 @@ function render() {
   else if (m) renderProject(decodeURIComponent(m[1]));
   else if (p === '/launch') viewLaunch();
   else if (p === '/rewards') viewRewards();
-  else if (p === '/changes') viewChanges();
   else { $('#view').innerHTML = `<div class="wrap enter"><section class="panel block"><div class="empty"><b>Nothing here</b><a class="btn sm" href="/" data-l>Back to Explore</a></div></section></div>`; }
   markNav();
   requestAnimationFrame(reveal);
