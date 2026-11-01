@@ -648,7 +648,7 @@ html{background:#070d20}
 body{font-family:Archivo,sans-serif}
 ::selection{background:var(--brand);color:var(--ink)}
 .sky{background:linear-gradient(180deg,#0c1b3e,#0a1533 46%,#070d20)}
-.panel{background:rgba(12,18,38,.9);border:1px solid var(--edge);box-shadow:none}
+.panel{background:rgba(9,14,30,.92);border:1px solid var(--edge);box-shadow:none}
 .display{font-weight:900;font-stretch:125%;line-height:1.08;letter-spacing:-.01em;text-transform:uppercase;background:var(--chrome) 0 0/100% 1lh;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(255,70,70,.3)) drop-shadow(0 2px 5px rgba(0,0,0,.45))}
 .rot{color:inherit}
 .rot b{background:linear-gradient(90deg,#ffae2c,#f5f5f5);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
@@ -706,7 +706,7 @@ body{font-family:Archivo,sans-serif}
 .toast{background:#182240}
 .review{background:#131c34;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.03em}
 .drawer{background:#0e1426}
-.r-hero,.l-hero{background:radial-gradient(120% 130% at 12% 120%,#003677,transparent 62%),#080e1f}
+.r-hero,.l-hero{background:radial-gradient(120% 130% at 12% 120%,#00234f,transparent 62%),#070c1b}
 .l-hero::before{background:linear-gradient(90deg,rgba(7,13,32,.62) 0,rgba(7,13,32,.28) 38%,rgba(7,13,32,0) 60%)}
 
 /* Project */
