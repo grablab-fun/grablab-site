@@ -430,6 +430,7 @@ function paintLive(e, p, v, d, was) {
   e.classList.toggle('forge', heat(v) === 'forge');
 }
 function tickLive() {
+  if (fnd.el?.open) return;
   if (document.hidden || location.pathname !== '/' || fnd.el?.open) return;
   const page = $$('.page')[ex.page];
   if (!page) return;
@@ -791,19 +792,19 @@ function drawSearch() {
   $$('[data-fnd]').forEach(b => { b.classList.toggle('on', b.dataset.fnd === fnd.tab); $('i', b).textContent = count[b.dataset.fnd]; });
   fnd.rows = hits.map(a => a[0]).filter(p => fnd.tab === 'all' || stageOf(p) === fnd.tab);
   fnd.i = 0;
-  box.innerHTML = fnd.rows.length ? fnd.rows.map((p, i) => `<a class="fnd-row" role="option" id="fnd-${i}" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}">
+  box.innerHTML = fnd.rows.length ? '<i class="fnd-hl"></i>' + fnd.rows.map((p, i) => `<a class="fnd-row" role="option" id="fnd-${i}" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}">
     <img src="${logoSrc(p)}" alt="" loading="lazy" width="40" height="40">
     <div class="n"><b>${hl(p.name, q)}</b><span>${p.ticker ? '$' + hl(p.ticker, q) + ' ' : ''}${p.sample ? 'Full sample' : stageTxt[stageOf(p)]}</span></div>
-    <span class="num">${p.mint ? usd(p.mc) : 'Date TBD'}</span>
-    <span class="chg ${p.change ? (isUp(p) ? 'up' : 'down') : 'mut2'}">${p.change || ''}</span></a>`).join('')
+    <span class="num"><small>${p.mint ? 'Mcap' : 'Launch'}</small><b>${p.mint ? usd(p.mc) : 'Date TBD'}</b></span>
+    <span class="chg ${p.change ? (isUp(p) ? 'up' : 'down') : ''}">${p.change ? '<svg viewBox="0 0 8 8"><path d="M4 1 7.5 7h-7z"/></svg>' + esc(p.change.replace(/^[+-]/, '')) : ''}</span></a>`).join('')
     : `<div class="empty"><b>Nothing matches "${esc($('#fq').value)}"</b><span>Search covers names, tickers, contracts, tags and descriptions.</span></div>`;
   box.scrollTop = 0;
   markSearch();
 }
 function markSearch(scroll) {
-  $$('.fnd-row.on', fnd.el).forEach(r => { r.classList.remove('on'); r.removeAttribute('aria-selected'); });
-  const r = $('#fnd-' + fnd.i);
-  if (r) { r.classList.add('on'); r.setAttribute('aria-selected', 'true'); if (scroll) r.scrollIntoView({ block: 'nearest' }); }
+  $('.fnd-row[aria-selected]', fnd.el)?.removeAttribute('aria-selected');
+  const r = $('#fnd-' + fnd.i), h = $('.fnd-hl', fnd.el);
+  if (r) { r.setAttribute('aria-selected', 'true'); h.style.transform = `translateY(${r.offsetTop}px)`; if (scroll) r.scrollIntoView({ block: 'nearest' }); }
   $('#fq').setAttribute('aria-activedescendant', r ? r.id : '');
 }
 function buildSearch() {
