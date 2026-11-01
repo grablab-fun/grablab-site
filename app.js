@@ -233,10 +233,32 @@ function renderTop() {
       <button class="btn ico" data-search aria-label="Search projects">${I.search}</button>
       <a class="btn metal" href="/launch" data-l aria-label="Launch Project">${EDGE}<span class="m-in">${I.rocket}<em class="lbl">Launch Project</em></span></a>
       <button class="btn conn ${wallet ? 'on' : 'cta'}" id="conn">${wallet ? `<span class="av"></span><span>${esc(wallet.addr)}</span>${I.chev}` : `<span>${I.wallet}Connect</span>`}</button>
+      <button class="btn ico burger" id="burger" aria-label="Open menu" aria-haspopup="dialog"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 5h14M2 9h14M2 13h14"/></svg></button>
     </div>`;
   $('#conn').onclick = () => wallet ? toggleAccount() : connect();
-  $('#tabbar').innerHTML = NAV.map(n => `<a href="${n[0]}" data-l data-nav="${n[0]}">${I[n[2]]}${n[1]}</a>`).join('');
+  $('#burger').onclick = openMenu;
   markNav();
+}
+// Phones get one menu: pages, search, launch and wallet all live here
+function openMenu() {
+  let m = $('#mnav');
+  if (!m) {
+    m = document.createElement('dialog');
+    m.className = 'mnav'; m.id = 'mnav'; m.setAttribute('aria-label', 'Menu');
+    document.body.append(m);
+    m.addEventListener('click', e => {
+      if (e.target === m || e.target.closest('[data-mx]')) return m.close();
+      if (!e.target.closest('a,button')) return;
+      m.close();
+      if (e.target.closest('[data-mconn]')) wallet ? toggleAccount() : connect();
+    });
+    addEventListener('popstate', () => m.close());
+  }
+  const a = activeNav();
+  m.innerHTML = `<div class="mn-h"><a class="brand mark" href="/" data-l aria-label="machine.fun home"><i></i></a><button class="btn ico" data-mx autofocus aria-label="Close menu">${I.x}</button></div>
+    <nav class="mn-l" aria-label="Primary">${NAV.map(n => `<a href="${n[0]}" data-l class="${n[0] === a ? 'on' : ''}"${n[0] === a ? ' aria-current="page"' : ''}>${I[n[2]]}${n[1]}</a>`).join('')}</nav>
+    <div class="mn-a"><button class="btn" data-search>${I.search}Search projects</button><button class="btn primary" data-mconn>${wallet ? esc(wallet.addr) : `${I.wallet}Connect`}</button></div>`;
+  m.showModal();
 }
 function markNav() {
   fitNav();
