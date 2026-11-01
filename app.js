@@ -1008,8 +1008,16 @@ addEventListener('scroll', () => $('#top')?.classList.toggle('stuck', scrollY > 
 addEventListener('resize', markNav, { passive: true });
 history.scrollRestoration = 'manual';
 
-(async function boot() {
-  const r = await fetch('/data/projects.json', { credentials: 'omit' }).then(x => x.json());
+async function boot() {
+  renderTop();
+  let r;
+  try {
+    r = await fetch('/data/projects.json', { credentials: 'omit' }).then(x => { if (!x.ok) throw 0; return x.json(); });
+  } catch {
+    $('#view').innerHTML = `<div class="wrap enter"><section class="panel block"><div class="t-err">${I.alert}<b>Could not load projects</b><span class="t-note">Check your connection and try again.</span><button class="btn sm" id="reboot">Retry</button></div></section></div>`;
+    $('#reboot').onclick = boot;
+    return;
+  }
   P = r.items; SNAP = +new Date(r.at);
   P.forEach(p => { if (!p.mint) p.pre = true; byRef.set(p.ref, p); if (p.ticker) { const k = p.ticker.toUpperCase(); dupCount[k] = (dupCount[k] || 0) + 1; } });
   byRef.set('grablab', SAMPLE);
@@ -1017,4 +1025,5 @@ history.scrollRestoration = 'manual';
   route(true);
   scrollAfter();
   document.fonts?.ready.then(markNav);
-})();
+}
+boot();
