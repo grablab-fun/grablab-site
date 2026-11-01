@@ -1225,8 +1225,8 @@ section.block.r-board{background:radial-gradient(62% 86% at 21% 58%,rgba(62,120,
 @media (max-width:820px){section.block.r-board{background:radial-gradient(90% 34% at 50% 19%,rgba(62,120,255,.34),rgba(30,70,190,.14) 56%,transparent 80%),rgba(16,29,70,.93)}}
 @media (max-width:560px){.ms-sum{grid-template-columns:minmax(0,1fr)}.ms-tx b{white-space:normal}}
 @media (pointer:coarse){
-  .star,.copy-ca{position:relative}
-  .star::after,.copy-ca::after{content:"";position:absolute;inset:-9px}
+  .copy-ca{position:relative}
+  .card .star::after,.copy-ca::after{content:"";position:absolute;inset:-9px}
   .ft-cols ul a{padding:7px 0}
 }
 html.lite .top-bg,html.lite .h-strip,html.lite .pill,html.lite .terms,html.lite .tg,html.lite .m-bar>span,html.lite .cw-list,html.lite .cw-mail label,html.lite .cw-mail .btn[disabled]{-webkit-backdrop-filter:none;backdrop-filter:none}
@@ -1279,9 +1279,12 @@ html.lite .bar.forge i::after,html.lite .conn.cta::after{animation:none}
 @media (max-width:760px){
   .right>*{display:none}
   .right .burger{display:grid;place-items:center;width:44px;height:44px;padding:0}
-  .h-in{padding-top:70px;gap:10px}
+  .h-in{padding-top:128px;gap:10px}
   .hero .copy{gap:7px}
-  .hero h1{font-size:clamp(21px,6vw,27px)}
+  .hero h1{font-size:clamp(14px,5.1vw,30px);white-space:nowrap;filter:none}
+  .hero .chr{background:none;-webkit-text-fill-color:#fff;color:#fff}
+  .h-sky .fly{left:auto;right:8px;top:58px;width:min(42vw,250px);height:auto;opacity:1}
+  .h-sky::after{background:linear-gradient(180deg,rgba(6,14,44,.1) 22%,rgba(6,14,44,.62) 42%,rgba(6,14,44,.78))}
   .hero .sub{font-size:13px;line-height:1.4}
   .hero p.kick{font-size:12px}
   .h-strip>div{padding:6px 10px}
