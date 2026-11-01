@@ -784,6 +784,13 @@ const hl = (t, q) => {
   const s = String(t || ''), i = q ? s.toLowerCase().indexOf(q) : -1;
   return i < 0 ? esc(s) : esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
 };
+function miniSpark(p) {
+  const v = p.spark || [];
+  if (v.length < 2) return '<i></i>';
+  const lo = Math.min(...v), hi = Math.max(...v), r = hi - lo || 1;
+  const d = v.map((y, i) => `${i ? 'L' : 'M'}${(i / (v.length - 1) * 84).toFixed(1)} ${(27 - (y - lo) / r * 24).toFixed(1)}`).join('');
+  return `<svg class="sp ${isUp(p) ? 'up' : 'down'}" viewBox="0 0 84 30" aria-hidden="true"><path d="${d}"/></svg>`;
+}
 function drawSearch() {
   const q = $('#fq').value.trim().toLowerCase(), box = $('#fnd-list');
   const hits = searchPool().map(p => [p, q ? searchScore(p, q) : 0]).filter(a => a[1] >= 0).sort((a, b) => a[1] - b[1] || (b[0].mc || 0) - (a[0].mc || 0));
@@ -795,8 +802,9 @@ function drawSearch() {
   box.innerHTML = fnd.rows.length ? '<i class="fnd-hl"></i>' + fnd.rows.map((p, i) => `<a class="fnd-row" role="option" id="fnd-${i}" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}">
     <img src="${logoSrc(p)}" alt="" loading="lazy" width="40" height="40">
     <div class="n"><b>${hl(p.name, q)}</b><span>${p.ticker ? '$' + hl(p.ticker, q) + ' ' : ''}${p.sample ? 'Full sample' : stageTxt[stageOf(p)]}</span></div>
+    ${miniSpark(p)}
     <span class="num"><small>${p.mint ? 'Mcap' : 'Launch'}</small><b>${p.mint ? usd(p.mc) : 'Date TBD'}</b></span>
-    <span class="chg ${p.change ? (isUp(p) ? 'up' : 'down') : ''}">${p.change ? '<svg viewBox="0 0 8 8"><path d="M4 1 7.5 7h-7z"/></svg>' + esc(p.change.replace(/^[+-]/, '')) : ''}</span></a>`).join('')
+    <span class="num chg"><small>${p.mint ? '24h' : ''}</small><b class="${p.change ? (isUp(p) ? 'up' : 'down') : 'flat'}">${p.mint ? esc(p.change || '0.0%') : ''}</b></span></a>`).join('')
     : `<div class="empty"><b>Nothing matches "${esc($('#fq').value)}"</b><span>Search covers names, tickers, contracts, tags and descriptions.</span></div>`;
   box.scrollTop = 0;
   markSearch();
@@ -1620,15 +1628,15 @@ const wiggle = el => { if (el && !reduced) el.animate([{ rotate: '0deg', scale: 
 function fitNav() {
   const t = $('#top');
   if (!t) return;
-  const w = t.offsetWidth, need = [...t.children].reduce((n, e) => n + e.offsetWidth, 0) + 60;
-  const pill = innerWidth > 1020 ? Math.min(w, Math.max(need, 920)) : w;
+  const w = t.offsetWidth, need = [...t.children].reduce((n, e) => n + e.offsetWidth, 0) + 72;
+  const pill = innerWidth > 1020 ? Math.min(w, need) : w;
   t.style.setProperty('--dx', (w - pill) / 2 + 'px');
 }
-let navT = 0, navS = -1, navAt = 0, navRaf = 0;
+let navT = 0, navS = 0, navAt = 0, navRaf = 0;
 function navStep(now) {
   const top = $('#top'), k = 1 - Math.exp(-Math.min(48, now - navAt) / 130);
   navAt = now;
-  navS = navS < 0 || reduced ? navT : navS + (navT - navS) * k;
+  navS = reduced ? navT : navS + (navT - navS) * k;
   if (Math.abs(navT - navS) < .002) navS = navT;
   top.style.setProperty('--np', navS.toFixed(4));
   top.classList.toggle('stuck', navS > .5);
@@ -1640,6 +1648,7 @@ addEventListener('scroll', () => {
   if (!navRaf) { navAt = performance.now(); navRaf = requestAnimationFrame(navStep); }
 }, { passive: true });
 addEventListener('resize', fitNav, { passive: true });
+document.fonts?.addEventListener('loadingdone', fitNav);
 addEventListener('click', e => {
   const o = e.target.closest('[data-pick-open]');
   if (o) { e.preventDefault(); o.parentElement.classList.toggle('open'); }
