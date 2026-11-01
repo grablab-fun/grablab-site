@@ -153,7 +153,8 @@ function toggleWatch(ref) {
   watch.has(ref) ? watch.delete(ref) : watch.add(ref);
   store.set('watch', [...watch]);
   $$(`.star[data-star="${ref}"]`).forEach(b => b.classList.toggle('on', watch.has(ref)));
-  renderWatch();
+  const chip = !watch.has(ref) && $(`.chip-w[data-live="${ref}"]`);
+  if (chip) { chip.classList.add('out'); setTimeout(renderWatch, 260); } else renderWatch();
 }
 const WALLETS = [['Phantom', '#ab9ff2', 'phantom.svg'], ['Solflare', '#fc7227', 'solflare.svg'], ['Backpack', '#e33e3f', 'backpack.png'], ['Email or social', '#8a8a94']];
 const walletTile = w => `<span class="cw-tile" style="--c:${w[1]}">${w[2] ? `<img src="/assets/wallets/${w[2]}" alt="">` : I.mail}</span>`;
@@ -265,6 +266,7 @@ function renderFoot() {
       </div></div>
   </div></div>`;
 }
+const earnLogos = { 'machine.fun': '<i class="mk"></i>', 'FOMO or PUMP': '<img src="/assets/art/fomo.png" alt=""><img src="/assets/art/pump.png" alt="">' };
 function renderChrome() {
   const lay = $('#layer');
   lay.innerHTML = `<button class="review" id="rv">${I.sliders}Review controls</button>`;
@@ -348,40 +350,81 @@ function seedForge() {
   const bond = tokens().filter(p => !p.mig).sort((a, b) => (b.mc || 0) - (a.mc || 0));
   [[0, .955], [1, .9], [3, .93], [4, .76], [6, .82]].forEach(([i, v]) => { if (bond[i]) liveOf(bond[i]).prog = v; });
 }
-function paintLive(e, p, v, d) {
-  const set = (k, t) => { const x = $(`[data-f=${k}]`, e); if (x) x.textContent = t; };
-  set('mc', usd(v.mc)); set('vol', usd(v.vol)); set('stage', stageLabel(v));
+// Numbers glide to their new value instead of jumping
+const tweens = new Map();
+let tweenRaf = 0;
+function tween(n, from, to, fmt) {
+  if (reduced) { n.textContent = fmt(to); return; }
+  const s = tweens.get(n), start = s ? s.v : from;
+  tweens.set(n, { a: start, b: to, v: start, t: performance.now(), fmt });
+  tweenRaf ||= requestAnimationFrame(stepTweens);
+}
+function stepTweens(now) {
+  tweenRaf = 0;
+  tweens.forEach((s, n) => {
+    const k = Math.min(1, Math.max(0, (now - s.t) / 900));
+    s.v = s.a + (s.b - s.a) * (1 - (1 - k) ** 3);
+    const t = s.fmt(s.v);
+    if (n.textContent !== t) n.textContent = t;
+    if (k === 1) tweens.delete(n);
+  });
+  if (tweens.size) tweenRaf = requestAnimationFrame(stepTweens);
+}
+// Same nodes, new geometry, so the line morphs and hover state survives
+function paintSpark(sp, p, v) {
+  const t = document.createElement('template');
+  t.innerHTML = spark({ ...p, ...v });
+  const next = t.content.firstElementChild, a = $$('path', sp), b = $$('path', next);
+  if (a.length !== b.length || a.length < 2) { sp.replaceChildren(...next.childNodes); return; }
+  a.forEach((x, i) => { x.setAttribute('d', b[i].getAttribute('d')); if (i) x.setAttribute('stroke', b[i].getAttribute('stroke')); });
+  $$('stop', sp).forEach((x, i) => x.setAttribute('stop-color', $$('stop', next)[i].getAttribute('stop-color')));
+  $('i', sp).style.cssText = $('i', next).style.cssText;
+}
+function paintLive(e, p, v, d, was) {
+  const num = (k, to, from, fmt) => { const x = $(`[data-f=${k}]`, e); if (x) tween(x, from, to, fmt); };
+  num('mc', v.mc, was.mc, usd); num('vol', v.vol, was.vol, usd);
+  const stage = $('[data-f=stage]', e);
+  if (stage) stage.textContent = stageLabel(v);
   const chg = $('[data-f=chg]', e);
-  if (chg) { chg.textContent = v.change; chg.classList.remove('mut2'); chg.classList.toggle('up', !v.change.startsWith('-')); chg.classList.toggle('down', v.change.startsWith('-')); }
+  if (chg) { num('chg', (v.mc / v.base - 1) * 100, (was.mc / v.base - 1) * 100, fmtChange); chg.classList.remove('mut2'); chg.classList.toggle('up', !v.change.startsWith('-')); chg.classList.toggle('down', v.change.startsWith('-')); }
   const n = $('[data-f=mc]', e);
-  n.classList.remove('tk-up', 'tk-dn'); void n.offsetWidth; n.classList.add(d < 0 ? 'tk-dn' : 'tk-up');
+  if (!reduced) n.animate([{ color: d < 0 ? '#ff8a7a' : '#d8ff7a', offset: 0 }], { duration: 1100, easing: 'cubic-bezier(.16,1,.3,1)' });
   const bar = $('.bar', e);
   if (bar) { bar.className = `bar ${v.mig ? 'done' : heat(v)}`; $('i', bar).style.width = Math.max(v.mig ? 100 : v.prog * 100, .6) + '%'; }
   const sp = $('.sp', e);
-  if (sp) { const t = document.createElement('template'); t.innerHTML = spark({ ...p, ...v }); sp.replaceChildren(...t.content.firstElementChild.childNodes); }
+  if (sp) paintSpark(sp, p, v);
   e.classList.toggle('forge', heat(v) === 'forge');
 }
 function tickLive() {
-  if (document.hidden || location.pathname !== '/') return;
+  if (document.hidden || location.pathname !== '/' || fnd.el?.open) return;
   const page = $$('.page')[ex.page];
   if (!page) return;
-  [...$$('[data-live]', page), ...$$('#hlive [data-live]')].forEach(e => {
-    if (Math.random() > .55) return;
-    const p = byRef.get(e.dataset.live), v = liveOf(p), hot = !!heat(v);
-    const d = (Math.random() - (hot ? .3 : .5)) * (hot ? .018 : .03);
-    v.mc *= 1 + d;
-    v.vol += v.mc * Math.abs(d) * .6;
-    v.spark = [...v.spark.slice(-39), v.spark[v.spark.length - 1] * (1 + d)];
-    v.change = fmtChange((v.mc / v.base - 1) * 100);
-    if (!v.mig) v.prog = Math.min(1, v.prog + (hot ? Math.random() * .006 : Math.max(0, d) * .04));
-    if (!v.mig && v.prog >= 1) {
-      v.mig = true;
-      e.classList.add('bonded');
-      setTimeout(() => e.classList.remove('bonded'), 1200);
-      const next = tokens().find(q => !liveOf(q).mig && liveOf(q).prog < .7);
-      if (next) liveOf(next).prog = .84;
-    }
-    paintLive(e, p, v, d);
+  const groups = new Map();
+  [...$$('[data-live]', page), ...$$('#hlive [data-live]'), ...$$('#watch [data-live]')].forEach(e => {
+    const r = e.dataset.live;
+    groups.has(r) ? groups.get(r).push(e) : groups.set(r, [e]);
+  });
+  groups.forEach((els, ref) => {
+    if (Math.random() > .45) return;
+    setTimeout(() => {
+      const p = byRef.get(ref), v = liveOf(p), hot = !!heat(v), was = { mc: v.mc, vol: v.vol };
+      const d = (Math.random() - (hot ? .3 : .5)) * (hot ? .018 : .03);
+      v.mc *= 1 + d;
+      v.vol += v.mc * Math.abs(d) * .6;
+      // The tip moves every tick, the line only rolls forward now and then
+      v.n = (v.n || 0) + 1;
+      const tip = v.spark[v.spark.length - 1] * (1 + d);
+      v.spark = v.n % 6 ? [...v.spark.slice(0, -1), tip] : [...v.spark.slice(-39), tip];
+      v.change = fmtChange((v.mc / v.base - 1) * 100);
+      if (!v.mig) v.prog = Math.min(1, v.prog + (hot ? Math.random() * .006 : Math.max(0, d) * .04));
+      if (!v.mig && v.prog >= 1) {
+        v.mig = true;
+        els.forEach(e => { e.classList.add('bonded'); setTimeout(() => e.classList.remove('bonded'), 1200); });
+        const next = tokens().find(q => !liveOf(q).mig && liveOf(q).prog < .7);
+        if (next) liveOf(next).prog = .84;
+      }
+      els.forEach(e => paintLive(e, p, v, d, was));
+    }, Math.random() * 800);
   });
 }
 function card(p, opts = {}) {
@@ -430,7 +473,7 @@ function exploreList() {
   return l.sort(s);
 }
 // Four rows a page: the column count comes from the same breakpoints as .grid
-const perPage = () => ex.view === 'list' ? 10 : 4 * +getComputedStyle(document.documentElement).getPropertyValue('--cols');
+const perPage = () => ex.view === 'list' ? 10 : 3 * +getComputedStyle(document.documentElement).getPropertyValue('--cols');
 function drawGrid() {
   const list = exploreList(), box = gridBox;
   ex.size = perPage();
@@ -480,7 +523,12 @@ function renderWatch() {
   const w = $('#watch');
   if (!w) return;
   const items = [...watch].map(r => byRef.get(r)).filter(Boolean);
-  w.innerHTML = I.star + (items.length ? items.map(p => `<a class="chip-w" href="/project/${esc(p.ref)}" data-l><img src="${logoSrc(p)}" alt="">${esc(p.name)}</a>`).join('') : '<span>Nothing on your watchlist. Star a project to follow it.</span>');
+  const left = w.scrollLeft;
+  w.innerHTML = I.star + (items.length ? items.map(p => {
+    const v = liveOf(p), up = !v.change.startsWith('-');
+    return `<div class="chip-w" data-live="${esc(p.ref)}"><a href="/project/${esc(p.ref)}" data-l><img src="${logoSrc(p)}" alt=""><b>${esc(p.name)}</b><span class="m" data-f="mc">${usd(v.mc)}</span><span class="${v.change ? (up ? 'up' : 'down') : ''}" data-f="chg">${v.change}</span></a><button class="star on" data-star="${esc(p.ref)}" aria-label="Remove from watchlist">${I.star}</button></div>`;
+  }).join('') : '<span>Nothing on your watchlist. Star a project to follow it.</span>');
+  w.scrollLeft = left;
 }
 function preRail() {
   const seen = new Set(), pick = /NeuroTech|Making Robotics|Autonomous Web3|fullfilling/i;
@@ -532,7 +580,6 @@ function preCard(p) {
     <p>${esc(p.desc)}</p>
     <div class="ft"><span class="mono mut2" style="font-size:11.5px">Date TBD</span><button class="btn sm" data-remind="${esc(p.ref)}">${I.bell}${on ? 'Reminder set' : 'Remind me'}</button></div></a>`;
 }
-const FD = 'https://foundry.machine.fun/_astro/';
 const hotList = () => tokens().filter(p => !liveOf(p).mig).sort((a, b) => liveOf(b).prog - liveOf(a).prog).slice(0, 5);
 function buildHome() {
   const t = tokens(), allTags = {};
@@ -546,12 +593,7 @@ function buildHome() {
   el.innerHTML = `
   <section class="hero">
     <div class="h-sky" aria-hidden="true">
-      <i class="g1"></i><i class="g2"></i>
-      <img class="cl c1" src="${FD}cloud-bed-2.QrNSmXu9_ZHFR6E.webp" alt="">
-      <img class="cl c2" src="${FD}cloud-bed-1.D2Jw04k9_23PHSQ.webp" alt="">
-      <img class="cl c3" src="${FD}cloud-bed-2.QrNSmXu9_ZHFR6E.webp" alt="">
-      <img class="mt" src="${FD}snow-mountain.kbiKW45J_ZXRQUl.webp" alt="">
-      <img class="rock" src="${FD}astronaut-on-rock.Drw44E2q_bFBKt.webp" alt="">
+      <img class="plate" src="/assets/art/sky-hero.webp" alt="" fetchpriority="high" decoding="async">
       <img class="fly" src="/assets/art/fly-cut.webp" alt="" fetchpriority="high" decoding="async">
       <i class="g3"></i><i class="h-grain"></i>
     </div>
@@ -700,7 +742,7 @@ function buildSearch() {
   const el = fnd.el = document.createElement('dialog');
   el.className = 'fnd';
   el.setAttribute('aria-label', 'Search projects');
-  el.innerHTML = `<div class="fnd-box panel grainy">
+  el.innerHTML = `<div class="fnd-box panel">
     <div class="fnd-bar"><label class="search">${I.search}<span class="sr">Search projects</span><input id="fq" type="search" role="combobox" aria-expanded="true" aria-controls="fnd-list" autocomplete="off" placeholder="Search name, ticker, contract or tag"></label><button class="fnd-x" id="fnd-x" aria-label="Close search">${I.x}</button></div>
     <div class="fnd-tabs"><div class="seg sm">${[['all', 'All'], ['bond', 'Bonding'], ['mig', 'Migrated'], ['pre', 'Pre launch']].map(t => `<button data-fnd="${t[0]}">${t[1]} <i></i></button>`).join('')}</div></div>
     <div class="fnd-list" id="fnd-list" role="listbox"></div>
@@ -1335,21 +1377,21 @@ function viewRewards() {
       <h1 class="display">Every trade is already counted</h1>
       <p class="mut">Points track your trading and holding from your wallet, on FOMO and PUMP too. Projects can add their own rewards on top.</p>
       ${wallet ? `<div class="pts"><span class="num">${int(me)}</span><span class="mut">points, rank #1,204</span></div>` : '<div><button class="btn primary" data-conn>Connect to see your points</button></div>'}
-    </div><img src="/assets/art/medal.webp" alt="" decoding="async"></section>
+    </div><img src="/assets/art/medal-cut.webp" alt="" decoding="async"></section>
     <section class="panel block grainy"><div>
       <div class="head"><h2 class="display">How you earn</h2><span class="note">Sample numbers</span></div>
       <div class="art-grid">
         ${[['earn-trade', 'Trade', 'Any project, buy or sell. FOMO and PUMP count on the same wallet.', [['machine.fun', '10 per $100'], ['FOMO or PUMP', '5 per $100']]],
           ['earn-hold', 'Hold and back', 'Counted daily on your balance. Buy before a project migrates to double it.', [['Holding', '2 per $100 a day'], ['Bonding', 'x2 multiplier']]],
-          ['earn-vault', 'Project rewards', 'Founders can add their own rewards on top of the season.', [['Set by each founder', 'Varies']]]].map(a => `<article class="art-c"><img src="/assets/art/${a[0]}.webp" alt="" loading="lazy" decoding="async"><div><h3>${a[1]}</h3><p>${a[2]}</p><dl>${a[3].map(r => `<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl></div></article>`).join('')}
+          ['earn-vault', 'Project rewards', 'Founders can add their own rewards on top of the season.', [['Set by each founder', 'Varies']]]].map(a => `<article class="art-c"><img src="/assets/art/${a[0]}-cut.webp" alt="" loading="lazy" decoding="async"><div><h3>${a[1]}</h3><p>${a[2]}</p><dl>${a[3].map(r => `<div><dt>${earnLogos[r[0]] || ''}${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl></div></article>`).join('')}
       </div></div>
     </section>
-    <section class="panel block grainy r-board"><img src="/assets/art/podium.webp" alt="" decoding="async"><div>
+    <section class="panel block grainy r-board"><img src="/assets/art/podium-cut.webp" alt="" decoding="async"><div>
       <div class="head"><h2 class="display">Leaderboard</h2><span class="note">Season one, sample wallets</span></div>
       <table class="lb"><thead><tr><th>Rank</th><th>Wallet</th><th>Points</th></tr></thead><tbody>${list.map((r, i) => `<tr class="${r[0] === 'You' ? 'me' : ''}"><td>${r[0] === 'You' ? '1,204' : i + 1}</td><td class="mono"><span class="who">${avatar(r[0])}${esc(r[0])}</span></td><td>${int(r[1])} <em class="unit">pts</em></td></tr>`).join('')}</tbody></table></div>
     </section>
     <section class="panel block grainy"><div class="art-grid slim">
-      ${[['medal', 'What you get', 'Points decide your share when a season closes.'], ['hourglass', 'When', 'Your counter updates after every trade.<br>Seasons close on a date shown here.'], ['loupe', 'How to check', 'Every point links to the trade that earned it.']].map(a => `<article class="art-c"><img src="/assets/art/${a[0]}.webp" alt="" decoding="async"><div><h3>${a[1]}</h3><p>${a[2]}</p></div></article>`).join('')}
+      ${[['medal', 'What you get', 'Points decide your share when a season closes.'], ['hourglass', 'When', 'Your counter updates after every trade.<br>Seasons close on a date shown here.'], ['loupe', 'How to check', 'Every point links to the trade that earned it.']].map(a => `<article class="art-c"><img src="/assets/art/${a[0]}-cut.webp" alt="" decoding="async"><div><h3>${a[1]}</h3><p>${a[2]}</p></div></article>`).join('')}
     </div></section></div>`;
     requestAnimationFrame(reveal);
   };
