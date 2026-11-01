@@ -29,7 +29,7 @@ const I = (() => {
     xb: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
     flag: s('<path d="M5 21V4c5-2.5 9 2.5 14 0v10c-5 2.5-9-2.5-14 0"/>'),
     shield: s('<path d="M12 3 5 5.5v6c0 4.5 3 7.5 7 9.5 4-2 7-5 7-9.5v-6z"/><path d="m9 12 2.2 2.2 4-4.2"/>'),
-    claw: s('<path d="M12 2v6M9 8h6v3H9zM10 11l-4 3v3l2.5 3M14 11l4 3v3l-2.5 3M12 11v5"/>'),
+    claw: s('<path d="M12 2v5M8.5 7h7v3.5h-7zM9.5 10.5 4.5 14v3.5l3.500 4M14.5 10.5l5 3.500v3.500l-3.500 4M12 10.500V16"/>'),
     arrow: s('<path d="M5 12h14M13 6l6 6-6 6"/>'),
     github: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>`,
     x: s('<path d="m4 4 16 16M20 4 4 20"/>', 'stroke-width="2.2"'),
@@ -62,7 +62,7 @@ const SAMPLE = {
   tags: ['robotics', 'machine', 'simulation'],
   proof: { sim: 1, d3: 1 },
   founder: { name: 'Grablab team', role: 'Founders', img: '/assets/logos/grablab.webp' },
-  links: [['globe', 'grablab.fun', 'https://grablab.fun', 'The site, the live machine and the provably fair page.', '/assets/art/gl-threequarter.webp'], ['x', '@grablabfun', 'https://x.com/grablabfun', 'Build updates, renders and proof drops.', '/assets/logos/grablab.webp']],
+  links: [['globe', 'grablab.fun', 'https://grablab.fun', 'The site, the live machine and the provably fair page.', '/assets/art/gl-threequarter.webp'], ['x', '@grablabfun', 'https://x.com/grablabfun', 'Build updates, renders and proof drops.', '/assets/art/x-card.webp']],
   milestones: [
     { s: 'done', t: 'Simulation of the full machine', d: 'Physics scene built and playable in SimArena.', proof: 'See the simulation', to: 'sim' },
     { s: 'done', t: 'Interactive 3D model', d: 'Every part of the metal build, exploded and labelled.', proof: 'See the 3D model', to: 'd3' },
@@ -1262,7 +1262,7 @@ function renderProject(ref) {
       </div>` : emp('shield', 'Nothing on chain yet', 'This tab fills up at launch: mint, pool, migration, escrow.');
     } else if (secTab === 'milestones') {
       const ml = p.milestones, reach = ml ? ml.filter(m => m.s !== 'next').length : 0;
-      box.innerHTML = ml ? `<div class="ms" style="--n:${ml.length};--reach:${(reach - .5) / ml.length}"><i class="ms-rail"></i>${ml.map((m, i) => `<article class="ms-i ${m.s}" style="--i:${i}"><span class="d">${m.s === 'done' ? I.check : ''}</span><span class="ms-n">${String(i + 1).padStart(2, '0')}</span><small>${{ done: 'Done', now: 'In progress', next: 'Next' }[m.s]}</small><b>${esc(m.t)}</b><p>${esc(m.d)}</p>${m.proof ? `<button class="ms-p" data-m="${m.to}">${esc(m.proof)}${I.arrow}</button>` : ''}</article>`).join('')}</div>`
+      box.innerHTML = ml ? `<div class="ms" style="--n:${ml.length};--reach:${reach - 1}"><i class="ms-rail"></i>${ml.map((m, i) => `<article class="ms-i ${m.s}" style="--i:${i}"><span class="d">${m.s === 'done' ? I.check : ''}</span><span class="ms-n">${String(i + 1).padStart(2, '0')}</span><small>${{ done: 'Done', now: 'In progress', next: 'Next' }[m.s]}</small><b>${esc(m.t)}</b><p>${esc(m.d)}</p>${m.proof ? `<button class="ms-p" data-m="${m.to}">${esc(m.proof)}${I.arrow}</button>` : ''}</article>`).join('')}</div>`
         : emp('flag', 'No milestones published', 'Milestones are how a founder shows the money turned into hardware. Each one carries a proof link.', '<a class="btn sm" href="/project/grablab?tab=milestones" data-l>See a full example</a>');
     } else if (secTab === 'team') {
       box.innerHTML = p.founder ? `<div class="team"><span class="ava"><img src="${p.founder.img}" alt=""></span><div><b>${esc(p.founder.name)}</b><div class="mut" style="font-size:13px">${esc(p.founder.role)}</div></div></div>`
