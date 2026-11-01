@@ -1292,25 +1292,97 @@ const rv = (d, l, v) => `<div><span><svg viewBox="0 0 24 24" fill="none" stroke=
 let launchD = {};
 const d0 = k => launchD[k] || '';
 const upf = (id, key, ph, accept) => `<div class="up-f"><input class="input" id="${id}" value="${esc(d0(key))}" placeholder="${ph}"><label class="btn up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V5M7.500 9.500 12 5l4.500 4.500M4 19h16"/></svg><input type="file" data-file="${key}" accept="${accept}">Upload</label></div>`;
+const IGN_CURVE = 'M40 320C240 320 300 300 420 262S600 208 640 190 800 130 860 108 1000 66 1060 46';
 const ignBlock = on => `<div class="ign ${on ? 'on' : ''}">
-  <div class="ign-t"><span class="flabel">Ignition</span>
-    <p>Optional and permanent. Lock supply in sell orders above the launch price, so the project funds itself as the market grows.</p>
-    <div class="seg" style="justify-self:start"><button data-ign="0" class="${on ? '' : 'on'}">Off</button><button data-ign="1" class="${on ? 'on' : ''}">On</button></div>
-    <ol class="ign-k"><li><b>Lock</b><span>Part of the supply sits in sell orders.</span></li><li><b>Rise</b><span>Buyers push the price through them.</span></li><li><b>Fund</b><span>Each filled order pays the project.</span></li></ol></div>
-  <svg class="ign-c" viewBox="0 0 440 236" role="img" aria-label="Price rises through locked sell orders, and each one that fills adds to the project treasury">
-    <defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity=".35"/><stop offset="1" stop-color="#ffae2c"/></linearGradient></defs>
-    ${[[35, 425, 4], [70, 365, 3], [105, 300, 2], [140, 200, 1]].map(([y, x, n]) => `<path class="lv" d="M20 ${y}H430"/><text x="20" y="${y - 6}">Sell order ${n}</text><circle class="o o${n}" cx="${x}" cy="${y}" r="5"/>`).join('')}
-    <path class="base" d="M20 180H430"/><text x="20" y="196">Launch price</text>
-    <path class="cv" pathLength="100" d="M20 180C120 180 150 150 200 140S280 115 300 105 350 75 365 70 410 42 425 35"/>
-    <text x="238" y="196" class="tr">Project treasury</text><rect class="tb" x="238" y="204" width="182" height="6" rx="1"/><rect class="tf" x="238" y="204" width="182" height="6" rx="1"/>
-    <text x="238" y="226" class="st">${on ? 'Orders locked at launch' : 'No orders locked'}</text>
-  </svg></div>`;
+  <div class="ign-h"><div><span class="eyebrow">Optional and permanent</span><h3 class="display">Ignition</h3>
+    <p>Lock supply in sell orders above the launch price.<br>The project funds itself as the market grows.</p></div>
+    <div class="seg"><button data-ign="0" class="${on ? '' : 'on'}">Off</button><button data-ign="1" class="${on ? 'on' : ''}">On</button></div></div>
+  <svg class="ign-c" viewBox="0 0 1400 372" role="img" aria-label="Price rises through locked sell orders, and each one that fills adds to the project treasury">
+    <defs>
+      <linearGradient id="ig-ch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdfdff"/><stop offset=".3" stop-color="#8ea3c8"/><stop offset=".46" stop-color="#4f6286"/><stop offset=".6" stop-color="#e3edff"/><stop offset=".7" stop-color="#fff"/><stop offset="1" stop-color="#8195ba"/></linearGradient>
+      <linearGradient id="ig-cv" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f6bff" stop-opacity=".25"/><stop offset=".55" stop-color="#7fb0ff"/><stop offset="1" stop-color="#fff"/></linearGradient>
+      <linearGradient id="ig-ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a86ff" stop-opacity=".3"/><stop offset="1" stop-color="#4a86ff" stop-opacity="0"/></linearGradient>
+      <linearGradient id="ig-lq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe0ff"/><stop offset=".2" stop-color="#6da2ff"/><stop offset="1" stop-color="#143a9e"/></linearGradient>
+      <radialGradient id="ig-hd"><stop offset="0" stop-color="#fff"/><stop offset=".22" stop-color="#a9c8ff" stop-opacity=".75"/><stop offset="1" stop-color="#4a86ff" stop-opacity="0"/></radialGradient>
+      <clipPath id="ig-cl"><rect class="cl" x="0" y="0" width="0" height="372"/></clipPath>
+      <clipPath id="ig-vs"><rect x="1200" y="52" width="130" height="258" rx="5"/></clipPath>
+    </defs>
+    <g class="dyn">
+      <path class="base" d="M40 320H1130"/><text class="lb" x="40" y="344">Launch price</text>
+      <path class="ar" clip-path="url(#ig-cl)" d="${IGN_CURVE}L1060 320H40Z"/>
+      ${[1, 2, 3, 4].map(n => `<g class="ord"><path class="lv"/><text class="lb" x="40">Order ${n}</text></g>`).join('')}
+      <path class="gl" pathLength="1" d="${IGN_CURVE}"/><path class="cv" pathLength="1" d="${IGN_CURVE}"/>
+      ${[1, 2, 3, 4].map(() => `<g class="ing"><rect x="-36" y="-13" width="72" height="26" rx="2" fill="url(#ig-ch)"/><rect class="fl" x="-36" y="-13" width="72" height="26" rx="2"/></g><path class="arc" pathLength="1"/>`).join('')}
+      <g class="hd"><circle r="30" fill="url(#ig-hd)"/></g>
+      <g clip-path="url(#ig-vs)"><rect class="lq" x="1200" y="310" width="130" height="0" fill="url(#ig-lq)"/></g>
+    </g>
+    <rect class="vs" x="1200" y="52" width="130" height="258" rx="5"/>
+    <path class="nt" d="M1316 116.500h14M1316 181h14M1316 245.500h14"/>
+    <text class="ct" x="1265" y="196" text-anchor="middle">${on ? '0/4' : 'Off'}</text>
+    <text class="lb vl" x="1265" y="336" text-anchor="middle">Project treasury</text>
+  </svg>
+  <div class="ign-b">${[['Lock', 'Part of the supply sits in sell orders.'], ['Rise', 'Buyers push the price through them.'], ['Fund', 'Each filled order pays the project.']].map(([t, c]) => `<div><i></i><b>${t}</b><span>${c}</span></div>`).join('')}</div>
+</div>`;
+let ignRaf = 0;
+function ignStart() {
+  cancelAnimationFrame(ignRaf);
+  const root = $('.ign');
+  if (!root) return;
+  const on = root.classList.contains('on'), cv = $('.cv', root), gl = $('.gl', root), len = cv.getTotalLength();
+  const ings = $$('.ing', root), arcs = $$('.arc', root), ords = $$('.ord', root), beats = $$('.ign-b>div', root), dyn = $('.dyn', root);
+  const hd = $('.hd', root), cl = $('.cl', root), lq = $('.lq', root), ct = $('.ct', root);
+  const cut = (a, b, x) => Math.min(1, Math.max(0, (x - a) / (b - a))), ease = x => x * x * (3 - 2 * x);
+  // Each order sits on the curve, so the price really runs into it
+  const stops = [420, 640, 860, 1000].map((x, i) => {
+    let lo = 0, hi = len;
+    for (let k = 0; k < 18; k++) { const m = (lo + hi) / 2; cv.getPointAtLength(m).x < x ? lo = m : hi = m; }
+    const y = cv.getPointAtLength(lo).y;
+    $('.lv', ords[i]).setAttribute('d', `M40 ${y}H${x - 44}`);
+    $('text', ords[i]).setAttribute('y', y - 8);
+    arcs[i].setAttribute('d', `M${x} ${y - 16}Q${(x + 1265) / 2} ${Math.max(4, Math.min(y, 52) - 46)} 1265 70`);
+    return { x, y, at: lo / len };
+  });
+  root.style.setProperty('--ign', on ? 1 : .4);
+  ings.concat(arcs, ords).forEach(n => { n.style.display = on ? '' : 'none'; });
+  let shown = '';
+  const draw = t => {
+    const run = ease(cut(.13, .78, t)), p = cv.getPointAtLength(run * len);
+    [cv, gl].forEach(n => { n.style.strokeDashoffset = 1 - run; });
+    cl.setAttribute('width', p.x);
+    hd.setAttribute('transform', `translate(${p.x} ${p.y})`);
+    hd.setAttribute('opacity', cut(.13, .16, t));
+    dyn.setAttribute('opacity', 1 - cut(.95, 1, t));
+    let level = 0;
+    stops.forEach((o, i) => {
+      const drop = ease(cut(.01 + i * .02, .1 + i * .02, t)), hit = cut(o.at, o.at + .05, run), fly = cut(o.at, o.at + .16, run);
+      ings[i].setAttribute('transform', `translate(${o.x} ${o.y + (1 - drop) * -22}) scale(${1 + hit * .12} ${1 - ease(hit)})`);
+      ings[i].setAttribute('opacity', drop);
+      $('.fl', ings[i]).setAttribute('opacity', Math.sin(Math.PI * hit));
+      $('.lv', ords[i]).style.opacity = 1 - hit * .6;
+      arcs[i].style.strokeDashoffset = 1.2 - fly * 1.4;
+      arcs[i].setAttribute('opacity', Math.sin(Math.PI * fly));
+      if (on) level += ease(cut(o.at + .12, o.at + .2, run)) / 4;
+    });
+    lq.setAttribute('y', 310 - 258 * level);
+    lq.setAttribute('height', 258 * level);
+    if (on) { const c = `${Math.round(level * 4 - .25)}/4`; if (c !== shown) ct.textContent = shown = c; }
+    const first = .13 + .65 * .34, ends = [.13, first, .95], from = [0, .13, first];
+    beats.forEach((b, i) => {
+      b.classList.toggle('on', on && t >= from[i] && t < (i === 2 ? 2 : ends[i]));
+      $('i', b).style.transform = `scaleX(${on ? cut(from[i], ends[i], t) * (t < .95 ? 1 : 1 - cut(.95, 1, t)) : 0})`;
+    });
+  };
+  if (reduced) return draw(.9);
+  const t0 = performance.now();
+  const frame = now => { if (!root.isConnected) return; draw(((now - t0) % 9500) / 9500); ignRaf = requestAnimationFrame(frame); };
+  ignRaf = requestAnimationFrame(frame);
+}
 const afterBlock = pair => `<div class="after-pub"><div class="eyebrow">After you publish</div><ol class="ap">
-  ${[['<path d="M4 5h16v14H4zM4 9h16"/>', 'Page goes live', 'Your proofs are public, no token yet.'],
-    ['<path d="M12 3c4 2 6 6 6 11l-3 3H9l-3-3c0-5 2-9 6-11zM9 17l-2 4M15 17l2 4"/><circle cx="12" cy="10" r="2"/>', 'You launch', 'The token opens when you are ready.'],
-    ['<path d="M4 18a8 8 0 1 1 16 0M12 18l4-6"/>', 'Curve fills', `Buyers fill the curve up to 100 ${esc(pair)}.`],
-    ['<path d="m4 8 8-5 8 5v8l-8 5-8-5zM4 8l8 5 8-5M12 13v8"/>', 'Raydium', 'At 100 ' + esc(pair) + ' on the curve it migrates.']]
-    .map(([d, t, c], i) => `<li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg></i><small>Step ${i + 1}</small><b>${t}</b><span>${c}</span></li>`).join('')}
+  ${[['Page goes live', 'Your proofs are public, no token yet.'],
+    ['You launch', 'The token opens when you are ready.'],
+    ['Curve fills', `Buyers fill the curve up to 100 ${esc(pair)}.`],
+    ['Raydium', 'At 100 ' + esc(pair) + ' on the curve it migrates.']]
+    .map(([t, c], i) => `<li style="--i:${i}"><i class="display">${i + 1}</i><b>${t}</b><span>${c}</span></li>`).join('')}
 </ol></div>`;
 const LINK_ICONS = ['globe', 'github', 'x', 'discord', 'telegram', 'doc'];
 const detect = u => (LINK_RULES.find(r => r[1].test(u)) || ['globe'])[0];
@@ -1391,7 +1463,7 @@ function viewLaunch() {
     if (step === 3) { b.innerHTML = `<div class="form">
       <div class="two"><div class="f"><label for="f-tick">Ticker</label><input class="input mono" id="f-tick" maxlength="10" value="${esc(d.ticker)}" placeholder="SENSE" autocapitalize="characters"><div class="hint" id="tick-h"></div></div>
       <div class="f"><label for="f-pair">Paired with</label>${tokenPick(d.pair, ['SOL', 'USDC', 'PEAQ', 'CODEC'], 'pair', 'Paired with', 'id="f-pair"')}</div></div>
-      ${ignBlock(d.ignition)}${afterBlock(d.pair)}</div>`; dupHint(); }
+      ${ignBlock(d.ignition)}${afterBlock(d.pair)}</div>`; dupHint(); ignStart(); }
     if (step === 4) b.innerHTML = `<div class="form"><div class="flabel">Ready to publish</div>
       <div class="t-rows t-rev">
         ${rv(RV.project, 'Project', esc(d.name || '-'))}${rv(RV.ticker, 'Ticker', d.ticker ? '$' + esc(d.ticker) : '-')}

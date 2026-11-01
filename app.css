@@ -1047,49 +1047,9 @@ html:has(dialog.fnd[open]) body *:not(dialog.fnd,dialog.fnd *){animation-play-st
 .btn.up input{display:none}
 .x-c.on{background:#f5f5f5;color:#0c0c0c}
 /* ignition */
-.ign{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:28px;align-items:center;padding:22px;background:radial-gradient(90% 120% at 100% 100%,rgba(255,174,44,.07),transparent 60%),rgba(6,6,8,.42);box-shadow:inset 0 0 0 1px var(--edge)}
-.ign-t{display:grid;gap:12px}
-.ign-t>.flabel{font:700 19px/1.2 var(--display);font-stretch:125%;letter-spacing:-.01em;text-transform:uppercase}
-.ign-t p{margin:0;font-size:14px;line-height:1.5;color:#c4c4ca}
-.ign-k{display:grid;gap:0;margin:4px 0 0;padding:0;list-style:none}
-.ign-k li{display:grid;grid-template-columns:60px minmax(0,1fr);gap:10px;padding:8px 0;border-top:1px solid var(--edge);font-size:13px;color:var(--mut)}
-.ign-k b{font:500 12px var(--mono);color:var(--text);text-transform:uppercase;letter-spacing:.04em}
-.ign-c{display:block;width:100%;height:auto;overflow:visible}
-.ign-c text{font:500 10.5px var(--mono);fill:var(--mut-2)}
-.ign-c .lv{stroke:rgba(255,255,255,.1);stroke-dasharray:3 5}
-.ign-c .base{stroke:rgba(255,255,255,.3);stroke-dasharray:6 4}
-.ign-c .cv{fill:none;stroke:rgba(255,255,255,.22);stroke-width:2;stroke-linecap:round}
-.ign-c .o{fill:#0c0c0c;stroke:rgba(255,255,255,.22);stroke-width:1.5}
-.ign-c .tb{fill:rgba(255,255,255,.08)}
-.ign-c .tf{fill:#ffae2c;transform-box:fill-box;transform-origin:left;transform:scaleX(0)}
-.ign-c .tr{fill:var(--text)}
-.ign.on .ign-c .cv{stroke:url(#ig);stroke-width:2.5;stroke-dasharray:100;animation:ign-draw 7s cubic-bezier(.4,0,.3,1) infinite}
-.ign.on .ign-c .o{stroke:#ffae2c}
-.ign.on .ign-c .o1{animation:ign-o1 7s infinite}
-.ign.on .ign-c .o2{animation:ign-o2 7s infinite}
-.ign.on .ign-c .o3{animation:ign-o3 7s infinite}
-.ign.on .ign-c .o4{animation:ign-o4 7s infinite}
-.ign.on .ign-c .tf{animation:ign-fund 7s infinite}
-.ign.on .ign-c .st{fill:#ffae2c}
-@keyframes ign-draw{0%{stroke-dashoffset:100}80%,94%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
-@keyframes ign-o1{0%,27%{fill:#0c0c0c}30%,94%{fill:#ffae2c}100%{fill:#0c0c0c}}
-@keyframes ign-o2{0%,42%{fill:#0c0c0c}45%,94%{fill:#ffae2c}100%{fill:#0c0c0c}}
-@keyframes ign-o3{0%,58%{fill:#0c0c0c}61%,94%{fill:#ffae2c}100%{fill:#0c0c0c}}
-@keyframes ign-o4{0%,75%{fill:#0c0c0c}78%,94%{fill:#ffae2c}100%{fill:#0c0c0c}}
-@keyframes ign-fund{0%,27%{transform:scaleX(0)}31%,42%{transform:scaleX(.25)}46%,58%{transform:scaleX(.5)}62%,75%{transform:scaleX(.75)}79%,94%{transform:scaleX(1)}100%{transform:scaleX(0)}}
 /* after publish */
 .after-pub{gap:14px;font-size:13.5px}
-.ap{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin:0;padding:0;list-style:none}
-.ap::before{content:"";position:absolute;left:20px;right:12%;top:20px;height:1px;background:linear-gradient(90deg,#ffae2c,rgba(255,255,255,.16) 60%)}
-.ap li{position:relative;display:grid;gap:3px;justify-items:start}
-.ap i{display:grid;place-items:center;width:40px;height:40px;margin-bottom:9px;border-radius:4px;background:#131313;box-shadow:inset 0 0 0 1px var(--edge-2);color:var(--text)}
-.ap i svg{width:19px;height:19px}
-.ap li:first-child i{color:#ffae2c;box-shadow:inset 0 0 0 1px rgba(255,174,44,.5)}
-.ap small{font:500 11px var(--mono);color:var(--mut-2);text-transform:uppercase;letter-spacing:.05em}
-.ap b{font-size:15px;font-weight:600;color:var(--text)}
-.ap span{font-size:13px;line-height:1.45;color:var(--mut)}
 @media (max-width:820px){.ign{grid-template-columns:minmax(0,1fr)}.ap{grid-template-columns:repeat(2,minmax(0,1fr))}.ap::before{display:none}}
-@media (prefers-reduced-motion:reduce){.ign.on .ign-c *{animation:none!important}.ign.on .ign-c .o{fill:#ffae2c}.ign.on .ign-c .tf{transform:none}}
 /* footer: the sky closes the page like it opens it */
 .ft-sky{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(6,8,16,.2),rgba(6,8,16,.7) 60%,rgba(6,8,16,.9)),url(/assets/art/sky-hero.webp) 50% 78%/cover no-repeat;-webkit-mask-image:linear-gradient(180deg,transparent,#000 42%);mask-image:linear-gradient(180deg,transparent,#000 42%)}
 .ft-sky::after{content:"";position:absolute;inset:0;background:var(--grain) 0 0/220px;opacity:.3;mix-blend-mode:overlay}
@@ -1121,3 +1081,48 @@ html:has(dialog.fnd[open]) body *:not(dialog.fnd,dialog.fnd *){animation-play-st
   .ft-brand{display:flex;justify-content:space-between;align-items:center}
   .ft-in{padding-top:56px}
 }
+/* ignition: one blue chrome scene, the price runs through the orders and fills the treasury */
+.ign{position:relative;isolation:isolate;overflow:hidden;display:grid;gap:18px;padding:28px 30px 26px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)}
+.ign::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,rgba(5,10,28,.92),rgba(5,10,28,.7) 60%,rgba(5,10,28,.84)),linear-gradient(0deg,rgba(5,10,28,.9),rgba(5,10,28,.2) 60%),url(/assets/art/sky-hero.webp) 50% 60%/cover no-repeat}
+.ign::after{content:"";position:absolute;inset:0;z-index:-1;background:var(--grain) 0 0/220px;opacity:.28;mix-blend-mode:overlay;pointer-events:none}
+.ign-h{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.ign-h h3{margin:6px 0 10px;font-size:clamp(30px,3.2vw,54px)}
+.ign-h p{margin:0;font-size:14.5px;line-height:1.55;color:#c9d3e8}
+.ign-c{display:block;width:100%;height:auto;overflow:visible}
+.ign-c .lb{font:500 12.5px var(--mono);fill:#93a0ba}
+.ign-c .base{fill:none;stroke:rgba(255,255,255,.26);stroke-width:1}
+.ign-c .lv{fill:none;stroke:rgba(255,255,255,.1);stroke-width:1}
+.ign-c .ar{fill:url(#ig-ar)}
+.ign-c .cv,.ign-c .gl{fill:none;stroke:url(#ig-cv);stroke-linecap:round;stroke-dasharray:1 1}
+.ign-c .cv{stroke-width:3.500}
+.ign-c .gl{stroke-width:12;opacity:.3;filter:blur(7px)}
+.ign-c .fl{fill:#fff}
+.ign-c .arc{fill:none;stroke:#cfe0ff;stroke-width:2;stroke-linecap:round;stroke-dasharray:.2 1.2;stroke-dashoffset:1.2}
+.ign-c .vs{fill:rgba(255,255,255,.035);stroke:url(#ig-ch);stroke-width:1.500}
+.ign-c .nt{stroke:rgba(255,255,255,.3);stroke-width:1}
+.ign-c .ct{font:900 44px Archivo,sans-serif;font-stretch:125%;fill:#f5f8ff;paint-order:stroke;stroke:rgba(5,10,28,.55);stroke-width:5px}
+.ign-b{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.ign-b div{position:relative;display:grid;gap:3px;padding-top:13px;opacity:calc(var(--ign,1)*.62);transition:opacity .28s var(--ease)}
+.ign-b div.on{opacity:1}
+.ign-b div::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:rgba(255,255,255,.16)}
+.ign-b i{position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,#4a86ff,#fff);transform:scaleX(0);transform-origin:left}
+.ign-b b{font:800 15px/1.2 Archivo,sans-serif;font-stretch:125%;letter-spacing:.01em;text-transform:uppercase;color:#f5f8ff}
+.ign-b span{font-size:13.5px;line-height:1.45;color:#c0cadf}
+/* after publish: big numbers, one light passes along them */
+.ap{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin:0;padding:18px 0 0;list-style:none;overflow:clip}
+.ap::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:rgba(255,255,255,.14)}
+.ap::after{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent 62%,#6da2ff 92%,#fff);transform:translateX(-100%);animation:ap-run 8s cubic-bezier(.45,0,.4,1) infinite}
+.ap li{display:grid;gap:3px;justify-items:start;min-width:0}
+.ap i{font-style:normal;font-size:clamp(44px,4.6vw,78px);line-height:1;margin-bottom:8px;opacity:.3;animation:ap-lit 8s calc(.25s + var(--i)*1.45s) infinite}
+.ap b{font:800 15px/1.2 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;letter-spacing:.01em;color:var(--text);white-space:nowrap}
+.ap span{font-size:13.5px;line-height:1.45;color:var(--mut)}
+@keyframes ap-run{0%{transform:translateX(-100%)}74%{transform:translateX(0)}84%,100%{transform:translateX(38%)}}
+@keyframes ap-lit{0%{opacity:.3}6%,38%{opacity:1}58%,100%{opacity:.3}}
+@media (max-width:820px){
+  .ign{padding:20px 16px}
+  .ign-c .lb{display:none}
+  .ign-b{grid-template-columns:minmax(0,1fr);gap:12px}
+  .ap{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+  .ap b{white-space:normal}
+}
+@media (prefers-reduced-motion:reduce){.ap i{animation:none;opacity:1}.ap::after{animation:none;opacity:0}}
