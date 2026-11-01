@@ -191,13 +191,13 @@ main:focus{outline:0}
 @keyframes medal-out{to{transform:translateY(30px) rotate(-9deg) scale(1.05)}}
 
 /* Hero: the Foundry sky, full bleed, with the market on top of it */
-.hero{--px:0;--py:0;position:relative;left:50%;width:100vw;margin-left:-50vw;margin-top:-72px;height:clamp(640px,calc(100dvh - 96px),max(860px,38vw));overflow:hidden;background:#171717;isolation:isolate}
+.hero{--px:0;--py:0;position:relative;left:50%;width:100vw;margin-left:-50vw;margin-top:-72px;height:clamp(560px,60dvh,700px);overflow:hidden;background:#171717;isolation:isolate}
 .h-sky{position:absolute;inset:0;background:#0c0c0c}
 .h-sky>*{position:absolute;display:block;transform:translate(calc(var(--px)*var(--d,0px)),calc(var(--py)*var(--d,0px)));transition:transform .9s cubic-bezier(.16,1,.3,1)}
 .h-sky .g3{left:0;right:0;bottom:0;height:24%;background:linear-gradient(180deg,transparent,#0c0c0c)}
 @keyframes drift{from{translate:-14px 0}to{translate:18px 0}}
 .h-sky .plate{left:-16px;top:-16px;width:calc(100% + 32px);height:calc(100% + 32px);max-width:none;object-fit:cover;object-position:62% 78%;--d:-10px}
-.h-sky .fly{left:41%;top:7%;width:min(42vw,1320px);--d:34px;filter:drop-shadow(0 26px 34px rgba(0,10,40,.5))}
+.h-sky .fly{left:44%;top:9%;height:74%;width:auto;--d:34px;filter:drop-shadow(0 26px 34px rgba(0,10,40,.5))}
 .h-grain{inset:0;background-image:var(--grain);background-size:220px;opacity:.2;mix-blend-mode:overlay}
 .h-in{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,400px);grid-template-rows:minmax(0,1fr) auto;gap:18px 40px;width:min(calc(100% - var(--gut)*2),var(--wrap));height:100%;margin-inline:auto;padding:104px 0 22px}
 .hero .copy{display:grid;align-content:center;justify-items:start;gap:14px;min-width:0}
@@ -860,7 +860,7 @@ body{font-family:Archivo,sans-serif}
   .h-in{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;padding-top:84px;gap:16px}
   .hero h1{font-size:clamp(23px,7vw,34px);white-space:normal}
   .hero .sub{font-size:14px}
-  .h-sky .fly{left:6%;top:60px;width:110%;opacity:.42}
+  .h-sky .fly{left:6%;top:60px;width:110%;height:auto;opacity:.42}
   .h-sky .plate{object-position:58% 100%}
   .h-strip{grid-template-columns:repeat(2,1fr)}
   .h-strip>div{padding:10px 12px}
