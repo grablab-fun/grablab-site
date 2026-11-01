@@ -245,7 +245,7 @@ function renderFoot() {
   const ex = 'target="_blank" rel="noopener"';
   $('#foot').innerHTML = `<div class="ft-sky" aria-hidden="true"></div><div class="ft-in">
     <div class="ft-cta"><h2 class="display">Fund the hardware<br>that actually gets built</h2>
-      <div class="ft-acts"><a class="btn primary lg" href="/launch" data-l>Launch a project</a><a class="btn lg" href="/" data-l>Explore</a></div></div>
+      </div>
     <div class="ft-cols">
       <a class="brand mark" href="/" data-l aria-label="machine.fun"><i></i></a>
       <div class="ft-links">

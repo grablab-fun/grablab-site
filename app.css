@@ -1018,7 +1018,6 @@ html:has(dialog.fnd[open]) body *:not(dialog.fnd,dialog.fnd *){animation-play-st
 .ft-in{width:min(100%,calc(var(--wrap) + var(--gut)*2));margin:0 auto;padding:88px var(--gut) 26px}
 .ft-cta{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap;padding-bottom:40px}
 .ft-cta h2{font-size:clamp(26px,2.6vw,52px)}
-.ft-acts{display:flex;gap:10px}
 .ft-cols h4{margin:0 0 14px;font:500 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(245,245,245,.6)}
 .ft-cols ul{display:grid;gap:9px;margin:0;padding:0;list-style:none;font-size:14.5px}
 .ft-cols ul a{display:inline-block;color:#e8e8ec;transition:color .1s,transform .14s var(--ease)}
