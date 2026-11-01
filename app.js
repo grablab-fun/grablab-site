@@ -576,7 +576,7 @@ function watchRail(w) {
   dragScroll(w);
   w.addEventListener('wheel', e => {
     const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY, max = w.scrollWidth - w.clientWidth;
-    if (!d || max <= 0 || (d < 0 && w.scrollLeft <= 0) || (d > 0 && w.scrollLeft >= max)) return;
+    if (!d || max <= 0 || (d < 0 && w.scrollLeft <= 0) || (d > 0 && w.scrollLeft >= max - 1)) return;
     e.preventDefault();
     w.scrollLeft += d;
   }, { passive: false });

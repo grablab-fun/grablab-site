@@ -126,7 +126,7 @@ main:focus{outline:0}
 .cw::backdrop{background:rgba(4,4,6,.8)}
 .cw[open]{animation:up .24s var(--ease)}
 .cw-box{position:relative;isolation:isolate;overflow:hidden;padding:24px 22px 16px;border-radius:16px;background:#0c0c0c;box-shadow:inset 0 0 0 1px var(--edge-2),0 40px 90px -30px #000}
-.cw-box::before{content:"";position:absolute;inset:0 0 auto;z-index:-1;height:330px;background:url(/assets/art/sky-hero.webp) 100% 6%/980px auto no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 42%,transparent);mask-image:linear-gradient(180deg,#000 42%,transparent)}
+.cw-box::before{content:"";position:absolute;inset:0 0 auto;z-index:-1;height:330px;background:linear-gradient(90deg,rgba(2,16,52,.96) 0,rgba(2,16,52,.86) 46%,rgba(2,16,52,0) 76%),url(/assets/art/sky-hero.webp) 100% 8%/1420px auto no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 42%,transparent);mask-image:linear-gradient(180deg,#000 42%,transparent)}
 .cw-box::after{content:"";position:absolute;inset:0;z-index:-1;background:var(--grain) 0 0/220px;opacity:.34;mix-blend-mode:overlay;pointer-events:none}
 .cw-x{position:absolute;right:14px;top:14px;z-index:2;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.07);color:var(--mut);transition:background .1s,color .1s}
 .cw-x:hover{background:rgba(255,255,255,.1);color:var(--text)}
