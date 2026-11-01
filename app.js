@@ -105,7 +105,7 @@ const clock = (ts, sec) => {
   const h = u ? d.getUTCHours() : d.getHours(), m = u ? d.getUTCMinutes() : d.getMinutes(), s = u ? d.getUTCSeconds() : d.getSeconds();
   return pad(h) + ':' + pad(m) + (sec ? ':' + pad(s) : '');
 };
-const logoSrc = p => p.logo ? `/assets/logos/${p.ref}.webp` : '/assets/art/dragonfly-poster.webp';
+const logoSrc = p => p.logoData || (p.logo ? `/assets/logos/${p.ref}.webp` : '/assets/art/dragonfly-poster.webp');
 const coverSrc = p => p.cover ? `/assets/covers/${p.ref}.webp` : '/assets/art/gears.webp';
 const pct = p => (p.mig ? 100 : Math.max(0, (p.prog || 0) * 100));
 const isUp = p => p.change ? !p.change.startsWith('-') : true;
@@ -1016,8 +1016,14 @@ function tradeHTML(p, state, amt, o) {
     <button class="btn full lg primary" data-buy ${wallet && (tooBig || a <= 0) ? 'disabled' : ''}>${go}</button>
     <div class="t-rows t-fine"><div>Priced from the pool<b id="asof">${clock(Date.now() / 1000, true)}</b></div><div>Floor<b>Enforced on chain</b></div><div>Quote<b>Preview, no transaction</b></div></div>`;
 }
+const draftP = () => {
+  const d = store.get('draft', {});
+  return { ref: 'draft', draft: true, pre: true, name: d.name || 'Your project', ticker: d.ticker || 'TICKER', quote: d.pair || 'SOL', at: new Date().toISOString(), desc: d.brief || d.pitch || '', pitch: d.pitch || '', tags: [],
+    proof: { sim: d.sim, d3: d.d3, pcb: d.pcb }, founder: d.founder ? { name: d.founder, role: 'Founder', img: '/assets/art/anon.svg' } : null,
+    links: (d.links || []).map(u => [detect(u), u.replace(/^https?:\/\//, ''), u]), logoData: d.logo, bannerData: d.banner };
+};
 function renderProject(ref) {
-  const p = ref === 'grablab' ? SAMPLE : byRef.get(ref);
+  const p = ref === 'draft' ? draftP() : ref === 'grablab' ? SAMPLE : byRef.get(ref);
   const v = $('#view');
   if (!p) {
     v.innerHTML = `<div class="wrap enter"><section class="panel block"><div class="empty"><b>Project not found</b><a class="btn sm" href="/" data-l>Back to Explore</a></div></section></div>`;
@@ -1037,11 +1043,12 @@ function renderProject(ref) {
   const fName = p.founder?.name || 'Anonymous', fees = feesOf(p);
 
   v.innerHTML = `<div class="wrap enter">
+    ${p.draft ? '<div class="dr-bar"><span>This is your page as visitors will see it.</span><a class="btn sm" href="/launch" data-l>Back to editing</a></div>' : ''}
     <div id="pbanner"></div>
     <div class="p-grid ${p.pre ? 'pre' : ''}">
       <div class="p-main">
         <section class="panel p-head grainy">
-          <div class="p-cover"><img src="${logoSrc(p)}" alt="" decoding="async"></div>
+          <div class="p-cover ${p.bannerData ? 'real' : ''}"><img src="${p.bannerData || logoSrc(p)}" alt="" decoding="async"></div>
           <div class="p-id"><img class="p-logo" data-vt="${esc(p.ref)}" src="${logoSrc(p)}" alt="">
             <div class="p-title">
               ${p.mint ? `<div class="p-pair"><b>$${esc(p.ticker)}</b> / ${esc(quote)}<button class="ca" data-copy="${esc(p.mint)}">CA ${short(p.mint)} ${I.copy}</button></div>` : ''}
@@ -1396,16 +1403,20 @@ function viewLaunch() {
       <h1 class="display">Put your machine on chain</h1><p>No account needed to start. Four steps, and you sign in only to publish.</p></div></section>
     <section class="panel block grainy" style="margin:0"><div><div class="steps" id="steps"></div><div id="sbody"></div></div></section>
     <aside class="panel grainy l-side"><div class="side-sticky">
-      <div class="preview"><div class="eyebrow">Live preview</div><div id="pv"></div></div>
+      <div class="preview"><div class="eyebrow">Live preview</div><div id="pv"></div><a class="btn mp-open" href="/project/draft" data-l>See the full page</a></div>
       <div class="l-ready"><div class="eyebrow">Ready to publish</div><div class="check" id="chk"></div></div>
     </div></aside></div></div>`;
   const save = () => { try { store.set('draft', d); } catch { toast('Draft too large for this browser.'); } };
   const pvObj = () => ({ ref: 'draft', name: d.name || 'Your project', ticker: d.ticker || 'TICKER', tags: [], at: new Date(SNAP - 60000).toISOString(), mc: 4600, quote: d.pair, prog: 0, proof: { sim: d.sim, d3: d.d3, pcb: d.pcb }, spark: [], logo: false, cover: false });
   const drawPv = () => {
-    const c = $('#pv');
-    c.innerHTML = card(pvObj(), { preview: true });
-    if (logo) $('.logo', c).src = logo;
-    if (banner) { $('.bg', c).src = banner; $('.c-top', c).classList.add('has-b'); }
+    const c = $('#pv'), p = pvObj(), proofs = [['Sim', d.sim], ['3D', d.d3], ['PCB', d.pcb], ['Video', d.video]].filter(k => k[1]);
+    c.innerHTML = `<div class="mp">
+      <div class="mp-cv"><img class="bg ${banner ? 'set' : ''}" src="${banner || coverSrc(p)}" alt=""></div>
+      <div class="mp-id"><img class="logo" src="${logo || logoSrc(p)}" alt=""><div class="mp-t"><h4 class="c-name">${esc(p.name)}</h4><span>$${esc(p.ticker)} / ${esc(p.quote)}</span></div></div>
+      <div class="mp-tags"><span class="stage pre">Pre launch</span>${proofs.map(k => `<span class="mini hw">${k[0]}</span>`).join('')}</div>
+      <p>${esc(d.pitch || 'Your one line shows here.')}</p>
+      <div class="mp-f"><img src="/assets/art/anon.svg" alt=""><span>${esc(d.founder || 'Anonymous')}</span><i>${d.links.map(u => I[detect(u)]).join('')}</i></div>
+    </div>`;
     const ck = [[d.name && d.pitch, 'Name and one line'], [d.brief.length >= 40, 'Brief of 40+ characters'], [d.links.length, 'At least one link'], [d.sim || d.d3 || d.pcb, 'One proof of work'], [/^[A-Z0-9]{2,10}$/.test(d.ticker), 'Ticker set']];
     $('#chk').innerHTML = ck.map(k => `<div class="${k[0] ? 'ok' : ''}"><i>${k[0] ? I.check : ''}</i>${k[1]}</div>`).join('');
   };

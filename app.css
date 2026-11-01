@@ -1119,3 +1119,24 @@ html:has(dialog.fnd[open]) body *:not(dialog.fnd,dialog.fnd *){animation-play-st
 .t-rev b{display:inline-flex;align-items:center;gap:8px;min-width:0;font:800 19px/1.2 Archivo,sans-serif;font-stretch:125%;color:var(--text);overflow-wrap:anywhere}
 .t-rev b img{width:20px;height:20px}
 @media (max-width:820px){.t-rev{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* live preview: the head of the real project page, in small */
+.preview{pointer-events:auto}
+.mp{display:grid;background:#0e0f12;box-shadow:inset 0 0 0 1px var(--edge);overflow:hidden;pointer-events:none}
+.mp-cv{aspect-ratio:3/1;overflow:hidden;background:#0a1228}
+.mp-cv img{display:block;width:100%;height:100%;object-fit:cover;filter:blur(14px) brightness(.6);transform:scale(1.15)}
+.mp-cv img.set{filter:none;transform:none}
+.mp-id{display:flex;align-items:flex-end;gap:12px;margin-top:-26px;padding:0 14px;position:relative}
+.mp-id .logo{flex:none;width:64px;height:64px;object-fit:cover;border-radius:4px;background:#000;box-shadow:0 0 0 3px #0e0f12,0 0 0 4px var(--edge-2)}
+.mp-t{min-width:0;padding-bottom:1px}
+.mp-t h4{margin:0;font:800 17px/1.15 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mp-t span{font:500 11.5px var(--mono);color:var(--mut)}
+.mp-tags{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px 0}
+.mp>p{margin:0;padding:10px 14px 0;font-size:13.5px;line-height:1.45;color:#d4d6dc}
+.mp-f{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 14px;border-top:1px solid var(--edge);font-size:12.5px;color:var(--mut)}
+.mp-f img{width:22px;height:22px;border-radius:50%}
+.mp-f span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mp-f i{display:flex;gap:7px;margin-left:auto;font-style:normal;color:var(--text)}
+.mp-f svg{width:14px;height:14px}
+.mp-open{justify-content:center;width:100%}
+.dr-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:14px;padding:9px 12px 9px 16px;background:rgba(12,17,34,.72);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);font-size:13.5px;color:#d7deee}
+.p-cover.real img{filter:none;transform:none;opacity:1}
