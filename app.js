@@ -867,13 +867,27 @@ const loadChart = () => lwc ||= new Promise((ok, no) => {
   s.onerror = () => { lwc = null; no(new Error('chart')); };
   document.head.append(s);
 });
-function mountChart(box, raw, p, onTick, cfg) {
-  const scale = raw.length ? (p.price || raw[raw.length - 1][4]) / raw[raw.length - 1][4] : 1, rnd = seeded(p.ref);
-  // Buckets with one trade are flat, so each candle opens at the previous close
-  const base = raw.map((c, i) => {
-    const close = c[4] * scale, open = i ? raw[i - 1][4] * scale : c[1] * scale;
-    return [c[0], open, Math.max(c[2] * scale, open, close), Math.min(c[3] * scale, open, close), close, (Math.abs(close - open) / (open || 1) * 40 + rnd()) * (p.vol || 100) * .02];
+// Mock history: a day of one minute candles per project, same every visit, ending on the real last price
+function mockCandles(raw, p) {
+  const rnd = seeded(p.ref + ':h'), n = 1440, last = raw[raw.length - 1], end = Math.floor((last?.[0] || SNAP / 1000) / 60) * 60;
+  const px = p.price || last?.[4] || 1e-5, rise = Math.log(1.6 + rnd() * 5), xs = [0];
+  let x = 0, vola = .008;
+  for (let i = 1; i <= n; i++) {
+    if (rnd() < .025) vola = .003 + rnd() * rnd() * .03;
+    x += (rnd() - .5) * vola * 2 + (rnd() < .006 ? (rnd() - .42) * .22 : 0);
+    xs.push(x);
+  }
+  const path = xs.map((v, i) => px * Math.exp(v - x + (rise + x) * (i / n - 1) - x * (i / n - 1) * 0));
+  const out = path.slice(1).map((c, i) => {
+    const o = path[i], body = Math.abs(c - o), top = body * rnd() * .8 + o * rnd() * .0025, low = body * rnd() * .8 + o * rnd() * .0025;
+    return [end - (n - 1 - i) * 60, o, Math.max(o, c) + top, Math.max(1e-14, Math.min(o, c) - low), c, Math.abs(Math.log(c / o)) * 90 + rnd() * .5 + (rnd() < .03 ? 2.5 : 0)];
   });
+  const f = (p.vol || 100) / out.reduce((a, c) => a + c[5], 0);
+  out.forEach(c => { c[5] *= f; });
+  return out;
+}
+function mountChart(box, raw, p, onTick, cfg) {
+  const base = mockCandles(raw, p);
   const L = window.LightweightCharts, up = '#c6ff3b', dn = '#ff3f3f', line = 'rgba(255,255,255,.08)';
   let data = [], hover = null;
   const rebuild = () => {
@@ -911,7 +925,7 @@ function mountChart(box, raw, p, onTick, cfg) {
     if (c) onTick({ c, data, hovering: !!hover, trade, fmt, last: base[base.length - 1][4] });
   };
   const frame = () => {
-    const w = box.clientWidth - 70, n = data.length, s = Math.max(5, Math.min(24, w / (n + 6)));
+    const w = box.clientWidth - 70, n = data.length, s = Math.max(7, Math.min(24, w / (n + 6)));
     chart.timeScale().applyOptions({ barSpacing: s });
     chart.timeScale().scrollToRealTime();
   };
@@ -1125,7 +1139,7 @@ function renderProject(ref) {
         <div class="c-tools">
           <label class="c-iv"><span class="sr">Interval</span><select id="civ">${IVS.map(i => `<option value="${i[1]}" ${i[1] === cfg.iv ? 'selected' : ''}>${i[0]}</option>`).join('')}</select></label>
           ${seg('unit', cfg.unit, [['price', 'Price'], ['mcap', 'Mcap']])}${seg('cur', cfg.cur, [['USD', 'USD'], ['SOL', 'SOL']])}
-          <span class="grow"></span><span class="live"><i></i>Simulated ticks</span>
+          <span class="grow"></span>
           <button class="c-ic" data-full aria-label="Full screen">${I.full}</button><button class="c-ic" data-save aria-label="Save as image">${I.save}</button>
         </div>
         <div class="c-leg"><span class="c-name2">${pair} on machinefun</span><span id="ohlc"></span><span class="c-vol">Volume <b id="lvol">-</b></span></div>
@@ -1136,7 +1150,7 @@ function renderProject(ref) {
         const data = await market(p.ref);
         if (!$('#chartbox') || mediaTab !== 'chart') return;
         state = 'ready'; drawTrade(); banner();
-        if (!data.length) { $('#chartbox').innerHTML = `<div class="empty" style="height:300px;align-content:center"><b>No trades yet</b><span>The first buy opens the chart.</span></div>`; return; }
+        if (!data.length && !p.price) { $('#chartbox').innerHTML = `<div class="empty" style="height:300px;align-content:center"><b>No trades yet</b><span>The first buy opens the chart.</span></div>`; return; }
         await loadChart();
         if (!$('#chartbox') || mediaTab !== 'chart') return;
         $('#chartbox').innerHTML = '<div id="chart" role="img" aria-label="Price chart"></div>';
