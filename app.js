@@ -62,7 +62,7 @@ const SAMPLE = {
   tags: ['robotics', 'machine', 'simulation'],
   proof: { sim: 1, d3: 1 },
   founder: { name: 'Grablab team', role: 'Founders', img: '/assets/logos/grablab.webp' },
-  links: [['globe', 'grablab.fun', 'https://grablab.fun', 'The site, the live machine and the provably fair page.', '/assets/art/gl-threequarter.webp'], ['x', '@grablabfun', 'https://x.com/grablabfun', 'Build updates, renders and proof drops.', '/assets/art/x-claw.webp']],
+  links: [['globe', 'grablab.fun', 'https://grablab.fun', 'The site, the live machine and the provably fair page.', '/assets/art/model-spin.webp'], ['x', '@grablabfun', 'https://x.com/grablabfun', 'Build updates, renders and proof drops.', '/assets/art/gl-mark.webp']],
   milestones: [
     { s: 'done', t: 'Simulation of the full machine', d: 'Physics scene built and playable in SimArena.', proof: 'See the simulation', to: 'sim' },
     { s: 'done', t: 'Interactive 3D model', d: 'Every part of the metal build, exploded and labelled.', proof: 'See the 3D model', to: 'd3' },
@@ -1221,7 +1221,7 @@ function renderProject(ref) {
     const R = (t, s, url, todo) => `<div class="v-row"><div><b>${t}</b><span class="${todo ? 'todo' : ''}">${s}</span></div>${url ? `<a class="btn sm" href="${url}" target="_blank" rel="noopener">${I.ext}Verify</a>` : ''}</div>`;
     const linkList = () => p.links?.length ? `<div class="p-meta">${p.links.map(l => `<a class="ca" href="${l[2]}" target="_blank" rel="noopener">${linkIc(l[0])}${esc(l[1])}</a>`).join('')}</div>` : '';
     const LK = { globe: 'Website', x: 'X', github: 'GitHub', discord: 'Discord', telegram: 'Telegram', doc: 'Docs', youtube: 'YouTube' };
-    const linkCards = () => p.links?.length ? `<div class="lk-e">${p.links.map(l => `<a class="lk-c" href="${l[2]}" target="_blank" rel="noopener"><span class="th ${l[4] ? '' : 'ic'}">${l[4] ? `<img src="${l[4]}" alt="" loading="lazy">` : ''}<i>${linkIc(l[0])}</i></span><span class="tx"><small>${LK[l[0]] || 'Link'}</small><b>${esc(l[1])}</b>${l[3] ? `<span>${esc(l[3])}</span>` : ''}</span><em>${I.ext}</em></a>`).join('')}</div>` : '';
+    const linkCards = () => p.links?.length ? `<div class="lk-e">${p.links.map(l => `<a class="lk-c" href="${l[2]}" target="_blank" rel="noopener"><span class="th">${l[4] ? `<img src="${l[4]}" alt="" loading="lazy">` : `<i>${linkIc(l[0])}</i>`}</span><span class="tx"><small>${linkIc(l[0])}${LK[l[0]] || 'Link'}</small><b>${esc(l[1])}</b>${l[3] ? `<span>${esc(l[3])}</span>` : ''}</span><em>${I.ext}</em></a>`).join('')}</div>` : '';
     if (secTab === 'overview') {
       const empties = ['Simulation', '3D View', 'PCB', 'Video'].filter((n, i) => !pr[['sim', 'd3', 'pcb', 'video'][i]]);
       box.innerHTML = `<p style="max-width:68ch">${esc(p.desc || 'The founder has not written a description yet.')}</p>
