@@ -727,7 +727,7 @@ function buildHome() {
       <div class="seg sort">${[['mc', 'Market cap'], ['vol', 'Volume'], ['hold', 'Holders'], ['new', 'Newest']].map(s => `<button data-sort="${s[0]}">${s[1]}</button>`).join('')}</div>
       <div class="seg view"><button class="icon-btn" data-view="grid" aria-label="Grid view">${I.grid}</button><button class="icon-btn" data-view="list" aria-label="List view">${I.list}</button></div>
     </div>
-    <div class="tags"><button class="tag-b" data-tag="all">All</button>${tagList.map(x => `<button class="tag-b" data-tag="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+    <div class="tags-w"><div class="tags"><button class="tag-b" data-tag="all">All</button>${tagList.map(x => `<button class="tag-b" data-tag="${esc(x)}">${esc(x)}</button>`).join('')}</div>${[[-1, 'M9 3 5 7l4 4', 'Earlier categories'], [1, 'm5 3 4 4-4 4', 'More categories']].map(a => `<button class="tags-n" data-tn="${a[0]}" aria-label="${a[2]}"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${a[1]}"/></svg></button>`).join('')}</div>
     <div id="neterr"></div>
     <div id="gridbox"></div>
     <div class="pgn" id="pgn"></div></div>
@@ -742,6 +742,20 @@ function buildHome() {
   const rail = $('#rail', el);
   dragScroll(rail, () => rail.firstElementChild.offsetWidth + 12);
   rail.addEventListener('scroll', markRail, { passive: true });
+  // Categories stay on one line: the edges fade and an arrow shows when more sit past them
+  const tg = $('.tags', el), tw = tg.parentElement;
+  const markTags = () => {
+    const max = tg.scrollWidth - tg.clientWidth;
+    tw.classList.toggle('l', tg.scrollLeft > 4);
+    tw.classList.toggle('r', tg.scrollLeft < max - 4);
+  };
+  tg.addEventListener('scroll', markTags, { passive: true });
+  new ResizeObserver(markTags).observe(tg);
+  dragScroll(tg);
+  tw.addEventListener('click', e => {
+    const n = e.target.closest('[data-tn]');
+    if (n) tg.scrollBy({ left: +n.dataset.tn * tg.clientWidth * .7, behavior: reduced ? 'auto' : 'smooth' });
+  });
   el.addEventListener('click', e => {
     const rb = e.target.closest('[data-rail]');
     if (rb) return rail.scrollBy({ left: +rb.dataset.rail * (rail.clientWidth + 12), behavior: reduced ? 'auto' : 'smooth' });
