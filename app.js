@@ -257,6 +257,7 @@ function renderTop() {
   markNav();
 }
 function markNav() {
+  fitNav();
   const a = activeNav();
   $$('[data-nav]').forEach(e => e.classList.toggle('on', e.dataset.nav === a));
   const on = $('.pill a.on'), sl = $('.pill .slide');
@@ -660,7 +661,7 @@ function buildHome() {
     <div class="h-sky" aria-hidden="true">
       <img class="plate" src="/assets/art/sky-hero.webp" alt="" fetchpriority="high" decoding="async">
       <img class="fly" src="/assets/art/fly-cut.webp" alt="" fetchpriority="high" decoding="async">
-      <i class="g3"></i><i class="h-grain"></i>
+      <i class="h-grain"></i>
     </div>
     <div class="h-in">
       <div class="copy">
@@ -921,7 +922,7 @@ function mountChart(box, raw, p, onTick, cfg) {
     if (c) onTick({ c, data, hovering: !!hover, trade, fmt, last: base[base.length - 1][4] });
   };
   const frame = () => {
-    const w = box.clientWidth - 70, n = data.length, s = Math.max(5, Math.min(14, w / (n + 6)));
+    const w = box.clientWidth - 70, n = data.length, s = Math.max(5, Math.min(24, w / (n + 6)));
     chart.timeScale().applyOptions({ barSpacing: s });
     chart.timeScale().scrollToRealTime();
   };
@@ -954,6 +955,8 @@ function mountChart(box, raw, p, onTick, cfg) {
 }
 
 /* project */
+const TOKENS = { SOL: '/assets/tokens/sol.svg', USDC: '/assets/tokens/usdc.svg', PEAQ: '/assets/art/peaq-white.svg', CODEC: '/assets/art/codecflow-white.svg' };
+const tokenIcon = t => TOKENS[t] ? `<img src="${TOKENS[t]}" alt="">` : '';
 const SOL_USD = 185, RATES = { SOL: SOL_USD, USDC: 1 }, SUPPLY = 984e6;
 const RANGES = { '1D': 864e2, '5D': 432e3, '1M': 2592e3, '3M': 7776e3, '6M': 15552e3, '1Y': 31536e3 };
 const IVS = [['1m', 60], ['5m', 300], ['1h', 3600], ['1d', 86400]];
@@ -1009,7 +1012,7 @@ function tradeHTML(p, state, amt, o) {
     <div class="seg t-side"><button class="${buy ? 'on' : ''}" data-side="buy">Buy</button><button class="${buy ? '' : 'on'}" data-side="sell">Sell</button></div>
     <div class="t-pair"><span>${esc(p.ticker)}/${esc(quote)}</span><span>Balance <b>${bal == null ? '-' : bal}</b><button data-max ${bal ? '' : 'disabled'}>MAX</button></span></div>
     <label class="field"><span class="sr">Amount</span><input id="amt" inputmode="decimal" value="${esc(amt)}" autocomplete="off">
-      ${buy ? `<select id="pay" aria-label="Pay with">${pays.map(x => `<option ${x === q ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select>` : `<span>${sym}</span>`}</label>
+      ${buy ? `<div class="pick"><button type="button" data-pick-open aria-label="Pay with" aria-haspopup="listbox">${tokenIcon(q)}${esc(q)}<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1.5 3.5 5 7l3.5-3.5"/></svg></button><div class="pick-m" role="listbox">${pays.map(x => `<button type="button" role="option" data-pay="${esc(x)}" class="${x === q ? 'on' : ''}" aria-selected="${x === q}">${tokenIcon(x)}${esc(x)}</button>`).join('')}</div></div>` : `<span>${sym}</span>`}</label>
     <div class="quick">${(buy ? [.1, .5, 1, 5] : [1000, 10000, 100000, 1000000]).map(v => `<button data-amt="${v}">${buy ? v : compact(v).replace('.00', '')}</button>`).join('')}</div>
     <div class="t-est"><b>${rate ? '≈ ' + compact(got) + ' ' + unit : 'Quoted at signing'}</b><span>${rate ? usd(usdIn) : ''}</span></div>
     <div class="t-slip"><span>Slippage</span><div class="seg sm"><button class="${o.slip === 'auto' ? 'on' : ''}" data-slip="auto">Auto</button><button class="${o.slip === 'auto' ? '' : 'on'}" data-slip="custom">Custom</button></div>
@@ -1021,7 +1024,7 @@ function tradeHTML(p, state, amt, o) {
     </div>
     ${tooBig ? `<p class="t-note" style="color:var(--down)">Only ${left.toFixed(1)} SOL left on the curve. Lower the amount.</p>` : ''}
     <button class="btn full lg primary" data-buy ${wallet && (tooBig || a <= 0) ? 'disabled' : ''}>${go}</button>
-    <p class="t-note">Priced from the pool as of <span id="asof">${clock(Date.now() / 1000, true)}</span>. The floor is enforced on chain.<br>Preview quote. No wallet, no transaction.</p>`;
+    <div class="t-rows t-fine"><div>Priced from the pool<b id="asof">${clock(Date.now() / 1000, true)}</b></div><div>Floor<b>Enforced on chain</b></div><div>Quote<b>Preview, no transaction</b></div></div>`;
 }
 function renderProject(ref) {
   const p = ref === 'grablab' ? SAMPLE : byRef.get(ref);
@@ -1241,6 +1244,9 @@ function renderProject(ref) {
     if (e.target.closest('[data-save]')) {
       chart?.shot().toBlob(b => { const u = URL.createObjectURL(b), l = document.createElement('a'); l.href = u; l.download = `${p.ticker}-chart.png`; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1000); });
     }
+    if (e.target.closest('[data-pick-open]')) { e.preventDefault(); e.target.closest('.pick').classList.toggle('open'); }
+    const pay = e.target.closest('[data-pay]');
+    if (pay) { e.preventDefault(); trade.pay = pay.dataset.pay; drawTrade(); }
     const side = e.target.closest('[data-side]');
     if (side) { trade.side = side.dataset.side; amt = trade.side === 'buy' ? '0.5' : '10000'; drawTrade(); }
     const sl = e.target.closest('[data-slip]');
@@ -1263,7 +1269,6 @@ function renderProject(ref) {
     }
   });
   root.addEventListener('change', e => {
-    if (e.target.id === 'pay') { trade.pay = e.target.value; drawTrade(); }
     if (e.target.id === 'civ') { cfg.iv = +e.target.value; chart?.redraw(); }
   });
   root.addEventListener('input', e => {
@@ -1282,6 +1287,7 @@ function renderProject(ref) {
 
 /* launch */
 const LINK_RULES = [['github', /github\.com/i], ['x', /(^|\/\/|\.)(x|twitter)\.com/i], ['discord', /discord\.(gg|com)/i], ['telegram', /(t\.me|telegram\.)/i], ['youtube', /(youtube\.com|youtu\.be)/i], ['doc', /(docs\.|gitbook|notion\.)/i]];
+const tip = t => `<button type="button" class="tip" aria-label="${esc(t)}">i<span>${esc(t)}</span></button>`;
 const LINK_ICONS = ['globe', 'github', 'x', 'discord', 'telegram', 'doc'];
 const detect = u => (LINK_RULES.find(r => r[1].test(u)) || ['globe'])[0];
 function viewLaunch() {
@@ -1351,11 +1357,11 @@ function viewLaunch() {
         <div class="lk-list" id="lks"></div></div>
       <div class="f"><span class="flabel">Proof of work</span><small>Each filled proof adds a tab to your page and a badge to your card. Empty ones stay hidden.</small></div>
       <div class="two">
-        <div class="f"><label for="f-sim">Simulation</label><input class="input" id="f-sim" value="${esc(d.sim)}" placeholder="SimArena scene link"></div>
-        <div class="f"><label for="f-d3">3D model</label><input class="input" id="f-d3" value="${esc(d.d3)}" placeholder="GLB or viewer link"></div>
-        <div class="f"><label for="f-pcb">PCB</label><input class="input" id="f-pcb" value="${esc(d.pcb)}" placeholder="Gerber or KiCad repo"></div>
-        <div class="f"><label for="f-video">Video</label><input class="input" id="f-video" value="${esc(d.video)}" placeholder="The machine, running"></div>
-      </div><div class="f"><label for="f-founder">Founder</label><input class="input" id="f-founder" value="${esc(d.founder)}" placeholder="Name or handle"><small>Projects with a named founder rank higher.</small></div></div>`;
+        <div class="f"><div class="f-l"><label for="f-sim">Simulation</label>${tip('A SimArena scene or any public simulation of the machine. Backers can run it on your page.')}</div><input class="input" id="f-sim" value="${esc(d.sim)}" placeholder="SimArena scene link"></div>
+        <div class="f"><div class="f-l"><label for="f-d3">3D model</label>${tip('A GLB file or viewer link. It opens in the 3D view tab so people can inspect the design.')}</div><input class="input" id="f-d3" value="${esc(d.d3)}" placeholder="GLB or viewer link"></div>
+        <div class="f"><div class="f-l"><label for="f-pcb">PCB</label>${tip('Gerber files or a KiCad repo. Shows the electronics exist and can be checked.')}</div><input class="input" id="f-pcb" value="${esc(d.pcb)}" placeholder="Gerber or KiCad repo"></div>
+        <div class="f"><div class="f-l"><label for="f-video">Video</label>${tip('A clip of the real machine running. It is the strongest proof you can add.')}</div><input class="input" id="f-video" value="${esc(d.video)}" placeholder="The machine, running"></div>
+      </div><div class="f"><div class="f-l"><label for="f-founder">Founder</label>${tip('Your name or handle, shown on the project page. Projects with a named founder rank higher.')}</div><input class="input" id="f-founder" value="${esc(d.founder)}" placeholder="Name or handle"></div></div>`;
       drawLinks(); syncPick();
     }
     if (step === 3) { b.innerHTML = `<div class="form">
@@ -1592,23 +1598,23 @@ addEventListener('popstate', () => {
   if (fnd.el?.open) { fnd.el.close(); return; }
   route();
 });
-// The nav trails the scroll on a soft spring, from open bar to floating pill
-let navS = 0, navT = 0, navAt = 0, navRaf = 0;
-function navStep(now) {
-  navRaf = 0;
-  navS += (navT - navS) * (1 - Math.exp(-Math.min(48, now - navAt) / 120));
-  navAt = now;
-  if (reduced || Math.abs(navT - navS) < .002) navS = navT;
-  else navRaf = requestAnimationFrame(navStep);
-  $('#top').style.setProperty('--s', navS.toFixed(3));
+// The bar keeps one size in layout, only its layers glide, so nothing reflows
+function fitNav() {
+  const t = $('#top');
+  if (!t) return;
+  const w = t.offsetWidth, need = [...t.children].reduce((n, e) => n + e.offsetWidth, 0) + 60;
+  const pill = innerWidth > 1020 ? Math.min(w, Math.max(need, 920)) : w;
+  t.style.setProperty('--dx', (w - pill) / 2 + 'px');
+  t.style.setProperty('--k', (pill / w).toFixed(4));
 }
 addEventListener('scroll', () => {
   const top = $('#top'), y = scrollY;
-  navT = Math.min(1, y / 220);
-  top.classList.toggle('stuck', y > 4);
-  top.classList.toggle('slim', y > 170);
-  if (!navRaf) { navAt = performance.now(); navRaf = requestAnimationFrame(navStep); }
+  if (y > 28) top.classList.add('stuck');
+  else if (y < 10) top.classList.remove('stuck');
 }, { passive: true });
+addEventListener('resize', fitNav, { passive: true });
+addEventListener('click', e => { if (!e.target.closest('.pick')) $('.pick.open')?.classList.remove('open'); });
+addEventListener('keydown', e => { if (e.key === 'Escape') $('.pick.open')?.classList.remove('open'); });
 addEventListener('resize', markNav, { passive: true });
 history.scrollRestoration = 'manual';
 
