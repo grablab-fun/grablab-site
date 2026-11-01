@@ -242,25 +242,27 @@ function markNav() {
   }
 }
 function renderFoot() {
-  $('#foot').innerHTML = `<div class="panel grainy in"><div>
-    <div class="f-cols">
-      <div><a class="brand" href="/" data-l style="padding:0;height:auto;background:none;box-shadow:none"><i></i>machine.fun</a>
-        <p style="margin-top:10px">Fund the hardware that actually gets built.<br>This page is an unofficial concept by Rony.</p></div>
+  const ex = 'target="_blank" rel="noopener"';
+  $('#foot').innerHTML = `<div class="ft-sky" aria-hidden="true"></div><div class="ft-in">
+    <div class="ft-cta"><h2 class="display">Fund the hardware<br>that actually gets built</h2>
+      <div class="ft-acts"><a class="btn primary lg" href="/launch" data-l>Launch a project</a><a class="btn lg" href="/" data-l>Explore</a></div></div>
+    <div class="ft-cols">
+      <div class="ft-brand"><a class="brand mark" href="/" data-l aria-label="machine.fun"><i></i></a>
+        <div class="ft-soc"><a href="https://twitter.com/machinedotfun" ${ex} aria-label="X">${I.x}</a><a href="https://github.com/machinedotfun" ${ex} aria-label="GitHub">${I.github}</a></div></div>
       <div><h4>Product</h4><ul>
         <li><a href="/" data-l>Explore</a></li><li><a href="/launch" data-l>Launch</a></li><li><a href="/rewards" data-l>Rewards</a></li>
-        <li><a href="https://foundry.machine.fun" target="_blank" rel="noopener">Foundry</a></li><li><a href="https://app.simarena.ai" target="_blank" rel="noopener">SimArena</a></li></ul></div>
+        <li><a href="https://foundry.machine.fun" ${ex}>Foundry</a></li><li><a href="https://app.simarena.ai" ${ex}>SimArena</a></li></ul></div>
       <div><h4>Company</h4><ul>
-        <li><a href="https://docs.machine.fun" target="_blank" rel="noopener">Docs</a></li><li><a href="https://machine.fun/terms" target="_blank" rel="noopener">Terms</a></li>
-        <li><a href="https://machine.fun/privacy" target="_blank" rel="noopener">Privacy</a></li><li><a href="https://twitter.com/machinedotfun" target="_blank" rel="noopener">X</a></li>
-        <li><a href="https://github.com/machinedotfun" target="_blank" rel="noopener">GitHub</a></li></ul></div>
-      <div><h4>Risk notice</h4><p>Tokens can be volatile or lose all value. Transactions cannot be reversed. A listing is not an endorsement. Nothing on this page is financial advice.</p></div>
+        <li><a href="https://docs.machine.fun" ${ex}>Docs</a></li><li><a href="https://machine.fun/terms" ${ex}>Terms</a></li><li><a href="https://machine.fun/privacy" ${ex}>Privacy</a></li></ul></div>
+      <div class="ft-risk"><h4>Risk notice</h4><p>Tokens can be volatile or lose all value. Transactions cannot be reversed. A listing is not an endorsement. Nothing on this page is financial advice.</p></div>
     </div>
-    <div class="powered"><span>Data: public snapshot, ${new Date(SNAP).toUTCString().slice(5, 16)}</span>
-      <div class="logos"><a href="https://codecflow.ai" target="_blank" rel="noopener"><img src="/assets/art/codecflow-white.svg" alt="">codecflow</a>
-        <a href="https://peaq.xyz" target="_blank" rel="noopener" aria-label="peaq"><img src="/assets/art/peaq-white.svg" alt="peaq"></a>
-        <a href="https://app.simarena.ai" target="_blank" rel="noopener"><img src="/assets/art/simarena-white.svg" alt="">SimArena</a>
-      </div></div>
-  </div></div>`;
+    <div class="ft-base">
+      <div class="ft-pw"><span>Powered by</span>
+        <a href="https://codecflow.ai" ${ex}><img src="/assets/art/codecflow-white.svg" alt="">codecflow</a><i>×</i>
+        <a href="https://peaq.xyz" ${ex} aria-label="peaq"><img src="/assets/art/peaq-white.svg" alt="peaq"></a><i>×</i>
+        <a href="https://app.simarena.ai" ${ex}><img src="/assets/art/simarena-white.svg" alt="">SimArena</a></div>
+      <span class="ft-by">Unofficial concept by Rony</span></div>
+  </div>`;
 }
 const earnLogos = { 'machine.fun': '<i class="mk"></i>', 'FOMO or PUMP': '<img src="/assets/art/fomo.png" alt=""><img src="/assets/art/pump.png" alt="">' };
 function renderChrome() {
@@ -649,7 +651,7 @@ function buildHome() {
     <div class="h-in">
       <div class="copy">
         <p class="kick">Back the build.</p>
-        <h1 class="display"><span class="l"><span class="chr">Fund the </span><span class="rot">${words.map((w, i) => `<b class="${i ? '' : 'on'}">${w}</b>`).join('')}</span></span><span class="l chr">that actually get built</span></h1>
+        <h1 class="display"><span class="l"><span class="chr">Fund the </span><span class="rot">${words.map((w, i) => `<b class="${i ? '' : 'on'}">${w}</b>`).join('')}</span></span><span class="l"><span class="chr">that actually get built</span></span></h1>
         <p class="sub">Launch a physical product, prove it works, raise on chain through verifiable milestones.</p>
       </div>
       <aside class="h-live" id="hlive"><div class="h-lh"><span class="eyebrow">Closest to the bond</span></div>
