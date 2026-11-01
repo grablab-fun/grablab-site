@@ -51,7 +51,7 @@
   const FEED = [[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0]];   // one feed per drop, each with as many capsules as it has left
   function feedVideo(i){
     const [n, mir, off] = FEED[i % FEED.length];
-    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=8" poster="assets/feeds/feed${n}.jpg?v=8" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
+    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=9" poster="assets/feeds/feed${n}.jpg?v=9" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
   }
   /* project socials (demo projects: icons only, real ones link out) */
   const SOC = {
@@ -438,9 +438,9 @@
     $("#rmLogo", root).src = p.logo; $("#rmName", root).textContent = p.name; $("#rmTk", root).textContent = p.tk; $("#rmCat", root).textContent = p.tags;
     $("#rmSoc", root).innerHTML = socials(p);
     /* three cameras on the same play: the stream, straight down from the top, and the beam sensor in the chute; tap a window to swap it in */
-    const CAMN = { main:"Corner camera", claw:"Claw camera", chute:"Beam sensor" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=8`;
+    const CAMN = { main:"Corner camera", claw:"Claw camera", chute:"Beam sensor" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=9`;
     const pips = [...root.querySelectorAll(".rm-pip")];
-    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "main"; v.src = url("main"); v.poster = `assets/feeds/feed${fn}.jpg?v=8`;
+    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "main"; v.src = url("main"); v.poster = `assets/feeds/feed${fn}.jpg?v=9`;
       pips.forEach(b => { const pv = b.querySelector("video"); pv.src = url(b.dataset.k); pv.dataset.k = b.dataset.k; b.querySelector("span").textContent = CAMN[b.dataset.k]; }); $("#rmCam", root).textContent = CAMN.main; }
     if (!root.dataset.rmPips){ root.dataset.rmPips = "1";
       /* keep the windows on the same moment as the main feed */
@@ -530,7 +530,7 @@
   function demoAddr(c){ return c === "base" ? "0x" + Array.from({length:40}, () => "0123456789abcdef"[Math.random()*16|0]).join("") : b58(44); }
   function enterPay(){
     const pi = PROJECTS.indexOf(proj), [fn, mir] = FEED[pi % FEED.length], pv = $("#payVid", root);
-    if (!pv.src.endsWith(`feed${fn}.mp4?v=8`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=8`; pv.poster = `assets/feeds/feed${fn}.jpg?v=8`; }
+    if (!pv.src.endsWith(`feed${fn}.mp4?v=9`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=9`; pv.poster = `assets/feeds/feed${fn}.jpg?v=9`; }
     pv.classList.toggle("mir", !!mir); pv.play().catch(() => {});
     $("#payMach", root).textContent = `Catching at ${proj.name}`;
     const w = 380 + (proj.left * 37) % 1400, wv = $("#payWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);
@@ -617,10 +617,10 @@
     let cv, cx, W = 0, H = 0, dpr = 1, raf = 0, last = 0, running = false;
     let caps = [], parts = [], st, keys = {}, joyV = { x:0, z:0 };
     let R = 0.085, M3 = false; const TOP = 0.98, R2 = 0.085;
-    /* PHOTO MODE (full simulator): the machine is a real photo of the cabinet (assets/play/plate.webp) and only the claw,
-       the grabbed capsule and shadows are drawn over it. The chute is the acrylic box front-left in that photo. */
+    /* PHOTO MODE (full simulator): the machine is a still of the real model (assets/play/plate.webp) and only the claw,
+       the grabbed capsule and shadows are drawn over it. The still is mirrored, so the prize hole sits front-left in it. */
     const PH = !o.auto && !o.cam ? photoKit() : null;
-    const CHUTE0 = PH ? { x0:-1, x1:-0.56, z0:0.1, z1:0.48, h:0.2 } : { x0:-1, x1:-0.6, z0:0, z1:0.36, h:0.2 };
+    const CHUTE0 = PH ? { x0:-0.85, x1:-0.02, z0:0.02, z1:0.45, h:0.2 } : { x0:-1, x1:-0.6, z0:0, z1:0.36, h:0.2 };
     let CHUTE = CHUTE0, DZ = 1.15;
     let joyEl = null;
     function tilt(ux, uy){
@@ -1189,11 +1189,11 @@
   /* real-photo assets for the full simulator + the mapping from game space to that photo */
   function photoKit(){
     const img = f => { const i = new Image(); i.decoding = "async"; i.src = "assets/play/" + f; return i; };
-    const K = { plate:img("plate.webp"), open:img("claw-open.webp"), shut:img("claw-closed.webp"), cap:img("cap.webp"),
+    const K = { plate:img("plate.webp?v=2"), open:img("claw-open.webp"), shut:img("claw-closed.webp"), cap:img("cap.webp"),
       ox:0, oy:0, dw:1, dh:1,
       /* pile surface in plate coords (0..1): front edge runs off the bottom, back edge under the gantry */
-      FL:[.05, 1.02], FR:[.97, 1.02], BL:[.23, .02], BR:[.73, .05],
-      box:[.09, .54, .31, .62]   /* opening of the acrylic chute */
+      FL:[.2, 1], FR:[.8, 1], BL:[.34, .37], BR:[.67, .37],
+      box:[.29, .64, .45, .72]   /* mouth of the prize hole */
     };
     const PW = 1920, PHh = 1086;
     K.fit = (W, H) => { const s = Math.max(W/PW, H/PHh); K.dw = PW*s; K.dh = PHh*s; K.ox = (W - K.dw)*0.12; K.oy = (H - K.dh)*0.35; };
@@ -1201,7 +1201,7 @@
       const u = (x + 1)/2, L = [K.FL[0] + (K.BL[0]-K.FL[0])*z, K.FL[1] + (K.BL[1]-K.FL[1])*z], R = [K.FR[0] + (K.BR[0]-K.FR[0])*z, K.FR[1] + (K.BR[1]-K.FR[1])*z];
       return { x: K.ox + (L[0] + (R[0]-L[0])*u)*K.dw, y: K.oy + (L[1] + (R[1]-L[1])*u)*K.dh };
     };
-    K.r = z => (0.029 + (0.012 - 0.029)*z) * K.dw;
+    K.r = z => (0.023 + (0.012 - 0.023)*z) * K.dw;
     return K;
   }
   const game = makeGame();
