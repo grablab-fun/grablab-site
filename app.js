@@ -1734,21 +1734,16 @@ function navApply() {
   if (m) m.style.transform = `scale(${(1 - navS * .16).toFixed(4)})`;
   t.dataset.np = navS.toFixed(4);
 }
-let navT = 0, navS = 0, navAt = 0, navRaf = 0;
-function navStep(now) {
-  const top = $('#top'), k = 1 - Math.exp(-Math.min(48, Math.max(0, now - navAt)) / 70);
-  navAt = now;
-  navS = reduced ? navT : navS + (navT - navS) * k;
-  if (Math.abs(navT - navS) < .002) navS = navT;
-  navApply();
-  top.classList.toggle('stuck', navS > .5);
-  navRaf = navS === navT ? 0 : requestAnimationFrame(navStep);
-}
-addEventListener('scroll', () => {
+let navS = 0, navRaf = 0;
+// Locked to the scroll position, the page itself provides the easing
+function navStep() {
   const r = Math.min(1, scrollY / 260);
-  navT = r * r * (3 - 2 * r);
-  if (!navRaf) { navAt = performance.now(); navRaf = requestAnimationFrame(navStep); }
-}, { passive: true });
+  navS = r * r * (3 - 2 * r);
+  navApply();
+  $('#top').classList.toggle('stuck', navS > .5);
+  navRaf = 0;
+}
+addEventListener('scroll', () => { if (!navRaf) navRaf = requestAnimationFrame(navStep); }, { passive: true });
 addEventListener('resize', fitNav, { passive: true });
 document.fonts?.addEventListener('loadingdone', fitNav);
 addEventListener('click', e => {
