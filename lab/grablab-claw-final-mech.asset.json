@@ -10627,6 +10627,36 @@
    ],
    "metalness": 0,
    "roughness": 1
+  },
+  "claw_k": {
+   "rgba": [
+    0.022,
+    0.023,
+    0.027,
+    1
+   ],
+   "metalness": 0.05,
+   "roughness": 0.55
+  },
+  "claw_k2": {
+   "rgba": [
+    0.04,
+    0.042,
+    0.05,
+    1
+   ],
+   "metalness": 0.1,
+   "roughness": 0.42
+  },
+  "tube_s": {
+   "rgba": [
+    0.62,
+    0.64,
+    0.68,
+    1
+   ],
+   "metalness": 0.9,
+   "roughness": 0.32
   }
  },
  "constraint": {

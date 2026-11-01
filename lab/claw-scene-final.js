@@ -57,7 +57,11 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
     lamp_body:{rgba:[.05,.06,.09,1],metalness:.6,roughness:.35}, lamp_lens:{rgba:[1,.97,.88,1],emission:2},
     beam_1:{rgba:[1,.95,.82,.09],emission:.6}, beam_2:{rgba:[1,.95,.82,.05],emission:.4}, beam_3:{rgba:[1,.95,.82,.03],emission:.3},
     wood:{rgba:[.22,.16,.12,1],metalness:.05,roughness:.8}, screen:{rgba:[.2,.45,1,1],emission:1.1}, navy2:{rgba:[.06,.1,.29,1],metalness:.35,roughness:.45},
-    violet:{rgba:[.6,.48,1,1],metalness:.8,roughness:.3,emission:.4}
+    violet:{rgba:[.6,.48,1,1],metalness:.8,roughness:.3,emission:.4},
+    tube:{rgba:[.022,.023,.028,1],metalness:.55,roughness:.52}, panel_k:{rgba:[.016,.017,.02,1],metalness:0,roughness:.8},
+    anod:{rgba:[.05,.055,.07,1],metalness:.7,roughness:.32}, cap_white:{rgba:[.9,.895,.86,1],metalness:0,roughness:.68}, cap_seam:{rgba:[.46,.45,.42,1],metalness:0,roughness:.8}, cap_dot:{rgba:[.05,.05,.045,1],metalness:0,roughness:.9},
+    claw_k:{rgba:[.022,.023,.027,1],metalness:.05,roughness:.55}, claw_k2:{rgba:[.04,.042,.05,1],metalness:.1,roughness:.42}, tube_s:{rgba:[.62,.64,.68,1],metalness:.9,roughness:.32},
+    laser:{rgba:[1,.12,.1,.5],emission:1.4}, opal:{rgba:[1,.93,.8,1],emission:2.4}
   };
   const E = [];
   /* SimArena box size = full extents; B() takes half sizes (MuJoCo style) and doubles them */
@@ -331,8 +335,8 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
   E.push({name:"top_light", transform:{pos:[0,-.1,1.75]}, light:{type:"point", color:"#e6ecff", intensity:1.6, range:2.2}});
   E.push({name:"back_glow", transform:{pos:[0, 2.0, 2.2]}, light:{type:"point", color:"#7d84ff", intensity:2, range:4.5}});
   E.push({name:"chute_glow", transform:{pos:[.3535, -.3535, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.04, range:.22}});
-  E.push({name:"cage_led", transform:{pos:[0, 0, 1.04]}, light:{type:"point", color:"#ffe6c4", intensity:3.2, range:1.7}});
-  E.push({name:"cage_led_low", transform:{pos:[-.15, .1, .72]}, light:{type:"point", color:"#fff0dc", intensity:1.6, range:1.1}});
+  E.push({name:"cage_led", transform:{pos:[0, 0, 1.04]}, light:{type:"point", color:"#ffe6c4", intensity:1.5, range:1.7}});
+  E.push({name:"cage_led_low", transform:{pos:[-.15, .1, .72]}, light:{type:"point", color:"#fff0dc", intensity:.7, range:1.1}});
 
   const task = { instruction:"Grablab Prototype 01. Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the gantry. Lift left lowers the claw on its line, grip left opens it, grip back to the centre closes it on the spring grip, lift right raises it. Carry the capsule to the chute in the front right corner and open the grip: it drops through the break beam into the NFC cradle." };
   return { scene:{ _format:"simarena/scene@1.0", name:"Grablab Prototype 01", sim:{timestep:.002, gravity:[0,0,-9.81], sleep:true}, material, task, entities:E }, asset };

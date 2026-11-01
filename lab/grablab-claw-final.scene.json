@@ -671,6 +671,114 @@
    "metalness": 0.8,
    "roughness": 0.3,
    "emission": 0.4
+  },
+  "tube": {
+   "rgba": [
+    0.022,
+    0.023,
+    0.028,
+    1
+   ],
+   "metalness": 0.55,
+   "roughness": 0.52
+  },
+  "panel_k": {
+   "rgba": [
+    0.016,
+    0.017,
+    0.02,
+    1
+   ],
+   "metalness": 0,
+   "roughness": 0.8
+  },
+  "anod": {
+   "rgba": [
+    0.05,
+    0.055,
+    0.07,
+    1
+   ],
+   "metalness": 0.7,
+   "roughness": 0.32
+  },
+  "cap_white": {
+   "rgba": [
+    0.9,
+    0.895,
+    0.86,
+    1
+   ],
+   "metalness": 0,
+   "roughness": 0.68
+  },
+  "cap_seam": {
+   "rgba": [
+    0.46,
+    0.45,
+    0.42,
+    1
+   ],
+   "metalness": 0,
+   "roughness": 0.8
+  },
+  "cap_dot": {
+   "rgba": [
+    0.05,
+    0.05,
+    0.045,
+    1
+   ],
+   "metalness": 0,
+   "roughness": 0.9
+  },
+  "claw_k": {
+   "rgba": [
+    0.022,
+    0.023,
+    0.027,
+    1
+   ],
+   "metalness": 0.05,
+   "roughness": 0.55
+  },
+  "claw_k2": {
+   "rgba": [
+    0.04,
+    0.042,
+    0.05,
+    1
+   ],
+   "metalness": 0.1,
+   "roughness": 0.42
+  },
+  "tube_s": {
+   "rgba": [
+    0.62,
+    0.64,
+    0.68,
+    1
+   ],
+   "metalness": 0.9,
+   "roughness": 0.32
+  },
+  "laser": {
+   "rgba": [
+    1,
+    0.12,
+    0.1,
+    0.5
+   ],
+   "emission": 1.4
+  },
+  "opal": {
+   "rgba": [
+    1,
+    0.93,
+    0.8,
+    1
+   ],
+   "emission": 2.4
   }
  },
  "task": {
@@ -26312,7 +26420,7 @@
    "light": {
     "type": "point",
     "color": "#ffe6c4",
-    "intensity": 3.2,
+    "intensity": 1.5,
     "range": 1.7
    }
   },
@@ -26328,7 +26436,7 @@
    "light": {
     "type": "point",
     "color": "#fff0dc",
-    "intensity": 1.6,
+    "intensity": 0.7,
     "range": 1.1
    }
   }
