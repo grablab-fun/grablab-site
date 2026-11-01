@@ -482,7 +482,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=22").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=23").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){
@@ -1019,8 +1019,9 @@
         if (keys.ArrowLeft || keys.a) mx = -1; if (keys.ArrowRight || keys.d) mx = 1;
         if (keys.ArrowUp || keys.w) mz = 1; if (keys.ArrowDown || keys.s) mz = -1;
         if (PH && !(joyEl && joyEl.classList.contains("drag"))) tilt(mx, -mz);
-        st.x = Math.max(-0.9, Math.min(0.9, st.x + mx*dt*0.85));
-        st.z = Math.max(0.06, Math.min(0.94, st.z + mz*dt*0.62));
+        const T = M3 ? S3m.TRAVEL : { x0:-0.9, x1:0.9, z0:0.06, z1:0.94 };
+        st.x = Math.max(T.x0, Math.min(T.x1, st.x + mx*dt*0.85));
+        st.z = Math.max(T.z0, Math.min(T.z1, st.z + mz*dt*0.62));
         if (st.held){ st.held.x = st.x; st.held.z = st.z; st.held.y = st.y - 0.15; }
         if (st.phase === "carry" && inChute()){
           st.phase = "release"; st.ph = 0; hint("");

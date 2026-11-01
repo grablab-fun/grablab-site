@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=21";
+import { buildMachine } from "./anatomy-metal.js?v=22";
 
 const $ = s => document.querySelector(s);
 /* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
@@ -11,34 +11,34 @@ const REC = /[?&]rec=1/.test(location.search); if (REC) document.documentElement
 const STORY = REC && /[?&]story=1/.test(location.search);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
 const PARTS = [
-  { id:"frame", n:"01", name:"Frame", spec:"Welded steel tube, matte black", ph:1.2, th:1.3, anchor:[-.49,-.49,.7], ex:[0,0,0],
+  { id:"frame", n:"01", name:"Frame", spec:"Welded steel tube, matte black", ph:1.2, th:1.3, anchor:[-.34,-.34,.7], ex:[0,0,0],
     text:["A welded frame of square steel tube.", "Four posts and four rings: ground, floor, lip and top.", "Two crossbars and a frame round the prize hole carry the floor.", "Adjustable feet below."],
     subs:[["Posts", ["frame_post"]], ["Rings", ["frame_rail"]], ["Floor crossbars", ["frame_floor_rail"]], ["Adjustable feet", ["frame_foot"], { ph:1.42, one:true }]], proof:"Built from the parts list" },
-  { id:"cage", n:"02", name:"Skins and windows", spec:"Black panels, clear windows", ph:1.25, th:1.57, anchor:[-.3,-.3,.25], ex:[0,0,.2],
+  { id:"cage", n:"02", name:"Skins and windows", spec:"Black panels, clear windows", ph:1.25, th:1.57, anchor:[-.2,-.2,.25], ex:[0,0,.2],
     text:["A black floor with one prize hole, front right.", "Two low walls fence the drop zone.", "Clear windows on the front and the right.", "Black panels on the base, the back and the left of the showcase.", "LED profiles on the top edges light the floor.", "The back of the base opens for service.", "Fixed to the frame all round."],
     subs:[["Floor", ["cage_floor"]], ["Drop zone walls", ["cage_prize_wall"]], ["Base panels", ["cage_skin"]], ["Showcase back", ["cage_showcase"]], ["Service door", ["cage_door"]], ["Prize bin door", ["cage_bin_door"]], ["Clear windows", []]], proof:"Watched from every side" },
-  { id:"panel", n:"03", name:"Front panel", spec:"Black panel, anodised plates", ph:1.32, th:1.57, anchor:[0,-.505,.17], ex:[0,-.5,0],
+  { id:"panel", n:"03", name:"Front panel", spec:"Black panel, anodised plates", ph:1.32, th:1.57, anchor:[0,-.355,.17], ex:[0,-.5,0],
     text:["The face of the machine, under the window.", "Emergency stop, scan to play QR, GRABLAB plate."],
     subs:[["Emergency stop", ["panel_estop"]], ["Scan to play", ["panel_qr", "panel_scan"]], ["GRABLAB plate", ["panel_wordmark", "panel_trim"]], ["Panel", ["panel_skin"]]], proof:"No joystick. Browser only" },
-  { id:"electronics", n:"04", name:"Electronics", spec:"Boards and wiring on one plate", ph:1.5, th:1.57, fitK:.8, anchor:[.04,.45,.12], ex:[0,.24,0],
+  { id:"electronics", n:"04", name:"Electronics", spec:"Boards and wiring on one plate", ph:1.5, th:1.57, fitK:.8, anchor:[.19,.3,.12], ex:[0,.24,0],
     text:["Power, motion and claw drivers on one plate.", "A small computer runs the play and the stream.", "A secure chip signs every event.", "Its key never leaves the chip."],
     subs:[["Secure chip", ["el_optiga"]], ["Computer", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
-  { id:"chute", n:"05", name:"Chute and prize bin", spec:"Black chute, printed cradle", ph:1.22, th:.4, anchor:[.354,-.354,.15], ex:[.3,-.3,0],
+  { id:"chute", n:"05", name:"Chute and prize bin", spec:"Black chute, printed cradle", ph:1.22, th:.4, anchor:[.204,-.204,.15], ex:[.3,-.3,0],
     text:["A funnel and a chute under the prize hole.", "A red light beam sees the capsule fall.", "It lands on a padded trapdoor, filmed up close.", "The NFC reader takes its UID.", "Then the trapdoor drops it into the long prize bin."],
     subs:[["Chute and funnel", ["chute_wall", "chute_funnel"]], ["Drop sensor, light beam", ["chute_e3jk", "chute_sensor"]], ["Landing camera", ["chute_c960"]], ["NFC reader", ["chute_acr122u"]], ["Printed cradle", ["chute_cradle", "chute_axle_block"]], ["Trapdoor and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Prize bin", ["chute_bin"]]], proof:"Seen twice: beam and camera" },
   { id:"capsules", n:"06", name:"Capsules", spec:"Printed white shell, NFC sticker", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.98],
     text:["Printed two piece shells, NFC sticker inside.", "Factory UID, read only.", "Size set by the grip test.", "Click one to open it."],
     subs:[["Printed two piece shell", []], ["NFC sticker", []], ["Size set by the grip test", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
-  { id:"gantry", n:"07", name:"Gantry", spec:"Aluminium rails, printed blocks", ph:1.0, th:-1.9, anchor:[.47,-.2,1.16], ex:[0,0,.5],
+  { id:"gantry", n:"07", name:"Gantry", spec:"Aluminium rails, printed blocks", ph:1.0, th:-1.9, anchor:[.325,-.2,1.16], ex:[0,0,.5],
     text:["Two rails front to back, one beam across.", "Printed corner blocks hold the motors and idlers.", "Three stepper motors pull toothed belts.", "End stops on X and Y, a drag chain for the cables."],
     subs:[["Y rails", ["gantry_y_rail"]], ["X beam", ["gantry_x_beam"]], ["Corner blocks", ["gantry_block"]], ["Carriages", ["gantry_y_carriage", "gantry_y_wheel", "gantry_saddle"]], ["Motors", ["gantry_motor"]], ["Belts and pulleys", ["gantry_y_belt", "gantry_x_belt", "gantry_pulley", "gantry_idler", "gantry_belt_cap"]], ["End stops", ["gantry_endstop"]], ["Drag chain", ["gantry_drag_chain", "gantry_chain_ledge"]]], proof:"Position known to the step" },
-  { id:"winch", n:"08", name:"Carriage and winch", spec:"Printed saddle and spool", ph:1.15, th:1.15, chain:["gantry"], anchor:[0,-.04,1.24], ex:[0,-.22,.12],
+  { id:"winch", n:"08", name:"Carriage and winch", spec:"Printed saddle and spool", ph:1.15, th:1.15, chain:["gantry"], anchor:[.011,-.03,1.24], ex:[0,-.22,.12],
     text:["The carriage rides the X beam.", "A stepper winds the line on a printed spool.", "The line leaves through a brass eyelet.", "An end stop finds the top."],
     subs:[["Carriage", ["winch_x_carriage", "winch_x_wheel", "winch_saddle"]], ["Winch motor", ["winch_motor", "winch_mount"]], ["Spool and eyelet", ["winch_spool", "winch_eyelet"]], ["Top end stop", ["winch_z_endstop"]], ["Belt clip", ["winch_belt_cap"]]], proof:"Same depth every play" },
-  { id:"claw", n:"09", name:"Claw", spec:"Black print, three paddles", ph:1.1, th:1.2, chain:["gantry", "winch"], anchor:[-.031,-.056,.8], ex:[0,0,-.2], skip:["claw_coil_cable", "claw_line"],
+  { id:"claw", n:"09", name:"Claw", spec:"Black print, three paddles", ph:1.1, th:1.2, chain:["gantry", "winch"], anchor:[-.02,-.046,.8], ex:[0,0,-.2], skip:["claw_coil_cable", "claw_line"],
     text:["A black printed claw with three long arms.", "Closed, the paddles meet into a bowl under the capsule.", "A 12 V linear actuator down the middle opens and closes them.", "It hangs from a swivel on the line.", "A coiled cable brings the power down."],
     subs:[["Swivel", ["claw_swivel"]], ["Cap", ["claw_cap"]], ["Linear actuator", ["claw_actuator"]], ["Body", ["claw_body", "claw_hub"]], ["Fingers", ["claw_finger", "claw_pad", "claw_lug", "claw_rod", "claw_bearing", "claw_link", "claw_spreader"]], ["Coil cable", ["claw_coil", "claw_cable_tie"]]], proof:"Grip measured before you play" },
-  { id:"camera", n:"10", name:"Play camera", spec:"Webcam on a printed block", ph:1.25, th:-.55, anchor:[-.44,-.44,1.04], ex:[-.15,-.15,.1],
+  { id:"camera", n:"10", name:"Play camera", spec:"Webcam on a printed block", ph:1.25, th:-.55, anchor:[-.29,-.29,1.04], ex:[-.15,-.15,.1],
     text:["A webcam in the front corner, tilted down.", "Its picture is the stream you play from."],
     subs:[["Webcam", ["camera_c920"]], ["Mount", ["camera_block", "camera_clip"]]], proof:"The stream you play" }
 ];
@@ -114,7 +114,7 @@ async function load(){
     if (!o.emissive && !o.map){ m.emissive = m.color.clone(); m.emissiveIntensity = 0; }
     m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity || 0 }; matCache.set(k, m); return m;
   };
-  const scene = await fetch("assets/machine/metal.json?v=2").then(r => r.json());
+  const scene = await fetch("assets/machine/metal.json?v=3").then(r => r.json());
   const M = buildMachine(THREE, { mat, onFont:cb => fonts.then(cb), scene });
   for (const [id, g] of Object.entries(M.parts)){ root.add(g); ents.set(id, g); }
   /* draw calls: siblings with the same material and the same name become one mesh, so a weak GPU draws ~hundreds, not ~1900.
@@ -407,7 +407,7 @@ function shade(){
   }
 }
 /* capsule open: the shell turns its sticker to you and the lid swings back */
-/* capsules: 330 shells drawn as three instanced meshes; the one you hover or open switches to its real meshes */
+/* capsules: 264 shells drawn as three instanced meshes; the one you hover or open switches to its real meshes */
 const inst = { ims:[], hide:new THREE.Matrix4().makeTranslation(0, 0, -50).scale(new THREE.Vector3(1e-4, 1e-4, 1e-4)), m:new THREE.Matrix4() };
 function buildInstances(){
   const c0 = capsules[0]; if (!c0) return; const host = c0.parent, src = [];

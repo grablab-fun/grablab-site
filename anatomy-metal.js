@@ -136,7 +136,7 @@ export function buildMachine(THREE, api){
   /* ---------------- metal build geometry: base64 vertex and index arrays in mm, mapped to metres, flat shaded ---------------- */
   const SD = api.scene, MP = SD.params;
   const b64 = (s, T) => { const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return new T(u.buffer); };
-  const toM = p => { for (let i = 0; i < p.length; i += 3){ p[i] = p[i]/1000 - .5; p[i + 1] = p[i + 1]/1000 - .5; p[i + 2] = (p[i + 2] + 1130)/1000; } };
+  const toM = p => { for (let i = 0; i < p.length; i += 3){ p[i] = p[i]/1000 - .35; p[i + 1] = p[i + 1]/1000 - .35; p[i + 2] = (p[i + 2] + 1130)/1000; } };
   /* keep: optional test on each triangle's centre (mm), to leave parts of a mesh out */
   const mgeo = (n, keep) => { const d = SD.meshes[n]; if (!d) return null; const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(b64(d.v, Float32Array), 3)); g.setIndex(new THREE.BufferAttribute(b64(d.i, d.i32 ? Uint32Array : Uint16Array), 1));
@@ -147,7 +147,7 @@ export function buildMachine(THREE, api){
   const sm = (n, mt, name, parent, keep) => { const g = mgeo(n, keep); if (!g) return null; const o = add(g, mt, 0, 0, 0, 0, 0, 0, name, parent); o.userData.move = (SD.move || {})[n] || "s"; return o; };   // move: s still, y rides the beam, xy rides the X cart
   const SM = (list, mt, name) => list.forEach(n => sm(n, mt, name));
   const LR = a => a.flatMap(n => [n + "_L", n + "_R"]);
-  const mm = v => v/1000 - .5, mz = z => (z + 1130)/1000;
+  const mm = v => v/1000 - .35, mz = z => (z + 1130)/1000;
   const steelT = () => m("tube", { color:0x16171b, roughness:.52, metalness:.55 });          // powder coated, matte black
   const pvc = () => m("pvc", { color:0x101114, roughness:.8, metalness:0, side:THREE.DoubleSide });   // seen from inside too (the simulator looks through the front at the left panel)
   const rivetM = () => m("rivet", { color:0x9ea3ad, roughness:.35, metalness:.9 });
@@ -162,30 +162,30 @@ export function buildMachine(THREE, api){
 
   /* =========================================================================================== front panel: the front base skin, with the E-stop, the QR and the GRABLAB plate */
   use("panel");
-  /* the plates and the E-stop sit on the front base skin, under the window: built facing +y, turned round to face the player at -y, outer face at y -503 */
-  { const g = new THREE.Group(); g.name = "panel_plates"; g.position.set(0, .009, -.02); g.rotation.z = Math.PI; G("panel").add(g); SUBP.panel = g; }
+  /* the plates and the E-stop sit on the front base skin, under the window: built facing +y, turned round to face the player at -y, outer face at y -353 */
+  { const g = new THREE.Group(); g.name = "panel_plates"; g.position.set(0, .159, -.02); g.rotation.z = Math.PI; G("panel").add(g); SUBP.panel = g; }
   sm("box_skin_F", pvc, "panel_skin", G("panel"));
   const IN = .50, PY1 = .512;                                     // inner face (components) and outer face (E-stop, QR, GRABLAB)
   /* E-stop: contact block inside, collar through the 22 mm hole, yellow legend, red mushroom outside */
-  box(-.365, IN - .045, .205, -.335, IN, .235, m("estopbody", { color:0x1b1c20, roughness:.5 }), "panel_estop_contacts");
-  for (let i = 0; i < 4; i++) add(cylY(.0022, .002, 10), steel, -.358 + (i % 2)*.016, IN - .046, .212 + (i > 1 ? .016 : 0), 0, 0, 0, "panel_estop_screw");
-  add(cylY(.042, .002, 56), yellow, -.35, PY1 + .001, .22, 0, 0, 0, "panel_estop_plate");
+  box(-.285, IN - .045, .205, -.255, IN, .235, m("estopbody", { color:0x1b1c20, roughness:.5 }), "panel_estop_contacts");
+  for (let i = 0; i < 4; i++) add(cylY(.0022, .002, 10), steel, -.278 + (i % 2)*.016, IN - .046, .212 + (i > 1 ? .016 : 0), 0, 0, 0, "panel_estop_screw");
+  add(cylY(.042, .002, 56), yellow, -.27, PY1 + .001, .22, 0, 0, 0, "panel_estop_plate");
   const legend = label("legend", .084, .084, (g, w, h) => { g.fillStyle = "#f2c418"; g.beginPath(); g.arc(w/2, h/2, w/2, 0, Math.PI*2); g.fill();
     g.fillStyle = "#141414"; g.textAlign = "center"; g.textBaseline = "middle"; g.font = `800 ${h*.07}px Satoshi, sans-serif`; try { g.letterSpacing = `${h*.006}px`; } catch (e) {} g.fillText("EMERGENCY", w/2, h*.13); g.font = `800 ${h*.085}px Satoshi, sans-serif`; g.fillText("STOP", w/2, h*.875); }, { transparent:true });
-  add(new THREE.CircleGeometry(.042, 56), legend, -.35, PY1 + .00205, .22, ...FACE_POS_Y, "panel_estop_legend");
-  add(cylY(.016, .012, 32), dark, -.35, PY1 + .006, .22, 0, 0, 0, "panel_estop_collar");
-  add(cylY(.02, .006, 48), red, -.35, PY1 + .015, .22, 0, 0, 0, "panel_estop_rim");
-  add(new THREE.SphereGeometry(.02, 40, 16, 0, Math.PI*2, 0, Math.PI/2), red, -.35, PY1 + .018, .22, 0, 0, 0, "panel_estop_mushroom");
+  add(new THREE.CircleGeometry(.042, 56), legend, -.27, PY1 + .00205, .22, ...FACE_POS_Y, "panel_estop_legend");
+  add(cylY(.016, .012, 32), dark, -.27, PY1 + .006, .22, 0, 0, 0, "panel_estop_collar");
+  add(cylY(.02, .006, 48), red, -.27, PY1 + .015, .22, 0, 0, 0, "panel_estop_rim");
+  add(new THREE.SphereGeometry(.02, 40, 16, 0, Math.PI*2, 0, Math.PI/2), red, -.27, PY1 + .018, .22, 0, 0, 0, "panel_estop_mushroom");
   /* scan to play: anodised plate, QR, caption */
   const plateM = m("anod", { color:0x202229, roughness:.32, metalness:.7 });
-  box(.31, PY1, .145, .39, PY1 + .003, .235, plateM, "panel_qr_plate");
+  box(.23, PY1, .145, .31, PY1 + .003, .235, plateM, "panel_qr_plate");
   const qr = label("qr", .06, .06, (g, w, h) => { const N = 25, s = w/(N + 4); g.fillStyle = "#f4f5f8"; g.fillRect(0, 0, w, h); g.fillStyle = "#0c0d10"; let seed = 7; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
     const fin = (cx, cy) => { g.fillRect((cx + 2)*s, (cy + 2)*s, 7*s, 7*s); g.fillStyle = "#f4f5f8"; g.fillRect((cx + 3)*s, (cy + 3)*s, 5*s, 5*s); g.fillStyle = "#0c0d10"; g.fillRect((cx + 4)*s, (cy + 4)*s, 3*s, 3*s); };
     for (let r = 0; r < N; r++) for (let c = 0; c < N; c++){ if ((r < 8 && c < 8) || (r < 8 && c > N - 9) || (r > N - 9 && c < 8)) continue; if (rnd() < .48) g.fillRect((c + 2)*s, (r + 2)*s, s, s); }
     fin(0, 0); fin(N - 7, 0); fin(0, N - 7); });
-  add(new THREE.PlaneGeometry(.06, .06), qr, .35, PY1 + .0031, .2, ...FACE_POS_Y, "panel_qr");
+  add(new THREE.PlaneGeometry(.06, .06), qr, .27, PY1 + .0031, .2, ...FACE_POS_Y, "panel_qr");
   const scan = label("scan", .07, .014, (g, w, h) => { g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "#f2f3fa"; g.font = `700 ${h*.52}px Satoshi, sans-serif`; try { g.letterSpacing = `${h*.09}px`; } catch (e) {} g.fillText("SCAN TO PLAY", w/2, h/2); }, { transparent:true, toneMapped:false });
-  add(new THREE.PlaneGeometry(.07, .014), scan, .35, PY1 + .0031, .1565, ...FACE_POS_Y, "panel_scan");
+  add(new THREE.PlaneGeometry(.07, .014), scan, .27, PY1 + .0031, .1565, ...FACE_POS_Y, "panel_scan");
   /* GRABLAB plate with a chrome hairline */
   box(-.205, PY1, .13, .205, PY1 + .003, .25, plateM, "panel_wordmark_plate");
   box(-.205, PY1 + .003, .2465, .205, PY1 + .0036, .248, steel, "panel_trim"); box(-.205, PY1 + .003, .132, .205, PY1 + .0036, .1335, steel, "panel_trim");
@@ -198,7 +198,7 @@ export function buildMachine(THREE, api){
   /* =========================================================================================== electronics behind the service door, left to right */
   use("electronics");
   /* one plate on the inside of the back tubes, between the ground and the floor ring */
-  { const g = new THREE.Group(); g.name = "el_board"; g.position.set(0, -.025, -.02); G("electronics").add(g); SUBP.electronics = g; }
+  { const g = new THREE.Group(); g.name = "el_board"; g.position.set(.15, -.175, -.02); G("electronics").add(g); SUBP.electronics = g; }
   box(-.47, IN - .0025, .045, .13, IN, .235, pvc, "el_plate");                 // front face 0.5 mm behind the carrier and the case back, so no two faces share a plane
   /* ---- board details: PCB faces drawn on canvas (copper traces, vias, pads, silkscreen), real parts on top ---- */
   const pcbFace = (key, w, h, base, ink, extra) => label(key, w, h, (g, W, H) => {
@@ -363,11 +363,11 @@ export function buildMachine(THREE, api){
   const FZ = .238, FT = .012, HX0 = mm(MP.CHUTE[0]), HX1 = mm(MP.CHUTE[1]), HY0 = mm(MP.CHUTE[2]), HY1 = mm(MP.CHUTE[3]);   // floor top at 250, 243 x 243 hole front right
   sm("box_floor", pvc, "cage_floor");
   /* the floor runs out to the skins: a strip over each floor ring tube, so no 3 mm step reads as a gap along the walls */
-  for (const [x0, y0, x1, y1] of [[-.5, -.5, .5, -.475], [-.5, .475, .5, .5], [-.5, -.475, -.475, .475], [.475, -.475, .5, .475]]) box(x0, y0, .247, x1, y1, .25, pvc, "cage_floor");
+  for (const [x0, y0, x1, y1] of [[-.35, -.35, .35, -.325], [-.35, .325, .35, .35], [-.35, -.325, -.325, .325], [.325, -.325, .35, .325]]) box(x0, y0, .247, x1, y1, .25, pvc, "cage_floor");
   SM(["box_prize_L", "box_prize_B"], pvc, "cage_prize_wall");
   sm("box_skin_L", pvc, "cage_skin");
-  /* the right skin, cut round the prize bin door opening (y -440 to 200, z 35 to 210 from the centre / ground) */
-  for (const [y0, y1, z0, z1] of [[-.5, .5, 0, .035], [-.5, .5, .21, .35], [-.5, -.44, .035, .21], [.2, .5, .035, .21]]) box(.5, y0, z0, .503, y1, z1, pvc, "cage_skin");
+  /* the right skin, cut round the prize bin door opening (y -290 to 160, z 35 to 210 from the centre / ground) */
+  for (const [y0, y1, z0, z1] of [[-.35, .35, 0, .035], [-.35, .35, .21, .35], [-.35, -.29, .035, .21], [.16, .35, .035, .21]]) box(.35, y0, z0, .353, y1, z1, pvc, "cage_skin");
   sm("box_skin_B", pvc, "cage_door");          // the back base skin is the service door
   sm("box_back_cage", pvc, "cage_showcase");
   sm("box_left_cage", pvc, "cage_showcase");   // the left of the showcase is a black panel too, like the back
@@ -375,14 +375,14 @@ export function buildMachine(THREE, api){
   /* LED strip profiles (LPU18: black aluminium 45 degree corner profile with an opal cover) glued on the four inner top edges under the
      top ring, lighting the play floor. Each one is a right angle prism in the wall and ring corner, its cover facing down and in.
      The front and the left runs stop short of the camera block in the front left corner. */
-  { const P = .018, TZ = mz(-25), IN = .4745, alu = m("lpu", { color:0x111214, roughness:.5, metalness:.6 }), opal = m("lpuopal", { color:0xfff4e0, emissive:0xffe9c4, emissiveIntensity:2.2, roughness:.9 });
+  { const P = .018, TZ = mz(-25), IN = .3245, alu = m("lpu", { color:0x111214, roughness:.5, metalness:.6 }), opal = m("lpuopal", { color:0xfff4e0, emissive:0xffe9c4, emissiveIntensity:2.2, roughness:.9 });
     /* legs (ax, 0) and (0, ay) from the corner, extruded along local z and centred; the cover is a 1 mm plate just outside the hypotenuse */
     const prism = (ax, ay, L) => { const s = new THREE.Shape(); s.moveTo(0, 0); s.lineTo(ax, 0); s.lineTo(0, ay); s.closePath(); const g = new THREE.ExtrudeGeometry(s, { depth:L, bevelEnabled:false }); g.translate(0, 0, -L/2); return g; };
     const cover = (ax, ay, L) => { const nx = Math.sign(ax)/Math.SQRT2, ny = Math.sign(ay)/Math.SQRT2, A = [ax*.94, ay*.06], B = [ax*.06, ay*.94], s = new THREE.Shape();
       s.moveTo(A[0] + nx*.0003, A[1] + ny*.0003); s.lineTo(B[0] + nx*.0003, B[1] + ny*.0003); s.lineTo(B[0] + nx*.0013, B[1] + ny*.0013); s.lineTo(A[0] + nx*.0013, A[1] + ny*.0013); s.closePath();
       const g = new THREE.ExtrudeGeometry(s, { depth:L, bevelEnabled:false }); g.translate(0, 0, -L/2); return g; };
     /* runs along y (left, right): rotation x -90 maps local z to world y and local +y to world down. Runs along x (front, back): rotation y 90 maps local z to world x and local +x to world down. */
-    const runs = [[-IN, null, -.41, IN, P, P, [-Math.PI/2, 0, 0]], [IN, null, -IN, IN, -P, P, [-Math.PI/2, 0, 0]], [null, IN, -IN, IN, P, -P, [0, Math.PI/2, 0]], [null, -IN, -.41, IN, P, P, [0, Math.PI/2, 0]]];
+    const runs = [[-IN, null, -.26, IN, P, P, [-Math.PI/2, 0, 0]], [IN, null, -IN, IN, -P, P, [-Math.PI/2, 0, 0]], [null, IN, -IN, IN, P, -P, [0, Math.PI/2, 0]], [null, -IN, -.26, IN, P, P, [0, Math.PI/2, 0]]];
     for (const [x, y, a, b, ax, ay, rot] of runs){ const L = b - a, c = (a + b)/2, px = x === null ? c : x, py = y === null ? c : y;
       add(prism(ax, ay, L), alu, px, py, TZ, ...rot, "cage_led_profile"); add(cover(ax, ay, L), opal, px, py, TZ, ...rot, "cage_led_cover"); } }
   /* no rivets drawn: on the black panels and the glass they read as specks */
@@ -390,7 +390,7 @@ export function buildMachine(THREE, api){
   /* =========================================================================================== chute, cradle, prize cup */
   use("chute");
   /* the first chute design, built round a 120 mm opening and moved under the centre of the 243 mm hole; the floor frame is its top */
-  const CHG = new THREE.Group(); CHG.name = "chute_insert"; CHG.position.set(.0135, -.0135, 0); G("chute").add(CHG); SUBP.chute = CHG;
+  const CHG = new THREE.Group(); CHG.name = "chute_insert"; CHG.position.set(-.1365, .1365, 0); G("chute").add(CHG); SUBP.chute = CHG;
   { const FZ = .222, HX0 = .28, HX1 = .40, HY0 = -.40, HY1 = -.28;
   const CZ0 = .172, CZ1 = FZ, WT = .012;                                 // a 50 deep chute under the floor frame, so the long prize bin fits under it
   const wall = m("wall", { color:0x17181c, roughness:.9, metalness:0 }); wall.userData.xray = .28;      // see-through when the chute is isolated
@@ -498,27 +498,27 @@ export function buildMachine(THREE, api){
   }
   delete SUBP.chute;
   /* a funnel from the edges of the 243 hole down to the chute mouth */
-  { const ft = .2495, fb = .2225, O = [[HX0, HY0, ft], [HX1, HY0, ft], [HX1, HY1, ft], [HX0, HY1, ft]], I = [[.2815, -.4255, fb], [.4255, -.4255, fb], [.4255, -.2815, fb], [.2815, -.2815, fb]], pos = [];
+  { const ft = .2495, fb = .2225, O = [[HX0, HY0, ft], [HX1, HY0, ft], [HX1, HY1, ft], [HX0, HY1, ft]], I = [[.1315, -.2755, fb], [.2755, -.2755, fb], [.2755, -.1315, fb], [.1315, -.1315, fb]], pos = [];
     for (let i = 0; i < 4; i++){ const j = (i + 1) % 4; pos.push(...O[i], ...O[j], ...I[j], ...O[i], ...I[j], ...I[i]); }
     const fg = new THREE.BufferGeometry(); fg.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); fg.computeVertexNormals();
     add(fg, m("funnel", { color:0x2b2e36, roughness:.35, metalness:.2, side:THREE.DoubleSide }), 0, 0, 0, 0, 0, 0, "chute_funnel"); }
-  /* the prize bin: long and low under the play floor, about 32 litres (room for every capsule in the machine), on two rails, emptied through a door in the right skin */
-  const binM = () => m("binM", { color:0x2b2e36, roughness:.5, metalness:.05 }), QX0 = .05, QX1 = .465, QY0 = -.465, QY1 = .3, QZ0 = .008, QZ1 = .118;
+  /* the prize bin: long and low under the play floor, about 17 litres (room for some 140 capsules), on two rails, emptied through a door in the right skin */
+  const binM = () => m("binM", { color:0x2b2e36, roughness:.5, metalness:.05 }), QX0 = .02, QX1 = .315, QY0 = -.315, QY1 = .2, QZ0 = .008, QZ1 = .118;
   rb(QX0, QY0, QZ0, QX1, QY1, QZ0 + .005, binM, "chute_bin", .012);
   rb(QX0, QY0, QZ0 + .005, QX0 + .005, QY1, QZ1, binM, "chute_bin", .002); rb(QX1 - .005, QY0, QZ0 + .005, QX1, QY1, QZ1, binM, "chute_bin", .002);
   rb(QX0, QY0, QZ0 + .005, QX1, QY0 + .005, QZ1, binM, "chute_bin", .002); rb(QX0, QY1 - .005, QZ0 + .005, QX1, QY1, QZ1, binM, "chute_bin", .002);
   rb(QX1, -.1, .07, QX1 + .004, -.02, .09, binM, "chute_bin_handle", .002);
-  for (const x of [QX0 + .03, QX1 - .055]) box(x, -.475, 0, x + .025, .475, QZ0, steelT, "chute_bin_rail");
+  for (const x of [QX0 + .03, QX1 - .055]) box(x, -.325, 0, x + .025, .325, QZ0, steelT, "chute_bin_rail");
   use("cage");
   /* the door turns on its hinge pins (the page swings it open while its card item is picked) */
-  const binDoor = new THREE.Group(); binDoor.name = "cage_bin_door_pivot"; binDoor.position.set(.509, .204, 0); binDoor.userData.binDoor = true; G("cage").add(binDoor);
-  const BD = (x0, y0, z0, x1, y1, z1, mt, nm) => box(x0 - .509, y0 - .204, z0, x1 - .509, y1 - .204, z1, mt, nm, binDoor);
-  BD(.5035, -.44, .035, .5075, .2, .21, pvc, "cage_bin_door");
-  for (const z of [.06, .185]){ BD(.503, .19, z - .012, .509, .2, z + .012, steel, "cage_bin_door_hinge"); box(.507, .199, z - .012, .511, .209, z + .012, steel, "cage_bin_door_hinge"); add(cylZ(.0018, .03, 10), steel, .509, .204, z, 0, 0, 0, "cage_bin_door_hinge_pin"); }
-  BD(.5075, -.42, .11, .5135, -.4, .14, steel, "cage_bin_door_knob");
+  const binDoor = new THREE.Group(); binDoor.name = "cage_bin_door_pivot"; binDoor.position.set(.359, .164, 0); binDoor.userData.binDoor = true; G("cage").add(binDoor);
+  const BD = (x0, y0, z0, x1, y1, z1, mt, nm) => box(x0 - .359, y0 - .164, z0, x1 - .359, y1 - .164, z1, mt, nm, binDoor);
+  BD(.3535, -.29, .035, .3575, .16, .21, pvc, "cage_bin_door");
+  for (const z of [.06, .185]){ BD(.353, .15, z - .012, .359, .16, z + .012, steel, "cage_bin_door_hinge"); box(.357, .159, z - .012, .361, .169, z + .012, steel, "cage_bin_door_hinge"); add(cylZ(.0018, .03, 10), steel, .359, .164, z, 0, 0, 0, "cage_bin_door_hinge_pin"); }
+  BD(.3575, -.27, .11, .3635, -.25, .14, steel, "cage_bin_door_knob");
   /* the E-stop cable: from the switch at the front, under the floor, to the supply behind the service door */
-  long(() => { harness([[.35, -.444, .195], [.27, -.444, .2], [.27, .38, .2], [-.2475, .38, .2], [-.2475, .41, .12], [-.2475, .423, .088], [-.2735, .423, .088]], .0015, wireR, "el_wire_estop");
-    harness([[.35, -.444, .21], [.26, -.444, .212], [.26, .385, .212], [-.3145, .385, .212], [-.3145, .455, .2195]], .0015, wireR, "el_wire_estop"); });
+  long(() => { harness([[.27, -.294, .195], [.12, -.294, .2], [.12, .23, .2], [-.0975, .23, .2], [-.0975, .26, .12], [-.0975, .273, .088], [-.1235, .273, .088]], .0015, wireR, "el_wire_estop");
+    harness([[.27, -.294, .21], [.11, -.294, .212], [.11, .235, .212], [-.1645, .235, .212], [-.1645, .305, .2195]], .0015, wireR, "el_wire_estop"); });
 
   /* =========================================================================================== capsules: clear, one colour, size not fixed */
   use("capsules");
@@ -540,12 +540,12 @@ export function buildMachine(THREE, api){
   let seed = 11; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
   /* a heap, not a grid: balls dropped one by one at random spots (more towards the middle), each settles on the floor or on the
      balls under it; of a few tries per ball the lowest wins, so holes fill first and a soft mound grows. Seeded, so it is the same every load. */
-  const Lc = .471 - CR, spots = [], z0 = FZ + FT + CR + .0002, D2 = 4*CR*CR;
+  const Lc = .321 - CR, spots = [], z0 = FZ + FT + CR + .0002, D2 = 4*CR*CR;
   const clear = (x, y) => !(x > HX0 - .004 - CR && y < HY1 + .004 + CR);
   let hs = 23; const hr = () => (hs = (hs*16807) % 2147483647)/2147483647;
   const restZ = (x, y) => { let z = z0; for (const [bx, by, bz] of spots){ const dd = (x - bx)**2 + (y - by)**2; if (dd < D2) z = Math.max(z, bz + Math.sqrt(D2 - dd) + .0001); } return z; };
-  for (let n = 0; n < 470; n++){ let best = null;
-    for (let t = 0; t < 7; t++){ const g = () => (hr() + hr() + hr() - 1.5)/1.5, x = Math.max(-Lc, Math.min(Lc, -.06 + g()*.62)), y = Math.max(-Lc, Math.min(Lc, .05 + g()*.62));
+  for (let n = 0; n < 300; n++){ let best = null;
+    for (let t = 0; t < 7; t++){ const g = () => (hr() + hr() + hr() - 1.5)/1.5, x = Math.max(-Lc, Math.min(Lc, -.04 + g()*.43)), y = Math.max(-Lc, Math.min(Lc, .035 + g()*.43));
       if (!clear(x, y)) continue; const z = restZ(x, y); if (!best || z < best[2]) best = [x, y, z]; }
     if (best && best[2] < z0 + .125) spots.push(best); }
   /* then let them settle: small gravity steps, pushed apart where they overlap and kept off the walls and the drop zone, so a ball
@@ -692,15 +692,15 @@ export function buildMachine(THREE, api){
   { const tr = .0155*1.25, tx = LX + tr*Math.cos(CA), ty = LY + tr*Math.sin(CA);
     coil.push(new THREE.Vector3(tx, ty, CT - .04), new THREE.Vector3(tx, ty, CT - .03), new THREE.Vector3(tx, ty, CT - .014), new THREE.Vector3(tx + (ccx - tx)*.5, ty + (ccy - ty)*.5, CT - .006), new THREE.Vector3(ccx, ccy, CT + .002)); }
   for (let i = 0; i <= turns*16; i++){ const t = i/(turns*16), a = t*turns*2*Math.PI; coil.push(new THREE.Vector3(ccx + .007*Math.cos(a), ccy + .007*Math.sin(a), CT + .008 + t*(ZT - .03 - (CT + .008)))); }
-  coil.push(new THREE.Vector3(ccx, ccy, ZT), new THREE.Vector3(ccx + .006, ccy - .004, EYE - .006), new THREE.Vector3(XC - .006, mm(458), EYE + .0005));
+  coil.push(new THREE.Vector3(ccx, ccy, ZT), new THREE.Vector3(ccx + .006, ccy - .004, EYE - .006), new THREE.Vector3(XC - .006, mm(MP.Y_REF - 29), EYE + .0005));
   add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(coil, false, "centripetal"), 1800, .0016, 8), m("coil", { color:0x0e0f12, roughness:.38, metalness:.15 }), 0, 0, 0, 0, 0, 0, "claw_coil_cable");
 
 
   /* =========================================================================================== play camera: webcam under a printed block in the front left corner of the top ring */
   use("camera");
   const TOPZ = mz(-25);                                   // underside of the top ring
-  box(-.475, -.475, TOPZ - .04, -.415, -.415, TOPZ, petg, "camera_block");
-  const cg = new THREE.Group(); cg.position.set(-.445, -.445, TOPZ - .052); cg.rotation.z = -Math.PI/4; G("camera").add(cg);
+  box(-.325, -.325, TOPZ - .04, -.265, -.265, TOPZ, petg, "camera_block");
+  const cg = new THREE.Group(); cg.position.set(-.295, -.295, TOPZ - .052); cg.rotation.z = -Math.PI/4; G("camera").add(cg);
   const c2 = new THREE.Group(); c2.rotation.x = -.78; cg.add(c2);
   add(BOX(.04, .03, .012), dark, 0, -.004, .006, 0, 0, 0, "camera_clip", cg); add(BOX(.03, .004, .022), dark, 0, -.017, -.005, 0, 0, 0, "camera_clip", cg);
   add(new THREE.CapsuleGeometry(.0145, .066, 8, 16).rotateZ(Math.PI/2), m("c920", { color:0x111215, roughness:.35, metalness:.2 }), 0, 0, -.008, 0, 0, 0, "camera_c920", c2);
