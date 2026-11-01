@@ -253,10 +253,12 @@
       if (e.target.id === "swFind"){ clearTimeout(tm); tm = setTimeout(() => find(e.target.value), 260); return; }
       if (e.target.id !== "swAmt") return; clearTimeout(tm); tm = setTimeout(update, 380);
     });
-    /* at either end of the token list the wheel moves the page straight away */
+    /* the open token menu holds the wheel: the page moves only once the mouse leaves it */
     root.addEventListener("wheel", e => {
-      const l = e.target.closest?.("#swList"); if (!l) return;
-      if (e.deltaY < 0 ? l.scrollTop <= 0 : l.scrollTop + l.clientHeight >= l.scrollHeight - 1){ e.preventDefault(); scrollBy({ top:e.deltaY, behavior:"instant" }); }
+      if (!e.target.closest?.("#swMenu")) return;
+      const l = $("swList"), inList = e.target.closest("#swList"), end = e.deltaY < 0 ? l.scrollTop <= 0 : l.scrollTop + l.clientHeight >= l.scrollHeight - 1;
+      if (inList && !end) return;
+      e.preventDefault(); if (!inList) l.scrollTop += e.deltaY;
     }, { passive:false });
     root.addEventListener("click", e => {
       const menu = $("swMenu"); if (!menu) return;
