@@ -958,8 +958,9 @@ function mountChart(box, raw, p, onTick, cfg) {
 }
 
 /* project */
-const TOKENS = { SOL: '/assets/tokens/sol.svg', USDC: '/assets/tokens/usdc.svg', PEAQ: '/assets/art/peaq-white.svg', CODEC: '/assets/art/codecflow-white.svg' };
+const TOKENS = { SOL: '/assets/tokens/sol.svg', USDC: '/assets/tokens/usdc.svg', PEAQ: '/assets/tokens/peaq.svg', CODEC: '/assets/tokens/codec.svg' };
 const tokenIcon = t => TOKENS[t] ? `<img src="${TOKENS[t]}" alt="">` : '';
+const tokenPick = (q, list, key, label, attrs = '') => `<div class="pick ${attrs ? 'full' : ''}"><button type="button" ${attrs} data-pick-open aria-label="${label}" aria-haspopup="listbox">${tokenIcon(q)}${esc(q)}<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1.5 3.5 5 7l3.5-3.5"/></svg></button><div class="pick-m" role="listbox">${list.map(x => `<button type="button" role="option" data-${key}="${esc(x)}" class="${x === q ? 'on' : ''}" aria-selected="${x === q}">${tokenIcon(x)}${esc(x)}</button>`).join('')}</div></div>`;
 const SOL_USD = 185, RATES = { SOL: SOL_USD, USDC: 1 }, SUPPLY = 984e6;
 const RANGES = { '1D': 864e2, '5D': 432e3, '1M': 2592e3, '3M': 7776e3, '6M': 15552e3, '1Y': 31536e3 };
 const IVS = [['1m', 60], ['5m', 300], ['1h', 3600], ['1d', 86400]];
@@ -1015,7 +1016,7 @@ function tradeHTML(p, state, amt, o) {
     <div class="seg t-side"><button class="${buy ? 'on' : ''}" data-side="buy">Buy</button><button class="${buy ? '' : 'on'}" data-side="sell">Sell</button></div>
     <div class="t-pair"><span>${esc(p.ticker)}/${esc(quote)}</span><span>Balance <b>${bal == null ? '-' : bal}</b><button data-max ${bal ? '' : 'disabled'}>MAX</button></span></div>
     <label class="field"><span class="sr">Amount</span><input id="amt" inputmode="decimal" value="${esc(amt)}" autocomplete="off">
-      ${buy ? `<div class="pick"><button type="button" data-pick-open aria-label="Pay with" aria-haspopup="listbox">${tokenIcon(q)}${esc(q)}<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1.5 3.5 5 7l3.5-3.5"/></svg></button><div class="pick-m" role="listbox">${pays.map(x => `<button type="button" role="option" data-pay="${esc(x)}" class="${x === q ? 'on' : ''}" aria-selected="${x === q}">${tokenIcon(x)}${esc(x)}</button>`).join('')}</div></div>` : `<span>${sym}</span>`}</label>
+      ${buy ? tokenPick(q, pays, 'pay', 'Pay with') : `<span>${sym}</span>`}</label>
     <div class="quick">${(buy ? [.1, .5, 1, 5] : [1000, 10000, 100000, 1000000]).map(v => `<button data-amt="${v}">${buy ? v : compact(v).replace('.00', '')}</button>`).join('')}</div>
     <div class="t-est"><b>${rate ? '≈ ' + compact(got) + ' ' + unit : 'Quoted at signing'}</b><span>${rate ? usd(usdIn) : ''}</span></div>
     <div class="t-slip"><span>Slippage</span><div class="seg sm"><button class="${o.slip === 'auto' ? 'on' : ''}" data-slip="auto">Auto</button><button class="${o.slip === 'auto' ? '' : 'on'}" data-slip="custom">Custom</button></div>
@@ -1247,7 +1248,6 @@ function renderProject(ref) {
     if (e.target.closest('[data-save]')) {
       chart?.shot().toBlob(b => { const u = URL.createObjectURL(b), l = document.createElement('a'); l.href = u; l.download = `${p.ticker}-chart.png`; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1000); });
     }
-    if (e.target.closest('[data-pick-open]')) { e.preventDefault(); e.target.closest('.pick').classList.toggle('open'); }
     const pay = e.target.closest('[data-pay]');
     if (pay) { e.preventDefault(); trade.pay = pay.dataset.pay; drawTrade(); }
     const side = e.target.closest('[data-side]');
@@ -1369,7 +1369,7 @@ function viewLaunch() {
     }
     if (step === 3) { b.innerHTML = `<div class="form">
       <div class="two"><div class="f"><label for="f-tick">Ticker</label><input class="input mono" id="f-tick" maxlength="10" value="${esc(d.ticker)}" placeholder="SENSE" autocapitalize="characters"><div class="hint" id="tick-h"></div></div>
-      <div class="f"><label for="f-pair">Paired with</label><select class="input" id="f-pair">${['SOL', 'USDC', 'PEAQ', 'CODEC'].map(o => `<option ${d.pair === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div></div>
+      <div class="f"><label for="f-pair">Paired with</label>${tokenPick(d.pair, ['SOL', 'USDC', 'PEAQ', 'CODEC'], 'pair', 'Paired with', 'id="f-pair"')}</div></div>
       <div class="f"><span class="flabel">Ignition</span><small>Optional and permanent. Lock supply in sell orders above the launch price, so the project funds itself as the market grows.</small>
         <div class="seg" style="justify-self:start"><button data-ign="0" class="${d.ignition ? '' : 'on'}">Off</button><button data-ign="1" class="${d.ignition ? 'on' : ''}">On</button></div></div>
       <div class="after-pub"><div class="eyebrow">After you publish</div><span><b>1.</b> Your page goes live with its proofs.</span><span><b>2.</b> You launch the token when you are ready.</span><span><b>3.</b> At 100 ${esc(d.pair)} on the curve it migrates to Raydium.</span></div></div>`; dupHint(); }
@@ -1389,7 +1389,7 @@ function viewLaunch() {
   }
   const root = $v.firstElementChild;
   root.addEventListener('input', e => {
-    const id = e.target.id, map = { 'f-name': 'name', 'f-pitch': 'pitch', 'f-brief': 'brief', 'f-sim': 'sim', 'f-d3': 'd3', 'f-pcb': 'pcb', 'f-video': 'video', 'f-founder': 'founder', 'f-pair': 'pair' };
+    const id = e.target.id, map = { 'f-name': 'name', 'f-pitch': 'pitch', 'f-brief': 'brief', 'f-sim': 'sim', 'f-d3': 'd3', 'f-pcb': 'pcb', 'f-video': 'video', 'f-founder': 'founder' };
     if (map[id]) { d[map[id]] = e.target.value; save(); drawPv(); }
     if (id === 'f-tick') { e.target.value = d.ticker = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); save(); dupHint(); drawPv(); }
     if (id === 'lk') { picked = detect(e.target.value); syncPick(); }
@@ -1410,6 +1410,8 @@ function viewLaunch() {
     if (pk) { picked = pk.dataset.pick; syncPick(); $('#lk').focus(); }
     if (rm) { d.links.splice(+rm.dataset.rm, 1); save(); drawLinks(); drawPv(); }
     if (ig) { d.ignition = ig.dataset.ign === '1'; save(); body(); }
+    const pr = t.closest('[data-pair]');
+    if (pr) { d.pair = pr.dataset.pair; save(); body(); drawPv(); }
     if (t.closest('#lk-add')) addLink();
     if (t.closest('#pub')) {
       if (!wallet) { connect(); body(); return; }
@@ -1564,7 +1566,10 @@ document.addEventListener('click', e => {
   const star = t.closest('[data-star]'), cp = t.closest('[data-copy]'), rem = t.closest('[data-remind]'), retry = t.closest('[data-retry]');
   if (t.closest('[data-search]')) { e.preventDefault(); openSearch(); return; }
   if (t.closest('[data-disc]')) { disconnect(); return; }
-  if (star) { e.preventDefault(); e.stopPropagation(); toggleWatch(star.dataset.star); return; }
+  if (star) { e.preventDefault(); e.stopPropagation(); wiggle($('svg', star)); toggleWatch(star.dataset.star); return; }
+  const inline = t.closest('[data-star-p]'), bar = t.closest('.watch');
+  if (inline) wiggle($('svg', inline));
+  if (bar && !t.closest('a,button')) wiggle($('.w-ic svg', bar));
   if (cp) { e.preventDefault(); e.stopPropagation(); copy(cp.dataset.copy); return; }
   if (rem) {
     e.preventDefault(); e.stopPropagation();
@@ -1602,6 +1607,7 @@ addEventListener('popstate', () => {
   route();
 });
 // The bar keeps one size in layout, only its layers glide, so nothing reflows
+const wiggle = el => { if (el && !reduced) el.animate([{ rotate: '0deg', scale: 1 }, { rotate: '-18deg', scale: 1.25 }, { rotate: '14deg', scale: 1.25 }, { rotate: '-9deg', scale: 1.1 }, { rotate: '5deg', scale: 1.04 }, { rotate: '0deg', scale: 1 }], { duration: 480, easing: 'ease-out' }); };
 function fitNav() {
   const t = $('#top');
   if (!t) return;
@@ -1616,7 +1622,11 @@ addEventListener('scroll', () => {
   else if (y < 10) top.classList.remove('stuck');
 }, { passive: true });
 addEventListener('resize', fitNav, { passive: true });
-addEventListener('click', e => { if (!e.target.closest('.pick')) $('.pick.open')?.classList.remove('open'); });
+addEventListener('click', e => {
+  const o = e.target.closest('[data-pick-open]');
+  if (o) { e.preventDefault(); o.parentElement.classList.toggle('open'); }
+  else $('.pick.open')?.classList.remove('open');
+});
 addEventListener('keydown', e => { if (e.key === 'Escape') $('.pick.open')?.classList.remove('open'); });
 addEventListener('resize', markNav, { passive: true });
 history.scrollRestoration = 'manual';
