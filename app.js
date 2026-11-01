@@ -173,7 +173,7 @@ let cw = null, cwTimers = [];
 function drawConnect() {
   // Reading these globals only tells us what is installed. Nothing is requested from them.
   const list = WALLETS.map((w, i) => ({ w, i, on: !!w[3]() })).sort((a, b) => b.on - a.on);
-  $('.cw-body', cw).innerHTML = `<div class="cw-head"><span class="cw-mark"><i></i></span><div><h2>Sign in</h2><p>Connect a wallet, or use email. A wallet can be added later.</p></div></div>
+  $('.cw-body', cw).innerHTML = `<div class="cw-head"><span class="cw-mark"><i></i></span><p class="kick">Back the build.</p><h2 class="display">Sign in</h2><p class="cw-sub">Connect a wallet, or use email.<br>A wallet can be added later.</p></div>
     <div class="cw-list">${list.map(({ w, i, on }) => `<button data-w="${i}">${walletTile(w)}<b>${w[0]}</b>${on ? '<em>Detected</em>' : I.next}</button>`).join('')}</div>
     <div class="cw-or"><span>or</span></div>
     <form class="cw-mail" novalidate><label>${I.mail}<span class="sr">Email address</span><input id="cw-em" type="email" autocomplete="email" placeholder="you@example.com"></label><button class="btn primary" type="submit" disabled>Continue with email</button></form>
@@ -552,15 +552,40 @@ function syncControls() {
   $$('[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === ex.view));
 }
 function renderWatch() {
-  const w = $('#watch');
+  const w = $('#wrail');
   if (!w) return;
   const items = [...watch].map(r => byRef.get(r)).filter(Boolean);
   const left = w.scrollLeft;
-  w.innerHTML = I.star + (items.length ? items.map(p => {
+  w.innerHTML = (items.length ? items.map(p => {
     const v = liveOf(p), up = !v.change.startsWith('-');
     return `<div class="chip-w" data-live="${esc(p.ref)}"><a href="/project/${esc(p.ref)}" data-l><img src="${logoSrc(p)}" alt=""><b>${esc(p.name)}</b><span class="m" data-f="mc">${usd(v.mc)}</span><span class="${v.change ? (up ? 'up' : 'down') : ''}" data-f="chg">${v.change}</span></a><button class="star on" data-star="${esc(p.ref)}" aria-label="Remove from watchlist">${I.star}</button></div>`;
   }).join('') : '<span>Nothing on your watchlist. Star a project to follow it.</span>');
   w.scrollLeft = left;
+  markWatch();
+}
+function markWatch() {
+  const w = $('#wrail');
+  if (!w) return;
+  const max = w.scrollWidth - w.clientWidth, start = w.scrollLeft <= 1, end = w.scrollLeft >= max - 1;
+  w.classList.toggle('at-start', start);
+  w.classList.toggle('at-end', end);
+  $('[data-wa="-1"]').hidden = start;
+  $('[data-wa="1"]').hidden = end;
+}
+function watchRail(w) {
+  dragScroll(w);
+  w.addEventListener('wheel', e => {
+    const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY, max = w.scrollWidth - w.clientWidth;
+    if (!d || max <= 0 || (d < 0 && w.scrollLeft <= 0) || (d > 0 && w.scrollLeft >= max)) return;
+    e.preventDefault();
+    w.scrollLeft += d;
+  }, { passive: false });
+  w.addEventListener('scroll', markWatch, { passive: true });
+  new ResizeObserver(markWatch).observe(w);
+  w.parentElement.addEventListener('click', e => {
+    const a = e.target.closest('[data-wa]');
+    if (a) w.scrollBy({ left: +a.dataset.wa * Math.max(200, w.clientWidth * .7), behavior: reduced ? 'auto' : 'smooth' });
+  });
 }
 function preRail() {
   const seen = new Set(), pick = /NeuroTech|Making Robotics|Autonomous Web3|fullfilling/i;
@@ -647,7 +672,7 @@ function buildHome() {
       </div>
     </div>
   </section>
-  <div class="watch" id="watch"></div>
+  <div class="watch" id="watch"><span class="w-ic">${I.star}</span><button class="w-arr" data-wa="-1" aria-label="Scroll left" hidden>${I.prev}</button><div class="w-rail" id="wrail"></div><button class="w-arr" data-wa="1" aria-label="Scroll right" hidden>${I.next}</button></div>
   <section class="panel block grainy" id="prelaunch"><div>
     <div class="head"><div class="ttl"><p class="kick">Up next.</p><h2 class="display">Pre launch</h2></div><span class="note">On the list. Not an endorsement.</span><div class="grow"><button class="pg" data-rail="-1" aria-label="Previous projects">${I.prev}</button><button class="pg" data-rail="1" aria-label="More projects">${I.next}</button></div></div>
     <div class="rail" id="rail">${preRail().map(preCard).join('')}</div></div>
@@ -671,7 +696,7 @@ function buildHome() {
     hero.style.setProperty('--px', (e.clientX / innerWidth - .5).toFixed(3));
     hero.style.setProperty('--py', (e.clientY / innerHeight - .5).toFixed(3));
   }, { passive: true });
-  dragScroll($('#watch', el));
+  watchRail($('#wrail', el));
   const rail = $('#rail', el);
   dragScroll(rail, () => rail.firstElementChild.offsetWidth + 12);
   rail.addEventListener('scroll', markRail, { passive: true });

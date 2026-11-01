@@ -125,17 +125,19 @@ main:focus{outline:0}
 .cw{width:min(440px,calc(100vw - 32px));max-width:none;max-height:none;margin:auto;padding:0;border:0;border-radius:16px;background:none;color:inherit;overflow:visible}
 .cw::backdrop{background:rgba(4,4,6,.8)}
 .cw[open]{animation:up .24s var(--ease)}
-.cw-box{position:relative;padding:24px 22px 16px;border-radius:16px;background:#111;box-shadow:inset 0 0 0 1px var(--edge-2),0 40px 90px -30px #000}
+.cw-box{position:relative;isolation:isolate;overflow:hidden;padding:24px 22px 16px;border-radius:16px;background:#0c0c0c;box-shadow:inset 0 0 0 1px var(--edge-2),0 40px 90px -30px #000}
+.cw-box::before{content:"";position:absolute;inset:0 0 auto;z-index:-1;height:330px;background:url(/assets/art/sky-hero.webp) 100% 6%/980px auto no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 42%,transparent);mask-image:linear-gradient(180deg,#000 42%,transparent)}
+.cw-box::after{content:"";position:absolute;inset:0;z-index:-1;background:var(--grain) 0 0/220px;opacity:.34;mix-blend-mode:overlay;pointer-events:none}
 .cw-x{position:absolute;right:14px;top:14px;z-index:2;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.07);color:var(--mut);transition:background .1s,color .1s}
 .cw-x:hover{background:rgba(255,255,255,.1);color:var(--text)}
 .cw-x svg{width:13px;height:13px}
-.cw-head{display:flex;align-items:center;gap:14px;padding-right:34px}
-.cw-head h2{font:700 21px/1.2 Archivo;letter-spacing:-.015em}
+.cw-head{display:grid;justify-items:start;gap:2px}
+.cw-head h2{font-size:28px}
 .cw-wait h2{font-size:20px}
-.cw-head p{margin-top:3px;font-size:13px;line-height:1.4;color:var(--mut)}
-.cw-mark{display:grid;place-items:center;flex:none;width:46px;height:46px;border-radius:10px;background:#f5f5f5}
-.cw-mark i{width:26px;height:26px;background:var(--ink);-webkit-mask:url(/assets/art/favicon.svg) center/44px 44px no-repeat;mask:url(/assets/art/favicon.svg) center/44px 44px no-repeat}
-.cw-list{display:grid;margin-top:20px;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px var(--edge)}
+.cw-sub{margin-top:6px;font-size:13.5px;line-height:1.45;color:#e4e6ea;text-shadow:0 1px 10px rgba(0,10,40,.8)}
+.cw-mark{display:block;margin-bottom:14px}
+.cw-mark i{display:block;width:46px;height:24px;background:#fff;-webkit-mask:url(/assets/art/favicon.svg) center/46px 46px no-repeat;mask:url(/assets/art/favicon.svg) center/46px 46px no-repeat}
+.cw-list{display:grid;margin-top:22px;border-radius:12px;overflow:hidden;background:rgba(10,10,12,.72);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
 .cw-list button{position:relative;display:flex;align-items:center;gap:12px;width:100%;height:56px;padding:0 16px 0 12px;text-align:left}
 .cw-list button+button::before{content:"";position:absolute;left:58px;right:0;top:0;height:1px;background:var(--edge)}
 .cw-list button:hover{background:rgba(255,255,255,.07)}
@@ -233,10 +235,20 @@ main:focus{outline:0}
 .hero p{max-width:470px;color:#c4c4ca}
 
 
-.watch.drag{cursor:grab}
-.watch{display:flex;align-items:center;gap:10px;min-height:44px;margin-top:12px;padding:6px 14px;border-radius:4px;font-size:13px;color:var(--mut);background:rgba(255,255,255,.035);box-shadow:inset 0 0 0 1px var(--edge);overflow-x:auto;scrollbar-width:none}
+.w-rail.drag{cursor:grab}
+.w-rail.drag a{cursor:inherit}
+.watch{display:flex;align-items:center;gap:8px;min-height:54px;margin-top:12px;padding:6px 8px 6px 16px;border-radius:4px;font-size:13px;color:var(--mut);background:rgba(255,255,255,.035);box-shadow:inset 0 0 0 1px var(--edge)}
+.w-ic{display:grid;place-items:center;flex:none;width:18px;margin-right:6px}
+.w-arr{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:4px;color:var(--mut);box-shadow:inset 0 0 0 1px var(--edge);transition:background .1s,color .1s}
+.w-arr[hidden]{display:none}
+.w-arr:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.w-arr svg{width:13px;height:13px}
+.w-rail{--l:28px;--r:28px;display:flex;align-items:center;gap:10px;flex:1;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--l),#000 calc(100% - var(--r)),transparent);mask-image:linear-gradient(90deg,transparent,#000 var(--l),#000 calc(100% - var(--r)),transparent)}
+.w-rail::-webkit-scrollbar{display:none}
+.w-rail.at-start{--l:0px}
+.w-rail.at-end{--r:0px}
 .watch svg{width:16px;height:16px;flex:none}
-.chip-w{--wc:var(--cols);display:flex;align-items:center;gap:4px;flex:0 0 max(250px,calc((100% - 26px - (var(--wc) - 1)*10px)/var(--wc)));height:42px;padding:0 4px 0 5px;border-radius:4px;background:rgba(255,255,255,.07);color:var(--text);overflow:hidden;transition:background .14s,flex-basis .26s var(--ease),opacity .2s,margin .26s var(--ease),padding .26s var(--ease)}
+.chip-w{--wc:var(--cols);display:flex;align-items:center;gap:4px;flex:0 0 max(250px,calc((100% - (var(--wc) - 1)*10px)/var(--wc)));height:42px;padding:0 4px 0 5px;border-radius:4px;background:rgba(255,255,255,.07);color:var(--text);overflow:hidden;transition:background .14s,flex-basis .26s var(--ease),opacity .2s,margin .26s var(--ease),padding .26s var(--ease)}
 .chip-w.out{flex-basis:0;min-width:0;padding:0;margin-right:-10px;opacity:0}
 .chip-w a{display:flex;align-items:center;gap:9px;flex:1;min-width:0;height:100%}
 .chip-w b{flex:1;min-width:0;overflow:hidden;font-size:13px;font-weight:600;white-space:nowrap;text-overflow:ellipsis}
