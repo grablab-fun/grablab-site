@@ -28,6 +28,10 @@ const I = (() => {
     globe: s('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>'),
     github: s('<path d="M9 19c-4 1.3-4-2-6-2.5M15 21v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.200s-1.1-.3-3.5 1.300a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.100a4.3 4.3 0 0 0-.1 3.200A4.7 4.7 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>'),
     x: s('<path d="m4 4 16 16M20 4 4 20"/>', 'stroke-width="2.2"'),
+    wallet: s('<path d="M4 7.5A2.500 2.500 0 0 1 6.500 5H18v3M4 7.500V17a3 3 0 0 0 3 3h13V8H6.500A2.500 2.500 0 0 1 4 7.500z"/><path d="M16.500 14h.01"/>'),
+    chev: s('<path d="m6 9 6 6 6-6"/>', 'stroke-width="2.2"'),
+    prev: s('<path d="m15 5-7 7 7 7"/>', 'stroke-width="2.2"'),
+    next: s('<path d="m9 5 7 7-7 7"/>', 'stroke-width="2.2"'),
     discord: s('<path d="M8.5 7C7 7.3 5.8 7.8 5 8.5 3.5 11.5 3 14.5 3.2 17.5c1.4 1 2.9 1.7 4.5 2l1-1.800M15.5 7c1.5.3 2.7.8 3.5 1.5 1.5 3 2 6 1.8 9-1.4 1-2.9 1.7-4.5 2l-1-1.800M7.5 16.5c3 1.3 6 1.3 9 0"/><circle cx="9.5" cy="12.5" r="1.2"/><circle cx="14.5" cy="12.5" r="1.2"/>'),
     telegram: s('<path d="M21 4 3 11.5l6 2.200L18 7l-6.5 8.5 6 4.5z"/>'),
     doc: s('<path d="M14 3H6v18h12V7zM14 3v4h4M9 13h6M9 17h6"/>'),
@@ -78,7 +82,7 @@ const CHANGES = [
   { g: 'Product', t: 'Media tabs only when real, badges on cards', d: 'Empty tabs disappear. Sim, 3D and PCB badges separate builders from memes in a second.', l: '/project/grablab', img: '7-empty-tabs' },
   { g: 'Product', t: 'A public Verify tab', d: 'Mint, pool, Raydium and explorer links in one place. Migration tx and fee escrow are marked where the API must expose them.', l: '/project/zweAAsj6sIj?tab=verify' },
   { g: 'Product', t: 'Milestones with proof', d: 'The pitch promises verifiable milestones. This tab makes them the core of a project page.', l: '/project/grablab?tab=milestones' },
-  { g: 'Product', t: 'Search that finds things', d: 'Name, ticker, contract, tags and description, with no network call. Press / anywhere.', l: '/#explore' },
+  { g: 'Product', t: 'Search that finds things', d: 'Opens its own tab with every project, pre launch included. Name, ticker, contract, tags and description, with no network call. Press / anywhere.', l: '/#search' },
   { g: 'Product', t: 'Feed instead of pagination', d: 'Explore loads as you scroll.', l: '/#explore' },
 ];
 
@@ -142,12 +146,55 @@ function toggleWatch(ref) {
   $$(`.star[data-star="${ref}"]`).forEach(b => b.classList.toggle('on', watch.has(ref)));
   renderWatch();
 }
+const WALLETS = [['Phantom', '#ab9ff2'], ['Solflare', '#fc7227'], ['Backpack', '#e33e3f'], ['Email or social', '#8a8a94']];
+let cw = null, cwTimers = [];
+function drawConnect() {
+  $('.cw-body', cw).innerHTML = `<div class="cw-head"><span class="cw-mark"><i></i></span><h2 class="display">Connect to machine.fun</h2><p>One wallet for trading, rewards and launches.</p></div>
+    <div class="cw-list">${WALLETS.map((w, i) => `<button data-w="${i}"><span class="cw-tile" style="--c:${w[1]}">${w[0][0]}</span><b>${w[0]}</b>${I.next}</button>`).join('')}</div>
+    <p class="cw-note">Concept demo. No extension is contacted and nothing is signed.</p>`;
+}
+function pickWallet(w) {
+  const body = $('.cw-body', cw);
+  body.innerHTML = `<div class="cw-wait"><span class="cw-ring" style="--c:${w[1]}"><span class="cw-tile" style="--c:${w[1]}">${w[0][0]}</span></span><h2 class="display">Waiting for ${esc(w[0])}</h2>
+    <div class="cw-steps"><div>${I.check}Request account</div><div>${I.check}Sign the welcome message</div><div>${I.check}Load your points</div></div></div>`;
+  $$('.cw-steps div', body).forEach((d, i) => cwTimers.push(setTimeout(() => d.classList.add('ok'), 420 * (i + 1))));
+  cwTimers.push(setTimeout(() => {
+    wallet = { addr: 'Demo...wallet', name: w[0] };
+    store.set('wallet', wallet);
+    renderTop();
+    document.dispatchEvent(new Event('wallet'));
+    $('.cw-wait', body).classList.add('done');
+    $('h2', body).textContent = 'You are in';
+  }, 1500));
+  cwTimers.push(setTimeout(() => { cw.close(); toast('Demo wallet. No extension was contacted.'); }, 2200));
+}
 function connect() {
-  wallet = { addr: 'Demo...wallet' };
-  store.set('wallet', wallet);
-  renderTop();
-  toast('Demo wallet. No extension was contacted.');
-  document.dispatchEvent(new Event('wallet'));
+  if (!cw) {
+    cw = document.createElement('dialog');
+    cw.className = 'cw';
+    cw.setAttribute('aria-label', 'Connect wallet');
+    cw.innerHTML = `<div class="cw-box panel grainy"><button class="cw-x" aria-label="Close">${I.x}</button><div class="cw-body"></div></div>`;
+    document.body.append(cw);
+    cw.addEventListener('click', e => {
+      if (e.target === cw || e.target.closest('.cw-x')) return cw.close();
+      const b = e.target.closest('[data-w]');
+      if (b) pickWallet(WALLETS[+b.dataset.w]);
+    });
+    cw.addEventListener('close', () => cwTimers.splice(0).forEach(clearTimeout));
+  }
+  drawConnect();
+  cw.showModal();
+}
+function toggleAccount() {
+  const had = $('.acct');
+  had?.remove();
+  if (had) return;
+  const e = document.createElement('div');
+  e.className = 'acct panel';
+  e.innerHTML = `<div class="a-id"><span class="av"></span><div><b class="mono">${esc(wallet.addr)}</b><span>${esc(wallet.name || 'Demo')}, demo only</span></div></div>
+    <div class="a-row"><span>Balance</span><b class="mono">12.40 SOL</b></div><div class="a-row"><span>Points</span><b class="mono">12,480</b></div>
+    <div class="a-acts"><a class="btn sm" href="/rewards" data-l>Rewards</a><button class="btn sm" data-disc>Disconnect</button></div>`;
+  $('#top .right').append(e);
 }
 function disconnect() {
   wallet = null; store.set('wallet', null); renderTop();
@@ -168,10 +215,11 @@ function renderTop() {
       ${NAV.map(n => `<a href="${n[0]}" data-l data-nav="${n[0]}">${I[n[2]]}<span>${n[1]}</span></a>`).join('')}
     </nav>
     <div class="right">
+      <button class="btn ico" data-search aria-label="Search projects">${I.search}</button>
       <a class="btn metal" href="/launch" data-l><span style="display:flex;gap:8px;align-items:center">${I.rocket}Launch Project</span></a>
-      <button class="btn conn ${wallet ? '' : 'primary'}" id="conn">${wallet ? esc(wallet.addr) : 'Connect'}</button>
+      <button class="btn conn ${wallet ? 'on' : 'cta'}" id="conn">${wallet ? `<span class="av"></span><span>${esc(wallet.addr)}</span>${I.chev}` : `<span>${I.wallet}Connect</span>`}</button>
     </div>`;
-  $('#conn').onclick = () => wallet ? disconnect() : connect();
+  $('#conn').onclick = () => wallet ? toggleAccount() : connect();
   $('#tabbar').innerHTML = NAV.map(n => `<a href="${n[0]}" data-l data-nav="${n[0]}">${I[n[2]]}${n[1]}</a>`).join('');
   markNav();
 }
@@ -285,32 +333,59 @@ function rowItem(p) {
 }
 
 /* home */
-const ex = { q: '', tag: 'all', stage: 'all', sort: 'mc', view: store.get('view', 'grid'), limit: 16 };
-let homeEl = null, gridBox = null, heroTimer = 0;
+const ex = { tag: 'all', stage: 'all', sort: 'mc', view: store.get('view', 'grid'), page: 0, pages: 0, size: 16 };
+let homeEl = null, gridBox = null, heroTimer = 0, pageTimer = 0;
 const tokens = () => P.filter(p => p.mint);
 function exploreList() {
-  const q = ex.q.trim().toLowerCase();
-  let l = tokens().filter(p => {
+  const l = tokens().filter(p => {
     if (ex.tag !== 'all' && !p.tags.includes(ex.tag)) return false;
     if (ex.stage === 'bond' && p.mig) return false;
     if (ex.stage === 'mig' && !p.mig) return false;
-    if (q && !(p.name + ' ' + p.ticker + ' ' + p.mint + ' ' + p.tags.join(' ') + ' ' + p.desc).toLowerCase().includes(q)) return false;
     return true;
   });
   const s = { mc: (a, b) => (b.mc || 0) - (a.mc || 0), vol: (a, b) => (b.vol || 0) - (a.vol || 0), new: (a, b) => new Date(b.at) - new Date(a.at), hold: (a, b) => (b.holders || 0) - (a.holders || 0) }[ex.sort];
   return l.sort(s);
 }
+// Four rows a page: the column count comes from the same breakpoints as .grid
+const perPage = () => ex.view === 'list' ? 10 : innerWidth > 1180 ? 16 : innerWidth > 820 ? 12 : 8;
 function drawGrid() {
   const list = exploreList(), box = gridBox;
+  ex.size = perPage();
   $('#ex-count').textContent = list.length;
-  const show = list.slice(0, ex.limit);
   if (!list.length) {
-    box.innerHTML = `<div class="empty"><b>Nothing matches "${esc(ex.q)}"</b><span>Search covers names, tickers, contracts, tags and descriptions.</span><button class="btn sm" id="clr">Clear filters</button></div>`;
-    $('#clr').onclick = () => { ex.q = ''; ex.tag = 'all'; ex.stage = 'all'; $('#q').value = ''; syncControls(); drawGrid(); };
-  } else {
-    box.innerHTML = ex.view === 'grid' ? `<div class="grid">${show.map(p => card(p)).join('')}</div>` : `<div class="list">${show.map(rowItem).join('')}</div>`;
+    box.innerHTML = `<div class="empty"><b>Nothing matches these filters</b><button class="btn sm" id="clr">Clear filters</button></div>`;
+    $('#clr').onclick = () => { ex.tag = 'all'; ex.stage = 'all'; ex.page = 0; syncControls(); drawGrid(); };
+    return drawPager(0);
   }
-  $('#more').textContent = list.length > ex.limit ? 'Loading more' : list.length ? 'That is everything' : '';
+  const pages = [];
+  for (let i = 0; i < list.length; i += ex.size) pages.push(list.slice(i, i + ex.size));
+  box.innerHTML = `<div class="pages" id="pages">${pages.map(g => `<div class="page">${ex.view === 'grid' ? `<div class="grid">${g.map(p => card(p)).join('')}</div>` : `<div class="list">${g.map(rowItem).join('')}</div>`}</div>`).join('')}</div>`;
+  $('#pages').addEventListener('scroll', e => {
+    clearTimeout(pageTimer);
+    pageTimer = setTimeout(() => { ex.page = Math.round(e.target.scrollLeft / (e.target.clientWidth + 24)); markPager(); }, 90);
+  }, { passive: true });
+  dragScroll($('#pages'), () => $('#pages').clientWidth + 24);
+  drawPager(pages.length);
+  goPage(ex.page, true);
+}
+function drawPager(n) {
+  ex.pages = n;
+  const arrow = d => `<button class="pg" data-pg="${d}" aria-label="${d < 0 ? 'Previous' : 'Next'} page">${d < 0 ? I.prev : I.next}</button>`;
+  $('#pgn-top').innerHTML = n > 1 ? `<span class="mono mut">Page <span id="pg-now"></span> of ${n}</span>${arrow(-1)}${arrow(1)}` : '';
+  $('#pgn').innerHTML = n > 1 ? `${arrow(-1)}<div class="pg-n">${Array.from({ length: n }, (_, i) => `<button class="pg" data-pg-to="${i}" aria-label="Page ${i + 1}">${i + 1}</button>`).join('')}</div>${arrow(1)}` : '';
+}
+function markPager() {
+  $$('[data-pg-to]').forEach(b => b.classList.toggle('on', +b.dataset.pgTo === ex.page));
+  $$('[data-pg]').forEach(b => { const to = ex.page + +b.dataset.pg; b.disabled = to < 0 || to >= ex.pages; });
+  const t = $('#pg-now');
+  if (t) t.textContent = ex.page + 1;
+}
+function goPage(i, instant) {
+  const w = $('#pages');
+  if (!w) return;
+  ex.page = Math.max(0, Math.min(ex.pages - 1, i));
+  markPager();
+  w.scrollTo({ left: ex.page * (w.clientWidth + 24), behavior: instant || reduced ? 'auto' : 'smooth' });
 }
 function syncControls() {
   $$('[data-tag]').forEach(b => b.classList.toggle('on', b.dataset.tag === ex.tag));
@@ -325,10 +400,46 @@ function renderWatch() {
   w.innerHTML = I.star + (items.length ? items.map(p => `<a class="chip-w" href="/project/${esc(p.ref)}" data-l><img src="${logoSrc(p)}" alt="">${esc(p.name)}</a>`).join('') : '<span>Nothing on your watchlist. Star a project to follow it.</span>');
 }
 function preRail() {
-  const pick = /NeuroTech|Making Robotics|Autonomous Web3|fullfilling/i;
-  const seen = new Set();
-  const others = P.filter(p => !p.mint && pick.test(p.name + ' ' + p.desc) && !seen.has(p.name) && seen.add(p.name)).slice(0, 4).map(p => ({ ...p, pre: true }));
-  return [SAMPLE, ...others];
+  const seen = new Set(), pick = /NeuroTech|Making Robotics|Autonomous Web3|fullfilling/i;
+  const real = P.filter(p => !p.mint && p.logo && /\s/.test(p.desc || '') && p.desc !== p.name && !seen.has(p.name) && seen.add(p.name));
+  const rank = p => pick.test(p.name + ' ' + p.desc) ? 0 : 1;
+  return [SAMPLE, ...real.sort((a, b) => rank(a) - rank(b)).slice(0, 11).map(p => ({ ...p, pre: true }))];
+}
+// Mouse drag for the sideways lists, landing on a whole card
+function dragScroll(w, step) {
+  let on = false, moved = false, x = 0, s = 0, dx = 0;
+  w.classList.add('drag');
+  w.addEventListener('dragstart', e => e.preventDefault());
+  w.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || e.button || e.target.closest('button')) return;
+    on = true; moved = false; x = e.clientX; s = w.scrollLeft; dx = 0;
+  });
+  w.addEventListener('pointermove', e => {
+    if (!on) return;
+    dx = e.clientX - x;
+    if (!moved) {
+      if (Math.abs(dx) < 6) return;
+      moved = true; w.setPointerCapture(e.pointerId); w.classList.add('dragging');
+    }
+    w.scrollLeft = s - dx;
+  });
+  const up = () => {
+    if (!on) return;
+    on = false;
+    if (!moved) return;
+    const st = step();
+    w.scrollTo({ left: Math.round(w.scrollLeft / st + (dx < 0 ? .3 : -.3)) * st, behavior: reduced ? 'auto' : 'smooth' });
+    setTimeout(() => w.classList.remove('dragging'), 460);
+  };
+  w.addEventListener('pointerup', up);
+  w.addEventListener('pointercancel', up);
+  w.addEventListener('click', e => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+}
+function markRail() {
+  const w = $('#rail');
+  if (!w) return;
+  const max = w.scrollWidth - w.clientWidth - 2;
+  $$('[data-rail]').forEach(b => { b.disabled = +b.dataset.rail < 0 ? w.scrollLeft < 2 : w.scrollLeft > max; });
 }
 function preCard(p) {
   const on = reminds.has(p.ref);
@@ -362,13 +473,13 @@ function buildHome() {
   </div>
   <div class="watch" id="watch"></div>
   <section class="panel block grainy" id="prelaunch"><div>
-    <div class="head"><h2 class="display">Pre launch</h2><span class="note">On the list. Not an endorsement.</span></div>
-    <div class="rail">${preRail().map(preCard).join('')}</div></div>
+    <div class="head"><h2 class="display">Pre launch</h2><span class="note">On the list. Not an endorsement.</span><div class="grow"><button class="pg" data-rail="-1" aria-label="Previous projects">${I.prev}</button><button class="pg" data-rail="1" aria-label="More projects">${I.next}</button></div></div>
+    <div class="rail" id="rail">${preRail().map(preCard).join('')}</div></div>
   </section>
   <section class="panel block grainy" id="explore"><div>
-    <div class="head"><h2 class="display">Explore</h2><span class="count" id="ex-count">0</span></div>
+    <div class="head"><h2 class="display">Explore</h2><span class="count" id="ex-count">0</span><div class="grow pgn-top" id="pgn-top"></div></div>
     <div class="controls">
-      <label class="search">${I.search}<span class="sr">Search projects</span><input id="q" type="search" autocomplete="off" placeholder="Search projects"><kbd>/</kbd></label>
+      <button class="search" type="button" data-search>${I.search}<span>Search projects</span><kbd>/</kbd></button>
       <div class="seg">${[['all', 'All'], ['bond', 'Bonding'], ['mig', 'Migrated']].map(s => `<button data-stage="${s[0]}">${s[1]}</button>`).join('')}</div>
       <div class="seg sort">${[['mc', 'Market cap'], ['vol', 'Volume'], ['hold', 'Holders'], ['new', 'Newest']].map(s => `<button data-sort="${s[0]}">${s[1]}</button>`).join('')}</div>
       <div class="seg"><button class="icon-btn" data-view="grid" aria-label="Grid view">${I.grid}</button><button class="icon-btn" data-view="list" aria-label="List view">${I.list}</button></div>
@@ -376,13 +487,21 @@ function buildHome() {
     <div class="tags"><button class="tag-b" data-tag="all">All</button>${tagList.map(x => `<button class="tag-b" data-tag="${esc(x)}">${esc(x)}</button>`).join('')}</div>
     <div id="neterr"></div>
     <div id="gridbox"></div>
-    <div class="sentinel" id="sent"></div>
-    <div class="more" id="more"></div></div>
+    <div class="pgn" id="pgn"></div></div>
   </section>`;
   homeEl = el; gridBox = $('#gridbox', el);
-  const input = $('#q', el);
-  input.addEventListener('input', () => { ex.q = input.value; ex.limit = 16; drawGrid(); });
+  const rail = $('#rail', el);
+  dragScroll(rail, () => rail.firstElementChild.offsetWidth + 12);
+  rail.addEventListener('scroll', markRail, { passive: true });
   el.addEventListener('click', e => {
+    const rb = e.target.closest('[data-rail]');
+    if (rb) return rail.scrollBy({ left: +rb.dataset.rail * (rail.clientWidth + 12), behavior: reduced ? 'auto' : 'smooth' });
+    const pg = e.target.closest('[data-pg],[data-pg-to]');
+    if (pg) {
+      goPage(pg.dataset.pgTo ? +pg.dataset.pgTo : ex.page + +pg.dataset.pg);
+      if (pg.closest('#pgn')) scrollTo({ top: $('#explore').getBoundingClientRect().top + scrollY - 80, behavior: reduced ? 'auto' : 'smooth' });
+      return;
+    }
     const b = e.target.closest('[data-tag],[data-stage],[data-sort],[data-view]');
     if (!b) return;
     const d = b.dataset;
@@ -390,11 +509,8 @@ function buildHome() {
     if (d.stage) ex.stage = d.stage;
     if (d.sort) ex.sort = d.sort;
     if (d.view) { ex.view = d.view; store.set('view', d.view); }
-    ex.limit = 16; syncControls(); drawGrid();
+    ex.page = 0; syncControls(); drawGrid();
   });
-  new IntersectionObserver(es => {
-    if (es[0].isIntersecting && location.pathname === '/' && ex.limit < exploreList().length) { ex.limit += 16; drawGrid(); }
-  }, { rootMargin: '700px' }).observe($('#sent', el));
 }
 function startRot() {
   clearInterval(heroTimer);
@@ -411,12 +527,115 @@ function startRot() {
     setTimeout(() => a.classList.remove('out'), 520);
   }, 2200);
 }
+function fitPages() {
+  if (perPage() === ex.size) return;
+  ex.page = Math.floor(ex.page * ex.size / perPage());
+  drawGrid();
+}
 function viewHome() {
   if (!homeEl) buildHome();
   $('#view').replaceChildren(homeEl);
   $('#neterr', homeEl).innerHTML = net === 'down' ? `<div class="err-banner" style="margin-bottom:12px">${I.alert.replace('<svg', '<svg width="18" height="18"')}<span>Live prices are unavailable. Showing the last snapshot.</span><button class="btn sm" data-retry>Retry</button></div>` : '';
-  syncControls(); drawGrid(); renderWatch(); startRot();
+  syncControls(); drawGrid(); renderWatch(); startRot(); markRail();
+  addEventListener('resize', fitPages, { passive: true });
+  onLeave(() => removeEventListener('resize', fitPages));
   onLeave(() => clearInterval(heroTimer));
+}
+
+/* search tab: every project, filtered on the client */
+const fnd = { el: null, tab: 'all', i: 0, rows: [], skip: false };
+function searchPool() {
+  const seen = new Set();
+  return [SAMPLE, ...P].filter(p => p.mint || (!seen.has(p.name.toLowerCase()) && seen.add(p.name.toLowerCase())));
+}
+function searchScore(p, q) {
+  const name = p.name.toLowerCase(), tick = (p.ticker || '').toLowerCase();
+  if (name === q || tick === q) return 0;
+  if (name.startsWith(q) || tick.startsWith(q)) return 1;
+  if (name.includes(' ' + q)) return 2;
+  if (name.includes(q) || tick.includes(q)) return 3;
+  if ((p.mint || '').toLowerCase().includes(q)) return 4;
+  if ((p.tags || []).join(' ').toLowerCase().includes(q)) return 5;
+  if ((p.desc || '').toLowerCase().includes(q)) return 6;
+  return -1;
+}
+const hl = (t, q) => {
+  const s = String(t || ''), i = q ? s.toLowerCase().indexOf(q) : -1;
+  return i < 0 ? esc(s) : esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
+};
+function drawSearch() {
+  const q = $('#fq').value.trim().toLowerCase(), box = $('#fnd-list');
+  const hits = searchPool().map(p => [p, q ? searchScore(p, q) : 0]).filter(a => a[1] >= 0).sort((a, b) => a[1] - b[1] || (b[0].mc || 0) - (a[0].mc || 0));
+  const count = { all: hits.length, bond: 0, mig: 0, pre: 0 };
+  hits.forEach(a => count[stageOf(a[0])]++);
+  $$('[data-fnd]').forEach(b => { b.classList.toggle('on', b.dataset.fnd === fnd.tab); $('i', b).textContent = count[b.dataset.fnd]; });
+  fnd.rows = hits.map(a => a[0]).filter(p => fnd.tab === 'all' || stageOf(p) === fnd.tab);
+  fnd.i = 0;
+  box.innerHTML = fnd.rows.length ? fnd.rows.map((p, i) => `<a class="fnd-row" role="option" id="fnd-${i}" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}">
+    <img src="${logoSrc(p)}" alt="" loading="lazy" width="40" height="40">
+    <div class="n"><b>${hl(p.name, q)}</b><span>${p.ticker ? '$' + hl(p.ticker, q) + ' ' : ''}${p.sample ? 'Full sample' : stageTxt[stageOf(p)]}</span></div>
+    <span class="num">${p.mint ? usd(p.mc) : 'Date TBD'}</span>
+    <span class="chg ${p.change ? (isUp(p) ? 'up' : 'down') : 'mut2'}">${p.change || ''}</span></a>`).join('')
+    : `<div class="empty"><b>Nothing matches "${esc($('#fq').value)}"</b><span>Search covers names, tickers, contracts, tags and descriptions.</span></div>`;
+  box.scrollTop = 0;
+  markSearch();
+}
+function markSearch(scroll) {
+  $$('.fnd-row.on', fnd.el).forEach(r => { r.classList.remove('on'); r.removeAttribute('aria-selected'); });
+  const r = $('#fnd-' + fnd.i);
+  if (r) { r.classList.add('on'); r.setAttribute('aria-selected', 'true'); if (scroll) r.scrollIntoView({ block: 'nearest' }); }
+  $('#fq').setAttribute('aria-activedescendant', r ? r.id : '');
+}
+function buildSearch() {
+  const el = fnd.el = document.createElement('dialog');
+  el.className = 'fnd';
+  el.setAttribute('aria-label', 'Search projects');
+  el.innerHTML = `<div class="fnd-box panel grainy">
+    <div class="fnd-bar"><label class="search">${I.search}<span class="sr">Search projects</span><input id="fq" type="search" role="combobox" aria-expanded="true" aria-controls="fnd-list" autocomplete="off" placeholder="Name, ticker, contract or tag"></label><button class="btn sm" id="fnd-x">Close</button></div>
+    <div class="fnd-tabs"><div class="seg sm">${[['all', 'All'], ['bond', 'Bonding'], ['mig', 'Migrated'], ['pre', 'Pre launch']].map(t => `<button data-fnd="${t[0]}">${t[1]} <i></i></button>`).join('')}</div></div>
+    <div class="fnd-list" id="fnd-list" role="listbox"></div>
+    <div class="fnd-ft"><span><kbd>Up</kbd><kbd>Down</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></div></div>`;
+  document.body.append(el);
+  $('#fq', el).addEventListener('input', drawSearch);
+  $('#fnd-list', el).addEventListener('pointermove', e => {
+    const r = e.target.closest('.fnd-row');
+    if (r && +r.id.slice(4) !== fnd.i) { fnd.i = +r.id.slice(4); markSearch(); }
+  });
+  el.addEventListener('click', e => {
+    if (e.target === el || e.target.closest('#fnd-x')) return closeSearch();
+    const t = e.target.closest('[data-fnd]');
+    if (t) { fnd.tab = t.dataset.fnd; drawSearch(); $('#fq').focus(); }
+  });
+  el.addEventListener('cancel', e => { e.preventDefault(); closeSearch(); });
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); closeSearch(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (fnd.rows.length) { fnd.i = (fnd.i + (e.key === 'ArrowDown' ? 1 : -1) + fnd.rows.length) % fnd.rows.length; markSearch(true); }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const r = $('#fnd-' + fnd.i);
+      if (r) go(r.href);
+    }
+  });
+}
+function openSearch() {
+  if (!P.length) return;
+  if (!fnd.el) buildSearch();
+  if (fnd.el.open) return $('#fq').focus();
+  saveY();
+  // Its own history entry, so Back closes the tab instead of leaving the page
+  history.pushState({ search: 1, y: scrollY }, '');
+  fnd.tab = 'all'; $('#fq').value = '';
+  fnd.el.showModal();
+  drawSearch();
+  $('#fq').focus();
+}
+function closeSearch() {
+  if (!fnd.el?.open) return;
+  fnd.el.close();
+  fnd.skip = true;
+  history.back();
 }
 
 /* market data, one fetch per project, cached, prefetched on hover */
@@ -726,10 +945,10 @@ function viewLaunch() {
     <section class="panel l-hero grainy"><img src="/assets/art/bench.webp" alt=""><div>
       <h1 class="display">Put your machine on chain</h1><p>No account needed to start. Four steps, and you sign in only to publish.</p></div></section>
     <section class="panel block grainy" style="margin:0"><div><div class="steps" id="steps"></div><div id="sbody"></div></div></section>
-    <aside class="side-sticky">
-      <div class="preview"><div class="eyebrow" style="margin-bottom:8px">Live preview</div><div id="pv"></div></div>
-      <section class="panel block grainy" style="margin:0;padding:16px"><div class="check" id="chk"></div></section>
-    </aside></div></div>`;
+    <aside class="panel grainy l-side"><div class="side-sticky">
+      <div class="preview"><div class="eyebrow">Live preview</div><div id="pv"></div></div>
+      <div class="l-ready"><div class="eyebrow">Ready to publish</div><div class="check" id="chk"></div></div>
+    </div></aside></div></div>`;
   const save = () => store.set('draft', d);
   const pvObj = () => ({ ref: 'draft', name: d.name || 'Your project', ticker: d.ticker || 'TICKER', tags: [], at: new Date(SNAP - 60000).toISOString(), mc: 4600, quote: d.pair, prog: 0, proof: { sim: d.sim, d3: d.d3, pcb: d.pcb }, spark: [], logo: false, cover: false });
   const drawPv = () => {
@@ -859,26 +1078,20 @@ function viewRewards() {
       <p class="mut">Points track your trading and holding from your wallet, on FOMO and PUMP too. Projects can add their own rewards on top.</p>
       ${wallet ? `<div class="pts"><span class="num">${int(me)}</span><span class="mut">points, rank #1,204</span></div>` : '<div><button class="btn primary" data-conn>Connect to see your points</button></div>'}
     </div><img src="/assets/art/medal.webp" alt="" decoding="async"></section>
-    <div class="r-grid">
-      <section class="panel block grainy"><div>
-        <div class="head"><h2 class="display">How you earn</h2><span class="note">Sample numbers</span></div>
-        <table><thead><tr><th>Action</th><th>Points</th></tr></thead><tbody>
-          <tr><td>Trade on machine.fun<small>Any project, buy or sell</small></td><td>10 per $100</td></tr>
-          <tr><td>Trade on FOMO or PUMP<small>Same wallet, counted automatically</small></td><td>5 per $100</td></tr>
-          <tr><td>Hold a project<small>Counted daily on your balance</small></td><td>2 per $100 a day</td></tr>
-          <tr><td>Back a bonding project<small>Buy before it migrates</small></td><td>x2 multiplier</td></tr>
-          <tr><td>Project rewards<small>Set by each founder</small></td><td>Varies</td></tr>
-        </tbody></table></div>
-      </section>
-      <section class="panel block grainy"><div>
-        <div class="head"><h2 class="display">Leaderboard</h2><span class="note">Sample wallets</span></div>
-        <table class="lb"><tbody>${list.map((r, i) => `<tr class="${r[0] === 'You' ? 'me' : ''}"><td>${r[0] === 'You' ? '1,204' : i + 1}</td><td class="mono">${esc(r[0])}</td><td>${int(r[1])}</td></tr>`).join('')}</tbody></table></div>
-      </section>
-    </div>
-    <section class="panel block grainy"><div class="how">
-      <div><b>What you get</b><p>Points decide your share when a season closes.</p></div>
-      <div><b>When</b><p>Your counter updates after every trade. Seasons close on a date shown here.</p></div>
-      <div><b>How to check</b><p>Every point links to the trade that earned it.</p></div>
+    <section class="panel block grainy"><div>
+      <div class="head"><h2 class="display">How you earn</h2><span class="note">Sample numbers</span></div>
+      <div class="art-grid">
+        ${[['earn-trade', 'Trade', 'Any project, buy or sell. FOMO and PUMP count on the same wallet.', [['machine.fun', '10 per $100'], ['FOMO or PUMP', '5 per $100']]],
+          ['earn-hold', 'Hold and back', 'Counted daily on your balance. Buy before a project migrates to double it.', [['Holding', '2 per $100 a day'], ['Bonding', 'x2 multiplier']]],
+          ['earn-vault', 'Project rewards', 'Founders can add their own rewards on top of the season.', [['Set by each founder', 'Varies']]]].map(a => `<article class="art-c"><img src="/assets/art/${a[0]}.webp" alt="" loading="lazy" decoding="async"><div><h3>${a[1]}</h3><p>${a[2]}</p><dl>${a[3].map(r => `<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl></div></article>`).join('')}
+      </div></div>
+    </section>
+    <section class="panel block grainy r-board"><img src="/assets/art/podium.webp" alt="" decoding="async"><div>
+      <div class="head"><h2 class="display">Leaderboard</h2><span class="note">Sample wallets</span></div>
+      <table class="lb"><tbody>${list.map((r, i) => `<tr class="${r[0] === 'You' ? 'me' : ''}"><td>${r[0] === 'You' ? '1,204' : i + 1}</td><td class="mono">${esc(r[0])}</td><td>${int(r[1])}</td></tr>`).join('')}</tbody></table></div>
+    </section>
+    <section class="panel block grainy"><div class="art-grid slim">
+      ${[['medal', 'What you get', 'Points decide your share when a season closes.'], ['hourglass', 'When', 'Your counter updates after every trade. Seasons close on a date shown here.'], ['loupe', 'How to check', 'Every point links to the trade that earned it.']].map(a => `<article class="art-c"><img src="/assets/art/${a[0]}.webp" alt="" decoding="async"><div><h3>${a[1]}</h3><p>${a[2]}</p></div></article>`).join('')}
     </div></section></div>`;
   };
   draw();
@@ -909,6 +1122,7 @@ function saveY() {
 function render() {
   cleanups.splice(0).forEach(f => f());
   $('.drawer')?.remove();
+  $('.acct')?.remove();
   const p = location.pathname;
   const m = p.match(/^\/project\/([^/]+)/);
   if (p === '/') viewHome();
@@ -937,10 +1151,12 @@ function route(sameView) {
   } else { render(); if (!sameView) scrollAfter(); }
   const m = location.pathname.match(/^\/project\/([^/]+)/);
   if (m) lastRef = m[1];
+  if (location.hash === '#search') { history.replaceState({}, '', location.pathname); openSearch(); }
 }
 let lastRef = null;
 function go(url) {
   const u = new URL(url, location.href);
+  if (fnd.el?.open) { fnd.el.close(); history.replaceState({}, '', u); route(); return; }
   if (u.pathname === location.pathname && u.search === location.search && u.hash === location.hash) {
     if (!u.hash) scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
     return;
@@ -959,8 +1175,9 @@ function go(url) {
 /* global input: navigate on press, not on release */
 let pressed = null;
 document.addEventListener('pointerdown', e => {
+  if (!e.target.closest('.acct,#conn')) $('.acct')?.remove();
   if (e.pointerType !== 'mouse' || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
-  if (e.target.closest('button,input')) return;
+  if (e.target.closest('button,input,.drag')) return;
   const a = e.target.closest('a[data-l]');
   if (!a) return;
   pressed = a; go(a.href);
@@ -968,6 +1185,8 @@ document.addEventListener('pointerdown', e => {
 document.addEventListener('click', e => {
   const t = e.target;
   const star = t.closest('[data-star]'), cp = t.closest('[data-copy]'), rem = t.closest('[data-remind]'), retry = t.closest('[data-retry]');
+  if (t.closest('[data-search]')) { e.preventDefault(); openSearch(); return; }
+  if (t.closest('[data-disc]')) { disconnect(); return; }
   if (star) { e.preventDefault(); e.stopPropagation(); toggleWatch(star.dataset.star); return; }
   if (cp) { e.preventDefault(); e.stopPropagation(); copy(cp.dataset.copy); return; }
   if (rem) {
@@ -996,14 +1215,15 @@ document.addEventListener('pointerover', prefetch, { passive: true });
 document.addEventListener('touchstart', prefetch, { passive: true });
 document.addEventListener('keydown', e => {
   const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '');
-  if (e.key === '/' && !typing) {
-    const q = $('#q');
-    if (q) { e.preventDefault(); q.focus(); q.getBoundingClientRect().top < 80 && scrollTo(0, scrollY - 100); }
-    else if (location.pathname !== '/') { e.preventDefault(); go('/#explore'); requestAnimationFrame(() => $('#q')?.focus()); }
-  }
+  if ((e.key === '/' && !typing) || ((e.ctrlKey || e.metaKey) && e.key === 'k')) { e.preventDefault(); openSearch(); }
+  if (!typing && $('#pages') && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) goPage(ex.page + (e.key === 'ArrowLeft' ? -1 : 1));
   if (e.key === 'Escape' && typing) document.activeElement.blur();
 });
-addEventListener('popstate', () => route());
+addEventListener('popstate', () => {
+  if (fnd.skip) { fnd.skip = false; return; }
+  if (fnd.el?.open) { fnd.el.close(); return; }
+  route();
+});
 addEventListener('scroll', () => $('#top')?.classList.toggle('stuck', scrollY > 30), { passive: true });
 addEventListener('resize', markNav, { passive: true });
 history.scrollRestoration = 'manual';
