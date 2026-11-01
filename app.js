@@ -504,10 +504,18 @@ function drawPager(n) {
   ex.pages = n;
   const arrow = d => `<button class="pg" data-pg="${d}" aria-label="${d < 0 ? 'Previous' : 'Next'} page">${d < 0 ? I.prev : I.next}</button>`;
   $('#pgn-top').innerHTML = n > 1 ? `<span class="mono mut">Page <span id="pg-now"></span> of ${n}</span>${arrow(-1)}${arrow(1)}` : '';
-  $('#pgn').innerHTML = n > 1 ? `${arrow(-1)}<div class="pg-n">${Array.from({ length: n }, (_, i) => `<button class="pg" data-pg-to="${i}" aria-label="Page ${i + 1}">${i + 1}</button>`).join('')}</div>${arrow(1)}` : '';
+  $('#pgn').innerHTML = n > 1 ? `${arrow(-1)}<div class="pg-n" id="pg-n"></div>${arrow(1)}` : '';
+}
+// Seven slots at most, so the pager never changes width as pages are added
+function pgSlots(n, at) {
+  if (n <= 7) return Array.from({ length: n }, (_, i) => i);
+  if (at < 4) return [0, 1, 2, 3, 4, null, n - 1];
+  if (at > n - 5) return [0, null, n - 5, n - 4, n - 3, n - 2, n - 1];
+  return [0, null, at - 1, at, at + 1, null, n - 1];
 }
 function markPager() {
-  $$('[data-pg-to]').forEach(b => b.classList.toggle('on', +b.dataset.pgTo === ex.page));
+  const nums = $('#pg-n');
+  if (nums) nums.innerHTML = pgSlots(ex.pages, ex.page).map(i => i === null ? '<span class="pg gap">...</span>' : `<button class="pg ${i === ex.page ? 'on' : ''}" data-pg-to="${i}" aria-label="Page ${i + 1}">${i + 1}</button>`).join('');
   $$('[data-pg]').forEach(b => { const to = ex.page + +b.dataset.pg; b.disabled = to < 0 || to >= ex.pages; });
   const t = $('#pg-now');
   if (t) t.textContent = ex.page + 1;
@@ -643,7 +651,7 @@ function buildHome() {
         <h1 class="display"><span class="l"><span class="chr">Fund the </span><span class="rot">${words.map((w, i) => `<b class="${i ? '' : 'on'}">${w}</b>`).join('')}</span></span><span class="l chr">that actually get built</span></h1>
         <p class="sub">Launch a physical product, prove it works, raise on chain through verifiable milestones.</p>
       </div>
-      <aside class="h-live" id="hlive"><div class="h-lh"><span class="eyebrow">Closest to the bond</span><span class="live"><i></i>Simulated</span></div>
+      <aside class="h-live" id="hlive"><div class="h-lh"><span class="eyebrow">Closest to the bond</span></div>
         ${hotList().map(p => { const v = liveOf(p); return `<a class="h-r" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}" data-live="${esc(p.ref)}"><img src="${logoSrc(p)}" alt=""><div class="n"><b>${esc(p.name)}</b><span data-f="stage">${stageLabel(v)}</span></div><span class="num" data-f="mc">${usd(v.mc)}</span><div class="bar ${heat(v)}"><i style="width:${v.prog * 100}%"></i></div></a>`; }).join('')}
       </aside>
       <div class="h-strip">
@@ -689,7 +697,6 @@ function buildHome() {
     const pg = e.target.closest('[data-pg],[data-pg-to]');
     if (pg) {
       goPage(pg.dataset.pgTo ? +pg.dataset.pgTo : ex.page + +pg.dataset.pg);
-      if (pg.closest('#pgn')) scrollTo({ top: $('#explore').getBoundingClientRect().top + scrollY - 80, behavior: reduced ? 'auto' : 'smooth' });
       return;
     }
     const b = e.target.closest('[data-tag],[data-stage],[data-sort],[data-view]');
@@ -1046,7 +1053,7 @@ function renderProject(ref) {
               </div>
               ${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
             </div>
-            <div class="p-founder"><div class="f-who"><span class="f-av">${p.founder?.img ? `<img src="${p.founder.img}" alt="">` : esc(initials(fName))}</span><div><b>${esc(fName)}</b><span>${esc(p.founder?.role || 'Founder')}</span></div></div></div>
+            <div class="p-founder"><div class="f-who"><span class="f-av">${p.founder?.img ? `<img src="${p.founder.img}" alt="">` : '<img src="/assets/art/anon.svg" alt="">'}</span><div><b>${esc(fName)}</b><span>${esc(p.founder?.role || 'Founder')}</span></div></div></div>
           </div>
         </section>
         ${p.pre ? '' : `<section class="panel kpis grainy">
@@ -1210,7 +1217,7 @@ function renderProject(ref) {
         : `<div class="empty"><b>No milestones published</b><span>Milestones are how a founder shows the money turned into hardware. Each one carries a proof link.</span><a class="btn sm" href="/project/grablab?tab=milestones" data-l>See a full example</a></div>`;
     } else if (secTab === 'team') {
       box.innerHTML = p.founder ? `<div class="team"><span class="ava"><img src="${p.founder.img}" alt=""></span><div><b>${esc(p.founder.name)}</b><div class="mut" style="font-size:13px">${esc(p.founder.role)}</div></div></div>`
-        : `<div class="team"><span class="ava">${I.dots.replace('<svg', '<svg width="20" height="20"')}</span><div><b>Founder not disclosed</b><div class="mut" style="font-size:13px">Projects with a named founder rank higher in Explore.</div></div></div>`;
+        : `<div class="team"><span class="ava"><img src="/assets/art/anon.svg" alt=""></span><div><b>Founder not disclosed</b><div class="mut" style="font-size:13px">Projects with a named founder rank higher in Explore.</div></div></div>`;
     }
   }
   const root = $('#view').firstElementChild;
@@ -1436,7 +1443,7 @@ function viewRewards() {
       </div></div>
     </section>
     <section class="panel block grainy r-board"><img src="/assets/art/podium-cut.webp" alt="" decoding="async"><div>
-      <div class="head"><h2 class="display">Leaderboard</h2><span class="note">Season one, sample wallets</span></div>
+      <div class="head"><h2 class="display">Leaderboard</h2></div>
       <table class="lb"><thead><tr><th>Rank</th><th>Wallet</th><th>Points</th></tr></thead><tbody>${list.map((r, i) => `<tr class="${r[0] === 'You' ? 'me' : ''}"><td>${r[0] === 'You' ? '1,204' : i + 1}</td><td class="mono"><span class="who">${avatar(r[0])}${esc(r[0])}</span></td><td>${int(r[1])} <em class="unit">pts</em></td></tr>`).join('')}</tbody></table></div>
     </section>
     <section class="panel block grainy"><div class="art-grid slim">
