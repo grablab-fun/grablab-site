@@ -1065,9 +1065,9 @@ function renderProject(ref) {
   }
   const pr = p.proof || {}, st = stageOf(p), quote = p.quote || 'SOL', pair = `${esc(p.ticker)}/${esc(quote)}`;
   const emp = (ic, t, d, x = '') => `<div class="empty"><span class="e-ic">${I[ic]}</span><b>${t}</b><span>${d}</span>${x}</div>`;
-  const simPane = () => `<div class="media-pane"><div class="m-stage"><video class="m-fill" src="/assets/art/simarena-run.mp4" poster="/assets/art/simarena-run.webp" autoplay muted loop playsinline></video>
+  const simPane = () => `<div class="media-pane"><div class="m-stage"><video class="m-fill" src="/assets/art/simarena-final.mp4" poster="/assets/art/simarena-final.webp" autoplay muted loop playsinline></video>
     <div class="m-bar"><span><img src="/assets/art/simarena-white.svg" alt="">Recorded in SimArena, real physics</span><button class="btn sm" data-run>${I.next}Run it live</button></div></div></div>`;
-  const SCENE = 'https://app.simarena.ai/editor?scene=' + encodeURIComponent('https://grablab.fun/lab/grablab-claw-revb.scene.json?v=16');
+  const SCENE = 'https://app.simarena.ai/editor?scene=' + encodeURIComponent('https://grablab.fun/lab/grablab-claw-final.scene.json?v=3');
   const NONE = { sim: ['No simulation published yet', 'A simulation appears here once a project shares one.'], d3: ['No 3D model published yet', 'An orbitable model appears here once a project shares one.'], pcb: ['No PCB published yet', 'Board files appear here once a project shares them.'], video: ['No video published yet', 'A demo video appears here once a project shares one.'] };
   const media = [...(p.pre ? [] : [['chart', 'Chart', I.chart]]), ['sim', 'Simulation', I.sim], ['d3', '3D View', I.cube], ['pcb', 'PCB', I.chip], ['video', 'Video', I.play]];
   const secs = [['overview', 'Overview'], ...(p.pre ? [] : [['trades', 'Trades'], ['holders', 'Holders'], ['token', 'Token']]), ['links', 'Links'], ['simulation', 'Simulation', pr.sim ? 1 : 0], ['machines', 'Machines', 0], ['verify', 'Verify'], ['milestones', 'Milestones', p.milestones ? p.milestones.filter(m => m.s === 'done').length + '/' + p.milestones.length : 0], ['team', 'Team']];
