@@ -394,13 +394,14 @@ function paintLive(e, p, v, d, was) {
   const stage = $('[data-f=stage]', e);
   if (stage) stage.textContent = stageLabel(v);
   const chg = $('[data-f=chg]', e);
-  if (chg) { num('chg', (v.mc / v.base - 1) * 100, (was.mc / v.base - 1) * 100, fmtChange); chg.classList.remove('mut2'); chg.classList.toggle('up', !v.change.startsWith('-')); chg.classList.toggle('down', v.change.startsWith('-')); }
+  if (chg) { num('chg', (v.mc / v.base - 1) * 100, (was.mc / v.base - 1) * 100, fmtChange); chg.classList.remove('mut2', 'flat'); chg.classList.toggle('up', !v.change.startsWith('-')); chg.classList.toggle('down', v.change.startsWith('-')); }
   const n = $('[data-f=mc]', e);
   if (!reduced) n.animate([{ color: d < 0 ? '#ff8a7a' : '#d8ff7a', offset: 0 }], { duration: 1100, easing: 'cubic-bezier(.16,1,.3,1)' });
   const bar = $('.bar', e);
   if (bar) { bar.className = `bar ${v.mig ? 'done' : heat(v)}`; $('i', bar).style.width = Math.max(v.mig ? 100 : v.prog * 100, .6) + '%'; }
   const sp = $('.sp', e);
-  if (sp) paintSpark(sp, p, v);
+  if (sp?.closest('.fnd-row')) { $('path', sp).setAttribute('d', miniPath(v.spark)); sp.classList.toggle('down', v.change.startsWith('-')); sp.classList.toggle('up', !v.change.startsWith('-')); }
+  else if (sp) paintSpark(sp, p, v);
   e.classList.toggle('forge', heat(v) === 'forge');
 }
 function tickLive() {
@@ -415,8 +416,22 @@ function tickLive() {
   });
   groups.forEach((els, ref) => {
     if (Math.random() > .45) return;
-    setTimeout(() => {
-      const p = byRef.get(ref), v = liveOf(p), hot = !!heat(v), was = { mc: v.mc, vol: v.vol };
+    setTimeout(() => stepToken(ref, () => els), Math.random() * 800);
+  });
+}
+// Search stays live too, only the rows in view are touched so typing keeps its speed
+function tickSearch() {
+  if (!fnd.el?.open) { clearInterval(fnd.live); fnd.live = 0; return; }
+  if (document.hidden) return;
+  const box = $('#fnd-list'), first = Math.floor(box.scrollTop / 62);
+  for (let i = first; i < first + 10; i++) {
+    const p = fnd.rows[i];
+    if (!p?.mint || Math.random() > .6) continue;
+    setTimeout(() => stepToken(p.ref, () => $$(`#fnd-list [data-live="${CSS.escape(p.ref)}"]`)), Math.random() * 800);
+  }
+}
+function stepToken(ref, targets) {
+      const p = byRef.get(ref), v = liveOf(p), hot = !!heat(v), was = { mc: v.mc, vol: v.vol }, els = targets();
       const d = (Math.random() - (hot ? .3 : .5)) * (hot ? .018 : .03);
       v.mc *= 1 + d;
       v.vol += v.mc * Math.abs(d) * .6;
@@ -433,8 +448,6 @@ function tickLive() {
         if (next) liveOf(next).prog = .84;
       }
       els.forEach(e => paintLive(e, p, v, d, was));
-    }, Math.random() * 800);
-  });
 }
 function card(p, opts = {}) {
   if (p.mint && !opts.preview) p = { ...p, ...liveOf(p) };
@@ -762,12 +775,14 @@ const hl = (t, q) => {
   const s = String(t || ''), i = q ? s.toLowerCase().indexOf(q) : -1;
   return i < 0 ? esc(s) : esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
 };
-function miniSpark(p) {
-  const v = p.spark || [];
-  if (v.length < 2) return '<i></i>';
+const miniPath = v => {
   const lo = Math.min(...v), hi = Math.max(...v), r = hi - lo || 1;
-  const d = v.map((y, i) => `${i ? 'L' : 'M'}${(i / (v.length - 1) * 84).toFixed(1)} ${(27 - (y - lo) / r * 24).toFixed(1)}`).join('');
-  return `<svg class="sp ${isUp(p) ? 'up' : 'down'}" viewBox="0 0 84 30" aria-hidden="true"><path d="${d}"/></svg>`;
+  return v.map((y, i) => `${i ? 'L' : 'M'}${(i / (v.length - 1) * 84).toFixed(1)} ${(27 - (y - lo) / r * 24).toFixed(1)}`).join('');
+};
+function miniSpark(p) {
+  if (!p.mint) return '<i></i>';
+  const v = liveOf(p);
+  return `<svg class="sp ${v.change.startsWith('-') ? 'down' : 'up'}" viewBox="0 0 84 30" aria-hidden="true"><path d="${miniPath(v.spark)}"/></svg>`;
 }
 function drawSearch() {
   const q = $('#fq').value.trim().toLowerCase(), box = $('#fnd-list');
@@ -777,12 +792,12 @@ function drawSearch() {
   $$('[data-fnd]').forEach(b => { b.classList.toggle('on', b.dataset.fnd === fnd.tab); $('i', b).textContent = count[b.dataset.fnd]; });
   fnd.rows = hits.map(a => a[0]).filter(p => fnd.tab === 'all' || stageOf(p) === fnd.tab);
   fnd.i = 0;
-  box.innerHTML = fnd.rows.length ? '<i class="fnd-hl"></i>' + fnd.rows.map((p, i) => `<a class="fnd-row" role="option" id="fnd-${i}" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}">
+  box.innerHTML = fnd.rows.length ? '<i class="fnd-hl"></i>' + fnd.rows.map((p, i) => { const v = p.mint ? liveOf(p) : p; return `<a class="fnd-row" role="option" id="fnd-${i}" href="/project/${esc(p.ref)}" data-l data-pre="${esc(p.ref)}"${p.mint ? ` data-live="${esc(p.ref)}"` : ''}>
     <img src="${logoSrc(p)}" alt="" loading="lazy" width="40" height="40">
     <div class="n"><b>${hl(p.name, q)}</b><span>${p.ticker ? '$' + hl(p.ticker, q) + ' ' : ''}${p.sample ? 'Full sample' : stageTxt[stageOf(p)]}</span></div>
     ${miniSpark(p)}
-    <span class="num"><small>${p.mint ? 'Mcap' : 'Launch'}</small><b>${p.mint ? usd(p.mc) : 'Date TBD'}</b></span>
-    <span class="num chg"><small>${p.mint ? '24h' : ''}</small><b class="${p.change ? (isUp(p) ? 'up' : 'down') : 'flat'}">${p.mint ? esc(p.change || '0.0%') : ''}</b></span></a>`).join('')
+    <span class="num"><small>${p.mint ? 'Mcap' : 'Launch'}</small><b ${p.mint ? 'data-f="mc"' : ''}>${p.mint ? usd(v.mc) : 'Date TBD'}</b></span>
+    <span class="num chg"><small>${p.mint ? '24h' : ''}</small><b ${p.mint ? 'data-f="chg"' : ''} class="${v.change ? (v.change.startsWith('-') ? 'down' : 'up') : 'flat'}">${p.mint ? esc(v.change || '0.0%') : ''}</b></span></a>`; }).join('')
     : `<div class="empty"><b>Nothing matches "${esc($('#fq').value)}"</b><span>Search covers names, tickers, contracts, tags and descriptions.</span></div>`;
   box.scrollTop = 0;
   markSearch();
@@ -836,6 +851,7 @@ function openSearch() {
   fnd.tab = 'all'; $('#fq').value = '';
   fnd.el.showModal();
   drawSearch();
+  fnd.live ||= setInterval(tickSearch, 900);
   $('#fq').focus();
 }
 function closeSearch() {
@@ -908,8 +924,8 @@ function mountChart(box, raw, p, onTick, cfg) {
   };
   const chart = L.createChart(box, {
     autoSize: true,
-    layout: { background: { type: 'solid', color: '#0c0c0c' }, textColor: '#a0a0a0', fontFamily: '"IBM Plex Mono",monospace', fontSize: 11, attributionLogo: true },
-    grid: { vertLines: { color: 'rgba(255,255,255,.035)' }, horzLines: { color: 'rgba(255,255,255,.035)' } },
+    layout: { background: { type: 'solid', color: '#0a1124' }, textColor: '#a0a0a0', fontFamily: '"IBM Plex Mono",monospace', fontSize: 11, attributionLogo: true },
+    grid: { vertLines: { color: 'rgba(140,175,255,.05)' }, horzLines: { color: 'rgba(140,175,255,.05)' } },
     crosshair: { mode: L.CrosshairMode.Normal, vertLine: { color: 'rgba(255,255,255,.3)', labelBackgroundColor: '#292929' }, horzLine: { color: 'rgba(255,255,255,.3)', labelBackgroundColor: '#292929' } },
     rightPriceScale: { borderColor: line, scaleMargins: { top: .08, bottom: .24 } },
     timeScale: { borderColor: line, rightOffset: 4, minBarSpacing: 2, tickMarkFormatter: t => clock(t) },
