@@ -512,7 +512,7 @@ html:has(dialog[open]){overflow:hidden}
 .l-hero img{position:absolute;inset:0 auto 0 0;width:150%;max-width:none;height:100%;object-fit:cover;object-position:0 52%}
 .l-hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,#0a0a0c 48%,rgba(10,10,12,.72) 66%,rgba(10,10,12,.1) 100%)}
 .l-hero>div{position:relative;z-index:2}
-.l-hero h1{font-size:clamp(24px,2.5vw,40px)}
+.l-hero h1{font-size:clamp(24px,2.2vw,36px)}
 .l-hero p{margin-top:8px;color:#c9c9cf}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:20px}
 .steps button{display:grid;gap:7px;padding:0 0 2px;text-align:left;font-size:12.5px;font-weight:500;color:var(--mut-2);transition:color .14s}
@@ -735,7 +735,7 @@ body{font-family:Archivo,sans-serif}
 .review{background:#171717;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.03em}
 .drawer{background:#131313}
 .r-hero,.l-hero,.ch-hero{background:radial-gradient(120% 130% at 12% 120%,#003677,transparent 62%),#0a0a0e}
-.l-hero::before{background:linear-gradient(90deg,rgba(6,6,8,.92) 0,rgba(6,6,8,.78) 38%,rgba(6,6,8,0) 66%)}
+.l-hero::before{background:linear-gradient(90deg,rgba(6,6,8,.94) 0,rgba(6,6,8,.84) 44%,rgba(6,6,8,0) 68%)}
 
 /* Project */
 .p-cover{height:120px}
