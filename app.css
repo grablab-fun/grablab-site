@@ -1328,3 +1328,5 @@ html.lite .bar.forge i::after,html.lite .conn.cta::after{animation:none}
   .h-strip{background:rgba(17,44,104,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
   html.lite .h-strip{background:rgba(17,44,104,.36)}
 }
+.tags{flex-wrap:wrap;overflow:visible;margin-inline:0;padding-inline:0}
+@media (max-width:760px){.tags{margin-inline:0;padding-inline:0}}
