@@ -335,8 +335,8 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
   E.push({name:"top_light", transform:{pos:[0,-.1,1.75]}, light:{type:"point", color:"#e6ecff", intensity:1.6, range:2.2}});
   E.push({name:"back_glow", transform:{pos:[0, 2.0, 2.2]}, light:{type:"point", color:"#7d84ff", intensity:2, range:4.5}});
   E.push({name:"chute_glow", transform:{pos:[.3535, -.3535, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.04, range:.22}});
-  E.push({name:"cage_led", transform:{pos:[0, 0, 1.04]}, light:{type:"point", color:"#ffe6c4", intensity:1.5, range:1.7}});
-  E.push({name:"cage_led_low", transform:{pos:[-.15, .1, .72]}, light:{type:"point", color:"#fff0dc", intensity:.7, range:1.1}});
+  E.push({name:"cage_led", transform:{pos:[0, .05, 1.3]}, light:{type:"spot", color:"#ffe6c4", intensity:2.2, dir:[0, 0, -1], angle:.8}});
+  E.push({name:"cage_led_low", transform:{pos:[-.2, .2, .6]}, light:{type:"point", color:"#fff0dc", intensity:.22, range:1.1}});
 
   const task = { instruction:"Grablab Prototype 01. Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the gantry. Lift left lowers the claw on its line, grip left opens it, grip back to the centre closes it on the spring grip, lift right raises it. Carry the capsule to the chute in the front right corner and open the grip: it drops through the break beam into the NFC cradle." };
   return { scene:{ _format:"simarena/scene@1.0", name:"Grablab Prototype 01", sim:{timestep:.002, gravity:[0,0,-9.81], sleep:true}, material, task, entities:E }, asset };
