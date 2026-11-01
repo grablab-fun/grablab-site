@@ -782,7 +782,7 @@
   }
  },
  "task": {
-  "instruction": "Grablab Prototype 01. Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the gantry. Lift left lowers the claw on its line, grip left opens it, grip back to the centre closes it on the spring grip, lift right raises it. Carry the capsule to the chute in the front right corner and open the grip: it drops through the break beam into the NFC cradle."
+  "instruction": "Grablab Prototype 01. Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the gantry. Lift left lowers the claw on its line, grip left opens it, grip back to the centre closes it on the spring grip, lift right raises it. Carry the capsule to the chute in the front right corner and open the grip: it drops through the funnel onto the seat, in the light beam, over the NFC reader."
  },
  "entities": [
   {
@@ -791,280 +791,224 @@
     {
      "type": "box",
      "size": [
-      0.025,
-      0.025,
-      1.13
+      0.02,
+      0.02,
+      1.11
      ],
      "pos": [
-      -0.3375,
-      -0.3375,
-      0.565
+      -0.34,
+      -0.34,
+      0.555
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.025,
-      0.025,
-      1.13
+      0.02,
+      0.02,
+      1.11
      ],
      "pos": [
-      0.3375,
-      -0.3375,
-      0.565
+      0.34,
+      -0.34,
+      0.555
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.025,
-      0.025,
-      1.13
+      0.02,
+      0.02,
+      1.11
      ],
      "pos": [
-      -0.3375,
-      0.3375,
-      0.565
+      -0.34,
+      0.34,
+      0.555
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.025,
-      0.025,
-      1.13
+      0.02,
+      0.02,
+      1.11
      ],
      "pos": [
-      0.3375,
-      0.3375,
-      0.565
+      0.34,
+      0.34,
+      0.555
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.65,
-      0.025,
-      0.025
+      0.66,
+      0.02,
+      0.02
      ],
      "pos": [
       0,
-      -0.3375,
-      0.0125
+      -0.34,
+      0.01
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.65,
-      0.025,
-      0.025
+      0.66,
+      0.02,
+      0.02
      ],
      "pos": [
       0,
-      0.3375,
-      0.0125
+      0.34,
+      0.01
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.025,
-      0.65,
-      0.025
+      0.02,
+      0.66,
+      0.02
      ],
      "pos": [
-      -0.3375,
+      -0.34,
       0,
-      0.0125
+      0.01
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.025,
-      0.65,
-      0.025
+      0.02,
+      0.66,
+      0.02
      ],
      "pos": [
-      0.3375,
+      0.34,
       0,
-      0.0125
+      0.01
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.65,
-      0.025,
-      0.025
+      0.66,
+      0.02,
+      0.02
      ],
      "pos": [
       0,
-      -0.3375,
-      0.2345
+      -0.34,
+      0.237
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.65,
-      0.025,
-      0.025
+      0.66,
+      0.02,
+      0.02
      ],
      "pos": [
       0,
-      0.3375,
-      0.2345
+      0.34,
+      0.237
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.025,
-      0.65,
-      0.025
+      0.02,
+      0.66,
+      0.02
      ],
      "pos": [
-      -0.3375,
+      -0.34,
       0,
-      0.2345
+      0.237
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.025,
-      0.65,
-      0.025
+      0.02,
+      0.66,
+      0.02
      ],
      "pos": [
-      0.3375,
+      0.34,
       0,
-      0.2345
+      0.237
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.65,
-      0.025,
-      0.025
+      0.66,
+      0.02,
+      0.02
      ],
      "pos": [
       0,
-      -0.3375,
-      0.3375
+      -0.34,
+      1.1
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.65,
-      0.025,
-      0.025
+      0.66,
+      0.02,
+      0.02
      ],
      "pos": [
       0,
-      0.3375,
-      0.3375
+      0.34,
+      1.1
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.025,
-      0.65,
-      0.025
+      0.02,
+      0.66,
+      0.02
      ],
      "pos": [
-      -0.3375,
+      -0.34,
       0,
-      0.3375
+      1.1
      ],
      "material": "tube"
     },
     {
      "type": "box",
      "size": [
-      0.025,
-      0.65,
-      0.025
+      0.02,
+      0.66,
+      0.02
      ],
      "pos": [
-      0.3375,
+      0.34,
       0,
-      0.3375
-     ],
-     "material": "tube"
-    },
-    {
-     "type": "box",
-     "size": [
-      0.65,
-      0.025,
-      0.025
-     ],
-     "pos": [
-      0,
-      -0.3375,
-      1.1175
-     ],
-     "material": "tube"
-    },
-    {
-     "type": "box",
-     "size": [
-      0.65,
-      0.025,
-      0.025
-     ],
-     "pos": [
-      0,
-      0.3375,
-      1.1175
-     ],
-     "material": "tube"
-    },
-    {
-     "type": "box",
-     "size": [
-      0.025,
-      0.65,
-      0.025
-     ],
-     "pos": [
-      -0.3375,
-      0,
-      1.1175
-     ],
-     "material": "tube"
-    },
-    {
-     "type": "box",
-     "size": [
-      0.025,
-      0.65,
-      0.025
-     ],
-     "pos": [
-      0.3375,
-      0,
-      1.1175
+      1.1
      ],
      "material": "tube"
     },
@@ -1131,12 +1075,12 @@
      "size": [
       0.706,
       0.003,
-      0.325
+      0.217
      ],
      "pos": [
       0,
       -0.3515,
-      0.1875
+      0.1285
      ],
      "material": "panel_k"
     },
@@ -1145,12 +1089,12 @@
      "size": [
       0.706,
       0.003,
-      0.325
+      0.217
      ],
      "pos": [
       0,
       0.3515,
-      0.1875
+      0.1285
      ],
      "material": "panel_k"
     },
@@ -1159,12 +1103,12 @@
      "size": [
       0.003,
       0.7,
-      0.325
+      0.217
      ],
      "pos": [
       -0.3515,
       0,
-      0.1875
+      0.1285
      ],
      "material": "panel_k"
     },
@@ -1173,12 +1117,12 @@
      "size": [
       0.003,
       0.7,
-      0.325
+      0.217
      ],
      "pos": [
       0.3515,
       0,
-      0.1875
+      0.1285
      ],
      "material": "panel_k"
     },
@@ -1187,12 +1131,12 @@
      "size": [
       0.706,
       0.003,
-      0.78
+      0.873
      ],
      "pos": [
       0,
       0.3515,
-      0.74
+      0.6735
      ],
      "material": "panel_k"
     },
@@ -1201,12 +1145,12 @@
      "size": [
       0.003,
       0.7,
-      0.78
+      0.873
      ],
      "pos": [
       -0.3515,
       0,
-      0.74
+      0.6735
      ],
      "material": "panel_k"
     },
@@ -1215,12 +1159,12 @@
      "size": [
       0.7,
       0.002,
-      0.78
+      0.873
      ],
      "pos": [
       0,
       -0.351,
-      0.74
+      0.6735
      ],
      "material": "acrylic"
     },
@@ -1229,12 +1173,12 @@
      "size": [
       0.002,
       0.7,
-      0.78
+      0.873
      ],
      "pos": [
       0.351,
       0,
-      0.74
+      0.6735
      ],
      "material": "acrylic"
     }
@@ -1248,12 +1192,12 @@
      "type": "box",
      "size": [
       0.7,
-      0.432,
+      0.452,
       0.07
      ],
      "pos": [
       0,
-      0.134,
+      0.124,
       0.215
      ],
      "material": "panel_k"
@@ -1261,13 +1205,13 @@
     {
      "type": "box",
      "size": [
-      0.432,
-      0.268,
+      0.452,
+      0.248,
       0.07
      ],
      "pos": [
-      -0.134,
-      -0.216,
+      -0.124,
+      -0.226,
       0.215
      ],
      "material": "panel_k"
@@ -1275,13 +1219,13 @@
     {
      "type": "box",
      "size": [
-      0.025,
-      0.268,
+      0.026,
+      0.248,
       0.07
      ],
      "pos": [
-      0.3375,
-      -0.216,
+      0.337,
+      -0.226,
       0.215
      ],
      "material": "panel_k"
@@ -1289,13 +1233,13 @@
     {
      "type": "box",
      "size": [
-      0.243,
-      0.025,
+      0.222,
+      0.026,
       0.07
      ],
      "pos": [
-      0.2035,
-      -0.3375,
+      0.213,
+      -0.337,
       0.215
      ],
      "material": "panel_k"
@@ -1303,30 +1247,58 @@
     {
      "type": "box",
      "size": [
-      0.006,
-      0.249,
+      0.003,
+      0.228,
       0.1
      ],
      "pos": [
-      0.079,
-      -0.2005,
+      0.1005,
+      -0.213,
       0.3
      ],
-     "material": "panel_k"
+     "material": "plastic2"
     },
     {
      "type": "box",
      "size": [
-      0.243,
-      0.006,
+      0.003,
+      0.228,
       0.1
      ],
      "pos": [
-      0.2035,
-      -0.079,
+      0.3255,
+      -0.213,
       0.3
      ],
-     "material": "panel_k"
+     "material": "plastic2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.222,
+      0.003,
+      0.1
+     ],
+     "pos": [
+      0.213,
+      -0.3255,
+      0.3
+     ],
+     "material": "plastic2"
+    },
+    {
+     "type": "box",
+     "size": [
+      0.222,
+      0.003,
+      0.1
+     ],
+     "pos": [
+      0.213,
+      -0.1005,
+      0.3
+     ],
+     "material": "plastic2"
     }
    ],
    "collider": {}
@@ -5252,19 +5224,19 @@
     {
      "type": "box",
      "size": [
-      0.1815,
+      0.151,
       0.008,
-      0.0825
+      0.0815
      ],
      "pos": [
-      0.2035,
-      -0.2942,
-      0.1525
+      0.213,
+      -0.2885,
+      0.16
      ],
      "material": "hole",
      "quat": [
-      0.4083,
-      -0.9129,
+      0.5046,
+      -0.8634,
       0,
       0
      ]
@@ -5272,74 +5244,74 @@
     {
      "type": "box",
      "size": [
-      0.1815,
+      0.151,
       0.008,
-      0.0825
+      0.0815
      ],
      "pos": [
-      0.2035,
-      -0.1127,
-      0.1525
+      0.213,
+      -0.1375,
+      0.16
      ],
      "material": "hole",
      "quat": [
       0,
       0,
-      -0.9129,
-      0.4083
+      -0.8634,
+      0.5046
      ]
     },
     {
      "type": "box",
      "size": [
-      0.1815,
+      0.151,
       0.008,
-      0.0825
+      0.0815
      ],
      "pos": [
-      0.1128,
-      -0.2035,
-      0.1525
+      0.1375,
+      -0.213,
+      0.16
      ],
      "material": "hole",
      "quat": [
-      0.2887,
-      -0.6455,
-      0.6455,
-      -0.2887
+      0.3568,
+      -0.6105,
+      0.6105,
+      -0.3568
      ]
     },
     {
      "type": "box",
      "size": [
-      0.1815,
+      0.151,
       0.008,
-      0.0825
+      0.0815
      ],
      "pos": [
-      0.2943,
-      -0.2035,
-      0.1525
+      0.2885,
+      -0.213,
+      0.16
      ],
      "material": "hole",
      "quat": [
-      0.2887,
-      -0.6455,
-      -0.6455,
-      0.2887
+      0.3568,
+      -0.6105,
+      -0.6105,
+      0.3568
      ]
     },
     {
      "type": "box",
      "size": [
       0.008,
-      0.136,
-      0.085
+      0.096,
+      0.07
      ],
      "pos": [
-      0.1395,
-      -0.2035,
-      0.0825
+      0.169,
+      -0.213,
+      0.105
      ],
      "material": "hole"
     },
@@ -5347,98 +5319,82 @@
      "type": "box",
      "size": [
       0.008,
-      0.136,
-      0.085
+      0.096,
+      0.07
      ],
      "pos": [
-      0.2675,
-      -0.2035,
-      0.0825
+      0.257,
+      -0.213,
+      0.105
      ],
      "material": "hole"
     },
     {
      "type": "box",
      "size": [
-      0.12,
+      0.08,
       0.008,
-      0.085
+      0.07
      ],
      "pos": [
-      0.2035,
-      -0.2675,
-      0.0825
+      0.213,
+      -0.257,
+      0.105
      ],
      "material": "hole"
     },
     {
      "type": "box",
      "size": [
-      0.12,
+      0.08,
       0.008,
-      0.085
+      0.07
      ],
      "pos": [
-      0.2035,
-      -0.1395,
-      0.0825
+      0.213,
+      -0.169,
+      0.105
      ],
      "material": "hole"
     },
     {
      "type": "box",
      "size": [
-      0.136,
-      0.136,
-      0.02
+      0.096,
+      0.096,
+      0.01
      ],
      "pos": [
-      0.2035,
-      -0.2035,
-      0.03
+      0.213,
+      -0.213,
+      0.065
      ],
      "material": "plastic2"
     },
     {
      "type": "box",
      "size": [
-      0.042,
-      0.04,
-      0.0016
+      0.1,
+      0.066,
+      0.013
      ],
      "pos": [
-      0.2035,
-      -0.2035,
-      0.041
+      0.213,
+      -0.219,
+      0.0535
      ],
-     "material": "pcb_blue",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.034,
-      0.032,
-      0.0004
-     ],
-     "pos": [
-      0.2035,
-      -0.2035,
-      0.0422
-     ],
-     "material": "gold",
+     "material": "lamp_body",
      "contype": 0,
      "conaffinity": 0
     },
     {
      "type": "cylinder",
      "radius": 0.0012,
-     "height": 0.12,
+     "height": 0.121,
      "pos": [
-      0.2035,
-      -0.2035,
-      0.145
+      0.213,
+      -0.253,
+      0.101
      ],
      "material": "laser",
      "quat": [
@@ -5453,14 +5409,14 @@
     {
      "type": "box",
      "size": [
-      0.02,
       0.05,
-      0.044
+      0.019,
+      0.05
      ],
      "pos": [
-      0.1315,
-      -0.2035,
-      0.145
+      0.1275,
+      -0.253,
+      0.101
      ],
      "material": "plastic",
      "contype": 0,
@@ -5469,16 +5425,112 @@
     {
      "type": "box",
      "size": [
-      0.02,
       0.05,
-      0.044
+      0.019,
+      0.05
      ],
      "pos": [
-      0.2755,
-      -0.2035,
-      0.145
+      0.2985,
+      -0.253,
+      0.101
      ],
      "material": "plastic",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.0225,
+      0.032,
+      0.0228
+     ],
+     "pos": [
+      0.259,
+      -0.2755,
+      0.129
+     ],
+     "material": "navy2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.23,
+      0.113,
+      0.003
+     ],
+     "pos": [
+      0.21,
+      -0.2715,
+      0.0015
+     ],
+     "material": "tray",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.003,
+      0.113,
+      0.05
+     ],
+     "pos": [
+      0.0965,
+      -0.2715,
+      0.025
+     ],
+     "material": "tray",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.003,
+      0.113,
+      0.05
+     ],
+     "pos": [
+      0.3235,
+      -0.2715,
+      0.025
+     ],
+     "material": "tray",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.23,
+      0.003,
+      0.05
+     ],
+     "pos": [
+      0.21,
+      -0.3265,
+      0.025
+     ],
+     "material": "tray",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.23,
+      0.003,
+      0.05
+     ],
+     "pos": [
+      0.21,
+      -0.2165,
+      0.025
+     ],
+     "material": "tray",
      "contype": 0,
      "conaffinity": 0
     }
@@ -5498,7 +5550,7 @@
      "pos": [
       -0.32,
       0,
-      1.146
+      1.126
      ],
      "material": "alu"
     },
@@ -5512,7 +5564,7 @@
      "pos": [
       -0.32,
       0,
-      1.1568
+      1.1368
      ],
      "material": "steel",
      "contype": 0,
@@ -5528,7 +5580,7 @@
      "pos": [
       -0.32,
       0.322,
-      1.168
+      1.148
      ],
      "material": "plastic2",
      "contype": 0,
@@ -5544,7 +5596,7 @@
      "pos": [
       -0.327,
       0.322,
-      1.185
+      1.165
      ],
      "material": "plastic",
      "contype": 0,
@@ -5560,7 +5612,7 @@
      "pos": [
       -0.32,
       -0.33,
-      1.163
+      1.143
      ],
      "material": "plastic2",
      "contype": 0,
@@ -5573,7 +5625,7 @@
      "pos": [
       -0.36,
       0.322,
-      1.182
+      1.162
      ],
      "material": "steel",
      "quat": [
@@ -5592,7 +5644,7 @@
      "pos": [
       -0.364,
       -0.33,
-      1.182
+      1.162
      ],
      "material": "steel",
      "quat": [
@@ -5614,7 +5666,7 @@
      "pos": [
       -0.36,
       -0.004,
-      1.1825
+      1.1625
      ],
      "material": "belt",
      "contype": 0,
@@ -5630,7 +5682,7 @@
      "pos": [
       0.32,
       0,
-      1.146
+      1.126
      ],
      "material": "alu"
     },
@@ -5644,7 +5696,7 @@
      "pos": [
       0.32,
       0,
-      1.1568
+      1.1368
      ],
      "material": "steel",
      "contype": 0,
@@ -5660,7 +5712,7 @@
      "pos": [
       0.32,
       0.322,
-      1.168
+      1.148
      ],
      "material": "plastic2",
      "contype": 0,
@@ -5676,7 +5728,7 @@
      "pos": [
       0.327,
       0.322,
-      1.185
+      1.165
      ],
      "material": "plastic",
      "contype": 0,
@@ -5692,7 +5744,7 @@
      "pos": [
       0.32,
       -0.33,
-      1.163
+      1.143
      ],
      "material": "plastic2",
      "contype": 0,
@@ -5705,7 +5757,7 @@
      "pos": [
       0.36,
       0.322,
-      1.182
+      1.162
      ],
      "material": "steel",
      "quat": [
@@ -5724,7 +5776,7 @@
      "pos": [
       0.364,
       -0.33,
-      1.182
+      1.162
      ],
      "material": "steel",
      "quat": [
@@ -5746,7 +5798,7 @@
      "pos": [
       0.36,
       -0.004,
-      1.1825
+      1.1625
      ],
      "material": "belt",
      "contype": 0,
@@ -5755,30 +5807,14 @@
     {
      "type": "box",
      "size": [
-      0.018,
-      0.5845,
-      0.018
+      0.66,
+      0.008,
+      0.0015
      ],
      "pos": [
-      -0.3155,
-      0.0323,
-      1.096
-     ],
-     "material": "plastic",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.018,
-      0.5845,
-      0.0012
-     ],
-     "pos": [
-      -0.3155,
-      0.0323,
-      1.0864
+      0,
+      -0.34,
+      1.0893
      ],
      "material": "opal",
      "contype": 0,
@@ -5787,30 +5823,14 @@
     {
      "type": "box",
      "size": [
-      0.018,
-      0.649,
-      0.018
+      0.66,
+      0.008,
+      0.0015
      ],
      "pos": [
-      0.3155,
       0,
-      1.096
-     ],
-     "material": "plastic",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.018,
-      0.649,
-      0.0012
-     ],
-     "pos": [
-      0.3155,
-      0,
-      1.0864
+      0.34,
+      1.0893
      ],
      "material": "opal",
      "contype": 0,
@@ -5819,30 +5839,14 @@
     {
      "type": "box",
      "size": [
-      0.5845,
-      0.018,
-      0.018
+      0.008,
+      0.66,
+      0.0015
      ],
      "pos": [
-      0.0323,
-      -0.3155,
-      1.096
-     ],
-     "material": "plastic",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.5845,
-      0.018,
-      0.0012
-     ],
-     "pos": [
-      0.0323,
-      -0.3155,
-      1.0864
+      -0.34,
+      0,
+      1.0893
      ],
      "material": "opal",
      "contype": 0,
@@ -5851,30 +5855,14 @@
     {
      "type": "box",
      "size": [
-      0.649,
-      0.018,
-      0.018
+      0.008,
+      0.66,
+      0.0015
      ],
      "pos": [
+      0.34,
       0,
-      0.3155,
-      1.096
-     ],
-     "material": "plastic",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "box",
-     "size": [
-      0.649,
-      0.018,
-      0.0012
-     ],
-     "pos": [
-      0,
-      0.3155,
-      1.0864
+      1.0893
      ],
      "material": "opal",
      "contype": 0,
@@ -5883,45 +5871,32 @@
     {
      "type": "box",
      "size": [
-      0.055,
-      0.055,
-      0.045
+      0.06,
+      0.02,
+      0.02
      ],
      "pos": [
-      -0.2975,
-      -0.2975,
-      1.0825
+      0,
+      -0.34,
+      1.12
      ],
      "material": "plastic2",
      "contype": 0,
      "conaffinity": 0
     },
     {
-     "type": "cylinder",
-     "radius": 0.008,
-     "height": 0.01,
-     "pos": [
-      -0.29,
-      -0.29,
-      1.056
-     ],
-     "material": "lens",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
      "type": "box",
      "size": [
-      0.096,
-      0.04,
-      0.036
+      0.094,
+      0.036,
+      0.039
      ],
      "pos": [
       0,
-      0.308,
-      1.09
+      -0.336,
+      1.1495
      ],
-     "material": "plastic2",
+     "material": "plastic",
      "contype": 0,
      "conaffinity": 0
     },
@@ -5931,14 +5906,65 @@
      "height": 0.004,
      "pos": [
       0,
-      0.286,
-      1.09
+      -0.3175,
+      1.15
      ],
      "material": "lens",
      "quat": [
       0.7071,
       0.7071,
       0,
+      0
+     ],
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.004,
+      0.025,
+      0.077
+     ],
+     "pos": [
+      0.328,
+      0,
+      1.0635
+     ],
+     "material": "plastic2",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "box",
+     "size": [
+      0.036,
+      0.094,
+      0.034
+     ],
+     "pos": [
+      0.305,
+      0,
+      1.038
+     ],
+     "material": "plastic",
+     "contype": 0,
+     "conaffinity": 0
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.012,
+     "height": 0.004,
+     "pos": [
+      0.285,
+      0,
+      1.038
+     ],
+     "material": "lens",
+     "quat": [
+      0.7071,
+      0,
+      0.7071,
       0
      ],
      "contype": 0,
@@ -5999,66 +6025,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -6105,66 +6071,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -6215,66 +6121,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -6321,66 +6167,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -6431,66 +6217,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -6537,66 +6263,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -6647,66 +6313,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -6753,66 +6359,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -6863,66 +6409,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -6969,66 +6455,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -7079,66 +6505,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -7185,66 +6551,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -7295,66 +6601,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -7401,66 +6647,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -7511,66 +6697,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -7617,66 +6743,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -7727,66 +6793,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -7833,66 +6839,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -7943,66 +6889,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -8049,66 +6935,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -8159,66 +6985,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -8265,66 +7031,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -8375,66 +7081,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -8481,66 +7127,6 @@
       0
      ],
      "material": "cap_seam",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
      "contype": 0,
      "conaffinity": 0
     }
@@ -8591,66 +7177,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -8659,8 +7185,8 @@
    "name": "capsule_026",
    "transform": {
     "pos": [
-     -0.2536,
-     0.0152,
+     0.0578,
+     -0.0497,
      0.282
     ],
     "quat": [
@@ -8699,66 +7225,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -8767,8 +7233,8 @@
    "name": "capsule_027",
    "transform": {
     "pos": [
-     -0.1876,
-     0.012,
+     0.1299,
+     -0.0476,
      0.282
     ],
     "quat": [
@@ -8807,66 +7273,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -8875,8 +7281,8 @@
    "name": "capsule_028",
    "transform": {
     "pos": [
-     -0.1125,
-     0.0115,
+     0.2019,
+     -0.048,
      0.282
     ],
     "quat": [
@@ -8915,66 +7321,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -8983,8 +7329,8 @@
    "name": "capsule_029",
    "transform": {
     "pos": [
-     -0.0464,
-     0.0105,
+     0.2698,
+     -0.0463,
      0.282
     ],
     "quat": [
@@ -9023,66 +7369,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -9091,8 +7377,8 @@
    "name": "capsule_030",
    "transform": {
     "pos": [
-     0.0272,
-     0.0105,
+     -0.2536,
+     0.0152,
      0.282
     ],
     "quat": [
@@ -9131,66 +7417,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -9199,8 +7425,8 @@
    "name": "capsule_031",
    "transform": {
     "pos": [
-     0.0968,
-     0.0124,
+     -0.1876,
+     0.012,
      0.282
     ],
     "quat": [
@@ -9239,66 +7465,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -9307,8 +7473,8 @@
    "name": "capsule_032",
    "transform": {
     "pos": [
-     0.1646,
-     0.014,
+     -0.1125,
+     0.0115,
      0.282
     ],
     "quat": [
@@ -9347,66 +7513,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -9415,8 +7521,8 @@
    "name": "capsule_033",
    "transform": {
     "pos": [
-     0.2321,
-     0.0157,
+     -0.0464,
+     0.0105,
      0.282
     ],
     "quat": [
@@ -9455,66 +7561,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -9523,8 +7569,8 @@
    "name": "capsule_034",
    "transform": {
     "pos": [
-     -0.2909,
-     0.0739,
+     0.0272,
+     0.0105,
      0.282
     ],
     "quat": [
@@ -9563,66 +7609,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -9631,8 +7617,8 @@
    "name": "capsule_035",
    "transform": {
     "pos": [
-     -0.2226,
-     0.0749,
+     0.0968,
+     0.0124,
      0.282
     ],
     "quat": [
@@ -9671,66 +7657,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -9739,8 +7665,8 @@
    "name": "capsule_036",
    "transform": {
     "pos": [
-     -0.1514,
-     0.0732,
+     0.1646,
+     0.014,
      0.282
     ],
     "quat": [
@@ -9779,66 +7705,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -9847,8 +7713,8 @@
    "name": "capsule_037",
    "transform": {
     "pos": [
-     -0.079,
-     0.0758,
+     0.2321,
+     0.0157,
      0.282
     ],
     "quat": [
@@ -9887,66 +7753,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -9955,8 +7761,8 @@
    "name": "capsule_038",
    "transform": {
     "pos": [
-     -0.0091,
-     0.0729,
+     -0.2909,
+     0.0739,
      0.282
     ],
     "quat": [
@@ -9995,66 +7801,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -10063,8 +7809,8 @@
    "name": "capsule_039",
    "transform": {
     "pos": [
-     0.0617,
-     0.0765,
+     -0.2226,
+     0.0749,
      0.282
     ],
     "quat": [
@@ -10103,66 +7849,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -10171,8 +7857,8 @@
    "name": "capsule_040",
    "transform": {
     "pos": [
-     0.1315,
-     0.0714,
+     -0.1514,
+     0.0732,
      0.282
     ],
     "quat": [
@@ -10211,66 +7897,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -10279,8 +7905,8 @@
    "name": "capsule_041",
    "transform": {
     "pos": [
-     0.198,
-     0.0708,
+     -0.079,
+     0.0758,
      0.282
     ],
     "quat": [
@@ -10319,66 +7945,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -10387,8 +7953,8 @@
    "name": "capsule_042",
    "transform": {
     "pos": [
-     0.2674,
-     0.0708,
+     -0.0091,
+     0.0729,
      0.282
     ],
     "quat": [
@@ -10427,66 +7993,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -10495,8 +8001,8 @@
    "name": "capsule_043",
    "transform": {
     "pos": [
-     -0.2574,
-     0.1369,
+     0.0617,
+     0.0765,
      0.282
     ],
     "quat": [
@@ -10535,66 +8041,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -10603,8 +8049,8 @@
    "name": "capsule_044",
    "transform": {
     "pos": [
-     -0.184,
-     0.1356,
+     0.1315,
+     0.0714,
      0.282
     ],
     "quat": [
@@ -10643,66 +8089,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -10711,8 +8097,8 @@
    "name": "capsule_045",
    "transform": {
     "pos": [
-     -0.1163,
-     0.1351,
+     0.198,
+     0.0708,
      0.282
     ],
     "quat": [
@@ -10751,66 +8137,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -10819,8 +8145,8 @@
    "name": "capsule_046",
    "transform": {
     "pos": [
-     -0.0479,
-     0.1373,
+     0.2674,
+     0.0708,
      0.282
     ],
     "quat": [
@@ -10859,66 +8185,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -10927,8 +8193,8 @@
    "name": "capsule_047",
    "transform": {
     "pos": [
-     0.0235,
-     0.1359,
+     -0.2574,
+     0.1369,
      0.282
     ],
     "quat": [
@@ -10967,66 +8233,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -11035,8 +8241,8 @@
    "name": "capsule_048",
    "transform": {
     "pos": [
-     0.0967,
-     0.1361,
+     -0.184,
+     0.1356,
      0.282
     ],
     "quat": [
@@ -11075,66 +8281,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -11143,8 +8289,8 @@
    "name": "capsule_049",
    "transform": {
     "pos": [
-     0.1668,
-     0.1338,
+     -0.1163,
+     0.1351,
      0.282
     ],
     "quat": [
@@ -11183,66 +8329,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -11251,8 +8337,8 @@
    "name": "capsule_050",
    "transform": {
     "pos": [
-     0.2336,
-     0.1368,
+     -0.0479,
+     0.1373,
      0.282
     ],
     "quat": [
@@ -11291,66 +8377,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -11359,8 +8385,8 @@
    "name": "capsule_051",
    "transform": {
     "pos": [
-     -0.2912,
-     0.1973,
+     0.0235,
+     0.1359,
      0.282
     ],
     "quat": [
@@ -11399,66 +8425,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -11467,8 +8433,8 @@
    "name": "capsule_052",
    "transform": {
     "pos": [
-     -0.2227,
-     0.1947,
+     0.0967,
+     0.1361,
      0.282
     ],
     "quat": [
@@ -11507,66 +8473,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -11575,8 +8481,8 @@
    "name": "capsule_053",
    "transform": {
     "pos": [
-     -0.1477,
-     0.1967,
+     0.1668,
+     0.1338,
      0.282
     ],
     "quat": [
@@ -11615,66 +8521,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -11683,8 +8529,8 @@
    "name": "capsule_054",
    "transform": {
     "pos": [
-     -0.0774,
-     0.1956,
+     0.2336,
+     0.1368,
      0.282
     ],
     "quat": [
@@ -11723,66 +8569,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -11791,8 +8577,8 @@
    "name": "capsule_055",
    "transform": {
     "pos": [
-     -0.0117,
-     0.1968,
+     -0.2912,
+     0.1973,
      0.282
     ],
     "quat": [
@@ -11831,66 +8617,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -11899,8 +8625,8 @@
    "name": "capsule_056",
    "transform": {
     "pos": [
-     0.0574,
-     0.1946,
+     -0.2227,
+     0.1947,
      0.282
     ],
     "quat": [
@@ -11939,66 +8665,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12007,8 +8673,8 @@
    "name": "capsule_057",
    "transform": {
     "pos": [
-     0.1312,
-     0.1964,
+     -0.1477,
+     0.1967,
      0.282
     ],
     "quat": [
@@ -12047,66 +8713,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12115,8 +8721,8 @@
    "name": "capsule_058",
    "transform": {
     "pos": [
-     0.2029,
-     0.1937,
+     -0.0774,
+     0.1956,
      0.282
     ],
     "quat": [
@@ -12155,66 +8761,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12223,8 +8769,8 @@
    "name": "capsule_059",
    "transform": {
     "pos": [
-     0.2692,
-     0.1934,
+     -0.0117,
+     0.1968,
      0.282
     ],
     "quat": [
@@ -12263,66 +8809,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12331,8 +8817,8 @@
    "name": "capsule_060",
    "transform": {
     "pos": [
-     -0.2526,
-     0.2541,
+     0.0574,
+     0.1946,
      0.282
     ],
     "quat": [
@@ -12371,66 +8857,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12439,8 +8865,8 @@
    "name": "capsule_061",
    "transform": {
     "pos": [
-     -0.1832,
-     0.2581,
+     0.1312,
+     0.1964,
      0.282
     ],
     "quat": [
@@ -12479,66 +8905,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12547,8 +8913,8 @@
    "name": "capsule_062",
    "transform": {
     "pos": [
-     -0.1175,
-     0.2584,
+     0.2029,
+     0.1937,
      0.282
     ],
     "quat": [
@@ -12587,66 +8953,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12655,8 +8961,8 @@
    "name": "capsule_063",
    "transform": {
     "pos": [
-     -0.0475,
-     0.2559,
+     0.2692,
+     0.1934,
      0.282
     ],
     "quat": [
@@ -12695,66 +9001,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12763,8 +9009,8 @@
    "name": "capsule_064",
    "transform": {
     "pos": [
-     0.0245,
-     0.2532,
+     -0.2526,
+     0.2541,
      0.282
     ],
     "quat": [
@@ -12803,66 +9049,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12871,8 +9057,8 @@
    "name": "capsule_065",
    "transform": {
     "pos": [
-     0.0929,
-     0.257,
+     -0.1832,
+     0.2581,
      0.282
     ],
     "quat": [
@@ -12911,66 +9097,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -12979,8 +9105,8 @@
    "name": "capsule_066",
    "transform": {
     "pos": [
-     0.1652,
-     0.2551,
+     -0.1175,
+     0.2584,
      0.282
     ],
     "quat": [
@@ -13019,66 +9145,6 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.016,
-      0.0049,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0002,
-      0.0167,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
-    },
-    {
-     "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
     }
    ],
    "collider": {}
@@ -13087,8 +9153,8 @@
    "name": "capsule_067",
    "transform": {
     "pos": [
-     0.2356,
-     0.2572,
+     -0.0475,
+     0.2559,
      0.282
     ],
     "quat": [
@@ -13127,64 +9193,196 @@
      "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_068",
+   "transform": {
+    "pos": [
+     0.0245,
+     0.2532,
+     0.282
+    ],
+    "quat": [
+     -0.9401,
+     0.1207,
+     0.1912,
+     0.2551
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.015,
+    "angularDamping": 0.00003,
+    "linearDamping": 0.0005
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
     {
      "type": "sphere",
-     "radius": 0.002,
+     "radius": 0.03,
+     "material": "cap_white",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0302,
+     "height": 0.0012,
      "pos": [
-      0.016,
-      0.0049,
-      0.0234
+      0,
+      0,
+      0
      ],
-     "material": "cap_dot",
+     "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_069",
+   "transform": {
+    "pos": [
+     0.0929,
+     0.257,
+     0.282
+    ],
+    "quat": [
+     0.46,
+     0.2549,
+     0.5153,
+     0.6767
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.015,
+    "angularDamping": 0.00003,
+    "linearDamping": 0.0005
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
     {
      "type": "sphere",
-     "radius": 0.002,
+     "radius": 0.03,
+     "material": "cap_white",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0302,
+     "height": 0.0012,
      "pos": [
-      0.0002,
-      0.0167,
-      0.0234
+      0,
+      0,
+      0
      ],
-     "material": "cap_dot",
+     "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_070",
+   "transform": {
+    "pos": [
+     0.1652,
+     0.2551,
+     0.282
+    ],
+    "quat": [
+     0.9868,
+     0.0399,
+     0.071,
+     0.14
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.015,
+    "angularDamping": 0.00003,
+    "linearDamping": 0.0005
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
     {
      "type": "sphere",
-     "radius": 0.002,
+     "radius": 0.03,
+     "material": "cap_white",
+     "friction": 1.3
+    },
+    {
+     "type": "cylinder",
+     "radius": 0.0302,
+     "height": 0.0012,
      "pos": [
-      -0.0158,
-      0.0054,
-      0.0234
+      0,
+      0,
+      0
      ],
-     "material": "cap_dot",
+     "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
-    },
+    }
+   ],
+   "collider": {}
+  },
+  {
+   "name": "capsule_071",
+   "transform": {
+    "pos": [
+     0.2356,
+     0.2572,
+     0.282
+    ],
+    "quat": [
+     -0.9524,
+     0.1464,
+     0.1294,
+     0.2341
+    ]
+   },
+   "physics": {
+    "type": "rigid",
+    "motion": "dynamic",
+    "mass": 0.015,
+    "angularDamping": 0.00003,
+    "linearDamping": 0.0005
+   },
+   "joint": {
+    "type": "free"
+   },
+   "geoms": [
     {
      "type": "sphere",
-     "radius": 0.002,
-     "pos": [
-      -0.01,
-      -0.0134,
-      0.0234
-     ],
-     "material": "cap_dot",
-     "contype": 0,
-     "conaffinity": 0
+     "radius": 0.03,
+     "material": "cap_white",
+     "friction": 1.3
     },
     {
-     "type": "sphere",
-     "radius": 0.002,
+     "type": "cylinder",
+     "radius": 0.0302,
+     "height": 0.0012,
      "pos": [
-      0.0096,
-      -0.0137,
-      0.0234
+      0,
+      0,
+      0
      ],
-     "material": "cap_dot",
+     "material": "cap_seam",
      "contype": 0,
      "conaffinity": 0
     }
@@ -14732,8 +10930,8 @@
    "name": "chute_glow",
    "transform": {
     "pos": [
-     0.2035,
-     -0.2035,
+     0.213,
+     -0.213,
      0.3
     ]
    },

@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=22";
+import { buildMachine } from "./anatomy-metal.js?v=23";
 
 const $ = s => document.querySelector(s);
 /* ?rec=1: a clean, transparent, frame by frame render of the machine, for the home page video */
@@ -12,50 +12,50 @@ const STORY = REC && /[?&]story=1/.test(location.search);
 /* subs: [card item, mesh name prefixes it lights up in the model] */
 const PARTS = [
   { id:"frame", n:"01", name:"Frame", spec:"Welded steel tube, matte black", ph:1.2, th:1.3, anchor:[-.34,-.34,.7], ex:[0,0,0],
-    text:["A welded frame of square steel tube.", "Four posts and four rings: ground, floor, lip and top.", "Two crossbars and a frame round the prize hole carry the floor.", "Adjustable feet below."],
-    subs:[["Posts", ["frame_post"]], ["Rings", ["frame_rail"]], ["Floor crossbars", ["frame_floor_rail"]], ["Adjustable feet", ["frame_foot"], { ph:1.42, one:true }]], proof:"Built from the parts list" },
+    text:["A welded frame of 20 mm square steel tube.", "Four posts and three rings: ground, floor and top.", "One crossbar and a frame round the prize hole carry the floor.", "Adjustable feet below."],
+    subs:[["Posts", ["frame_post"]], ["Rings", ["frame_rail"]], ["Floor crossbar", ["frame_floor_rail"]], ["Adjustable feet", ["frame_foot"], { ph:1.42, one:true }]], proof:"Built from the parts list" },
   { id:"cage", n:"02", name:"Skins and windows", spec:"Black panels, clear windows", ph:1.25, th:1.57, anchor:[-.2,-.2,.25], ex:[0,0,.2],
-    text:["A black floor with one prize hole, front right.", "Two low walls fence the drop zone.", "Clear windows on the front and the right.", "Black panels on the base, the back and the left of the showcase.", "LED profiles on the top edges light the floor.", "The back of the base opens for service.", "Fixed to the frame all round."],
-    subs:[["Floor", ["cage_floor"]], ["Drop zone walls", ["cage_prize_wall"]], ["Base panels", ["cage_skin"]], ["Showcase back", ["cage_showcase"]], ["Service door", ["cage_door"]], ["Prize bin door", ["cage_bin_door"]], ["Clear windows", []]], proof:"Watched from every side" },
+    text:["A black floor with one prize hole, front right.", "Clear windows on the front and the right.", "Black panels on the base, the back and the left.", "An LED strip on the top tubes lights the floor.", "The lower back and right panels come off on magnets.", "Bonded to the frame all round."],
+    subs:[["Floor", ["cage_floor"]], ["Base panels", ["cage_skin"]], ["Showcase back", ["cage_showcase"]], ["Service panel", ["cage_door"]], ["Clear windows", []]], proof:"Watched from every side" },
   { id:"panel", n:"03", name:"Front panel", spec:"Black panel, anodised plates", ph:1.32, th:1.57, anchor:[0,-.355,.17], ex:[0,-.5,0],
     text:["The face of the machine, under the window.", "Emergency stop, scan to play QR, GRABLAB plate."],
     subs:[["Emergency stop", ["panel_estop"]], ["Scan to play", ["panel_qr", "panel_scan"]], ["GRABLAB plate", ["panel_wordmark", "panel_trim"]], ["Panel", ["panel_skin"]]], proof:"No joystick. Browser only" },
   { id:"electronics", n:"04", name:"Electronics", spec:"Boards and wiring on one plate", ph:1.5, th:1.57, fitK:.8, anchor:[.19,.3,.12], ex:[0,.24,0],
     text:["Power, motion and claw drivers on one plate.", "A small computer runs the play and the stream.", "A secure chip signs every event.", "Its key never leaves the chip."],
     subs:[["Secure chip", ["el_optiga"]], ["Computer", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
-  { id:"chute", n:"05", name:"Chute and prize bin", spec:"Black chute, printed cradle", ph:1.22, th:.4, anchor:[.204,-.204,.15], ex:[.3,-.3,0],
-    text:["A funnel and a chute under the prize hole.", "A red light beam sees the capsule fall.", "It lands on a padded trapdoor, filmed up close.", "The NFC reader takes its UID.", "Then the trapdoor drops it into the long prize bin."],
-    subs:[["Chute and funnel", ["chute_wall", "chute_funnel"]], ["Drop sensor, light beam", ["chute_e3jk", "chute_sensor"]], ["Landing camera", ["chute_c960"]], ["NFC reader", ["chute_acr122u"]], ["Printed cradle", ["chute_cradle", "chute_axle_block"]], ["Trapdoor and servo", ["chute_flap", "chute_axle", "chute_lever", "chute_mg90s", "chute_horn", "chute_pushrod"]], ["Prize bin", ["chute_bin"]]], proof:"Seen twice: beam and camera" },
-  { id:"capsules", n:"06", name:"Capsules", spec:"Printed white shell, NFC sticker", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.98],
-    text:["Printed two piece shells, NFC sticker inside.", "Factory UID, read only.", "Size set by the grip test.", "Click one to open it."],
-    subs:[["Printed two piece shell", []], ["NFC sticker", []], ["Size set by the grip test", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
-  { id:"gantry", n:"07", name:"Gantry", spec:"Aluminium rails, printed blocks", ph:1.0, th:-1.9, anchor:[.325,-.2,1.16], ex:[0,0,.5],
+  { id:"chute", n:"05", name:"Prize path", spec:"Printed funnel, seat, gate and tray", ph:1.22, th:.4, anchor:[.213,-.213,.15], ex:[.3,-.3,0],
+    text:["A printed funnel fills the prize hole, walled 100 mm above the floor.", "The ball drops through a 55 mm throat onto the seat.", "A red light beam and the NFC reader both see it there.", "Beam broken for 0.3 s, same tag read twice, tag known and not yet won.", "Only then a small servo opens the gate.", "The ball rolls into a tray of about 15 balls, emptied by hand."],
+    subs:[["Funnel", ["chute_funnel"]], ["Light beam sensors", ["chute_e3jk"]], ["NFC reader", ["chute_acr122u"]], ["Seat", ["chute_seat", "chute_ball"]], ["Gate and servo", ["chute_gate", "chute_mg90s"]], ["Prize tray", ["chute_bin"]]], proof:"Checked twice: beam and tag" },
+  { id:"capsules", n:"06", name:"Capsules", spec:"45 mm printed ball, NFC disc", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.98],
+    text:["Two printed halves, 45 mm across.", "An NFC disc at the bottom pole, ballast above it, so it settles tag down.", "Factory UID, read only.", "Click one to open it."],
+    subs:[["Printed two piece shell", []], ["NFC disc", []], ["Non metal ballast", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
+  { id:"gantry", n:"07", name:"Gantry", spec:"Aluminium rails, printed blocks", ph:1.0, th:-1.9, anchor:[.33,-.2,1.14], ex:[0,0,.5],
     text:["Two rails front to back, one beam across.", "Printed corner blocks hold the motors and idlers.", "Three stepper motors pull toothed belts.", "End stops on X and Y, a drag chain for the cables."],
     subs:[["Y rails", ["gantry_y_rail"]], ["X beam", ["gantry_x_beam"]], ["Corner blocks", ["gantry_block"]], ["Carriages", ["gantry_y_carriage", "gantry_y_wheel", "gantry_saddle"]], ["Motors", ["gantry_motor"]], ["Belts and pulleys", ["gantry_y_belt", "gantry_x_belt", "gantry_pulley", "gantry_idler", "gantry_belt_cap"]], ["End stops", ["gantry_endstop"]], ["Drag chain", ["gantry_drag_chain", "gantry_chain_ledge"]]], proof:"Position known to the step" },
-  { id:"winch", n:"08", name:"Carriage and winch", spec:"Printed saddle and spool", ph:1.15, th:1.15, chain:["gantry"], anchor:[.011,-.03,1.24], ex:[0,-.22,.12],
+  { id:"winch", n:"08", name:"Carriage and winch", spec:"Printed saddle and spool", ph:1.15, th:1.15, chain:["gantry"], anchor:[.011,-.03,1.22], ex:[0,-.22,.12],
     text:["The carriage rides the X beam.", "A stepper winds the line on a printed spool.", "The line leaves through a brass eyelet.", "An end stop finds the top."],
     subs:[["Carriage", ["winch_x_carriage", "winch_x_wheel", "winch_saddle"]], ["Winch motor", ["winch_motor", "winch_mount"]], ["Spool and eyelet", ["winch_spool", "winch_eyelet"]], ["Top end stop", ["winch_z_endstop"]], ["Belt clip", ["winch_belt_cap"]]], proof:"Same depth every play" },
   { id:"claw", n:"09", name:"Claw", spec:"Black print, three paddles", ph:1.1, th:1.2, chain:["gantry", "winch"], anchor:[-.02,-.046,.8], ex:[0,0,-.2], skip:["claw_coil_cable", "claw_line"],
     text:["A black printed claw with three long arms.", "Closed, the paddles meet into a bowl under the capsule.", "A 12 V linear actuator down the middle opens and closes them.", "It hangs from a swivel on the line.", "A coiled cable brings the power down."],
     subs:[["Swivel", ["claw_swivel"]], ["Cap", ["claw_cap"]], ["Linear actuator", ["claw_actuator"]], ["Body", ["claw_body", "claw_hub"]], ["Fingers", ["claw_finger", "claw_pad", "claw_lug", "claw_rod", "claw_bearing", "claw_link", "claw_spreader"]], ["Coil cable", ["claw_coil", "claw_cable_tie"]]], proof:"Grip measured before you play" },
-  { id:"camera", n:"10", name:"Play camera", spec:"Webcam on a printed block", ph:1.25, th:-.55, anchor:[-.29,-.29,1.04], ex:[-.15,-.15,.1],
-    text:["A webcam in the front corner, tilted down.", "Its picture is the stream you play from."],
-    subs:[["Webcam", ["camera_c920"]], ["Mount", ["camera_block", "camera_clip"]]], proof:"The stream you play" }
+  { id:"camera", n:"10", name:"Cameras", spec:"Two 1080p webcams", ph:1.25, th:-.55, anchor:[0,-.336,1.15], ex:[0,-.15,.1],
+    text:["A webcam on the front top tube, tilted down.", "A second one inside, under the right top tube.", "Together they are the stream you play from."],
+    subs:[["Webcams", ["camera_c920"]], ["Mounts", ["camera_tab"]]], proof:"The stream you play" }
 ];
 const byId = id => PARTS.find(p => p.id === id);
 const ICON = { frame:"assets/parts/post.png", cage:"assets/parts/mdf.png", panel:"assets/parts/estop.png", electronics:"assets/parts/optiga.png", chute:"assets/parts/funnel.png", capsules:"assets/parts/capsule.png", gantry:"assets/parts/rail.png", winch:"assets/parts/spool.png", claw:"assets/parts/claw.png", camera:"assets/parts/webcam.png" };
 const SUBICON = {
-  "Posts":"assets/parts/post.png", "Rings":"assets/parts/framering.png", "Floor crossbars":"assets/parts/framering.png", "Angle brackets":"assets/parts/bracket.png", "Adjustable feet":"assets/parts/foot.png",
+  "Posts":"assets/parts/post.png", "Rings":"assets/parts/framering.png", "Floor crossbar":"assets/parts/framering.png", "Angle brackets":"assets/parts/bracket.png", "Adjustable feet":"assets/parts/foot.png",
   "Floor":"assets/parts/mdf.png", "Drop zone walls":"assets/parts/guard.png", "Base panels":"assets/parts/mdf.png", "Showcase back":"assets/parts/mdf.png", "Rivets":"assets/parts/bracket.png", "Clear windows":"assets/parts/guard.png", "Drop zone guard and funnel":"assets/parts/guard.png", "Cable grommets":"assets/parts/gland.png", "Acrylic walls":"assets/parts/guard.png",
-  "Emergency stop":"assets/parts/estop.png", "Scan to play":"assets/parts/qr.png", "GRABLAB plate":"assets/brand/mark-chrome-256.png", "Panel":"assets/parts/mdf.png", "Service door":"assets/parts/mdf.png",
+  "Emergency stop":"assets/parts/estop.png", "Scan to play":"assets/parts/qr.png", "GRABLAB plate":"assets/brand/mark-chrome-256.png", "Panel":"assets/parts/mdf.png", "Service panel":"assets/parts/mdf.png",
   "Secure chip":"assets/parts/optiga.png", "Computer":"assets/parts/pi.png", "Case and fan":"assets/parts/fan.png", "Power supply":"assets/parts/psu.png", "Motion controller":"assets/parts/motionboard.png",
   "Claw driver":"assets/parts/clawdriver.png", "5 V supply":"assets/parts/relay.png", "Power splitters":"assets/parts/wago.png", "Wiring":"assets/parts/coil.png",
-  "Chute and funnel":"assets/parts/funnel.png", "Drop sensor, light beam":"assets/parts/beam.png", "Prize cup":"assets/parts/drawer.png", "Rubber curtain":"assets/parts/guard.png", "Landing camera":"assets/parts/webcam.png", "NFC reader":"assets/parts/nfcreader.png", "Printed cradle":"assets/parts/bracket.png", "Trapdoor and servo":"assets/parts/servo.png", "Prize bin door":"assets/parts/drawer.png", "Prize bin":"assets/parts/drawer.png",
-  "Printed two piece shell":"assets/parts/capsule.png", "NFC sticker":"assets/parts/nfcsticker.png", "Size set by the grip test":"assets/parts/capsuleopen.png",
+  "Funnel":"assets/parts/funnel.png", "Light beam sensors":"assets/parts/beam.png", "Seat":"assets/parts/bracket.png", "Gate and servo":"assets/parts/servo.png", "Prize tray":"assets/parts/drawer.png", "NFC reader":"assets/parts/nfcreader.png",
+  "Printed two piece shell":"assets/parts/capsule.png", "NFC disc":"assets/parts/nfcsticker.png", "Non metal ballast":"assets/parts/capsuleopen.png",
   "Y rails":"assets/parts/rail.png", "X beam":"assets/parts/beam2040.png", "Carriages":"assets/parts/bracket.png", "Corner blocks":"assets/parts/bracket.png", "Motors":"assets/parts/nema17.png", "Belts and pulleys":"assets/parts/belt.png", "End stops":"assets/parts/endstop.png", "Drag chain":"assets/parts/dragchain.png",
   "Carriage":"assets/parts/rail.png", "Winch motor":"assets/parts/nema17.png", "Spool and eyelet":"assets/parts/spool.png", "Top end stop":"assets/parts/endstop.png", "Cable joints":"assets/parts/wago.png", "Belt clip":"assets/parts/belt.png",
   "Swivel":"assets/parts/swivel.png", "Cap":"assets/parts/collar.png", "Linear actuator":"assets/parts/actuator.png", "Body":"assets/parts/claw.png", "Fingers":"assets/parts/claw.png", "Coil cable":"assets/parts/coil.png",
-  "Webcam":"assets/parts/webcam.png", "Mount":"assets/parts/bracket.png" };
+  "Webcams":"assets/parts/webcam.png", "Mounts":"assets/parts/bracket.png" };
 
 const PAL = [[.047,.051,.098],[.094,.09,.188],[.192,.161,.31],[.33,.27,.42],[.545,.475,.576],[.855,.843,.847],[1,.824,.478],[.788,.714,1],[.231,.482,1],[.122,.31,.82]];
 
@@ -114,7 +114,7 @@ async function load(){
     if (!o.emissive && !o.map){ m.emissive = m.color.clone(); m.emissiveIntensity = 0; }
     m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity || 0 }; matCache.set(k, m); return m;
   };
-  const scene = await fetch("assets/machine/metal.json?v=3").then(r => r.json());
+  const scene = await fetch("assets/machine/metal.json?v=4").then(r => r.json());
   const M = buildMachine(THREE, { mat, onFont:cb => fonts.then(cb), scene });
   for (const [id, g] of Object.entries(M.parts)){ root.add(g); ents.set(id, g); }
   /* draw calls: siblings with the same material and the same name become one mesh, so a weak GPU draws ~hundreds, not ~1900.
@@ -363,7 +363,7 @@ function selectCap(o){ wake(3500);
   for (const li of list.children) li.classList.toggle("on", li.dataset.id === "capsules");
   const num = o.name.replace("capsule_", "");
   card.innerHTML = `<span class="n">Capsule #${num}</span><h3>Custom NFC capsule</h3>
-    <div class="lines"><p>A clear shell with an NFC sticker, factory UID.</p><p>The prize is whatever the project loads.</p><p>A token, an NFT, a stock, merch or a code.</p><p>Mapped to the UID in the published inventory.</p></div>
+    <div class="lines"><p>A 45 mm printed ball with an NFC disc, factory UID.</p><p>The prize is whatever the project loads.</p><p>A token, an NFT, a stock, merch or a code.</p><p>Mapped to the UID in the published inventory.</p></div>
     <div class="inside"><button type="button" disabled><img src="assets/sub/token-silver.webp" alt="" />Token</button><button type="button" disabled><img src="assets/parts/nft.png" alt="" />NFT</button><button type="button" disabled><img src="assets/parts/stock.png" alt="" />Tokenized stock</button><button type="button" disabled><img src="assets/parts/merch.png" alt="" />Merch</button><button type="button" disabled><img src="assets/parts/voucher.png" alt="" />Off chain code</button><button type="button" disabled><img src="assets/parts/gift.png" alt="" />Anything else</button></div>
     <a class="proof" href="https://solana.com" target="_blank" rel="noopener"><img src="assets/chains/solana.jpg" alt="" />UID published in the inventory</a><div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
   wireCard(); card.classList.add("on"); document.body.classList.add("card-on"); mobileFocus(byId("capsules"));
@@ -406,7 +406,7 @@ function shade(){
     const ei = b.ei + (isHov ? .14 : 0); m.emissiveIntensity += (ei - m.emissiveIntensity)*.2;
   }
 }
-/* capsule open: the shell turns its sticker to you and the lid swings back */
+/* capsule open: the shell turns its NFC disc to you and the lid swings back */
 /* capsules: 264 shells drawn as three instanced meshes; the one you hover or open switches to its real meshes */
 const inst = { ims:[], hide:new THREE.Matrix4().makeTranslation(0, 0, -50).scale(new THREE.Vector3(1e-4, 1e-4, 1e-4)), m:new THREE.Matrix4() };
 function buildInstances(){
@@ -485,11 +485,11 @@ const wake = (ms = 2500) => { activeUntil = Math.max(activeUntil, performance.no
 for (const ev of ["pointermove", "pointerdown", "pointerup", "wheel", "keydown", "scroll", "touchmove"]) addEventListener(ev, () => wake(), { passive:true });
 addEventListener("resize", () => wake());
 stage.addEventListener("pointermove", () => { mouseMoved = true; });
-let last = performance.now(), trapG = null, trapT = 0; let binDoorG = null, clawRig = null, clawT = 0; const clawQ = new THREE.Quaternion(); const linkA = new THREE.Vector3(), linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), XAX = new THREE.Vector3(1, 0, 0), YAX = new THREE.Vector3(0, 1, 0);
+let last = performance.now(); let clawRig = null, clawT = 0; const clawQ = new THREE.Quaternion(); const linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), YAX = new THREE.Vector3(0, 1, 0);
 function frame(now){
   const raw = now - last, dt = Math.min(.05, raw/1000); last = now;
-  const trapOn = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]), clawOn = selected && selected.id === "claw";
-  if (!(now < activeUntil || tour || trapOn || clawOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0 || estop.k > .001 && estop.k < .999)){ requestAnimationFrame(frame); return; }
+  const clawOn = selected && selected.id === "claw";
+  if (!(now < activeUntil || tour || clawOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0 || estop.k > .001 && estop.k < .999)){ requestAnimationFrame(frame); return; }
   /* frame time watchdog: drop the resolution a step if the device cannot keep up, raise it back when it can */
   if (REC) slow = fast = 0; else if (raw > 28) slow++; else if (raw < 18) fast++;
   const floor = LITE || document.documentElement.classList.contains("lite") ? .6 : 1;
@@ -498,25 +498,12 @@ function frame(now){
   if (tour) tourStep(dt); else { orb.idle += dt; if (false) orb.th += dt*.08; if (!orb.down){ orb.vth *= .9; orb.vph *= .9; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); } }
   explode += (explodeTarget - explode)*Math.min(1, dt*4.5);
   if (!orb.down && !orb.pan && !tour && mouseMoved){ mouseMoved = false; const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p || estopHit() ? "pointer" : "grab"; }
-  /* the trapdoor swings open and shut while its card item is picked */
-  /* the prize bin door swings out while its card item is picked */
-  if (!binDoorG) root.traverse(o => { if (o.userData.binDoor) binDoorG = o; });
-  if (binDoorG){ const on = selected && selected.id === "cage" && subFocus && /Prize bin door/.test(selected.subs[subFocus.i][0]); binDoorG.rotation.z += ((on ? 1.5 : 0) - binDoorG.rotation.z)*Math.min(1, dt*5); }
   /* the claw closes and opens while it is picked, then waits open */
   if (!clawRig) root.traverse(o => { if (o.userData.clawRig) clawRig = o.userData.clawRig; });
   if (clawRig){ clawT = selected && selected.id === "claw" ? clawT + dt : 0; const want = clawT ? .55*(.5 + .5*Math.cos(clawT*1.7)) : .55;
     if (Math.abs(want - clawRig.open) > .0005){ clawRig.open += (want - clawRig.open)*Math.min(1, dt*8);
       for (const arm of clawRig.arms){ const u = arm.userData.clawArm; arm.quaternion.copy(u.q0).multiply(clawQ.setFromAxisAngle(u.side, -clawRig.open)); }
       for (const l of clawRig.links){ linkB.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); linkD.copy(linkB).sub(l.a); l.mesh.position.copy(l.a).add(linkB).multiplyScalar(.5); l.mesh.scale.y = linkD.length(); l.mesh.quaternion.setFromUnitVectors(YAX, linkD.normalize()); } } }
-  if (!trapG) root.traverse(o => { if (o.userData.trap) trapG = o; });
-  if (trapG){ const on = selected && selected.id === "chute" && subFocus && /Trapdoor/.test(selected.subs[subFocus.i][0]); trapT = on ? trapT + dt : 0;
-    const want = on ? -1.1*(.5 - .5*Math.cos(trapT*2.2)) : 0; trapG.rotation.x += (want - trapG.rotation.x)*Math.min(1, dt*10);
-    /* the servo horn turns with the trapdoor and the pushrod follows both ends */
-    const L = trapG.userData.link; if (L){ const th = trapG.rotation.x; L.horn.rotation.x = th;
-      const A = linkA.set(L.rx, L.horn.position.y - .0115*Math.sin(th), L.horn.position.z + .0115*Math.cos(th));
-      const B = linkB.copy(L.lever).applyAxisAngle(XAX, th).add(trapG.position); B.x = L.rx;
-      L.rod.position.copy(A).add(B).multiplyScalar(.5); linkD.copy(B).sub(A); L.rod.scale.y = linkD.length(); L.rod.quaternion.setFromUnitVectors(YAX, linkD.normalize());
-      L.pins[0].position.set(L.rx - .0015, A.y, A.z); L.pins[1].position.set(L.rx - .0015, B.y, B.z); } }
   if (!estop.ms.length) root.traverse(o => { if (/^panel_estop_(mushroom|rim)/.test(o.name)){ o.userData.y0 = o.position.y; estop.ms.push(o); } });
   estop.k += ((estop.on ? 1 : 0) - estop.k)*Math.min(1, dt*14); for (const o of estop.ms) o.position.y = o.userData.y0 - .007*estop.k;
   if (toastT > 0 && (toastT -= dt) <= 0) toast.classList.remove("on");

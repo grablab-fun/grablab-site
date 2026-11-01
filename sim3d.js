@@ -1,16 +1,16 @@
 /* ============ SIMULATOR 3D : the real machine (the metal build, anatomy-metal.js) driven by the simulator's game state ============
-   Three live cameras: the play camera in the front left corner, the claw looking down, the landing camera in the chute.
+   Three live cameras: the front camera on the top tube, the claw looking down, the side camera under the right top tube.
    The main one fills the stage, the other two run in small windows; tap one to swap.
    Game space: x -1..1 (left..right), z 0..1 (front..back), y 0..1 (floor..top), 1 unit = 0.45 m across, 0.9 m deep. The claw only goes where the real gantry goes: TRAVEL is its 445 x 469 mm in game units.
    Game x runs along the machine's x (left..right as the front left play camera sees it), game z along y (front glass..back), so the prize hole is front right.
    Light on purpose: no point lights, no shadows, the electronics and cables left out, every still mesh merged, capsules one instanced mesh. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=22";
+import { buildMachine } from "./anatomy-metal.js?v=23";
 
-const SCENE = await fetch("assets/machine/metal.json?v=3").then(r => r.json());
+const SCENE = await fetch("assets/machine/metal.json?v=4").then(r => r.json());
 
-export const CAP_R = .0556;                                     // capsule radius in game x units (25 mm)
-export const CHUTE = { x0:.182, x1:.8, z0:.1, z1:.407, h:0, cx:.4522, cz:.2739, any:true };   // the prize hole, front right in game space (any: test all four edges)
+export const CAP_R = .05;                                       // capsule radius in game x units (22.5 mm, the 45 mm printed ball)
+export const CHUTE = { x0:.2244, x1:.7222, z0:.139, z1:.3856, h:0, cx:.4733, cz:.2633, any:true };   // inside the funnel wall, front right in game space (any: test all four edges)
 export const TRAVEL = { x0:-.44, x1:.548, z0:.237, z1:.757 };     // the gantry's real reach, frame X 152..596.5, Y 113..581.5
 const FLOOR = .25, SX = .45, SZ = .9;
 const toM = (x, z) => [x*SX, -.45 + z*SZ];                      // game x,z to machine x,y
@@ -59,7 +59,7 @@ export function createSim3D(canvas, pips, opts = {}){
   const D = M.dims, YC = D.YC, XC = D.XC;
   const clawPart = M.parts.claw, clawG = clawPart.children.find(c => c.userData.clawRig), rig = clawG.userData.clawRig, line = clawPart.children.find(c => c.name === "claw_line");
   clawPart.traverse(o => { if (o.name === "claw_coil_cable") o.visible = false; });
-  root.traverse(o => { if (o.name === "chute_c960_view") o.visible = false; });   // the view cone is an anatomy diagram, not a part
+  root.traverse(o => { if (o.name === "chute_ball") o.visible = false; });   // the seat starts empty: the game's capsule lands there
   const lineTop = line.position.z + line.geometry.parameters.height/2, lineH = line.geometry.parameters.height;
   /* the claw's arms turn on their pins; the links follow both ends */
   const Yax = new THREE.Vector3(0, 1, 0), lb = new THREE.Vector3(), ld = new THREE.Vector3(), rq = new THREE.Quaternion();
@@ -87,12 +87,11 @@ export function createSim3D(canvas, pips, opts = {}){
   merge(root, new Set([moveY, fl])); merge(moveY, new Set([moveX])); merge(moveX, new Set([clawPart])); merge(clawPart, new Set([clawG, line])); merge(clawG, live); for (const a of rig.arms) merge(a, new Set());
   root.updateMatrixWorld(true);
 
-  /* capsules: white printed shells, one instanced mesh; layer lines, the five lid holes and the seam are painted in one small texture */
+  /* capsules: white printed shells, one instanced mesh; layer lines and the seam are painted in one small texture */
   const RM = CAP_R*SX;
   const shellT = (() => { const cv = document.createElement("canvas"); cv.width = 256; cv.height = 128; const g = cv.getContext("2d");
     g.fillStyle = "#ffffff"; g.fillRect(0, 0, 256, 128); g.fillStyle = "rgba(120,118,112,.16)"; for (let y = 0; y < 128; y += 3) g.fillRect(0, y, 256, 1);
     g.fillStyle = "rgba(150,148,140,.75)"; g.fillRect(0, 63, 256, 2);
-    g.fillStyle = "#2e2d2b"; for (let k = 0; k < 5; k++){ g.beginPath(); g.ellipse(25 + k*51.2, 23, 4.2, 2.6, 0, 0, 7); g.fill(); }
     const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; })();
   const shellG = new THREE.SphereGeometry(RM, 28, 16).rotateX(Math.PI/2), shellM = new THREE.MeshStandardMaterial({ color:0xf3f2ee, map:shellT, roughness:.62, metalness:0 });
   let caps = null, capN = 0;
@@ -104,12 +103,12 @@ export function createSim3D(canvas, pips, opts = {}){
   /* cameras (three.js space: x = machine x, y = up, z = toward the machine's front) */
   const mk = fov => new THREE.PerspectiveCamera(fov, 1, .01, 30);
   const cams = [
-    /* the real play camera: under the top ring in the front left corner, looking across the pile */
-    { name:"Corner camera", cam:mk(68), pose(c){ c.up.set(0, 1, 0); c.position.set(-.29, 1.04, .29); c.lookAt(.08, .36, -.04); } },
+    /* the real front camera: on the front top tube, x 350, looking down at 350, 390 on the floor */
+    { name:"Front camera", cam:mk(56), pose(c){ c.up.set(0, 1, 0); c.position.set(0, 1.125, .31); c.lookAt(0, .25, -.04); } },
     /* under the claw body, looking down past the arms; game back is up on screen */
     { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, -1); c.position.set(p.x + .02, p.y - .12, p.z + .07); c.lookAt(p.x, FLOOR - .02, p.z - .005); } },
-    /* the landing camera behind the chute window, on the trapdoor */
-    { name:"Chute camera", cam:mk(78), pose(c){ c.up.set(0, 1, 0); c.position.set(.2035, .216, .147); c.lookAt(.2035, .128, .2105); } },   // inside the top of the chute, looking down at the trapdoor
+    /* the real side camera: inside, under the right top tube, looking across the floor */
+    { name:"Side camera", cam:mk(56), pose(c){ c.up.set(0, 1, 0); c.position.set(.28, 1.03, 0); c.lookAt(-.042, .25, 0); } },
     /* recordings only: over the front glass, looking down into the pile */
     { name:"Stream camera", cam:mk(46), pose(c){ c.up.set(0, 1, 0); c.position.set(-.21, 1.02, .78); c.lookAt(.03, .45, -.04); } },
     /* recordings only: straight down from above the machine */
@@ -147,7 +146,9 @@ export function createSim3D(canvas, pips, opts = {}){
       if (c.state === "gone" && c.inBin) continue;
       let x, y, z;
       if (c === st.held){ v.set(0, 0, HELD).applyMatrix4(clawG.matrixWorld); root.worldToLocal(v); x = v.x; y = v.y; z = v.z; }
-      else { [x, y] = toM(c.x, c.z); z = FLOOR + c.y*SX; if (c.state === "chute" || c.state === "gone"){ z = Math.max(.136 + RM, z); } }
+      else { [x, y] = toM(c.x, c.z); z = FLOOR + c.y*SX;
+        if (c.state === "chute" || c.state === "gone"){   // the cone brings it to the throat at 563, 137, the seat holds it at 563, 97, 100 above the ground
+          const k = Math.max(0, Math.min(1, (.32 - z)/.18)); x += (.213 - x)*k; y += (-.213 - y)*k; if (z < .14) y += (.04)*(z - .14)/.04; z = Math.max(.1, z); y = Math.max(-.253, y); } }
       q.setFromEuler(eu.set(c.rx || (c.rx = Math.random()*6.28), c.ry || (c.ry = Math.random()*6.28), c.rz || (c.rz = Math.random()*6.28)));
       m4.compose(v.set(x, y, z), q, sc); caps.setMatrixAt(n, m4); n++;
     }
@@ -163,9 +164,9 @@ export function createSim3D(canvas, pips, opts = {}){
 
   /* capsule spots for the game: a loose hex pack on the floor, jittered, clear of the prize hole and its walls */
   function spots(){
-    /* a square pack that spans the floor wall to wall: the spacing is stretched a hair so the first and last rows and columns touch the skins (at 325 from the centre) */
-    const out = [], L = .325 - RM - .002, n = Math.floor(2*L/(2*RM + .003)) + 1, d = 2*L/(n - 1); let sd = 5; const r = () => (sd = (sd*16807) % 2147483647)/2147483647;
-    const hole = (x, y, m) => x > .079 - RM - m && y < -.079 + RM + m;
+    /* a square pack that spans the floor wall to wall: the spacing is stretched a hair so the first and last rows and columns touch the skins (at 330 from the centre) */
+    const out = [], L = .33 - RM - .002, n = Math.floor(2*L/(2*RM + .003)) + 1, d = 2*L/(n - 1); let sd = 5; const r = () => (sd = (sd*16807) % 2147483647)/2147483647;
+    const hole = (x, y, m) => x > .099 - RM - m && y < -.099 + RM + m;
     if (opts.layer2){ /* recordings: a second, uneven layer resting in the hollows of the first, thinning toward the front */
       const top = []; for (let row = 0; row < n - 1; row++){ const y = -L + d/2 + row*d;
         for (let c = 0; c < n - 1; c++){ const x = -L + d/2 + c*d;

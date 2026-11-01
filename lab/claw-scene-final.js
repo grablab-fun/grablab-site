@@ -1,11 +1,11 @@
 /* Grablab Prototype 01, final metal build, as a SimArena scene (simarena/scene@1.0, MuJoCo underneath).
    node claw-scene-final.js -> writes grablab-claw-final.scene.json + grablab-claw-final-mech.asset.json next to this file
    Same machine as anatomy-metal.js (dimensions from assets/machine/metal.json). Metres, z up, the front faces -y.
-   Welded 25 mm black steel cabinet, 700 x 700 x 1130: black base skins, black left and back panels, glass front and right,
-   play floor at 250, 243 mm prize hole front right with two walls, LED profiles under the top ring, V-slot gantry on top,
+   Welded 20 mm black steel cabinet, 700 x 700 x 1110: black base skins, black left and back panels, clear front and right,
+   play floor at 250, 222 mm prize hole front right inside the printed funnel's 100 mm wall, LED strip under the top ring, V-slot gantry on top,
    the black claw on a line with a black coil cable, white printed capsules.
    Physics carried over from the tuned Rev B scene (claw-scene-revb.js): motor order, equal_joints hoist, capsule radius 30 mm
-   against the real 25 mm because the finger profile is tuned for it, one layer of capsules so the browser keeps up.
+   against the real 22.5 mm because the finger profile is tuned for it (so the throat here is 80 mm against the real 55), one layer of capsules so the browser keeps up.
    Controls (press Run, click the claw): arrow keys move it, sliders claw/lift (velocity, left = down) and claw/grip
    (left opens, centre closes on the spring grip). */
 function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
@@ -75,23 +75,24 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
   const QX90 = q([1,0,0], Math.PI/2), QY90 = q([0,1,0], Math.PI/2);
 
 
-  /* ---------------- cabinet: welded 25 mm tube, four rings on four posts ---------------- */
-  const FZ = .25, TOP = 1.13, HX0 = .082, HX1 = .325, HY0 = -.325, HY1 = -.082;
-  const T = .025, O = .35, I_ = O - T;
+  /* ---------------- cabinet: welded 20 mm tube, three rings on four posts ---------------- */
+  const FZ = .25, TOP = 1.11, HX0 = .102, HX1 = .324, HY0 = -.324, HY1 = -.102;
+  const T = .02, O = .35, I_ = O - T;
   const FRM = [];
   [[-O, -O], [I_, -O], [-O, I_], [I_, I_]].forEach(([x, y]) => FRM.push(BB(x, y, 0, x + T, y + T, TOP, "tube")));
-  [[0, T], [.222, .247], [.325, .35], [1.105, TOP]].forEach(([z0, z1]) => FRM.push(
+  [[0, T], [.227, .247], [1.09, TOP]].forEach(([z0, z1]) => FRM.push(
     BB(-I_, -O, z0, I_, -I_, z1, "tube"), BB(-I_, I_, z0, I_, O, z1, "tube"), BB(-O, -I_, z0, -I_, I_, z1, "tube"), BB(I_, -I_, z0, O, I_, z1, "tube")));
   [[-.32, -.32], [.32, -.32], [-.32, .32], [.32, .32]].forEach(([x, y]) => FRM.push(ghost(cyl(.02, .012, [x, y, .006], "rubber"))));
   fixed("frame", FRM);
   /* panels: black base skins all round, black left and back of the showcase, glass front and right */
-  fixed("panels", [BB(-.353, -.353, T, .353, -O, .35, "panel_k"), BB(-.353, O, T, .353, .353, .35, "panel_k"), BB(-.353, -O, T, -O, O, .35, "panel_k"), BB(O, -O, T, .353, O, .35, "panel_k"),
-    BB(-.353, O, .35, .353, .353, TOP, "panel_k"), BB(-.353, -O, .35, -O, O, TOP, "panel_k"),
-    BB(-O, -.352, .35, O, -O, TOP, "acrylic"), BB(O, -O, .35, .352, O, TOP, "acrylic")]);
-  /* play floor: collides 70 mm deep so a dropped capsule can never tunnel through it, prize hole front right, two walls round it */
+  const SP = .237;   // the skins split at 237
+  fixed("panels", [BB(-.353, -.353, T, .353, -O, SP, "panel_k"), BB(-.353, O, T, .353, .353, SP, "panel_k"), BB(-.353, -O, T, -O, O, SP, "panel_k"), BB(O, -O, T, .353, O, SP, "panel_k"),
+    BB(-.353, O, SP, .353, .353, TOP, "panel_k"), BB(-.353, -O, SP, -O, O, TOP, "panel_k"),
+    BB(-O, -.352, SP, O, -O, TOP, "acrylic"), BB(O, -O, SP, .352, O, TOP, "acrylic")]);
+  /* play floor: collides 70 mm deep so a dropped capsule can never tunnel through it, prize hole front right, the funnel's 100 mm wall round it */
   fixed("play_floor", [BB(-O, HY1, FZ - .07, O, O, FZ, "panel_k"), BB(-O, -O, FZ - .07, HX0, HY1, FZ, "panel_k"),
     BB(HX1, -O, FZ - .07, O, HY1, FZ, "panel_k"), BB(HX0, -O, FZ - .07, HX1, HY0, FZ, "panel_k"),
-    BB(HX0 - .006, HY0, FZ, HX0, HY1 + .006, .35, "panel_k"), BB(HX0, HY1, FZ, HX1, HY1 + .006, .35, "panel_k")]);
+    BB(.099, -.327, FZ, .102, -.099, .35, "plastic2"), BB(.324, -.327, FZ, .327, -.099, .35, "plastic2"), BB(.102, -.327, FZ, .324, -.324, .35, "plastic2"), BB(.102, -.102, FZ, .324, -.099, .35, "plastic2")]);
 
   /* ---------------- front plates: QR on the left, wordmark plate in the middle, E-stop on the right ---------------- */
   const PY = -.353, PL = [];
@@ -120,8 +121,8 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
     PL.push(ghost(BB(W0 + i*(LW + GAP) + x0*U, PY - .0045, LZ + y0*U, W0 + i*(LW + GAP) + x1*U, PY - .003, LZ + y1*U, "logo")))));
   fixed("front_plates", PL);
 
-  /* ---------------- chute: funnel under the 243 mm hole down to the 120 mm throat, break beam, a shaft to the cradle ---------------- */
-  const OX0 = .1435, OX1 = .2635, OY0 = -.2635, OY1 = -.1435, ZF0 = FZ - .07, ZF1 = .125, ZB = .04;
+  /* ---------------- prize path: funnel under the 222 mm hole down to the throat, a shaft to the seat, reader, beam, gate servo, tray ---------------- */
+  const OX0 = .173, OX1 = .253, OY0 = -.253, OY1 = -.173, ZF0 = FZ - .07, ZF1 = .14, ZB = .07;
   const fun = (a, b, c, d) => {   // a,b: top edge ends; c,d: bottom edge ends (same side)
     const mid = [0,1,2].map(k => (a[k] + b[k] + c[k] + d[k])/4), u = [0,1,2].map(k => b[k] - a[k]), w = [0,1,2].map(k => (c[k] + d[k])/2 - (a[k] + b[k])/2);
     const L = Math.hypot(...w), Wd = (Math.hypot(...u) + Math.hypot(c[0]-d[0], c[1]-d[1], c[2]-d[2]))/2;
@@ -135,28 +136,29 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
     fun([HX0, HY1, ZF0], [HX0, HY0, ZF0], [OX0, OY1, ZF1], [OX0, OY0, ZF1]), fun([HX1, HY0, ZF0], [HX1, HY1, ZF0], [OX1, OY0, ZF1], [OX1, OY1, ZF1]),
     BB(OX0 - .008, OY0 - .008, ZB, OX0, OY1 + .008, ZF1, "hole"), BB(OX1, OY0 - .008, ZB, OX1 + .008, OY1 + .008, ZF1, "hole"),
     BB(OX0, OY0 - .008, ZB, OX1, OY0, ZF1, "hole"), BB(OX0, OY1, ZB, OX1, OY1 + .008, ZF1, "hole"),
-    BB(OX0 - .008, OY0 - .008, ZB - .02, OX1 + .008, OY1 + .008, ZB, "plastic2"),   // cradle floor, the trapdoor in the real machine
-    ghost(Bh(.042, .04, .0016, .2035, -.2035, ZB + .001, "pcb_blue")), ghost(Bh(.034, .032, .0004, .2035, -.2035, ZB + .0022, "gold")),
-    ghost(cyl(.0012, OX1 - OX0, [.2035, -.2035, .145], "laser", {quat:QY90})), ghost(Bh(.02, .05, .044, OX0 - .012, -.2035, .145, "plastic")), ghost(Bh(.02, .05, .044, OX1 + .012, -.2035, .145, "plastic"))
+    BB(OX0 - .008, OY0 - .008, ZB - .01, OX1 + .008, OY1 + .008, ZB, "plastic2"),   // the seat
+    ghost(Bh(.1, .066, .013, .213, -.219, ZB - .0165, "lamp_body")),                 // ACR122U under the seat
+    ghost(cyl(.0012, .121, [.213, -.253, .101], "laser", {quat:QY90})), ghost(Bh(.05, .019, .05, .1275, -.253, .101, "plastic")), ghost(Bh(.05, .019, .05, .2985, -.253, .101, "plastic")),
+    ghost(Bh(.0225, .032, .0228, .259, -.2755, .129, "navy2")),                      // MG90S gate servo
+    ghost(BB(.095, -.328, 0, .325, -.334 + .119, .003, "tray")), ghost(BB(.095, -.328, 0, .098, -.215, .05, "tray")), ghost(BB(.322, -.328, 0, .325, -.215, .05, "tray")), ghost(BB(.095, -.328, 0, .325, -.325, .05, "tray")), ghost(BB(.095, -.218, 0, .325, -.215, .05, "tray"))
   ];
   fixed("chute", CHU);
 
-  /* ---------------- gantry on the top ring: two V-slot Y rails, motor and idler blocks, LED profiles under the ring, webcams ---------------- */
+  /* ---------------- gantry on the top ring: two V-slot Y rails, motor and idler blocks, LED strip under the ring, webcams ---------------- */
   const GS = [];
   [-1, 1].forEach(sg => {
     const x = sg*.32;
-    GS.push(BB(x - .01, -.35, 1.136, x + .01, .35, 1.156, "alu"), ghost(BB(x - .002, -.35, 1.1555, x + .002, .35, 1.158, "steel")));
-    GS.push(ghost(BB(x - .03, .294, 1.13, x + .03, .35, 1.206, "plastic2")), ghost(BB(sg*.327 - .02, .301, 1.161, sg*.327 + .02, .343, 1.209, "plastic")));
-    GS.push(ghost(BB(x - .03, -.35, 1.13, x + .03, -.31, 1.196, "plastic2")));
-    GS.push(ghost(cyl(.009, .018, [sg*.36, .322, 1.182], "steel", {quat:QY90})), ghost(cyl(.009, .012, [sg*.364, -.33, 1.182], "steel", {quat:QY90})));
-    GS.push(ghost(BB(sg*.36 - .0008, -.33, 1.18, sg*.36 + .0008, .322, 1.185, "belt")));
+    GS.push(BB(x - .01, -.35, 1.116, x + .01, .35, 1.136, "alu"), ghost(BB(x - .002, -.35, 1.1355, x + .002, .35, 1.138, "steel")));
+    GS.push(ghost(BB(x - .03, .294, 1.11, x + .03, .35, 1.186, "plastic2")), ghost(BB(sg*.327 - .02, .301, 1.141, sg*.327 + .02, .343, 1.189, "plastic")));
+    GS.push(ghost(BB(x - .03, -.35, 1.11, x + .03, -.31, 1.176, "plastic2")));
+    GS.push(ghost(cyl(.009, .018, [sg*.36, .322, 1.162], "steel", {quat:QY90})), ghost(cyl(.009, .012, [sg*.364, -.33, 1.162], "steel", {quat:QY90})));
+    GS.push(ghost(BB(sg*.36 - .0008, -.33, 1.16, sg*.36 + .0008, .322, 1.165, "belt")));
   });
-  /* LPU18 LED profiles on the inner top edges, opal cover facing down and in; front and left stop short of the camera block */
-  const LP = .018, IN = .3245, LZ0 = 1.105 - LP;
-  [[-IN, -IN + LP, -.26, IN], [IN - LP, IN, -IN, IN]].forEach(([x0, x1, y0, y1]) => GS.push(ghost(BB(x0, y0, LZ0, x1, y1, 1.105, "plastic")), ghost(BB(x0, y0, LZ0 - .0012, x1, y1, LZ0, "opal"))));
-  [[-.26, IN, IN - LP, IN], [-IN, IN, IN - LP, IN]].forEach(([x0, x1], i) => { const y0 = i ? IN - LP : -IN, y1 = i ? IN : -IN + LP; GS.push(ghost(BB(x0, y0, LZ0, x1, y1, 1.105, "plastic")), ghost(BB(x0, y0, LZ0 - .0012, x1, y1, LZ0, "opal"))); });
-  GS.push(ghost(BB(-.325, -.325, 1.06, -.27, -.27, 1.105, "plastic2")), ghost(cyl(.008, .01, [-.29, -.29, 1.056], "lens")));
-  GS.push(ghost(BB(-.048, .288, 1.072, .048, .328, 1.108, "plastic2")), ghost(cyl(.012, .004, [0, .286, 1.09], "lens", {quat:QX90})));
+  /* LED strip straight on the four top tubes */
+  [[-.33, -.344, .33, -.336], [-.33, .336, .33, .344], [-.344, -.33, -.336, .33], [.336, -.33, .344, .33]].forEach(([x0, y0, x1, y1]) => GS.push(ghost(BB(x0, y0, 1.0885, x1, y1, 1.09, "opal"))));
+  /* webcams: front on the top tube, side inside under the right top tube */
+  GS.push(ghost(BB(-.03, -.35, 1.11, .03, -.33, 1.13, "plastic2")), ghost(BB(-.047, -.354, 1.13, .047, -.318, 1.169, "plastic")), ghost(cyl(.012, .004, [0, -.3175, 1.15], "lens", {quat:QX90})));
+  GS.push(ghost(BB(.326, -.0125, 1.025, .33, .0125, 1.102, "plastic2")), ghost(BB(.287, -.047, 1.021, .323, .047, 1.055, "plastic")), ghost(cyl(.012, .004, [.285, 0, 1.038], "lens", {quat:QY90})));
   fixed("gantry_static", GS);
 
   /* ---------------- the moving mechanism (asset) ----------------
@@ -166,7 +168,7 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
      segment equal to the lift driver, so the line and the coil cable stretch from the spool to the claw like the real
      winch line. Motors: 0 move_y, 1 lift, 2 move_x, then the grip tendon. Velocity drives + spring-closed fingers, so a
      stray 0 from SimArena's slider buffer means "stop" / "stay closed" (see claw-scene.js). */
-  const BZ = 1.188, LINE_Y = -.045, LINE_Z = 1.125, LINE_TOP = LINE_Z - BZ;   // beam centre height; line leaves the spool under the beam
+  const BZ = 1.168, LINE_Y = -.045, LINE_Z = 1.105, LINE_TOP = LINE_Z - BZ;   // beam centre height; line leaves the spool under the beam
   const S = .79, R = .03;                                        // claw scale vs the tuned v1 claw, capsule radius (60 mm capsules)
   const HUB = .11;                                               // the pivot hub sits 110 mm under the line end, the claw body fills the gap
   const GRAB = FZ + R + .087*S;                                  // claw frame height when the fingertips sit under a capsule
@@ -268,7 +270,7 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
   E.push({name:"claw", asset:assetUrl, controller:{type:"direct", config:""}});
 
 
-  /* ---------------- capsules: white printed shells with a seam and five small holes, one even layer across the floor ---------------- */
+  /* ---------------- capsules: white printed balls with a seam, one even layer across the floor ---------------- */
   const caps = [], PITCH = .07, ROW = PITCH*.866;
   for (let j = 0; j*ROW < .6; j++) for (let i = 0; i*PITCH < .62; i++){
     const x = -.29 + i*PITCH + (j % 2 ? PITCH/2 : 0) + (rnd() - .5)*.006, y = -.29 + j*ROW + (rnd() - .5)*.006;
@@ -276,13 +278,11 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
     if (x > HX0 - .05 && y < HY1 + .05) continue;
     caps.push([x, y]);
   }
-  const DOTS = [0,1,2,3,4].map(k => { const ph = k*Math.PI*2/5 + .3, th = .62; return [Math.sin(th)*Math.cos(ph), Math.sin(th)*Math.sin(ph), Math.cos(th)].map(v => r4(v*(R - .0012))); });
   caps.forEach(([x, y], k) => {
     E.push({name:"capsule_" + String(k + 1).padStart(3, "0"), transform:{pos:[r4(x), r4(y), r4(FZ + R + .002)], quat:q([rnd(), rnd(), 1].map((v, i, a) => v/Math.hypot(...a)), rnd()*6.28)},
       physics:{type:"rigid", motion:"dynamic", mass:.015, angularDamping:.00003, linearDamping:.0005}, joint:{type:"free"},
       geoms:[{type:"sphere", radius:R, material:"cap_white", friction:1.3},
-             ghost({type:"cylinder", radius:r4(R + .0002), height:.0012, pos:[0,0,0], material:"cap_seam"}),
-             ...DOTS.map(p => ghost({type:"sphere", radius:.002, pos:p, material:"cap_dot"}))], collider:{}});
+             ghost({type:"cylinder", radius:r4(R + .0002), height:.0012, pos:[0,0,0], material:"cap_seam"})], collider:{}});
   });
 
   /* ---------------- the filming room (same room as v1: walls, glass front and right, lamp grid, shelf, desk, tripod) ---------------- */
@@ -334,11 +334,11 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
   E.push({name:"fill_light", transform:{pos:[-2.0,-.6,.9]}, light:{type:"point", color:"#d8e2ff", intensity:1.4, range:4}});
   E.push({name:"top_light", transform:{pos:[0,-.1,1.75]}, light:{type:"point", color:"#e6ecff", intensity:1.6, range:2.2}});
   E.push({name:"back_glow", transform:{pos:[0, 2.0, 2.2]}, light:{type:"point", color:"#7d84ff", intensity:2, range:4.5}});
-  E.push({name:"chute_glow", transform:{pos:[.2035, -.2035, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.04, range:.22}});
+  E.push({name:"chute_glow", transform:{pos:[.213, -.213, r4(FZ + .05)]}, light:{type:"point", color:"#ffd6a8", intensity:.04, range:.22}});
   E.push({name:"cage_led", transform:{pos:[0, .05, 1.3]}, light:{type:"spot", color:"#ffe6c4", intensity:2.2, dir:[0, 0, -1], angle:.8}});
   E.push({name:"cage_led_low", transform:{pos:[-.2, .2, .6]}, light:{type:"point", color:"#fff0dc", intensity:.22, range:1.1}});
 
-  const task = { instruction:"Grablab Prototype 01. Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the gantry. Lift left lowers the claw on its line, grip left opens it, grip back to the centre closes it on the spring grip, lift right raises it. Carry the capsule to the chute in the front right corner and open the grip: it drops through the break beam into the NFC cradle." };
+  const task = { instruction:"Grablab Prototype 01. Press Run, open the Scene tab and click claw, then Controls. Arrow keys move the gantry. Lift left lowers the claw on its line, grip left opens it, grip back to the centre closes it on the spring grip, lift right raises it. Carry the capsule to the chute in the front right corner and open the grip: it drops through the funnel onto the seat, in the light beam, over the NFC reader." };
   return { scene:{ _format:"simarena/scene@1.0", name:"Grablab Prototype 01", sim:{timestep:.002, gravity:[0,0,-9.81], sleep:true}, material, task, entities:E }, asset };
 }
 if (typeof module !== "undefined" && require.main === module){

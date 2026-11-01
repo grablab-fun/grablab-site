@@ -1,6 +1,6 @@
 <!doctype html><html><body style="margin:0;background:#000;overflow:hidden"><canvas id="c" style="width:100vw;height:100vh;display:block"></canvas>
 <script type="module">
-import { createSim3D, CAP_R, CHUTE, TRAVEL } from "./sim3d.js?v=rec9";
+import { createSim3D, CAP_R, CHUTE, TRAVEL } from "./sim3d.js?v=rec10";
 const q = new URLSearchParams(location.search), seed0 = +(q.get("seed") || 1), camI = +(q.get("cam") || 0), T = +(q.get("T") || 10), KEEP = +(q.get("keep") || 1), DX = q.has("dx") ? +q.get("dx") : .099, DZ = q.has("dz") ? +q.get("dz") : -.048;
 const S = createSim3D(document.getElementById("c"), null, { layer2:q.has("l2") }); S.setMain(camI);
 let seed = seed0*7919; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;

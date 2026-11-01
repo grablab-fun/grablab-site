@@ -51,7 +51,7 @@
   const FEED = [[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0]];   // one feed per drop, each with as many capsules as it has left
   function feedVideo(i){
     const [n, mir, off] = FEED[i % FEED.length];
-    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=9" poster="assets/feeds/feed${n}.jpg?v=9" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
+    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=10" poster="assets/feeds/feed${n}.jpg?v=10" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
   }
   /* project socials (demo projects: icons only, real ones link out) */
   const SOC = {
@@ -209,8 +209,8 @@
               <div class="pc-ov"><span class="sc"><i class="rec"></i>Live</span><span class="sc" id="rmCatch"></span></div>
               <span class="pc-view"><i></i><b class="vn" id="rmWatch" data-n="900">900</b> watching</span>
               <span class="sc rm-queue" id="rmQueue"></span>
-              <span class="rm-camname" id="rmCam">Corner camera</span>
-              <div class="rm-pips"><button class="rm-pip" type="button" data-k="claw"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Claw camera</span></button><button class="rm-pip" type="button" data-k="chute"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Beam sensor</span></button></div>
+              <span class="rm-camname" id="rmCam">Front camera</span>
+              <div class="rm-pips"><button class="rm-pip" type="button" data-k="claw"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Claw camera</span></button><button class="rm-pip" type="button" data-k="chute"><video muted loop playsinline preload="metadata" aria-hidden="true"></video><span>Side camera</span></button></div>
             </div>
             <div class="rm-info">
               <div class="rm-tiers">
@@ -290,9 +290,9 @@
         <div class="stagew" id="stagew">
           <canvas id="simCv"></canvas>
           <canvas id="sim3d" class="s3" aria-label="The machine, live"></canvas>
-          <span class="s3-main" id="s3Main">Corner camera</span>
+          <span class="s3-main" id="s3Main">Front camera</span>
           <button class="s3-pip l" type="button" data-cam="1"><span>Claw camera</span></button>
-          <button class="s3-pip r" type="button" data-cam="2"><span>Chute camera</span></button>
+          <button class="s3-pip r" type="button" data-cam="2"><span>Side camera</span></button>
           <div class="shud tl"><div class="bcast"><span class="slive">Live</span><i class="bdiv"></i><img class="bimg" id="hudLogo" src="" alt="" /><span class="smach" id="hudProj"></span></div></div>
           <div class="shud tm"><b id="simT">0:30</b><span class="tb"><i id="simTb"></i></span></div>
           <div class="shud tr"><span class="swatch"><i></i><b class="vn" data-n="1284">1,284</b> watching</span></div>
@@ -328,7 +328,7 @@
           <div class="rc-r"><i></i>Inventory committed<small id="rc0"></small></div>
           <div class="rc-r"><i></i>Grip locked<small>70%</small></div>
           <div class="rc-r"><i></i>Machine signed the play<small>peaqOS</small></div>
-          <div class="rc-r"><i></i>Drop seen<small>beam + camera</small></div>
+          <div class="rc-r"><i></i>Drop seen<small>beam + tag</small></div>
           <div class="rc-r"><i></i><span id="rc4t">Paid out</span><small id="rc4"></small></div>
         </div>
         <div class="win-acts"><button class="btn btn-primary big" id="winAgain" type="button">Play again</button><button class="btn btn-ghost big" id="winOther" type="button">Other drops</button></div>
@@ -437,10 +437,10 @@
     const p = proj, pi = PROJECTS.indexOf(p), [fn, mir] = FEED[pi % FEED.length], v = $("#rmVid", root);
     $("#rmLogo", root).src = p.logo; $("#rmName", root).textContent = p.name; $("#rmTk", root).textContent = p.tk; $("#rmCat", root).textContent = p.tags;
     $("#rmSoc", root).innerHTML = socials(p);
-    /* three cameras on the same play: the stream, straight down from the top, and the beam sensor in the chute; tap a window to swap it in */
-    const CAMN = { main:"Corner camera", claw:"Claw camera", chute:"Beam sensor" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=9`;
+    /* three cameras on the same play: the front stream, straight down from the top, and the side camera; tap a window to swap it in */
+    const CAMN = { main:"Front camera", claw:"Claw camera", chute:"Side camera" }, url = k => `assets/feeds/feed${fn}${k === "main" ? "" : "-" + k}.mp4?v=10`;
     const pips = [...root.querySelectorAll(".rm-pip")];
-    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "main"; v.src = url("main"); v.poster = `assets/feeds/feed${fn}.jpg?v=9`;
+    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "main"; v.src = url("main"); v.poster = `assets/feeds/feed${fn}.jpg?v=10`;
       pips.forEach(b => { const pv = b.querySelector("video"); pv.src = url(b.dataset.k); pv.dataset.k = b.dataset.k; b.querySelector("span").textContent = CAMN[b.dataset.k]; }); $("#rmCam", root).textContent = CAMN.main; }
     if (!root.dataset.rmPips){ root.dataset.rmPips = "1";
       /* keep the windows on the same moment as the main feed */
@@ -482,7 +482,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=23").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=24").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){
@@ -530,7 +530,7 @@
   function demoAddr(c){ return c === "base" ? "0x" + Array.from({length:40}, () => "0123456789abcdef"[Math.random()*16|0]).join("") : b58(44); }
   function enterPay(){
     const pi = PROJECTS.indexOf(proj), [fn, mir] = FEED[pi % FEED.length], pv = $("#payVid", root);
-    if (!pv.src.endsWith(`feed${fn}.mp4?v=9`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=9`; pv.poster = `assets/feeds/feed${fn}.jpg?v=9`; }
+    if (!pv.src.endsWith(`feed${fn}.mp4?v=10`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=10`; pv.poster = `assets/feeds/feed${fn}.jpg?v=10`; }
     pv.classList.toggle("mir", !!mir); pv.play().catch(() => {});
     $("#payMach", root).textContent = `Catching at ${proj.name}`;
     const w = 380 + (proj.left * 37) % 1400, wv = $("#payWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);
@@ -1189,7 +1189,7 @@
   /* real-photo assets for the full simulator + the mapping from game space to that photo */
   function photoKit(){
     const img = f => { const i = new Image(); i.decoding = "async"; i.src = "assets/play/" + f; return i; };
-    const K = { plate:img("plate.webp?v=2"), open:img("claw-open.webp"), shut:img("claw-closed.webp"), cap:img("cap.webp"),
+    const K = { plate:img("plate.webp?v=9"), open:img("claw-open.webp"), shut:img("claw-closed.webp"), cap:img("cap.webp"),
       ox:0, oy:0, dw:1, dh:1,
       /* pile surface in plate coords (0..1): front edge runs off the bottom, back edge under the gantry */
       FL:[.2, 1], FR:[.8, 1], BL:[.34, .37], BR:[.67, .37],
