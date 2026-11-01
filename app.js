@@ -274,7 +274,7 @@ function renderFoot() {
 const earnLogos = { 'machine.fun': '<i class="mk"></i>', 'FOMO or PUMP': '<img src="/assets/art/fomo.png" alt=""><img src="/assets/art/pump.png" alt="">' };
 function renderChrome() {
   const lay = $('#layer');
-  lay.innerHTML = `<button class="review" id="rv">${I.sliders}Review controls</button>`;
+  lay.innerHTML = `<button class="review" id="rv" title="Review controls" aria-label="Review controls">${I.sliders}</button>`;
   $('#rv').onclick = () => {
     const d = $('.drawer');
     if (d) return d.remove();
@@ -1218,7 +1218,7 @@ function renderProject(ref) {
           <button class="c-ic" data-full aria-label="Full screen">${I.full}</button><button class="c-ic" data-save aria-label="Save as image">${I.save}</button>
         </div>
         <div class="c-leg"><span class="c-name2">${p.pre ? `${esc(p.name)} sample` : `${pair} on machinefun`}</span><span id="ohlc"></span><span class="c-vol">Volume <b id="lvol">-</b></span></div>
-        <div id="chartbox"><div class="sk"></div>${p.pre ? `<span class="c-demo">Sample chart. Real candles start when the token launches.</span>` : ''}</div>
+        <div id="chartbox"><div class="sk"></div>${p.pre ? `<span class="c-demo">Sample chart, not live yet</span>` : ''}</div>
         ${chartFoot()}</div>`;
       paintClock();
       try {
