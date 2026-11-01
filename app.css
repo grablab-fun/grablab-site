@@ -1144,3 +1144,15 @@ html:has(dialog.fnd[open]) body *:not(dialog.fnd,dialog.fnd *){animation-play-st
 .l-hero img{-webkit-mask-image:linear-gradient(90deg,transparent 34%,#000 66%);mask-image:linear-gradient(90deg,transparent 34%,#000 66%)}
 /* chart: a touch of the page's navy */
 .chart-wrap{background:#0a1124}
+/* sign in: real glass over the sky */
+.cw-list,.cw-mail label{background:rgba(255,255,255,.055);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.13)}
+.cw-list button+button::before{background:rgba(255,255,255,.1)}
+.cw-list b{text-shadow:0 1px 8px rgba(0,8,30,.6)}
+.cw-mail label:focus-within{box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.42)}
+.cw-mail .btn[disabled]{background:rgba(255,255,255,.07);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);color:rgba(245,245,245,.5)}
+/* pre launch and draft pages sit on one screen too */
+@media (min-width:1021px){
+  .p-grid{--low:60px}
+  .p-grid.pre{--fit:max(560px,calc(100dvh - 126px))}
+  .wrap:has(.dr-bar) .p-grid.pre{--fit:max(540px,calc(100dvh - 192px))}
+}

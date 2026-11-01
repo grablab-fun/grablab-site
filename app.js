@@ -974,7 +974,7 @@ function mountChart(box, raw, p, onTick, cfg) {
 }
 
 /* project */
-const TOKENS = { SOL: '/assets/tokens/sol.svg', USDC: '/assets/tokens/usdc.svg', PEAQ: '/assets/tokens/peaq.svg', CODEC: '/assets/tokens/codec.svg' };
+const TOKENS = { SOL: '/assets/tokens/sol.svg', USDC: '/assets/tokens/usdc.svg', PEAQ: '/assets/tokens/peaq-blue.svg', CODEC: '/assets/tokens/codec.svg' };
 const tokenIcon = t => TOKENS[t] ? `<img src="${TOKENS[t]}" alt="">` : '';
 const tokenPick = (q, list, key, label, attrs = '') => `<div class="pick ${attrs ? 'full' : ''}"><button type="button" ${attrs} data-pick-open aria-label="${label}" aria-haspopup="listbox">${tokenIcon(q)}${esc(q)}<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1.5 3.5 5 7l3.5-3.5"/></svg></button><div class="pick-m" role="listbox">${list.map(x => `<button type="button" role="option" data-${key}="${esc(x)}" class="${x === q ? 'on' : ''}" aria-selected="${x === q}">${tokenIcon(x)}${esc(x)}</button>`).join('')}</div></div>`;
 const SOL_USD = 185, RATES = { SOL: SOL_USD, USDC: 1 }, SUPPLY = 984e6;
