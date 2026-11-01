@@ -1291,6 +1291,15 @@ function renderProject(ref) {
 /* launch */
 const LINK_RULES = [['github', /github\.com/i], ['x', /(^|\/\/|\.)(x|twitter)\.com/i], ['discord', /discord\.(gg|com)/i], ['telegram', /(t\.me|telegram\.)/i], ['youtube', /(youtube\.com|youtu\.be)/i], ['doc', /(docs\.|gitbook|notion\.)/i]];
 const tip = t => `<button type="button" class="tip" aria-label="${esc(t)}">i<span>${esc(t)}</span></button>`;
+const RV = {
+  project: '<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/>',
+  ticker: '<path d="M20.6 13.4 13 21l-9-9V4h8z"/><circle cx="8.5" cy="8.5" r="1"/>',
+  pair: '<path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/>',
+  links: '<path d="M10 14a4 4 0 0 0 6 .4l3-3a4 4 0 0 0-5.7-5.7L12 7M14 10a4 4 0 0 0-6-.4l-3 3a4 4 0 0 0 5.700 5.700L12 17"/>',
+  proofs: '<path d="m12 3 8 3v6c0 5-3.400 8-8 9-4.600-1-8-4-8-9V6z"/><path d="m8.500 12 2.500 2.500 4.500-5"/>',
+  ignition: '<path d="M12 3c1 4 6 6 6 11a6 6 0 0 1-12 0c0-2 1-3.500 2-4.500 0 2 1 3 2 3 1-3 0-6 2-9.500z"/>'
+};
+const rv = (d, l, v) => `<div><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>${l}</span><b>${v}</b></div>`;
 const LINK_ICONS = ['globe', 'github', 'x', 'discord', 'telegram', 'doc'];
 const detect = u => (LINK_RULES.find(r => r[1].test(u)) || ['globe'])[0];
 function viewLaunch() {
@@ -1374,10 +1383,10 @@ function viewLaunch() {
         <div class="seg" style="justify-self:start"><button data-ign="0" class="${d.ignition ? '' : 'on'}">Off</button><button data-ign="1" class="${d.ignition ? 'on' : ''}">On</button></div></div>
       <div class="after-pub"><div class="eyebrow">After you publish</div><span><b>1.</b> Your page goes live with its proofs.</span><span><b>2.</b> You launch the token when you are ready.</span><span><b>3.</b> At 100 ${esc(d.pair)} on the curve it migrates to Raydium.</span></div></div>`; dupHint(); }
     if (step === 4) b.innerHTML = `<div class="form"><div class="flabel">Ready to publish</div>
-      <div class="t-rows">
-        <div>Project<b>${esc(d.name || '-')}</b></div><div>Ticker<b>${d.ticker ? '$' + esc(d.ticker) : '-'}</b></div>
-        <div>Paired with<b>${esc(d.pair)}</b></div><div>Links<b>${d.links.length}</b></div>
-        <div>Proofs<b>${[d.sim, d.d3, d.pcb, d.video].filter(Boolean).length} of 4</b></div><div>Ignition<b>${d.ignition ? 'On' : 'Off'}</b></div>
+      <div class="t-rows rv">
+        ${rv(RV.project, 'Project', esc(d.name || '-'))}${rv(RV.ticker, 'Ticker', d.ticker ? '$' + esc(d.ticker) : '-')}
+        ${rv(RV.pair, 'Paired with', tokenIcon(d.pair) + esc(d.pair))}${rv(RV.links, 'Links', d.links.length)}
+        ${rv(RV.proofs, 'Proofs', [d.sim, d.d3, d.pcb, d.video].filter(Boolean).length + ' of 4')}${rv(RV.ignition, 'Ignition', d.ignition ? 'On' : 'Off')}
       </div><p class="t-note">Your draft is saved in this browser.</p></div>`;
     const a = document.createElement('div');
     a.className = 'f-actions';
@@ -1614,12 +1623,21 @@ function fitNav() {
   const w = t.offsetWidth, need = [...t.children].reduce((n, e) => n + e.offsetWidth, 0) + 60;
   const pill = innerWidth > 1020 ? Math.min(w, Math.max(need, 920)) : w;
   t.style.setProperty('--dx', (w - pill) / 2 + 'px');
-  t.style.setProperty('--k', (pill / w).toFixed(4));
+}
+let navT = 0, navS = -1, navAt = 0, navRaf = 0;
+function navStep(now) {
+  const top = $('#top'), k = 1 - Math.exp(-Math.min(48, now - navAt) / 130);
+  navAt = now;
+  navS = navS < 0 || reduced ? navT : navS + (navT - navS) * k;
+  if (Math.abs(navT - navS) < .002) navS = navT;
+  top.style.setProperty('--np', navS.toFixed(4));
+  top.classList.toggle('stuck', navS > .5);
+  navRaf = navS === navT ? 0 : requestAnimationFrame(navStep);
 }
 addEventListener('scroll', () => {
-  const top = $('#top'), y = scrollY;
-  if (y > 28) top.classList.add('stuck');
-  else if (y < 10) top.classList.remove('stuck');
+  const r = Math.min(1, scrollY / 260);
+  navT = r * r * (3 - 2 * r);
+  if (!navRaf) { navAt = performance.now(); navRaf = requestAnimationFrame(navStep); }
 }, { passive: true });
 addEventListener('resize', fitNav, { passive: true });
 addEventListener('click', e => {
