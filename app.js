@@ -281,10 +281,9 @@ function renderFoot() {
       <div><h4>Risk notice</h4><p>Tokens can be volatile or lose all value. Transactions cannot be reversed. A listing is not an endorsement. Nothing on this page is financial advice.</p></div>
     </div>
     <div class="powered"><span>Data: public snapshot, ${new Date(SNAP).toUTCString().slice(5, 16)}</span>
-      <div class="logos"><span>Powered by</span>
-        <a href="https://codecflow.ai" target="_blank" rel="noopener" aria-label="CodecFlow"><img src="/assets/art/codecflow-white.svg" alt="CodecFlow"></a>
+      <div class="logos"><a href="https://codecflow.ai" target="_blank" rel="noopener"><img src="/assets/art/codecflow-white.svg" alt="">codecflow</a>
         <a href="https://peaq.xyz" target="_blank" rel="noopener" aria-label="peaq"><img src="/assets/art/peaq-white.svg" alt="peaq"></a>
-        <a href="https://app.simarena.ai" target="_blank" rel="noopener" aria-label="SimArena"><img src="/assets/art/simarena-white.svg" alt="SimArena"></a>
+        <a href="https://app.simarena.ai" target="_blank" rel="noopener"><img src="/assets/art/simarena-white.svg" alt="">SimArena</a>
       </div></div>
   </div></div>`;
 }
@@ -870,16 +869,23 @@ async function market(ref) {
 }
 
 /* chart */
-function mountChart(cv, raw, p, onTick, cfg) {
+let lwc = null;
+const loadChart = () => lwc ||= new Promise((ok, no) => {
+  const s = document.createElement('script');
+  s.src = '/assets/vendor/lightweight-charts.js';
+  s.onload = ok;
+  s.onerror = () => { lwc = null; no(new Error('chart')); };
+  document.head.append(s);
+});
+function mountChart(box, raw, p, onTick, cfg) {
   const scale = raw.length ? (p.price || raw[raw.length - 1][4]) / raw[raw.length - 1][4] : 1, rnd = seeded(p.ref);
   // Buckets with one trade are flat, so each candle opens at the previous close
   const base = raw.map((c, i) => {
     const close = c[4] * scale, open = i ? raw[i - 1][4] * scale : c[1] * scale;
     return [c[0], open, Math.max(c[2] * scale, open, close), Math.min(c[3] * scale, open, close), close, (Math.abs(close - open) / (open || 1) * 40 + rnd()) * (p.vol || 100) * .02];
   });
-  const ctx = cv.getContext('2d');
-  let W = 0, H = 0, hover = -1, raf = 0, data = [];
-  const up = '#c6ff3b', dn = '#ff3f3f';
+  const L = window.LightweightCharts, up = '#c6ff3b', dn = '#ff3f3f', line = 'rgba(255,255,255,.08)';
+  let data = [], hover = null;
   const rebuild = () => {
     const iv = cfg.iv, end = base[base.length - 1]?.[0] || 0, from = end - RANGES[cfg.range], out = new Map();
     base.forEach(c => {
@@ -888,7 +894,7 @@ function mountChart(cv, raw, p, onTick, cfg) {
       if (!o) out.set(k, [k, c[1], c[2], c[3], c[4], c[5]]);
       else { o[2] = Math.max(o[2], c[2]); o[3] = Math.min(o[3], c[3]); o[4] = c[4]; o[5] += c[5]; }
     });
-    data = [...out.values()].slice(-140);
+    data = [...out.values()];
   };
   const factor = () => (cfg.unit === 'mcap' ? (p.mc || 0) / (p.price || 1) : 1) / (cfg.cur === 'SOL' ? SOL_USD : 1);
   const fmt = v => {
@@ -896,73 +902,40 @@ function mountChart(cv, raw, p, onTick, cfg) {
     if (cfg.cur === 'SOL') return (cfg.unit === 'mcap' ? compact(n) : price(n).slice(1)) + ' SOL';
     return cfg.unit === 'mcap' ? usd(n) : price(n);
   };
-  const size = () => {
-    const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
-    W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); draw();
-  };
-  const axisR = 84, axisB = 22, volH = 54;
-  const geom = () => {
-    const n = Math.max(data.length, 30), step = (W - axisR - 8) / n, log = cfg.mode === 'log';
-    const f = v => log ? Math.log(v) : v;
-    const hi = Math.max(...data.map(c => f(c[2]))), lo = Math.min(...data.map(c => f(c[3])));
-    const pad0 = (hi - lo || Math.abs(hi) * .02 || 1) * .14, top = hi + pad0, bot = lo - pad0;
-    const y = v => 10 + (top - f(v)) / (top - bot) * (H - axisB - volH - 24);
-    const x = i => W - axisR - 8 - (data.length - 1 - i + .5) * step;
-    const un = t => log ? Math.exp(t) : t;
-    return { step, y, x, top, bot, un };
-  };
-  function draw() {
-    ctx.fillStyle = '#0c0c0c'; ctx.fillRect(0, 0, W, H);
-    if (!data.length) return;
-    const g = geom(), first = data[0][1] || 1;
-    ctx.font = '500 11px "IBM Plex Mono",monospace'; ctx.textBaseline = 'middle';
-    const axisTxt = v => cfg.mode === 'pct' ? (v >= first ? '+' : '') + ((v / first - 1) * 100).toFixed(2) + '%' : fmt(v);
-    for (let i = 0; i <= 4; i++) {
-      const v = g.un(g.bot + (g.top - g.bot) * i / 4), y = g.y(v);
-      ctx.strokeStyle = 'rgba(255,255,255,.055)'; ctx.beginPath(); ctx.moveTo(0, y + .5); ctx.lineTo(W - axisR, y + .5); ctx.stroke();
-      ctx.fillStyle = '#7a7a84'; ctx.textAlign = 'left'; ctx.fillText(axisTxt(v), W - axisR + 6, y);
-    }
-    const bw = Math.max(2, Math.min(g.step * .64, 16)), maxV = Math.max(...data.map(c => c[5]), 1e-9);
-    data.forEach((c, i) => {
-      const x = g.x(i), isUpC = c[4] >= c[1], col = isUpC ? up : dn, vh = c[5] / maxV * (volH - 6);
-      ctx.strokeStyle = col; ctx.fillStyle = col;
-      ctx.globalAlpha = (hover === i || hover < 0 ? 1 : .55) * .34;
-      ctx.fillRect(x - bw / 2, H - axisB - vh, bw, vh);
-      ctx.globalAlpha = hover === i || hover < 0 ? 1 : .55;
-      ctx.beginPath(); ctx.moveTo(Math.round(x) + .5, g.y(c[2])); ctx.lineTo(Math.round(x) + .5, g.y(c[3])); ctx.stroke();
-      const a = g.y(Math.max(c[1], c[4])), b = g.y(Math.min(c[1], c[4]));
-      ctx.fillRect(x - bw / 2, a, bw, Math.max(1.5, b - a));
-    });
-    ctx.globalAlpha = 1;
-    const every = Math.max(1, Math.ceil(data.length / Math.max(3, Math.floor(W / 130))));
-    ctx.fillStyle = '#7a7a84'; ctx.textAlign = 'center';
-    data.forEach((c, i) => { if ((data.length - 1 - i) % every === 0 && g.x(i) > 20) ctx.fillText(clock(c[0]), g.x(i), H - 9); });
-    const last = data[data.length - 1], ly = g.y(last[4]), lc = last[4] >= last[1] ? up : dn;
-    ctx.setLineDash([3, 4]); ctx.strokeStyle = lc; ctx.globalAlpha = .6;
-    ctx.beginPath(); ctx.moveTo(0, ly + .5); ctx.lineTo(W - axisR, ly + .5); ctx.stroke();
-    ctx.setLineDash([]); ctx.globalAlpha = 1;
-    ctx.fillStyle = lc; ctx.fillRect(W - axisR + 1, ly - 10, axisR - 1, 20);
-    ctx.fillStyle = '#060608'; ctx.textAlign = 'left'; ctx.fillText(axisTxt(last[4]), W - axisR + 6, ly);
-    if (hover >= 0 && data[hover]) {
-      const x = g.x(hover);
-      ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.setLineDash([3, 3]);
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H - axisB); ctx.stroke(); ctx.setLineDash([]);
-    }
-  }
+  const chart = L.createChart(box, {
+    autoSize: true,
+    layout: { background: { type: 'solid', color: '#0c0c0c' }, textColor: '#a0a0a0', fontFamily: '"IBM Plex Mono",monospace', fontSize: 11, attributionLogo: true },
+    grid: { vertLines: { color: 'rgba(255,255,255,.035)' }, horzLines: { color: 'rgba(255,255,255,.035)' } },
+    crosshair: { mode: L.CrosshairMode.Normal, vertLine: { color: 'rgba(255,255,255,.3)', labelBackgroundColor: '#292929' }, horzLine: { color: 'rgba(255,255,255,.3)', labelBackgroundColor: '#292929' } },
+    rightPriceScale: { borderColor: line, scaleMargins: { top: .08, bottom: .24 } },
+    timeScale: { borderColor: line, rightOffset: 4, minBarSpacing: 2, tickMarkFormatter: t => clock(t) },
+    localization: { timeFormatter: t => clock(t, true) }
+  });
+  const candle = chart.addCandlestickSeries({ upColor: up, downColor: dn, wickUpColor: up, wickDownColor: dn, borderVisible: false, priceFormat: { type: 'custom', formatter: fmt, minMove: 1e-12 } });
+  const volume = chart.addHistogramSeries({ priceFormat: { type: 'volume' }, priceScaleId: '', lastValueVisible: false, priceLineVisible: false });
+  volume.priceScale().applyOptions({ scaleMargins: { top: .84, bottom: 0 } });
+  const bar = c => ({ time: c[0], open: c[1], high: c[2], low: c[3], close: c[4] });
+  const vol = c => ({ time: c[0], value: c[5], color: c[4] >= c[1] ? 'rgba(198,255,59,.28)' : 'rgba(255,63,63,.28)' });
   const readout = trade => {
-    const c = data[hover >= 0 ? hover : data.length - 1];
-    if (c) onTick({ c, data, hovering: hover >= 0, trade, fmt, last: base[base.length - 1][4] });
+    const c = hover ?? data[data.length - 1];
+    if (c) onTick({ c, data, hovering: !!hover, trade, fmt, last: base[base.length - 1][4] });
   };
-  const paint = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); };
-  const move = e => {
-    const r = cv.getBoundingClientRect(), g = geom();
-    const i = data.length - 1 - Math.round((W - axisR - 8 - (e.clientX - r.left)) / g.step - .5);
-    hover = i >= 0 && i < data.length ? i : -1; readout(); paint();
+  const frame = () => {
+    const w = box.clientWidth - 70, n = data.length, s = Math.max(5, Math.min(14, w / (n + 6)));
+    chart.timeScale().applyOptions({ barSpacing: s });
+    chart.timeScale().scrollToRealTime();
   };
-  cv.addEventListener('pointermove', move);
-  const leave = () => { hover = -1; readout(); paint(); };
-  cv.addEventListener('pointerleave', leave);
-  const ro = new ResizeObserver(size); ro.observe(cv);
+  const paintAll = () => {
+    rebuild();
+    candle.setData(data.map(bar));
+    volume.setData(data.map(vol));
+    chart.priceScale('right').applyOptions({ mode: { log: L.PriceScaleMode.Logarithmic, pct: L.PriceScaleMode.Percentage, auto: L.PriceScaleMode.Normal }[cfg.mode] });
+    frame();
+  };
+  chart.subscribeCrosshairMove(e => {
+    hover = e.time ? data.find(c => c[0] === e.time) || null : null;
+    readout();
+  });
   let t = 0;
   const seed = base.length ? base[base.length - 1][4] : 0;
   const timer = !reduced && base.length ? setInterval(() => {
@@ -971,11 +944,13 @@ function mountChart(cv, raw, p, onTick, cfg) {
     const v = c[4] * (1 + chg);
     c[4] = v; c[2] = Math.max(c[2], v); c[3] = Math.min(c[3], v); c[5] += Math.abs(chg) * (p.vol || 100) * .4;
     if (++t % 14 === 0) base.push([c[0] + 60, v, v, v, v, 0]);
-    rebuild(); paint();
+    rebuild();
+    const l = data[data.length - 1];
+    if (l) { candle.update(bar(l)); volume.update(vol(l)); }
     readout(Math.random() < .5 ? { side: chg >= 0 ? 'Buy' : 'Sell', px: v } : undefined);
   }, 900) : 0;
-  rebuild(); size(); readout();
-  return { redraw: () => { rebuild(); draw(); readout(); }, stop() { clearInterval(timer); ro.disconnect(); cv.removeEventListener('pointermove', move); cv.removeEventListener('pointerleave', leave); } };
+  paintAll(); readout();
+  return { redraw: () => { paintAll(); chart.applyOptions({}); readout(); }, stop() { clearInterval(timer); chart.remove(); }, shot: () => chart.takeScreenshot() };
 }
 
 /* project */
@@ -1070,10 +1045,10 @@ function renderProject(ref) {
 
   v.innerHTML = `<div class="wrap enter">
     <div id="pbanner"></div>
-    <div class="p-grid">
+    <div class="p-grid ${p.pre ? 'pre' : ''}">
       <div class="p-main">
         <section class="panel p-head grainy">
-          <div class="p-cover"><img src="${coverSrc(p)}" alt="" decoding="async"></div>
+          <div class="p-cover"><img src="${logoSrc(p)}" alt="" decoding="async"></div>
           <div class="p-id"><img class="p-logo" data-vt="${esc(p.ref)}" src="${logoSrc(p)}" alt="">
             <div class="p-title">
               ${p.mint ? `<div class="p-pair"><b>$${esc(p.ticker)}</b> / ${esc(quote)}<button class="ca" data-copy="${esc(p.mint)}">CA ${short(p.mint)} ${I.copy}</button></div>` : ''}
@@ -1085,7 +1060,7 @@ function renderProject(ref) {
               </div>
               ${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
             </div>
-            <div class="p-founder"><img src="${coverSrc(p)}" alt=""><div class="f-who"><span class="f-av">${p.founder?.img ? `<img src="${p.founder.img}" alt="">` : esc(initials(fName))}</span><div><b>${esc(fName)}</b><span>${esc(p.founder?.role || 'Founder')}</span></div></div></div>
+            <div class="p-founder"><div class="f-who"><span class="f-av">${p.founder?.img ? `<img src="${p.founder.img}" alt="">` : esc(initials(fName))}</span><div><b>${esc(fName)}</b><span>${esc(p.founder?.role || 'Founder')}</span></div></div></div>
           </div>
         </section>
         ${p.pre ? '' : `<section class="panel kpis grainy">
@@ -1104,10 +1079,11 @@ function renderProject(ref) {
           <div class="pane" id="spane"></div></div>
         </section>
       </div>
-      <aside class="p-side"><section class="panel trade" id="trade"></section></aside>
+      <aside class="p-side"><section class="panel trade" id="trade"></section>${p.pre ? '' : `<section class="panel p-tape"><div class="eyebrow">Recent trades</div><div class="tp" id="ptape"></div></section>`}</aside>
     </div></div>`;
 
   const drawTrade = () => { $('#trade').innerHTML = tradeHTML(p, state, amt, trade); };
+  queueMicrotask(() => drawTape());
   const banner = () => {
     $('#pbanner').innerHTML = state === 'error' ? `<div class="err-banner" style="margin-top:14px">${I.alert.replace('<svg', '<svg width="18" height="18"')}<span>Market data is unavailable right now. Numbers on this page are from the last snapshot.</span><button class="btn sm" data-retry>Retry</button></div>` : '';
   };
@@ -1125,8 +1101,14 @@ function renderProject(ref) {
       rows.unshift({ t: Date.now() / 1000, side: tr.side, sz, px: tr.px, who: fakeAddr(Math.random) });
       rows.length = Math.min(rows.length, 60);
       if (secTab === 'trades') drawRows(true);
+      drawTape();
     }
   };
+  function drawTape() {
+    const box = $('#ptape'); if (!box) return;
+    const now = Date.now() / 1000;
+    box.innerHTML = rows.slice(0, 24).map(r => `<div><span class="${r.side === 'Buy' ? 'up' : 'down'}">${r.side}</span><span>${r.sz.toFixed(3)} SOL</span><span>${esc(r.who)}</span><span class="mut">${since(now - r.t)}</span></div>`).join('');
+  }
   const seg = (attr, on, items) => `<div class="seg sm">${items.map(i => `<button class="${i[0] === on ? 'on' : ''}" data-${attr}="${i[0]}">${i[1]}</button>`).join('')}</div>`;
   const chartFoot = () => `<div class="c-foot"><div class="c-rng">${Object.keys(RANGES).map(r => `<button class="${r === cfg.range ? 'on' : ''}" data-rng="${r}">${r}</button>`).join('')}</div>
     <span class="grow"></span><span id="cclock"></span>
@@ -1147,7 +1129,7 @@ function renderProject(ref) {
           <button class="c-ic" data-full aria-label="Full screen">${I.full}</button><button class="c-ic" data-save aria-label="Save as image">${I.save}</button>
         </div>
         <div class="c-leg"><span class="c-name2">${pair} on machinefun</span><span id="ohlc"></span><span class="c-vol">Volume <b id="lvol">-</b></span></div>
-        <div id="chartbox"><div class="sk" style="height:420px"></div></div>
+        <div id="chartbox"><div class="sk"></div></div>
         ${chartFoot()}</div>`;
       paintClock();
       try {
@@ -1155,7 +1137,9 @@ function renderProject(ref) {
         if (!$('#chartbox') || mediaTab !== 'chart') return;
         state = 'ready'; drawTrade(); banner();
         if (!data.length) { $('#chartbox').innerHTML = `<div class="empty" style="height:300px;align-content:center"><b>No trades yet</b><span>The first buy opens the chart.</span></div>`; return; }
-        $('#chartbox').innerHTML = '<canvas id="chart" role="img" aria-label="Price chart"></canvas>';
+        await loadChart();
+        if (!$('#chartbox') || mediaTab !== 'chart') return;
+        $('#chartbox').innerHTML = '<div id="chart" role="img" aria-label="Price chart"></div>';
         chart = mountChart($('#chart'), data, p, tick, cfg);
       } catch {
         if (!$('#chartbox')) return;
@@ -1255,7 +1239,7 @@ function renderProject(ref) {
     if (d) { if (d.unit) cfg.unit = d.unit; if (d.cur) cfg.cur = d.cur; if (d.rng) cfg.range = d.rng; if (d.mode) cfg.mode = d.mode; setChart(); }
     if (e.target.closest('[data-full]')) { document.fullscreenElement ? document.exitFullscreen() : $('#cw').requestFullscreen?.(); }
     if (e.target.closest('[data-save]')) {
-      $('#chart')?.toBlob(b => { const u = URL.createObjectURL(b), l = document.createElement('a'); l.href = u; l.download = `${p.ticker}-chart.png`; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1000); });
+      chart?.shot().toBlob(b => { const u = URL.createObjectURL(b), l = document.createElement('a'); l.href = u; l.download = `${p.ticker}-chart.png`; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1000); });
     }
     const side = e.target.closest('[data-side]');
     if (side) { trade.side = side.dataset.side; amt = trade.side === 'buy' ? '0.5' : '10000'; drawTrade(); }
