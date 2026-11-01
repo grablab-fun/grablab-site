@@ -241,6 +241,8 @@ function activeNav() {
   if (p === '/' || p.startsWith('/project')) return '/';
   return NAV.find(n => n[0] === p)?.[0] || '/';
 }
+const comet = c => [[34, .22], [20, .5], [9, 1]].map(([d, o]) => `<rect pathLength="100" style="--d:${d};stroke:${c};opacity:${o}"/>`).join('');
+const EDGE = `<svg class="m-edge" aria-hidden="true"><rect class="base" pathLength="100"/><g class="glow">${comet('#ffae2c')}</g><g class="glow late">${comet('#9ebfff')}</g><g>${comet('#ffe0a7')}</g><g class="late">${comet('#fff')}</g></svg>`;
 function renderTop() {
   $('#top').innerHTML = `
     <a class="brand mark" href="/" data-l aria-label="machine.fun home"><i></i></a>
@@ -249,7 +251,7 @@ function renderTop() {
     </nav>
     <div class="right">
       <button class="btn ico" data-search aria-label="Search projects">${I.search}</button>
-      <a class="btn metal" href="/launch" data-l aria-label="Launch Project"><span class="m-in">${I.rocket}<em class="lbl">Launch Project</em></span></a>
+      <a class="btn metal" href="/launch" data-l aria-label="Launch Project">${EDGE}<span class="m-in">${I.rocket}<em class="lbl">Launch Project</em></span></a>
       <button class="btn conn ${wallet ? 'on' : 'cta'}" id="conn">${wallet ? `<span class="av"></span><span>${esc(wallet.addr)}</span>${I.chev}` : `<span>${I.wallet}Connect</span>`}</button>
     </div>`;
   $('#conn').onclick = () => wallet ? toggleAccount() : connect();
@@ -658,11 +660,11 @@ function buildHome() {
   seedForge();
   el.innerHTML = `
   <section class="hero">
-    <div class="h-sky" aria-hidden="true">
+    <div class="h-mask" aria-hidden="true"><div class="h-sky">
       <img class="plate" src="/assets/art/sky-hero.webp" alt="" fetchpriority="high" decoding="async">
       <img class="fly" src="/assets/art/fly-cut.webp" alt="" fetchpriority="high" decoding="async">
       <i class="h-grain"></i>
-    </div>
+    </div></div>
     <div class="h-in">
       <div class="copy">
         <p class="kick">Back the build.</p>
