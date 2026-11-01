@@ -249,8 +249,6 @@ function markNav() {
 function renderFoot() {
   const ex = 'target="_blank" rel="noopener"';
   $('#foot').innerHTML = `<div class="ft-sky" aria-hidden="true"></div><div class="ft-in">
-    <div class="ft-cta"><h2 class="display">Fund the hardware<br>that actually gets built</h2>
-      </div>
     <div class="ft-cols">
       <a class="brand mark" href="/" data-l aria-label="machine.fun"><i></i></a>
       <div class="ft-links">
@@ -1762,7 +1760,7 @@ function fitNav() {
   const t = $('#top');
   document.documentElement.style.setProperty('--sb', innerWidth - document.body.clientWidth + 'px');
   if (!t) return;
-  const w = t.offsetWidth, need = [...t.children].reduce((n, e) => n + (e.matches('.top-bg') ? 0 : e.offsetWidth), 0) + 72;
+  const w = t.offsetWidth, need = [...t.children].reduce((n, e) => n + (e.matches('.top-bg') ? 0 : e.offsetWidth), 0) + 220;
   const pill = innerWidth > 1020 ? Math.min(w, need) : w;
   navDx = (w - pill) / 2; navW = w;
   navApply();
