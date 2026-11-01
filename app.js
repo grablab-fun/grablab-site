@@ -525,9 +525,9 @@ function drawGrid() {
     pageTimer = setTimeout(() => { ex.page = Math.round(e.target.scrollLeft / (e.target.clientWidth + 24)); markPager(); }, 90);
   }, { passive: true });
   dragScroll($('#pages'), () => $('#pages').clientWidth + 24);
-  $('#pages').style.setProperty('--ph', $('.page').offsetHeight + 'px');
   drawPager(pages.length);
   goPage(ex.page, true);
+  $('#pages').style.setProperty('--ph', $('.page.cur').offsetHeight + 'px');
 }
 function drawPager(n) {
   ex.pages = n;
