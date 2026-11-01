@@ -241,7 +241,7 @@ function activeNav() {
   if (p === '/' || p.startsWith('/project')) return '/';
   return NAV.find(n => n[0] === p)?.[0] || '/';
 }
-const comet = c => [[34, .22], [20, .5], [9, 1]].map(([d, o]) => `<rect pathLength="100" style="--d:${d};stroke:${c};opacity:${o}"/>`).join('');
+const comet = c => [[34, .3], [20, .6], [9, 1]].map(([d, o]) => `<rect class="c${d}" pathLength="100" style="stroke:${c};opacity:${o}"/>`).join('');
 const EDGE = `<svg class="m-edge" aria-hidden="true"><rect class="base" pathLength="100"/><g class="glow">${comet('#ffae2c')}</g><g class="glow late">${comet('#9ebfff')}</g><g>${comet('#ffe0a7')}</g><g class="late">${comet('#fff')}</g></svg>`;
 function renderTop() {
   $('#top').innerHTML = `

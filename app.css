@@ -1007,13 +1007,18 @@ option{background:#171717;color:#f5f5f5}
 .metal::before{opacity:.22}
 .metal:hover::before{opacity:.6}
 .metal>.m-edge{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
-.m-edge rect{x:.75px;y:.75px;width:calc(100% - 1.5px);height:calc(100% - 1.5px);rx:3.25px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:var(--d) calc(100 - var(--d));animation:edge-run 5.2s linear infinite;transition:stroke-width .2s}
+.m-edge rect{x:.75px;y:.75px;width:calc(100% - 1.5px);height:calc(100% - 1.5px);rx:3.25px;fill:none;stroke-width:2;stroke-linecap:round;animation:5.2s linear infinite;transition:stroke-width .2s}
 .m-edge .base{stroke:rgba(255,255,255,.2);stroke-dasharray:none;animation:none}
 .m-edge .late rect{animation-delay:-2.6s}
 .m-edge .glow{filter:blur(3px)}
-.m-edge .glow rect{stroke-width:2.5}
-.metal:hover .m-edge rect{stroke-width:2}
-@keyframes edge-run{from{stroke-dashoffset:var(--d)}to{stroke-dashoffset:calc(var(--d) - 100)}}
+.m-edge .glow rect{stroke-width:3.5}
+.m-edge .c34{stroke-dasharray:34 66;animation-name:edge-34}
+.m-edge .c20{stroke-dasharray:20 80;animation-name:edge-20}
+.m-edge .c9{stroke-dasharray:9 91;animation-name:edge-9}
+.metal:hover .m-edge rect{stroke-width:2.5}
+@keyframes edge-34{from{stroke-dashoffset:34}to{stroke-dashoffset:-66}}
+@keyframes edge-20{from{stroke-dashoffset:20}to{stroke-dashoffset:-80}}
+@keyframes edge-9{from{stroke-dashoffset:9}to{stroke-dashoffset:-91}}
 /* rewards, smaller */
 .art-c>img{height:clamp(96px,6.2vw,124px);padding:10px 0 2px}
 .art-c>div{gap:4px;padding:2px 14px 13px}
