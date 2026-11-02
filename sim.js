@@ -1417,7 +1417,7 @@
       else if (t && t.usd) raw = String(Math.ceil(usdc * 1.02 * 10 ** t.dec));
       closeSwapUI(); openJupiter(t ? t.mint : SOL_MINT, raw); return;
     }
-    setHead(`${t ? t.sym : "Any coin"} on ${c.name} to USDC on Solana`, "Bridged and swapped by deBridge. You sign in your own wallet.", true);
+    setHead(`${t ? t.sym : "Any coin"} on ${c.name} to USDC`, "Bridged and swapped by deBridge. You sign in your own wallet.", true);
     const body = swEl.querySelector(".swp-body");
     body.innerHTML = `<div class="swp-db" id="glDebridge"><span class="swp-load">Loading the bridge…</span></div>`;
     try {
