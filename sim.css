@@ -989,3 +989,4 @@ body.sim-lock{overflow:hidden}
 #jupiter-plugin-instance{--jupiter-plugin-interactive:22, 29, 58}
 #jupiter-plugin-instance li,#jupiter-plugin-instance [role="listitem"]{border-radius:12px;background:transparent!important;transition:background .15s}
 #jupiter-plugin-instance li:hover,#jupiter-plugin-instance [role="listitem"]:hover{background:rgba(143,184,255,.1)!important}
+.swp-s{display:block}.swp-s img.swp-dblogo{display:inline-block!important;width:15px!important;height:15px!important;max-width:15px;margin:0 4px 0 2px;vertical-align:-3px;border-radius:4px}
