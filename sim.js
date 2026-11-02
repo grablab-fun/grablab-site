@@ -51,7 +51,7 @@
   const FEED = [[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0]];   // one feed per drop, each with as many capsules as it has left
   function feedVideo(i){
     const [n, mir, off] = FEED[i % FEED.length];
-    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=12" poster="assets/feeds/feed${n}.jpg?v=12" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
+    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=13" poster="assets/feeds/feed${n}.jpg?v=13" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
   }
   /* project socials (demo projects: icons only, real ones link out) */
   const SOC = {
@@ -437,9 +437,9 @@
     $("#rmLogo", root).src = p.logo; $("#rmName", root).textContent = p.name; $("#rmTk", root).textContent = p.tk; $("#rmCat", root).textContent = p.tags;
     $("#rmSoc", root).innerHTML = socials(p);
     /* two cameras on the same play: the side camera and the claw camera; tap the window to swap it in */
-    const CAMN = { claw:"Claw camera", chute:"Side camera" }, url = k => `assets/feeds/feed${fn}-${k}.mp4?v=12`;
+    const CAMN = { claw:"Claw camera", chute:"Side camera" }, url = k => `assets/feeds/feed${fn}-${k}.mp4?v=13`;
     const pips = [...root.querySelectorAll(".rm-pip")];
-    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "chute"; v.src = url("chute"); v.poster = `assets/feeds/feed${fn}-side.jpg?v=12`;
+    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "chute"; v.src = url("chute"); v.poster = `assets/feeds/feed${fn}-side.jpg?v=13`;
       pips.forEach(b => { const pv = b.querySelector("video"); pv.src = url(b.dataset.k); pv.dataset.k = b.dataset.k; b.querySelector("span").textContent = CAMN[b.dataset.k]; }); $("#rmCam", root).textContent = CAMN.chute; }
     if (!root.dataset.rmPips){ root.dataset.rmPips = "1";
       /* keep the windows on the same moment as the main feed */
@@ -481,7 +481,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=26").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=27").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){
@@ -529,7 +529,7 @@
   function demoAddr(c){ return c === "base" ? "0x" + Array.from({length:40}, () => "0123456789abcdef"[Math.random()*16|0]).join("") : b58(44); }
   function enterPay(){
     const pi = PROJECTS.indexOf(proj), [fn, mir] = FEED[pi % FEED.length], pv = $("#payVid", root);
-    if (!pv.src.endsWith(`feed${fn}.mp4?v=10`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=12`; pv.poster = `assets/feeds/feed${fn}.jpg?v=12`; }
+    if (!pv.src.endsWith(`feed${fn}.mp4?v=10`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=13`; pv.poster = `assets/feeds/feed${fn}.jpg?v=13`; }
     pv.classList.toggle("mir", !!mir); pv.play().catch(() => {});
     $("#payMach", root).textContent = `Catching at ${proj.name}`;
     const w = 380 + (proj.left * 37) % 1400, wv = $("#payWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);

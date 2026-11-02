@@ -40,8 +40,8 @@ const PARTS = [
     text:["A black printed claw with three long arms.", "Closed, the paddles meet into a bowl under the capsule.", "A 12 V linear actuator down the middle opens and closes them.", "It hangs from a swivel on the line.", "A coiled cable brings the power down."],
     subs:[["Swivel", ["claw_swivel"]], ["Cap", ["claw_cap"]], ["Linear actuator", ["claw_actuator"]], ["Body", ["claw_body", "claw_hub"]], ["Fingers", ["claw_finger", "claw_pad", "claw_lug", "claw_rod", "claw_bearing", "claw_link", "claw_spreader"]], ["Coil cable", ["claw_coil", "claw_cable_tie"]]], proof:"Grip measured before you play" },
   { id:"camera", n:"10", name:"Cameras", spec:"Two 1080p webcams", ph:1.25, th:.8, anchor:[.3,.3,1.04], ex:[0,-.15,.1],
-    text:["Camera 1 sits in the top corner and looks across the side.", "Camera 2 rides on the claw and looks straight down.", "Click a camera to see through it."],
-    subs:[["Camera 1: corner", ["camera_c920"]], ["Camera 2: claw", ["camera_claw"]]], proof:"The stream you play" }
+    text:["Camera 1 sits in the top corner and looks across the side.", "Camera 2 rides on the carriage and looks straight down.", "Click a camera to see through it."],
+    subs:[["Camera 1: corner", ["camera_c920"]], ["Camera 2: carriage", ["camera_claw"]]], proof:"The stream you play" }
 ];
 const byId = id => PARTS.find(p => p.id === id);
 const ICON = { frame:"assets/parts/post.png", cage:"assets/parts/mdf.png", panel:"assets/parts/qr.png", electronics:"assets/parts/optiga.png", chute:"assets/parts/funnel.png", capsules:"assets/parts/capsule.png", gantry:"assets/parts/rail.png", winch:"assets/parts/spool.png", claw:"assets/parts/claw.png", camera:"assets/parts/webcam.png" };

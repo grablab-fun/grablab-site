@@ -577,14 +577,14 @@ export function buildMachine(THREE, api){
   /* =========================================================================================== play camera: webcams on the top tubes */
   use("camera");
   /* two 1080p webcams: front on the top tube, side inside under the right top tube, each on a flat bar tab */
-  /* two webcams. Camera 1 in the back right top corner, turned to the middle of the floor. Camera 2 on the claw, straight down. */
+  /* two webcams. Camera 1 in the back right top corner, turned to the middle of the floor. Camera 2 on the carriage plate, straight down. */
   { const c920 = () => m("c920", { color:0x111215, roughness:.35, metalness:.2 });
     const c1 = sm("camera_S", c920, "camera_c920"), t1 = sm("box_camtab_S", dark, "camera_tab");
     const c = new THREE.Vector3(), P1 = new THREE.Vector3(.315, .315, 1.04);
     if (c1){ c1.geometry.computeBoundingBox(); c1.geometry.boundingBox.getCenter(c); c1.geometry.translate(-c.x, -c.y, -c.z); c1.position.copy(P1); c1.rotation.z = Math.PI/4; c1.userData.view = { pos:[.29, .29, 1.03], look:[-.03, -.03, .3] }; }
     if (t1){ t1.geometry.translate(-c.x, -c.y, -c.z); t1.position.copy(P1); t1.rotation.z = Math.PI/4; }
-    const cb = new THREE.Box3(); G("claw").updateMatrixWorld(true); cb.setFromObject(G("claw")); const low = new THREE.Box3(), mb = new THREE.Box3(), zTop = cb.min.z + .16; G("claw").traverse(o => { if (o.isMesh){ mb.setFromObject(o); if (mb.max.z < zTop) low.union(mb); } }); const cx = (low.min.x + low.max.x)/2, cy = (low.min.y + low.max.y)/2, clawZ = low.max.z - .015;
-    const c2 = add(BOX(.03, .024, .024), c920, cx + .03, cy, clawZ, 0, 0, 0, "camera_claw"); c2.userData.view = { pos:[cx + .03, cy, clawZ - .02], look:[cx + .03, cy + .001, .25] }; }
+    /* camera 2 is on the plate beside the winch, rides the carriage at a fixed height, looks straight down */
+    const c2 = add(BOX(.03, .024, .024), c920, -.041, -.066, 1.16, 0, 0, 0, "camera_claw"); c2.userData.view = { pos:[-.041, -.066, 1.14], look:[-.041, -.065, .25] }; }
 
 
   /* =========================================================================================== cables: the motion build's own routes (mm), at the export pose */
