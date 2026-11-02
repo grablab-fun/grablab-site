@@ -173,7 +173,7 @@
       + (ses.open ? `<circle class="ping" cx="${e[0]}" cy="${e[1]}" r="3"/>` : "") + `<circle class="dot" cx="${e[0]}" cy="${e[1]}" r="3"/>`
       + `<g class="hov"><line class="xh" y1="0" y2="${H}"/><circle class="hd" r="3.6"/></g>`;
     price(row, st, last, null);
-    row.querySelector(".stk-id span").innerHTML = ses.open ? `<i class="live"></i>Live` : "Market closed";
+    row.querySelector(".stk-id span").innerHTML = ses.open ? "&nbsp;" : "Market closed";
   }
   function price(row, st, v, t){
     const px = row.querySelector(".stk-px"), b = px.querySelector("b"), s = px.querySelector("span"), ch = (v - st.base) / st.base * 100;
