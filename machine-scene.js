@@ -4,7 +4,7 @@ import * as THREE from "./assets/vendor/three.module.min.js";
 import { GLTFLoader } from "./assets/vendor/GLTFLoader.js";
 import { MeshoptDecoder } from "./assets/vendor/meshopt_decoder.module.js";
 
-export async function loadMachine(url = "assets/machine/metal.glb?v=1"){
+export async function loadMachine(url = "assets/machine/metal.glb?v=2"){
   const loader = new GLTFLoader(); loader.setMeshoptDecoder(MeshoptDecoder);
   const g = await loader.loadAsync(url);
   g.scene.updateMatrixWorld(true);

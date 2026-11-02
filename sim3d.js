@@ -1,12 +1,12 @@
 /* ============ SIMULATOR 3D : the real machine (the metal build, anatomy-metal.js) driven by the simulator's game state ============
-   Three live cameras: the front camera on the top tube, the claw looking down, the side camera under the right top tube.
+   Two live cameras: the side camera under the right top tube and the claw looking down.
    The main one fills the stage, the other two run in small windows; tap one to swap.
    Game space: x -1..1 (left..right), z 0..1 (front..back), y 0..1 (floor..top), 1 unit = 0.45 m across, 0.9 m deep. The claw only goes where the real gantry goes: TRAVEL is its 445 x 469 mm in game units.
    Game x runs along the machine's x (left..right as the front left play camera sees it), game z along y (front glass..back), so the prize hole is front right.
    Light on purpose: no point lights, no shadows, the electronics and cables left out, every still mesh merged, capsules one instanced mesh. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=24";
-import { loadMachine } from "./machine-scene.js?v=1";
+import { buildMachine } from "./anatomy-metal.js?v=25";
+import { loadMachine } from "./machine-scene.js?v=2";
 
 const SCENE = await loadMachine();
 
@@ -104,7 +104,7 @@ export function createSim3D(canvas, pips, opts = {}){
   /* cameras (three.js space: x = machine x, y = up, z = toward the machine's front) */
   const mk = fov => new THREE.PerspectiveCamera(fov, 1, .01, 30);
   const cams = [
-    /* the real front camera: on the front top tube, x 350, looking down at 350, 390 on the floor */
+    /* recordings only: front view, not on the live machine */
     { name:"Front camera", cam:mk(56), pose(c){ c.up.set(0, 1, 0); c.position.set(0, 1.125, .31); c.lookAt(0, .25, -.04); } },
     /* under the claw body, looking down past the arms; game back is up on screen */
     { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, -1); c.position.set(p.x + .02, p.y - .12, p.z + .07); c.lookAt(p.x, FLOOR - .02, p.z - .005); } },
@@ -116,9 +116,9 @@ export function createSim3D(canvas, pips, opts = {}){
     { name:"Top camera", cam:mk(44), pose(c){ c.up.set(0, 0, -1); c.position.set(0, 2.45, 0); c.lookAt(0, .3, 0); } }
   ];
   if (opts.cam) cams.push({ name:"Rec camera", cam:mk(opts.cam.fov || 36), pose(c){ c.up.set(0, 1, 0); c.position.set(...opts.cam.pos); c.lookAt(...opts.cam.look); } });
-  let main = 0;
+  let main = 2;
   const setMain = i => { main = i; layoutPips(); };
-  function layoutPips(){ if (!pips) return; const order = [0, 1, 2].filter(i => i !== main); pips.forEach((el, k) => { el.dataset.cam = order[k]; el.querySelector("span").textContent = cams[order[k]].name; }); if (pips.label) pips.label.textContent = cams[main].name; }
+  function layoutPips(){ if (!pips) return; const order = [1, 2].filter(i => i !== main); pips.forEach((el, k) => { el.dataset.cam = order[k]; el.querySelector("span").textContent = cams[order[k]].name; }); if (pips.label) pips.label.textContent = cams[main].name; }
   if (pips) pips.forEach(el => el.addEventListener("click", () => setMain(+el.dataset.cam)));
   layoutPips();
 
