@@ -154,19 +154,9 @@ export function buildMachine(THREE, api){
 
   /* =========================================================================================== front panel: MDF 1000 x 300, the face of the machine under the floor */
   use("panel");
-  const IN = .50, PY1 = .512;                                     // inner face (components) and outer face (E-stop, QR, GRABLAB)
+  const IN = .50, PY1 = .512;                                     // inner face (components) and outer face (QR, GRABLAB)
   box(-.5, IN, .02, .5, PY1, .40, mdf, "panel_mdf");                 // up to the floor: no slot under it
   for (const [x, z] of [[-.48, .035], [-.48, .385], [.48, .035], [.48, .385], [0, .035], [0, .385]]) add(cylY(.0035, .0012, 12), steel, x, PY1 + .0006, z, 0, 0, 0, "panel_screw");
-  /* E-stop: contact block inside, collar through the 22 mm hole, yellow legend, red mushroom outside */
-  box(-.365, IN - .045, .205, -.335, IN, .235, m("estopbody", { color:0x1b1c20, roughness:.5 }), "panel_estop_contacts");
-  for (let i = 0; i < 4; i++) add(cylY(.0022, .002, 10), steel, -.358 + (i % 2)*.016, IN - .046, .212 + (i > 1 ? .016 : 0), 0, 0, 0, "panel_estop_screw");
-  add(cylY(.042, .002, 56), yellow, -.35, PY1 + .001, .22, 0, 0, 0, "panel_estop_plate");
-  const legend = label("legend", .084, .084, (g, w, h) => { g.fillStyle = "#f2c418"; g.beginPath(); g.arc(w/2, h/2, w/2, 0, Math.PI*2); g.fill();
-    g.fillStyle = "#141414"; g.textAlign = "center"; g.textBaseline = "middle"; g.font = `800 ${h*.07}px Satoshi, sans-serif`; try { g.letterSpacing = `${h*.006}px`; } catch (e) {} g.fillText("EMERGENCY", w/2, h*.13); g.font = `800 ${h*.085}px Satoshi, sans-serif`; g.fillText("STOP", w/2, h*.875); }, { transparent:true });
-  add(new THREE.CircleGeometry(.042, 56), legend, -.35, PY1 + .00205, .22, ...FACE_POS_Y, "panel_estop_legend");
-  add(cylY(.016, .012, 32), dark, -.35, PY1 + .006, .22, 0, 0, 0, "panel_estop_collar");
-  add(cylY(.02, .006, 48), red, -.35, PY1 + .015, .22, 0, 0, 0, "panel_estop_rim");
-  add(new THREE.SphereGeometry(.02, 40, 16, 0, Math.PI*2, 0, Math.PI/2), red, -.35, PY1 + .018, .22, 0, 0, 0, "panel_estop_mushroom");
   /* scan to play: anodised plate, QR, caption */
   const plateM = m("anod", { color:0x202229, roughness:.32, metalness:.7 });
   box(.31, PY1, .145, .39, PY1 + .003, .235, plateM, "panel_qr_plate");

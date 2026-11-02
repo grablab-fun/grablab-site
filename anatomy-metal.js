@@ -136,6 +136,9 @@ export function buildMachine(THREE, api){
   /* ---------------- metal build geometry: base64 vertex and index arrays in mm, mapped to metres, flat shaded ---------------- */
   const SD = api.scene, MP = SD.params;
   const b64 = (s, T) => { const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return new T(u.buffer); };
+  /* the seat, gate, reader, beams and servo are turned 180 degrees round the funnel throat (563, 137): the ball now leaves to the back, onto the tray */
+  const FLIP = new Set(["prize_seat", "prize_gate", "prize_reader", "prize_servo", "prize_beamline", "prize_ball_top", "prize_ball_bottom", "prize_beam_E", "prize_beam_R", "prize_beam_E_win", "prize_beam_R_win", "prize_beam_E_cable", "prize_beam_R_cable"]);
+  const flip = p => { for (let i = 0; i < p.length; i += 3){ p[i] = 1126 - p[i]; p[i + 1] = 274 - p[i + 1]; } };
   const toM = p => { for (let i = 0; i < p.length; i += 3){ p[i] = p[i]/1000 - .35; p[i + 1] = p[i + 1]/1000 - .35; p[i + 2] = (p[i + 2] + MP.BOX_H)/1000; } };
   /* keep: optional test on each triangle's centre (mm), to leave parts of a mesh out */
   const mgeo = (n, keep) => { const d = SD.meshes[n]; if (!d) return null; let g;
@@ -144,6 +147,7 @@ export function buildMachine(THREE, api){
     let f = g.toNonIndexed(); g.dispose();
     if (keep){ const P = f.attributes.position.array, out = []; for (let i = 0; i < P.length; i += 9) if (keep((P[i] + P[i + 3] + P[i + 6])/3, (P[i + 1] + P[i + 4] + P[i + 7])/3, (P[i + 2] + P[i + 5] + P[i + 8])/3)) for (let k = 0; k < 9; k++) out.push(P[i + k]);
       f.dispose(); f = new THREE.BufferGeometry(); f.setAttribute("position", new THREE.Float32BufferAttribute(out, 3)); }
+    if (FLIP.has(n)) flip(f.attributes.position.array);
     toM(f.attributes.position.array); f.computeVertexNormals(); return f; };
   const sm = (n, mt, name, parent, keep) => { const g = mgeo(n, keep); if (!g) return null; const o = add(g, mt, 0, 0, 0, 0, 0, 0, name, parent); o.userData.move = (SD.move || {})[n] || "s"; return o; };   // move: s still, y rides the beam, xy rides the X cart
   const SM = (list, mt, name) => list.forEach(n => sm(n, mt, name));
@@ -161,22 +165,12 @@ export function buildMachine(THREE, api){
   SM(["box_floor_X0", "box_floor_chuteL", "box_floor_chuteB"], steelT, "frame_floor_rail");
   sm("boxhw_feet", steel, "frame_foot");
 
-  /* =========================================================================================== front panel: the front base skin, with the E-stop, the QR and the GRABLAB plate */
+  /* =========================================================================================== front panel: the front base skin, with the QR and the GRABLAB plate */
   use("panel");
-  /* the plates and the E-stop sit on the front base skin, under the window: built facing +y, turned round to face the player at -y, outer face at y -353 */
+  /* the plates sit on the front base skin, under the window: built facing +y, turned round to face the player at -y, outer face at y -353 */
   { const g = new THREE.Group(); g.name = "panel_plates"; g.position.set(0, .159, -.03); g.rotation.z = Math.PI; G("panel").add(g); SUBP.panel = g; }
   sm("box_skin_F_low", pvc, "panel_skin", G("panel"));
-  const IN = .50, PY1 = .512;                                     // inner face (components) and outer face (E-stop, QR, GRABLAB)
-  /* E-stop: contact block inside, collar through the 22 mm hole, yellow legend, red mushroom outside */
-  box(-.285, IN - .045, .205, -.255, IN, .235, m("estopbody", { color:0x1b1c20, roughness:.5 }), "panel_estop_contacts");
-  for (let i = 0; i < 4; i++) add(cylY(.0022, .002, 10), steel, -.278 + (i % 2)*.016, IN - .046, .212 + (i > 1 ? .016 : 0), 0, 0, 0, "panel_estop_screw");
-  add(cylY(.042, .002, 56), yellow, -.27, PY1 + .001, .22, 0, 0, 0, "panel_estop_plate");
-  const legend = label("legend", .084, .084, (g, w, h) => { g.fillStyle = "#f2c418"; g.beginPath(); g.arc(w/2, h/2, w/2, 0, Math.PI*2); g.fill();
-    g.fillStyle = "#141414"; g.textAlign = "center"; g.textBaseline = "middle"; g.font = `800 ${h*.07}px Satoshi, sans-serif`; try { g.letterSpacing = `${h*.006}px`; } catch (e) {} g.fillText("EMERGENCY", w/2, h*.13); g.font = `800 ${h*.085}px Satoshi, sans-serif`; g.fillText("STOP", w/2, h*.875); }, { transparent:true });
-  add(new THREE.CircleGeometry(.042, 56), legend, -.27, PY1 + .00205, .22, ...FACE_POS_Y, "panel_estop_legend");
-  add(cylY(.016, .012, 32), dark, -.27, PY1 + .006, .22, 0, 0, 0, "panel_estop_collar");
-  add(cylY(.02, .006, 48), red, -.27, PY1 + .015, .22, 0, 0, 0, "panel_estop_rim");
-  add(new THREE.SphereGeometry(.02, 40, 16, 0, Math.PI*2, 0, Math.PI/2), red, -.27, PY1 + .018, .22, 0, 0, 0, "panel_estop_mushroom");
+  const IN = .50, PY1 = .512;                                     // inner face (components) and outer face (QR, GRABLAB)
   /* scan to play: anodised plate, QR, caption */
   const plateM = m("anod", { color:0x202229, roughness:.32, metalness:.7 });
   box(.23, PY1, .145, .31, PY1 + .003, .235, plateM, "panel_qr_plate");
@@ -383,13 +377,17 @@ export function buildMachine(THREE, api){
   sm("prize_reader", () => m("acr", { color:0x141518, roughness:.42 }), "chute_acr122u");
   for (const s of ["E", "R"]){ sm("prize_beam_" + s, e3, "chute_e3jk"); sm(`prize_beam_${s}_cable`, () => m("cableE3", { color:0x101114, roughness:.6 }), "chute_e3jk_cable"); sm(`prize_beam_${s}_win`, lens, "chute_e3jk_lens"); }
   { const g = mgeo("prize_beamline"); if (g) add(g, m("laserglow", { color:0xff3030, emissive:0xff2020, emissiveIntensity:1.6, transparent:true, opacity:.5, toneMapped:false, depthWrite:false, blending:THREE.AdditiveBlending }), 0, 0, 0, 0, 0, 0, "chute_e3jk_beam"); }
-  sm("prize_bin", () => m("binM", { color:0x2b2e36, roughness:.5, metalness:.05, side:THREE.DoubleSide }), "chute_bin");       // the prototype tray: about 15 balls, emptied by hand
+  /* the ball tray: one drawer over the whole base, every ball fits in one layer, pulled out through the slot in the front skin */
+  { const trayM = m("trayM", { color:0x2b2e36, roughness:.45, metalness:.35 }), slotM = m("slotM", { color:0x05060a, roughness:.9 });
+    const X0 = mm(30), X1 = mm(670), Y0 = mm(30), Y1 = mm(670), Z0 = mz(-1108), Z1 = mz(-1105), ZT = mz(-1062), T = mm(33) - mm(30);
+    box(X0, Y0, Z0, X1, Y1, Z1, trayM, "chute_tray");
+    box(X0, Y0, Z1, X1, Y0 + T, ZT, trayM, "chute_tray"); box(X0, Y1 - T, Z1, X1, Y1, ZT, trayM, "chute_tray");
+    box(X0, Y0, Z1, X0 + T, Y1, ZT, trayM, "chute_tray"); box(X1 - T, Y0, Z1, X1, Y1, ZT, trayM, "chute_tray");
+    box(mm(28), mm(-3.4), mz(-1110), mm(672), mm(-3.05), mz(-1060), slotM, "chute_tray_slot");       // the slot in the front skin
+    box(mm(300), mm(-7), mz(-1092), mm(400), mm(-3.4), mz(-1082), steel, "chute_tray_handle"); }
   /* a ball on the seat, tag down over the reader */
   SM(["prize_ball_top", "prize_ball_bottom"], () => m("ballM", { color:0xf2f1ec, roughness:.68, metalness:0 }), "chute_ball");
   use("cage");
-  /* the E-stop cable: from the switch at the front, under the floor, to the supply behind the service door */
-  long(() => { harness([[.27, -.31, .195], [.09, -.31, .2], [.09, .23, .2], [-.0975, .23, .2], [-.0975, .26, .12], [-.0975, .273, .088], [-.1235, .273, .088]], .0015, wireR, "el_wire_estop");
-    harness([[.27, -.31, .21], [.08, -.31, .212], [.08, .235, .212], [-.1645, .235, .212], [-.1645, .305, .2195]], .0015, wireR, "el_wire_estop"); });
 
   /* =========================================================================================== capsules: 45 mm printed balls */
   use("capsules");

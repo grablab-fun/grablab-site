@@ -237,7 +237,7 @@ function bookingHTML(){
   const V = "?v=2";
   const scene = `
     <div class="ld-glow"></div>
-    <div class="ld-machine"><img class="bw" src="assets/loader-machine.webp?v=4" alt=""><img class="col" src="assets/loader-machine.webp?v=4" alt=""><span class="scan"></span></div>
+    <div class="ld-machine"><img class="bw" src="assets/loader-machine.webp?v=5" alt=""><img class="col" src="assets/loader-machine.webp?v=5" alt=""><span class="scan"></span></div>
     <div class="ld-load">LOADING<i class="dots">...</i></div>
     <div class="ld-pct"><span class="n">00</span><small>%</small></div>
     <div class="ld-brand"><img src="assets/brand/mark-chrome-256.png${V}" alt="">GRABLAB</div>`;

@@ -19,14 +19,14 @@ const PARTS = [
     text:["A black floor with one prize hole, front right.", "Clear windows on the front and the right.", "Black panels on the base, the back and the left.", "An LED strip on the top tubes lights the floor.", "The lower back and right panels come off on magnets.", "Bonded to the frame all round."],
     subs:[["Floor", ["cage_floor"]], ["Base panels", ["cage_skin"]], ["Showcase back", ["cage_showcase"]], ["Service panel", ["cage_door"]], ["Clear windows", []]], proof:"Watched from every side" },
   { id:"panel", n:"03", name:"Front panel", spec:"Black panel, anodised plates", ph:1.32, th:1.57, anchor:[0,-.355,.17], ex:[0,-.5,0],
-    text:["The face of the machine, under the window.", "Emergency stop, scan to play QR, GRABLAB plate."],
-    subs:[["Emergency stop", ["panel_estop"]], ["Scan to play", ["panel_qr", "panel_scan"]], ["GRABLAB plate", ["panel_wordmark", "panel_trim"]], ["Panel", ["panel_skin"]]], proof:"No joystick. Browser only" },
+    text:["The face of the machine, under the window.", "Scan to play QR, GRABLAB plate. No buttons: the machine is run remotely."],
+    subs:[["Scan to play", ["panel_qr", "panel_scan"]], ["GRABLAB plate", ["panel_wordmark", "panel_trim"]], ["Panel", ["panel_skin"]]], proof:"No joystick. Browser only" },
   { id:"electronics", n:"04", name:"Electronics", spec:"Boards and wiring on one plate", ph:1.5, th:1.57, fitK:.8, anchor:[.19,.3,.12], ex:[0,.24,0],
     text:["Power, motion and claw drivers on one plate.", "A small computer runs the play and the stream.", "A secure chip signs every event.", "Its key never leaves the chip."],
     subs:[["Secure chip", ["el_optiga"]], ["Computer", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
   { id:"chute", n:"05", name:"Prize path", spec:"Printed funnel, seat, gate and tray", ph:1.22, th:.4, anchor:[.213,-.213,.15], ex:[.3,-.3,0],
-    text:["A printed funnel fills the prize hole, walled 100 mm above the floor.", "The ball drops through a 55 mm throat onto the seat.", "A red light beam and the NFC reader both see it there.", "Beam broken for 0.3 s, same tag read twice, tag known and not yet won.", "Only then a small servo opens the gate.", "The ball rolls into a tray of about 15 balls, emptied by hand."],
-    subs:[["Funnel", ["chute_funnel"]], ["Light beam sensors", ["chute_e3jk"]], ["NFC reader", ["chute_acr122u"]], ["Seat", ["chute_seat", "chute_ball"]], ["Gate and servo", ["chute_gate", "chute_mg90s"]], ["Prize tray", ["chute_bin"]]], proof:"Checked twice: beam and tag" },
+    text:["A printed funnel fills the prize hole, walled 100 mm above the floor.", "The ball drops through a 55 mm throat onto the seat.", "A red light beam and the NFC reader both see it there.", "Beam broken for 0.3 s, same tag read twice, tag known and not yet won.", "Only then a small servo opens the gate.", "The ball rolls back into one tray under the floor. Every ball fits; it slides out through the front."],
+    subs:[["Funnel", ["chute_funnel"]], ["Light beam sensors", ["chute_e3jk"]], ["NFC reader", ["chute_acr122u"]], ["Seat", ["chute_seat", "chute_ball"]], ["Gate and servo", ["chute_gate", "chute_mg90s"]], ["Ball tray", ["chute_tray"]]], proof:"Checked twice: beam and tag" },
   { id:"capsules", n:"06", name:"Capsules", spec:"45 mm printed ball, NFC disc", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.98],
     text:["Two printed halves, 45 mm across.", "An NFC disc at the bottom pole, ballast above it, so it settles tag down.", "Factory UID, read only.", "Click one to open it."],
     subs:[["Printed two piece shell", []], ["NFC disc", []], ["Non metal ballast", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
@@ -44,11 +44,11 @@ const PARTS = [
     subs:[["Webcams", ["camera_c920"]], ["Mounts", ["camera_tab"]]], proof:"The stream you play" }
 ];
 const byId = id => PARTS.find(p => p.id === id);
-const ICON = { frame:"assets/parts/post.png", cage:"assets/parts/mdf.png", panel:"assets/parts/estop.png", electronics:"assets/parts/optiga.png", chute:"assets/parts/funnel.png", capsules:"assets/parts/capsule.png", gantry:"assets/parts/rail.png", winch:"assets/parts/spool.png", claw:"assets/parts/claw.png", camera:"assets/parts/webcam.png" };
+const ICON = { frame:"assets/parts/post.png", cage:"assets/parts/mdf.png", panel:"assets/parts/qr.png", electronics:"assets/parts/optiga.png", chute:"assets/parts/funnel.png", capsules:"assets/parts/capsule.png", gantry:"assets/parts/rail.png", winch:"assets/parts/spool.png", claw:"assets/parts/claw.png", camera:"assets/parts/webcam.png" };
 const SUBICON = {
   "Posts":"assets/parts/post.png", "Rings":"assets/parts/framering.png", "Floor crossbar":"assets/parts/framering.png", "Angle brackets":"assets/parts/bracket.png", "Adjustable feet":"assets/parts/foot.png",
   "Floor":"assets/parts/mdf.png", "Drop zone walls":"assets/parts/guard.png", "Base panels":"assets/parts/mdf.png", "Showcase back":"assets/parts/mdf.png", "Rivets":"assets/parts/bracket.png", "Clear windows":"assets/parts/guard.png", "Drop zone guard and funnel":"assets/parts/guard.png", "Cable grommets":"assets/parts/gland.png", "Acrylic walls":"assets/parts/guard.png",
-  "Emergency stop":"assets/parts/estop.png", "Scan to play":"assets/parts/qr.png", "GRABLAB plate":"assets/brand/mark-chrome-256.png", "Panel":"assets/parts/mdf.png", "Service panel":"assets/parts/mdf.png",
+  "Scan to play":"assets/parts/qr.png", "GRABLAB plate":"assets/brand/mark-chrome-256.png", "Panel":"assets/parts/mdf.png", "Service panel":"assets/parts/mdf.png",
   "Secure chip":"assets/parts/optiga.png", "Computer":"assets/parts/pi.png", "Case and fan":"assets/parts/fan.png", "Power supply":"assets/parts/psu.png", "Motion controller":"assets/parts/motionboard.png",
   "Claw driver":"assets/parts/clawdriver.png", "5 V supply":"assets/parts/relay.png", "Power splitters":"assets/parts/wago.png", "Wiring":"assets/parts/coil.png",
   "Funnel":"assets/parts/funnel.png", "Light beam sensors":"assets/parts/beam.png", "Seat":"assets/parts/bracket.png", "Gate and servo":"assets/parts/servo.png", "Prize tray":"assets/parts/drawer.png", "NFC reader":"assets/parts/nfcreader.png",
@@ -120,7 +120,7 @@ async function load(){
   for (const [id, g] of Object.entries(M.parts)){ root.add(g); ents.set(id, g); }
   /* draw calls: siblings with the same material and the same name become one mesh, so a weak GPU draws ~hundreds, not ~1900.
      Names survive (card items pick meshes by name); anything that moves on its own is left alone. */
-  const KEEP = STORY ? /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view|gantry|winch|claw/ : /estop|pushrod|horn|trap|capsule|lever|flap|grommet|view|claw_link$/;
+  const KEEP = STORY ? /pushrod|horn|trap|capsule|lever|flap|grommet|view|gantry|winch|claw/ : /pushrod|horn|trap|capsule|lever|flap|grommet|view|claw_link$/;
   (function mergeAll(o){
     for (const c of [...o.children]) if (c.children.length && !c.isMesh) mergeAll(c);
     const groups = new Map();
@@ -334,11 +334,8 @@ for (const p of PARTS){
   li.onclick = () => { setSelected(selected === p ? null : p, true); if (tour) stopTour(); };
   list.appendChild(li);
 }
-/* the emergency stop can be pressed: it latches down, a second click twists it back out */
-const estop = { ms:[], k:0, on:false }, toast = document.createElement("div"); toast.className = "an-tip an-toast"; labels.appendChild(toast); let toastT = 0;
-function estopHit(){ ray.setFromCamera(mouse, camera); for (const h of ray.intersectObjects(root.children, true)){ const o = h.object; if (!o.isMesh || !o.visible || !o.material || !o.material.visible || o.material.userData.noPick) continue; return /^panel_estop_(mushroom|rim)/.test(o.name); } return false; }
-function pressEstop(){ estop.on = !estop.on; toast.innerHTML = estop.on ? "<b>E-STOP</b>Pressed. Motors and claw lose power" : "<b>E-STOP</b>Released. The machine can run again"; toast.classList.add("on"); toastT = 2.6; }
-stage.addEventListener("click", e => { setMouse(e); if (orb.moved > .02){ orb.moved = 0; return; } orb.moved = 0; if (estopHit()){ pressEstop(); return; } const p = pick(); if (tour) stopTour();
+const toast = document.createElement("div"); toast.className = "an-tip an-toast"; labels.appendChild(toast); let toastT = 0;
+stage.addEventListener("click", e => { setMouse(e); if (orb.moved > .02){ orb.moved = 0; return; } orb.moved = 0; const p = pick(); if (tour) stopTour();
   if (p && p.id === "capsules" && lastHitCap){ if (lastHitCap === selectedCap) setSelected(null); else selectCap(lastHitCap); return; }
   if (!p){ if (selected) setSelected(null); return; }
   if (p !== selected) setSelected(p); });
@@ -490,7 +487,7 @@ let last = performance.now(); let clawRig = null, clawT = 0; const clawQ = new T
 function frame(now){
   const raw = now - last, dt = Math.min(.05, raw/1000); last = now;
   const clawOn = selected && selected.id === "claw";
-  if (!(now < activeUntil || tour || clawOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0 || estop.k > .001 && estop.k < .999)){ requestAnimationFrame(frame); return; }
+  if (!(now < activeUntil || tour || clawOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0)){ requestAnimationFrame(frame); return; }
   /* frame time watchdog: drop the resolution a step if the device cannot keep up, raise it back when it can */
   if (REC) slow = fast = 0; else if (raw > 28) slow++; else if (raw < 18) fast++;
   const floor = LITE || document.documentElement.classList.contains("lite") ? .6 : 1;
@@ -498,15 +495,13 @@ function frame(now){
   else if (fast > 240 && prCap < (innerWidth < 980 ? 1.5 : 2)){ prCap = Math.min(innerWidth < 980 ? 1.5 : 2, prCap + .25); slow = fast = 0; resize(); }
   if (tour) tourStep(dt); else { orb.idle += dt; if (false) orb.th += dt*.08; if (!orb.down){ orb.vth *= .9; orb.vph *= .9; orb.th += orb.vth; orb.ph = Math.min(1.5, Math.max(.35, orb.ph + orb.vph)); } }
   explode += (explodeTarget - explode)*Math.min(1, dt*4.5);
-  if (!orb.down && !orb.pan && !tour && mouseMoved){ mouseMoved = false; const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p || estopHit() ? "pointer" : "grab"; }
+  if (!orb.down && !orb.pan && !tour && mouseMoved){ mouseMoved = false; const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p ? "pointer" : "grab"; }
   /* the claw closes and opens while it is picked, then waits open */
   if (!clawRig) root.traverse(o => { if (o.userData.clawRig) clawRig = o.userData.clawRig; });
   if (clawRig){ clawT = selected && selected.id === "claw" ? clawT + dt : 0; const want = clawT ? .55*(.5 + .5*Math.cos(clawT*1.7)) : .55;
     if (Math.abs(want - clawRig.open) > .0005){ clawRig.open += (want - clawRig.open)*Math.min(1, dt*8);
       for (const arm of clawRig.arms){ const u = arm.userData.clawArm; arm.quaternion.copy(u.q0).multiply(clawQ.setFromAxisAngle(u.side, -clawRig.open)); }
       for (const l of clawRig.links){ linkB.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); linkD.copy(linkB).sub(l.a); l.mesh.position.copy(l.a).add(linkB).multiplyScalar(.5); l.mesh.scale.y = linkD.length(); l.mesh.quaternion.setFromUnitVectors(YAX, linkD.normalize()); } } }
-  if (!estop.ms.length) root.traverse(o => { if (/^panel_estop_(mushroom|rim)/.test(o.name)){ o.userData.y0 = o.position.y; estop.ms.push(o); } });
-  estop.k += ((estop.on ? 1 : 0) - estop.k)*Math.min(1, dt*14); for (const o of estop.ms) o.position.y = o.userData.y0 - .007*estop.k;
   if (toastT > 0 && (toastT -= dt) <= 0) toast.classList.remove("on");
   applyExplode(); shade(); capAnim(dt); easeCam(dt); cam();
   renderer.toneMappingExposure += ((selected ? 1.08 : 1.0) - renderer.toneMappingExposure)*Math.min(1, dt*4);
@@ -516,7 +511,7 @@ function frame(now){
   if (!REC) requestAnimationFrame(frame);
 }
 load().then(() => {
-  root.traverse(o => { if (o.isMesh && !/pushrod|estop/.test(o.name)){ o.updateMatrix(); o.matrixAutoUpdate = false; } });
+  root.traverse(o => { if (o.isMesh && !/pushrod/.test(o.name)){ o.updateMatrix(); o.matrixAutoUpdate = false; } });
   if (LITE || innerWidth < 980){ const sh = matCache.get("capsules|shell"); if (sh){ sh.side = THREE.FrontSide; sh.clearcoat = 0; sh.needsUpdate = true; } }
   buildInstances(); syncInstances();
   wake(4000); resize(); cam(); document.body.classList.add("ready"); if (q.get("tour") === "1") startTour(); requestAnimationFrame(frame); window.__anatomy = { setExplode, setSelected, selectCap, capsules, PARTS, startTour, orb, check, setSub, recFrame:(t, T) => { const k = t/T, ease = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2;

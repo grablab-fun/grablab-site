@@ -94,11 +94,9 @@ function buildFinalScene(assetUrl = "grablab-claw-final-mech.asset.json"){
     BB(HX1, -O, FZ - .07, O, HY1, FZ, "panel_k"), BB(HX0, -O, FZ - .07, HX1, HY0, FZ, "panel_k"),
     BB(.099, -.327, FZ, .102, -.099, .35, "plastic2"), BB(.324, -.327, FZ, .327, -.099, .35, "plastic2"), BB(.102, -.327, FZ, .324, -.324, .35, "plastic2"), BB(.102, -.102, FZ, .324, -.099, .35, "plastic2")]);
 
-  /* ---------------- front plates: QR on the left, wordmark plate in the middle, E-stop on the right ---------------- */
+  /* ---------------- front plates: QR on the left, wordmark plate in the middle ---------------- */
   const PY = -.353, PL = [];
   PL.push(ghost(BB(-.205, PY - .003, .11, .205, PY, .23, "anod")), ghost(BB(-.205, PY - .0036, .2265, .205, PY - .003, .228, "steel")), ghost(BB(-.205, PY - .0036, .112, .205, PY - .003, .1135, "steel")));
-  PL.push(ghost(cyl(.042, .002, [.27, PY - .001, .2], "yellow", {quat:QX90})), ghost(cyl(.016, .012, [.27, PY - .007, .2], "plastic", {quat:QX90})),
-    ghost(cyl(.02, .006, [.27, PY - .015, .2], "red", {quat:QX90})), ghost({type:"sphere", radius:.02, pos:[.27, r4(PY - .018), .2], material:"red"}));
   PL.push(ghost(BB(-.31, PY - .003, .125, -.23, PY, .215, "anod")), ghost(BB(-.30, PY - .0034, .15, -.24, PY - .003, .21, "qr_w")));
   /* QR: 21 x 21 modules, three finder squares, seeded data cells */
   const n = 21, mod = .056/n, G = [...Array(n)].map(() => Array(n).fill(0));
