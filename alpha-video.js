@@ -19,7 +19,7 @@
   if (v.poster) cv.style.backgroundImage = `url("${v.poster}")`;
   v.parentNode.insertBefore(cv, v.nextSibling);
   v.querySelectorAll("source").forEach(s => s.remove());
-  v.src = "assets/claw-grab-stacked.mp4?v=30";
+  v.src = "assets/claw-grab-stacked.mp4?v=31";
   v.classList.add("alpha-src");
   v.load();
 
