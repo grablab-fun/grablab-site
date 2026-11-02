@@ -201,11 +201,8 @@
 
   async function load(){
     ses = sessions(); if (!ses.cur) return;
-    /* the last candles seen are drawn at once, then replaced by fresh ones as the rate limited API answers */
-    const show = (row, list) => { const st = state.get(row) || {}; build(st, list); state.set(row, st); draw(row, st); };
-    for (const row of rows){ try{ const old = JSON.parse(cache("gl-last-" + row.dataset.mint) || "null"); if (old && old.length && !state.get(row)) show(row, old); }catch(e){} }
     for (const row of rows){
-      try{ const list = await candles(row.dataset.mint, row.dataset.pool); show(row, list); if (list.length) cache("gl-last-" + row.dataset.mint, JSON.stringify(list.slice(-400))); }catch(e){}
+      try{ const list = await candles(row.dataset.mint, row.dataset.pool), st = state.get(row) || {}; build(st, list); state.set(row, st); draw(row, st); }catch(e){}
     }
   }
   async function tick(){ /* the open session: Jupiter's live price moves the newest 5 min point */
@@ -214,13 +211,13 @@
       const j = await (await fetch("https://lite-api.jup.ag/price/v3?ids=" + rows.map(r => r.dataset.mint).join(","), { cache:"no-store" })).json();
       const now = Math.floor(Date.now()/1000), t = now - now % BUCKET;
       rows.forEach(row => {
-        const st = state.get(row), p = j && j[row.dataset.mint] && j[row.dataset.mint].usdPrice; if (p && !(st && st.pts && st.pts.length)) row.querySelector(".stk-px b").textContent = fmt(p); /* candles still loading: show the price */ if (!st || !st.pts || !p) return;
+        const st = state.get(row), p = j && j[row.dataset.mint] && j[row.dataset.mint].usdPrice; if (!st || !st.pts || !p) return;
         const L = st.pts[st.pts.length-1]; if (L && L[0] === t) L[1] = p; else st.pts.push([t, p]);
         if (!row.querySelector(".stk-chart.on")) draw(row, st);
       });
     }catch(e){}
   }
-  load(); tick(); setInterval(() => { if (!document.hidden) tick(); }, 5000);
+  load(); setInterval(() => { if (!document.hidden) tick(); }, 5000);
   setInterval(() => { if (!document.hidden && (ses.open || sessions().open)) load(); }, 5*60e3);
   let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => rows.forEach(r => { const st = state.get(r); if (st && st.pts) draw(r, st); }), 150); });
 })();
