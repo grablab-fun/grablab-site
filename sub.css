@@ -666,3 +666,4 @@ a.mf:hover::after{transform:translate(1px,-1px)}
   .card .ico,.prize img,.pq-h .pc-logo,.uc-head .pc-logo,.case .cico,.card .tag,.pq:not(.started) .pq-bar::after,.uc-tiles b.flip{animation:none}
   .card.live,.prize.live,.case.live{transform:none}
 }
+.stk-chart path.area:not([fill]){fill:rgba(59,123,255,.1)}
