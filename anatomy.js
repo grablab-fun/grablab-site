@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=30";
+import { buildMachine } from "./anatomy-metal.js?v=32";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const $ = s => document.querySelector(s);
@@ -25,7 +25,7 @@ const PARTS = [
     text:["Power, motion and claw drivers on one plate.", "A small computer runs the play and the stream.", "A secure chip signs every event.", "Its key never leaves the chip."],
     subs:[["Secure chip", ["el_optiga"]], ["Computer", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
   { id:"chute", n:"05", name:"Prize path", spec:"Printed funnel, seat, gate and tray", ph:1.22, th:.4, anchor:[.213,-.213,.15], ex:[.3,-.3,0],
-    text:["A printed funnel fills the prize hole, walled 100 mm above the floor.", "The ball drops through a 55 mm throat onto the seat.", "A red light beam and the NFC reader both see it there.", "Beam broken for 0.3 s, same tag read twice, tag known and not yet won.", "Only then a small servo opens the gate.", "The ball rolls off into a narrow tray behind the gate.", "A small door on the right side opens and the tray slides out."],
+    text:["A printed funnel fills the prize hole, walled 100 mm above the floor.", "The ball drops through a 55 mm throat onto the seat.", "A red light beam and the NFC reader both see it there.", "Beam broken for 0.3 s, same tag read twice, tag known and not yet won.", "Only then a small servo opens the gate.", "The ball rolls off into a wide tray behind the gate.", "Its floor falls to one corner, so no ball gets stuck.", "A small door on the right side opens and the tray slides out."],
     subs:[["Funnel", ["chute_funnel"]], ["Light beam sensors", ["chute_e3jk"]], ["NFC reader", ["chute_acr122u"]], ["Seat", ["chute_seat", "chute_ball"]], ["Gate and servo", ["chute_gate", "chute_mg90s"]], ["Ball tray", ["chute_tray"]]], proof:"Checked twice: beam and tag" },
   { id:"capsules", n:"06", name:"Capsules", spec:"45 mm printed ball, NFC disc", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.98],
     text:["Two printed halves, 45 mm across.", "An NFC disc at the bottom pole, ballast above it, so it settles tag down.", "Factory UID, read only.", "Click one to open it."],
@@ -435,15 +435,15 @@ const seg = (t, a, b) => { const k = Math.min(1, Math.max(0, (t - a)/(b - a))); 
 function prizeStep(dt){
   if (!prizeRig) root.traverse(o => { if (o.userData.prizeRig) prizeRig = o.userData.prizeRig; }); if (!prizeRig) return;
   const on = selected && selected.id === "chute"; if (on) prizeT = (prizeT + dt) % 7.4; else prizeT = 2;
-  const t = prizeT, R = prizeRig; let y = 0, z = 0;
+  const t = prizeT, R = prizeRig; let x = 0, y = 0, z = 0;
   if (t < .7){ const k = t/.7; y = -.04; z = .18 - .14*k*k; }
   else if (t < 1.1){ const k = seg(t, .7, 1.1); y = -.04*(1 - k); z = .04*(1 - k); }
-  else if (t >= 2.8){ const k = Math.min(1, (t - 2.8)/.3), f = Math.min(1, Math.max(0, (t - 3.1)/.4)); y = .09*k + .05*f; z = -.01*k - .0425*f*f; }
+  else if (t >= 2.8){ const k = Math.min(1, (t - 2.8)/.3), f = Math.min(1, Math.max(0, (t - 3.1)/.4)); y = .09*k + .05*f; const g = seg(t, 3.5, 4.3); x = .077*g; y += .253*g; z = -.01*k - .031*f*f - .011*g; }
   const out = seg(t, 5, 5.7) - seg(t, 5.9, 6.5);
   R.gate.rotation.x = 1.2*(seg(t, 2.4, 2.8) - seg(t, 3.5, 3.9));
   R.door.rotation.z = 1.8*(seg(t, 4.3, 4.9) - seg(t, 6.5, 7));
   R.tray.position.x = .2*out;
-  R.ball.position.set(t >= 3.5 ? .2*out : 0, y, z); R.ball.visible = t < 6.6;
+  R.ball.position.set(x + (t >= 3.5 ? .2*out : 0), y, z); R.ball.visible = t < 6.6;
 }
 function capAnim(dt){
   openK += ((selectedCap ? 1 : 0) - openK)*Math.min(1, dt*4);
