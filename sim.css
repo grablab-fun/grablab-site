@@ -822,8 +822,8 @@ body.sim-lock{overflow:hidden}
 #jupiter-plugin-instance{position:relative;z-index:100000}
 /* Jupiter swap widget themed to the site: navy panels, periwinkle primary, gold warnings (RGB triplets, Jupiter's format) */
 :root{
-  --jupiter-plugin-primary:190, 198, 255;
-  --jupiter-plugin-background:9, 12, 26;
+  --jupiter-plugin-primary:156, 192, 255;
+  --jupiter-plugin-background:13, 18, 40;
   --jupiter-plugin-primaryText:243, 244, 251;
   --jupiter-plugin-warning:255, 178, 74;
   --jupiter-plugin-interactive:30, 38, 72;
@@ -991,3 +991,8 @@ body.sim-lock{overflow:hidden}
 #jupiter-plugin-instance li:hover,#jupiter-plugin-instance [role="listitem"]:hover{background:rgba(143,184,255,.1)!important}
 .swp-s{display:block}.swp-s img.swp-dblogo{display:inline-block!important;width:15px!important;height:15px!important;max-width:15px;margin:0 4px 0 2px;vertical-align:-3px;border-radius:4px}
 .swp-s img.swp-dblogo{width:auto!important;height:18px!important;max-width:40px;margin:0 2px;vertical-align:-3px;border-radius:0}
+/* deBridge widget: its own title row and tool buttons sit above the fold of this crop */
+#glDebridge{overflow:hidden}
+#glDebridge iframe{margin-top:-104px}
+.jup-back{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:100001;padding:9px 20px;border-radius:999px;border:1px solid rgba(143,184,255,.35);background:rgba(13,18,40,.9);color:#f3f4fb;font-size:13px;cursor:pointer}
+.jup-back:hover{border-color:#9cc0ff}

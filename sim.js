@@ -1318,6 +1318,15 @@
       return px ? String(Math.ceil(usdc / px * 1.02 * 1e9)) : undefined;
     } catch (e) { return undefined; }
   }
+  /* Jupiter draws inside open shadow roots, so the site's CSS cannot reach it: our style goes in each root, and a back button sits over the modal */
+  const JUP_CSS = `[class*="bg-black"]{background-color:rgb(13,18,40)!important}li,[role="listitem"]{background:transparent!important;border-radius:12px;transition:background .15s}li:hover,[role="listitem"]:hover{background:rgba(143,184,255,.1)!important}`;
+  function themeJupiter(J){
+    let n = 0; const roots = el => { const o = []; el.querySelectorAll("*").forEach(e => { if (e.shadowRoot) o.push(e.shadowRoot, ...roots(e.shadowRoot)); }); return o; };
+    const t = setInterval(() => { roots(document.body).forEach(r => { if (!r.querySelector("style[data-gl]")){ const st = document.createElement("style"); st.dataset.gl = "1"; st.textContent = JUP_CSS; r.appendChild(st); } }); if (++n > 240 || !document.getElementById("jupiter-plugin-instance")){ clearInterval(t); document.querySelector(".jup-back")?.remove(); } }, 500);
+    document.querySelector(".jup-back")?.remove();
+    const b = document.createElement("button"); b.className = "jup-back"; b.type = "button"; b.setAttribute("aria-label", "Back"); b.textContent = "Back";
+    b.onclick = () => { try { J.close(); } catch (e) {} b.remove(); }; document.body.appendChild(b);
+  }
   /* Jupiter (Solana): the widget reads initialAmount in the input token's smallest unit */
   async function openJupiter(inputMint, amountRaw){
     try {
@@ -1326,6 +1335,7 @@
       const formProps = { swapMode: "ExactIn", initialInputMint: inputMint, initialOutputMint: USDC_MINT, fixedMint: USDC_MINT };
       if (amountRaw) formProps.initialAmount = amountRaw;
       J.init({ displayMode: "modal", formProps, branding: { name: "Grablab", logoUri: location.origin + "/assets/brand/mark-chrome-256.png" } });
+      themeJupiter(J);
     } catch (e) { alert("The swap could not load. Try again in a moment, or swap on jup.ag."); }
   }
 
@@ -1425,7 +1435,7 @@
       const box = body.querySelector("#glDebridge");
       box.innerHTML = "";
       const cfg = { v:"1", element:"glDebridge", mode:"deswap", title:"Grablab", theme:"dark", styles:DB_STYLES, lang:"en",
-        width: Math.round(box.clientWidth) || 420, height: 560,
+        width: Math.round(box.clientWidth) || 420, height: 664,
         inputChain: c.id, outputChain: DB_SOLANA, outputCurrency: USDC_MINT,
         /* the only way out is USDC on Solana */
         supportedChains: JSON.stringify({ inputChains:{ [c.id]:"all" }, outputChains:{ [DB_SOLANA]:[USDC_MINT] } }) };
