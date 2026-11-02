@@ -1006,4 +1006,3 @@ section.section:has(.teasers){max-width:none;padding-left:clamp(16px,5vw,80px);p
 .scroll-hint .sh-lbl i{color:rgba(243,244,251,.82);text-shadow:0 1px 12px rgba(5,9,24,.8);animation:shLift 1.8s cubic-bezier(.22,1,.36,1) infinite;animation-delay:calc(var(--i) * 34ms);will-change:transform}
 @keyframes shLift{0%,38%,100%{transform:none}16%{transform:translateY(-4px)}}
 .scroll-hint .sh-chev b{animation-duration:1.8s;animation-timing-function:cubic-bezier(.22,1,.36,1);will-change:transform,opacity}
-@media(prefers-reduced-motion:reduce){.scroll-hint .sh-lbl i,.scroll-hint .sh-chev b{animation:none}}
