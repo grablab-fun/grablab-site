@@ -359,12 +359,16 @@ export function buildMachine(THREE, api){
   sm("box_floor", pvc, "cage_floor");
   /* the floor runs out to the skins: a strip over each floor ring tube, so no 3 mm step reads as a gap along the walls */
   for (const [x0, y0, x1, y1] of [[-.35, -.35, .35, -.33], [-.35, .33, .35, .35], [-.35, -.33, -.33, .33], [.33, -.33, .35, .33]]) box(x0, y0, .247, x1, y1, .25, pvc, "cage_floor");
-  SM(["box_skin_L_low", "box_skin_R_low"], pvc, "cage_skin");       // the lower right skin comes off on magnets to empty the tray
+  sm("box_skin_L_low", pvc, "cage_skin");
+  /* the right skin around the tray opening */
+  for (const [y0, z0, y1, z1] of [[0, -1110, 232, -873], [566, -1110, 700, -873], [232, -1110, 566, -1089], [232, -1033, 566, -873]]) box(mm(700), mm(y0), mz(z0), mm(703), mm(y1), mz(z1), pvc, "cage_skin");       // the lower right skin comes off on magnets to empty the tray
   sm("box_skin_B_low", pvc, "cage_door");      // the lower back skin is the service panel, on magnets
   SM(["box_skin_B", "box_skin_L"], pvc, "cage_showcase");   // upper back and upper left are black panels; front and right are clear
   SM(["box_glass_F", "box_glass_R"], acrylic, "cage_window");
   /* LED strip straight on the four top tubes, lighting the play floor */
-  { const opal = () => m("lpuopal", { color:0xfff4e0, emissive:0xffe9c4, emissiveIntensity:2.2, roughness:.9 }); SM(["F", "B", "L", "R"].map(s => "box_led_" + s), opal, "cage_led_cover"); }
+  { const opal = () => m("cobwarm", { color:0xffd9a8, emissive:0xffb066, emissiveIntensity:1.5, roughness:.9 }), prof = () => m("ledprofile", { color:0x0b0c0f, roughness:.5, metalness:.5 });
+    /* COB strip 3000 K in a black U-12 profile: the diffuser shows only on the underside */
+    for (const n of ["F", "B", "L", "R"]){ const o = sm("box_led_" + n, opal, "cage_led_cover"); if (!o) continue; o.geometry.computeBoundingBox(); const b = o.geometry.boundingBox; box(b.min.x - .002, b.min.y - .002, b.min.z + .001, b.max.x + .002, b.max.y + .002, b.max.z + .004, prof, "cage_led_profile"); } }
   /* no rivets drawn: on the black panels and the glass they read as specks */
 
   /* =========================================================================================== prize path: funnel, seat, reader, beam, gate, tray (the motion build's own parts) */
@@ -383,14 +387,14 @@ export function buildMachine(THREE, api){
   { const g = mgeo("prize_beamline"); if (g) add(g, m("laserglow", { color:0xff3030, emissive:0xff2020, emissiveIntensity:1.6, transparent:true, opacity:.5, toneMapped:false, depthWrite:false, blending:THREE.AdditiveBlending }), 0, 0, 0, 0, 0, 0, "chute_e3jk_beam"); }
   /* the ball tray: a narrow drawer behind the gate, against the right skin, pulled out sideways through a small door */
   { const trayM = m("trayM", { color:0x2b2e36, roughness:.45, metalness:.35 }), slotM = m("slotM", { color:0x05060a, roughness:.9 }), H = trayR.hold;
-    const X0 = mm(470), X1 = mm(672), Y0 = mm(235), Y1 = mm(560), Z0 = mz(-1106), Z1 = mz(-1103), ZT = mz(-1040), T = .003;
+    const X0 = mm(470), X1 = mm(672), Y0 = mm(235), Y1 = mm(560), Z0 = mz(-1088), Z1 = mz(-1085), ZT = mz(-1034), T = .003;
     box(X0, Y0, Z0, X1, Y1, Z1, trayM, "chute_tray", H);
     box(X0, Y0, Z1, X1, Y0 + T, ZT, trayM, "chute_tray", H); box(X0, Y1 - T, Z1, X1, Y1, ZT, trayM, "chute_tray", H);
     box(X0, Y0, Z1, X0 + T, Y1, ZT, trayM, "chute_tray", H); box(X1 - T, Y0, Z1, X1, Y1, ZT, trayM, "chute_tray", H);
-    box(mm(672), mm(377), mz(-1078), mm(690), mm(417), mz(-1068), steel, "chute_tray", H);
-    box(mm(703), mm(232), mz(-1104), mm(703.4), mm(566), mz(-1036), slotM, "chute_tray_slot");
-    box(mm(703.4), mm(232), mz(-1104), mm(706), mm(566), mz(-1036), pvc, "chute_side_door", doorR.hold);
-    box(mm(706), mm(245), mz(-1080), mm(710), mm(255), mz(-1060), steel, "chute_side_door", doorR.hold); }
+    box(mm(672), mm(377), mz(-1066), mm(690), mm(417), mz(-1056), steel, "chute_tray", H);
+    for (const y of [240, 545]) box(mm(470), mm(y), mz(-1092), mm(699), mm(y + 10), mz(-1088), steel, "chute_tray_rail");
+    box(mm(703.4), mm(232), mz(-1089), mm(706), mm(566), mz(-1033), pvc, "chute_side_door", doorR.hold);
+    box(mm(706), mm(245), mz(-1070), mm(710), mm(255), mz(-1052), steel, "chute_side_door", doorR.hold); }
   /* a ball on the seat, tag down over the reader */
   { const ballM = () => m("ballM", { color:0xf2f1ec, roughness:.68, metalness:0 }); sm("prize_ball_top", ballM, "chute_ball", ballR.hold); sm("prize_ball_bottom", ballM, "chute_ball", ballR.hold); }
   G("chute").userData.prizeRig = { gate:gateR.pivot, ball:ballR.pivot, tray:trayR.pivot, door:doorR.pivot };
