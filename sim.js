@@ -481,7 +481,7 @@
     if (S3p || !root) return S3p;
     const c = root.querySelector("#sim3d"); if (!c) return null;
     const pips = [...root.querySelectorAll(".s3-pip")]; pips.label = root.querySelector("#s3Main");
-    S3p = import("./sim3d.js?v=29").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
+    S3p = import("./sim3d.js?v=30").then(m => { S3m = m; S3 = m.createSim3D(c, pips); }).catch(e => { console.warn("3D simulator", e); });
     return S3p;
   }
   function open(){
@@ -1319,7 +1319,7 @@
     } catch (e) { return undefined; }
   }
   /* Jupiter draws inside open shadow roots, so the site's CSS cannot reach it: our style goes in each root, and a back button sits over the modal */
-  const JUP_CSS = `[class*="bg-black"]{background-color:rgb(13,18,40)!important}li,[role="listitem"]{background:transparent!important;border-radius:12px;transition:background .15s}li:hover,[role="listitem"]:hover{background:rgba(143,184,255,.1)!important}`;
+  const JUP_CSS = `.bg-black:not(.fixed):not(.absolute):not([class*="inset"]):not([class*="opacity"]){background-color:rgb(13,18,40)!important}li,[role="listitem"]{background:transparent!important;border-radius:12px;transition:background .15s}li:hover,[role="listitem"]:hover{background:rgba(143,184,255,.1)!important}`;
   function themeJupiter(J){
     let n = 0; const roots = el => { const o = []; el.querySelectorAll("*").forEach(e => { if (e.shadowRoot) o.push(e.shadowRoot, ...roots(e.shadowRoot)); }); return o; };
     const t = setInterval(() => { roots(document.body).forEach(r => { if (!r.querySelector("style[data-gl]")){ const st = document.createElement("style"); st.dataset.gl = "1"; st.textContent = JUP_CSS; r.appendChild(st); } }); if (++n > 240 || !document.getElementById("jupiter-plugin-instance")){ clearInterval(t); document.querySelector(".jup-back")?.remove(); } }, 500);

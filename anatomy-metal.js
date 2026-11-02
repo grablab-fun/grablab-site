@@ -524,7 +524,7 @@ export function buildMachine(THREE, api){
   for (let k = 0; k < 3; k++){ const a = k*2*Math.PI/3 + Math.PI/2; C(BOX(.014, .01, .012), blk2, RE*Math.cos(a), RE*Math.sin(a), ZT0, "claw_cap_ear", 0, 0, a); }
   C(BOX(.012, .012, .066), m("acttube", { color:0xa9adb5, roughness:.32, metalness:.9 }), 0, 0, -.077, "claw_actuator");   // square tube, the rod inside
   C(rbox(.02, .02, .012, .002), blk, 0, 0, -.051, "claw_actuator_collar");
-  C(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(.012, .012, -.03), new THREE.Vector3(.03, .02, -.05), new THREE.Vector3(.038, .024, -.09), new THREE.Vector3(.044, .02, -.13)]), 24, .0009, 8), m("redlead", { color:0xc22325, roughness:.45 }), 0, 0, 0, "claw_actuator_lead");
+  C(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(.012, .012, -.03), new THREE.Vector3(.03, .02, -.05), new THREE.Vector3(.038, .024, -.09), new THREE.Vector3(.044, .02, -.13)]), 24, .0009, 8), m("redlead", { color:0x0b0c0f, roughness:.45 }), 0, 0, 0, "claw_actuator_lead");
   C(new THREE.CylinderGeometry(.03, .03, .01, 6).rotateX(Math.PI/2), blk2, 0, 0, ZP, "claw_hub", 0, 0, Math.PI/6);   // pivot hub
   C(cylZ(.009, .014, 20), blk, 0, 0, ZP - .01, "claw_hub_nut");
   const arms = [], links = [];

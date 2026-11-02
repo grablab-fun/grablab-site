@@ -52,7 +52,7 @@
 .glc.cfg .glc-save{display:flex}
 .glc.cfg .glc-main{display:none}
 .glc.cfg{padding-bottom:18px}
-@media(max-width:520px){.glc{left:12px;right:12px;width:auto;bottom:12px;padding:18px}.glc-row{flex-direction:column}}`;
+@media(max-width:520px){.glc{left:12px;right:12px;width:auto;bottom:12px;padding:18px}.glc-row{flex-direction:column}.glc-btn{flex:none;width:100%}}`;
 
   /* styles go in at once: the footer "Cookie settings" row needs them even when the banner never shows */
   const style = document.createElement("style");
