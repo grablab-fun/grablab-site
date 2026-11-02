@@ -1403,7 +1403,7 @@
   }
   function closeSwapUI(){ if (swEl){ swEl.hidden = true; swEl.querySelector(".swp-body").innerHTML = ""; } }
   function setHead(title, sub, back){
-    swEl.querySelector(".swp-t").textContent = title; const ss = swEl.querySelector(".swp-s"); ss.textContent = sub; if (sub.includes("deBridge")) ss.innerHTML = sub.replace("deBridge", '<img class="swp-dblogo" src="assets/debridge-mark.webp?v=1" alt="deBridge" />').replace(". You sign", ".<br />You sign");
+    swEl.querySelector(".swp-t").textContent = title; const ss = swEl.querySelector(".swp-s"); ss.textContent = sub; if (sub.includes("deBridge")) ss.innerHTML = sub.replace("deBridge", '<a href="https://debridge.com" target="_blank" rel="noopener" aria-label="deBridge"><img class="swp-dblogo" src="assets/debridge-mark.webp?v=1" alt="deBridge" /></a>').replace(". You sign", ".<br />You sign");
     swEl.querySelector(".swp-back").style.display = back ? "" : "none";
   }
   function chainStep(){
