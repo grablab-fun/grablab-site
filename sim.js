@@ -408,7 +408,7 @@
 
   /* ---------------- project room : live stream + chat ---------------- */
   const CH_NAMES = ["clawmaxi","0xmira","solsurfer","gm_kate","tinyfish","drop_hunter","nightowl","pixelpaw","moonbeam","grabfather","lowkey_lena","rekt_raccoon"];
-  const CH_LINES = ["gm from Berlin","that claw is smooth tonight","almost had it last night","who is next in line?","{n} team is cooking","violet one top left, go for it","grip feels right","lfg","watching from my phone, crisp","how many violet ones left?","finished the quests, free plays incoming","camera angle is perfect","next one is mine","anyone got the {r} yet?","this beats any airdrop form"];
+  const CH_LINES = ["gm from Berlin","that claw is smooth tonight","almost had it last night","who is next in line?","{n} team is cooking","front row looks easy, go for it","grip feels right","lfg","watching from my phone, crisp","how many left in this drop?","finished the quests, free plays incoming","camera angle is perfect","next one is mine","anyone got the {r} yet?","this beats any airdrop form"];
   const pick = a => a[Math.floor(Math.random()*a.length)];
   const wal = () => b58(4) + "…" + b58(4);
   let chatT = 0, chatN = 0;
@@ -439,7 +439,7 @@
     /* two cameras on the same play: the side camera and the claw camera; tap the window to swap it in */
     const CAMN = { claw:"Claw camera", chute:"Side camera" }, url = k => `assets/feeds/feed${fn}-${k}.mp4?v=13`;
     const pips = [...root.querySelectorAll(".rm-pip")];
-    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "chute"; v.src = url("chute"); v.poster = `assets/feeds/feed${fn}-side.jpg?v=13`;
+    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "chute"; pips.forEach(b => { b.querySelector("video").poster = `assets/feeds/feed${fn}-side.jpg?v=13`; }); v.src = url("chute"); v.poster = `assets/feeds/feed${fn}-side.jpg?v=13`;
       pips.forEach(b => { const pv = b.querySelector("video"); pv.src = url(b.dataset.k); pv.dataset.k = b.dataset.k; b.querySelector("span").textContent = CAMN[b.dataset.k]; }); $("#rmCam", root).textContent = CAMN.chute; }
     if (!root.dataset.rmPips){ root.dataset.rmPips = "1";
       /* keep the windows on the same moment as the main feed */
