@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=27";
+import { buildMachine } from "./anatomy-metal.js?v=28";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const $ = s => document.querySelector(s);
@@ -441,9 +441,9 @@ function prizeStep(dt){
   else if (t >= 2.8){ const k = Math.min(1, (t - 2.8)/.3), f = Math.min(1, Math.max(0, (t - 3.1)/.4)); y = .09*k + .05*f; z = -.01*k - .0635*f*f; }
   const out = seg(t, 5, 5.7) - seg(t, 5.9, 6.5);
   R.gate.rotation.x = 1.2*(seg(t, 2.4, 2.8) - seg(t, 3.5, 3.9));
-  R.door.rotation.z = 1.5*(seg(t, 4.3, 4.9) - seg(t, 6.5, 7));
-  R.tray.position.x = .13*out;
-  R.ball.position.set(t >= 3.5 ? .13*out : 0, y, z); R.ball.visible = t < 6.6;
+  R.door.rotation.z = 1.8*(seg(t, 4.3, 4.9) - seg(t, 6.5, 7));
+  R.tray.position.x = .2*out;
+  R.ball.position.set(t >= 3.5 ? .2*out : 0, y, z); R.ball.visible = t < 6.6;
 }
 function capAnim(dt){
   openK += ((selectedCap ? 1 : 0) - openK)*Math.min(1, dt*4);
