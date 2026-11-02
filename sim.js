@@ -1370,9 +1370,6 @@
     { id:10, name:"Optimism", logo:LG("optimism.jpg"), tokens:[
       { sym:"ETH", name:"Ether", logo:LG("ethereum.jpg"), addr:NATIVE },
       { sym:"USDC", name:"USD Coin", logo:LG("usdc.png"), addr:"0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85" } ] },
-    { id:43114, name:"Avalanche", logo:LG("avalanche.jpg"), tokens:[
-      { sym:"AVAX", name:"Avalanche", logo:LG("avalanche.jpg"), addr:NATIVE },
-      { sym:"USDC", name:"USD Coin", logo:LG("usdc.png"), addr:"0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E" } ] }
   ];
   /* deBridge widget colours, matched to the site */
   const DB_STYLES = btoa(JSON.stringify({ appBackground:"#0b0e1b", appAccentBg:"#121a36", chartBg:"#0b0e1b", primary:"#b4baff", secondary:"#1e2648",
