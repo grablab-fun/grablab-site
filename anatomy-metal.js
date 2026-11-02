@@ -576,8 +576,8 @@ export function buildMachine(THREE, api){
     const c = new THREE.Vector3(), P1 = new THREE.Vector3(.315, .315, 1.04);
     if (c1){ c1.geometry.computeBoundingBox(); c1.geometry.boundingBox.getCenter(c); c1.geometry.translate(-c.x, -c.y, -c.z); c1.position.copy(P1); c1.rotation.z = Math.PI/4; c1.userData.view = { pos:[.29, .29, 1.03], look:[-.03, -.03, .3] }; }
     if (t1){ t1.geometry.translate(-c.x, -c.y, -c.z); t1.position.copy(P1); t1.rotation.z = Math.PI/4; }
-    const cb = new THREE.Box3(); G("claw").updateMatrixWorld(true); cb.setFromObject(G("claw")); const cx = (cb.min.x + cb.max.x)/2, cy = (cb.min.y + cb.max.y)/2, clawZ = cb.min.z + .12;
-    const c2 = add(BOX(.03, .03, .03), c920, cx + .035, cy, clawZ, 0, 0, 0, "camera_claw"); c2.userData.view = { pos:[cx + .035, cy, clawZ - .03], look:[cx + .035, cy + .001, .25] }; }
+    const cb = new THREE.Box3(); G("claw").updateMatrixWorld(true); cb.setFromObject(G("claw")); const low = new THREE.Box3(), mb = new THREE.Box3(), zTop = cb.min.z + .16; G("claw").traverse(o => { if (o.isMesh){ mb.setFromObject(o); if (mb.max.z < zTop) low.union(mb); } }); const cx = (low.min.x + low.max.x)/2, cy = (low.min.y + low.max.y)/2, clawZ = low.max.z - .015;
+    const c2 = add(BOX(.03, .024, .024), c920, cx + .03, cy, clawZ, 0, 0, 0, "camera_claw"); c2.userData.view = { pos:[cx + .03, cy, clawZ - .02], look:[cx + .03, cy + .001, .25] }; }
 
 
   /* =========================================================================================== cables: the motion build's own routes (mm), at the export pose */
