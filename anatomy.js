@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=25";
+import { buildMachine } from "./anatomy-metal.js?v=27";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const $ = s => document.querySelector(s);
@@ -25,7 +25,7 @@ const PARTS = [
     text:["Power, motion and claw drivers on one plate.", "A small computer runs the play and the stream.", "A secure chip signs every event.", "Its key never leaves the chip."],
     subs:[["Secure chip", ["el_optiga"]], ["Computer", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
   { id:"chute", n:"05", name:"Prize path", spec:"Printed funnel, seat, gate and tray", ph:1.22, th:.4, anchor:[.213,-.213,.15], ex:[.3,-.3,0],
-    text:["A printed funnel fills the prize hole, walled 100 mm above the floor.", "The ball drops through a 55 mm throat onto the seat.", "A red light beam and the NFC reader both see it there.", "Beam broken for 0.3 s, same tag read twice, tag known and not yet won.", "Only then a small servo opens the gate.", "The ball rolls back into one tray under the floor. Every ball fits; it slides out through the front."],
+    text:["A printed funnel fills the prize hole, walled 100 mm above the floor.", "The ball drops through a 55 mm throat onto the seat.", "A red light beam and the NFC reader both see it there.", "Beam broken for 0.3 s, same tag read twice, tag known and not yet won.", "Only then a small servo opens the gate.", "The ball rolls off into a narrow tray behind the gate.", "A small door on the right side opens and the tray slides out."],
     subs:[["Funnel", ["chute_funnel"]], ["Light beam sensors", ["chute_e3jk"]], ["NFC reader", ["chute_acr122u"]], ["Seat", ["chute_seat", "chute_ball"]], ["Gate and servo", ["chute_gate", "chute_mg90s"]], ["Ball tray", ["chute_tray"]]], proof:"Checked twice: beam and tag" },
   { id:"capsules", n:"06", name:"Capsules", spec:"45 mm printed ball, NFC disc", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.98],
     text:["Two printed halves, 45 mm across.", "An NFC disc at the bottom pole, ballast above it, so it settles tag down.", "Factory UID, read only.", "Click one to open it."],
@@ -39,9 +39,9 @@ const PARTS = [
   { id:"claw", n:"09", name:"Claw", spec:"Black print, three paddles", ph:1.1, th:1.2, chain:["gantry", "winch"], anchor:[-.02,-.046,.8], ex:[0,0,-.2], skip:["claw_coil_cable", "claw_line"],
     text:["A black printed claw with three long arms.", "Closed, the paddles meet into a bowl under the capsule.", "A 12 V linear actuator down the middle opens and closes them.", "It hangs from a swivel on the line.", "A coiled cable brings the power down."],
     subs:[["Swivel", ["claw_swivel"]], ["Cap", ["claw_cap"]], ["Linear actuator", ["claw_actuator"]], ["Body", ["claw_body", "claw_hub"]], ["Fingers", ["claw_finger", "claw_pad", "claw_lug", "claw_rod", "claw_bearing", "claw_link", "claw_spreader"]], ["Coil cable", ["claw_coil", "claw_cable_tie"]]], proof:"Grip measured before you play" },
-  { id:"camera", n:"10", name:"Cameras", spec:"Two 1080p webcams", ph:1.25, th:-.55, anchor:[0,-.336,1.15], ex:[0,-.15,.1],
-    text:["A webcam on the front top tube, tilted down.", "A second one inside, under the right top tube.", "Together they are the stream you play from."],
-    subs:[["Webcams", ["camera_c920"]], ["Mounts", ["camera_tab"]]], proof:"The stream you play" }
+  { id:"camera", n:"10", name:"Cameras", spec:"Two 1080p webcams", ph:1.25, th:.8, anchor:[.3,.3,1.04], ex:[0,-.15,.1],
+    text:["Camera 1 sits in the top corner and looks across the side.", "Camera 2 rides on the claw and looks straight down.", "Click a camera to see through it."],
+    subs:[["Camera 1: corner", ["camera_c920"]], ["Camera 2: claw", ["camera_claw"]]], proof:"The stream you play" }
 ];
 const byId = id => PARTS.find(p => p.id === id);
 const ICON = { frame:"assets/parts/post.png", cage:"assets/parts/mdf.png", panel:"assets/parts/qr.png", electronics:"assets/parts/optiga.png", chute:"assets/parts/funnel.png", capsules:"assets/parts/capsule.png", gantry:"assets/parts/rail.png", winch:"assets/parts/spool.png", claw:"assets/parts/claw.png", camera:"assets/parts/webcam.png" };
@@ -120,7 +120,7 @@ async function load(){
   for (const [id, g] of Object.entries(M.parts)){ root.add(g); ents.set(id, g); }
   /* draw calls: siblings with the same material and the same name become one mesh, so a weak GPU draws ~hundreds, not ~1900.
      Names survive (card items pick meshes by name); anything that moves on its own is left alone. */
-  const KEEP = STORY ? /pushrod|horn|trap|capsule|lever|flap|grommet|view|gantry|winch|claw/ : /pushrod|horn|trap|capsule|lever|flap|grommet|view|claw_link$/;
+  const KEEP = STORY ? /pushrod|horn|trap|capsule|lever|flap|grommet|view|gantry|winch|claw|chute_gate|chute_ball|chute_tray|chute_side_door|camera_/ : /pushrod|horn|trap|capsule|lever|flap|grommet|view|claw_link$|chute_gate|chute_ball|chute_tray|chute_side_door|camera_/;
   (function mergeAll(o){
     for (const c of [...o.children]) if (c.children.length && !c.isMesh) mergeAll(c);
     const groups = new Map();
@@ -224,11 +224,15 @@ addEventListener("resize", resize);
 /* ---------- orbit: drag, wheel, inertia, idle auto spin ---------- */
 const orb = { th:1.57, ph:1.3, r:3.0, tx:0, ty:.52, tz:0, vth:0, vph:0, down:false, pan:false, px:0, py:0, pz:0, lx:0, ly:0, idle:0, zoom:1 };
 const tgt = new THREE.Vector3();
+let camView = null, camK = 0, camFov0 = null; const camP = new THREE.Vector3(), camL = new THREE.Vector3();
 function cam(){
   const sp = Math.sin(orb.ph), c = Math.cos(orb.ph), r = orb.r*orb.zoom;
   const tx = orb.tx + orb.px, ty = orb.ty + orb.py, tz = orb.tz + orb.pz;
   camera.position.set(tx + r*sp*Math.cos(orb.th), ty + r*c, tz + r*sp*Math.sin(orb.th));
-  tgt.set(tx, ty, tz); camera.lookAt(tgt);
+  tgt.set(tx, ty, tz);
+  if (camView || camK > .002){ if (camView){ camP.fromArray(camView.pos); camL.fromArray(camView.look); root.localToWorld(camP); root.localToWorld(camL); } camera.position.lerp(camP, camK); tgt.lerp(camL, camK); }
+  if (camFov0 == null) camFov0 = camera.fov; { const f = camFov0 + (72 - camFov0)*camK; if (Math.abs(f - camera.fov) > .01){ camera.fov = f; camera.updateProjectionMatrix(); } }
+  camera.lookAt(tgt);
   /* shift the picture so its centre sits in the middle of the free part of the screen */
   const W = stage.clientWidth, H = stage.clientHeight; orb.vx = (orb.vx ?? 0) + ((W/2 - view.cx) - (orb.vx ?? 0))*.12; orb.vy = (orb.vy ?? 0) + ((H/2 - view.cy) - (orb.vy ?? 0))*.12;
   if (W && H) camera.setViewOffset(W, H, orb.vx, orb.vy, W, H);
@@ -278,7 +282,7 @@ function goal(){
   whole.makeEmpty(); for (const p of PARTS) if (p.lbox && !p.lbox.isEmpty() && p.id !== "capsules") whole.union(partBox(p, pb));
   return fit(whole, 1.2, 1.04);
 }
-function easeCam(dt){ measure(); const g = goal(), k = Math.min(1, dt*3.2); if (orb.phT != null){ orb.ph += (orb.phT - orb.ph)*k; if (Math.abs(orb.phT - orb.ph) < .002) orb.phT = null; }
+function easeCam(dt){ camK += ((camView ? 1 : 0) - camK)*Math.min(1, dt*3.2); measure(); const g = goal(), k = Math.min(1, dt*3.2); if (orb.phT != null){ orb.ph += (orb.phT - orb.ph)*k; if (Math.abs(orb.phT - orb.ph) < .002) orb.phT = null; }
   if (orb.thT != null){ let d = ((orb.thT - orb.th + Math.PI) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI) - Math.PI; orb.th += d*k; if (Math.abs(d) < .002) orb.thT = null; } orb.tx += (g.tx - orb.tx)*k; orb.ty += (g.ty - orb.ty)*k; orb.tz += (g.tz - orb.tz)*k; orb.r += (g.r - orb.r)*k; }
 
 /* ---------- focus in place: the machine stays whole, the chosen part stays solid, the rest turns to a ghost ---------- */
@@ -303,10 +307,11 @@ function setSub(i){ wake(3500);
   else { let ms = subMeshes(selected, sd[1]); if (sd[2] && sd[2].one) ms = ms.filter(m => m.position.distanceTo(ms[0].position) < .03); if (!ms.length){ subFocus = null; } else {
     root.updateMatrixWorld(true); const b = new THREE.Box3(); ms.forEach(m => { m.geometry.computeBoundingBox(); b.union(m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld)); });
     subFocus = { i, meshes:ms, box:b }; if (sd[2] && sd[2].ph) orb.phT = sd[2].ph; } }
+  camView = subFocus && selected.id === "camera" ? subFocus.meshes[0].userData.view || null : null;
   card.querySelectorAll(".inside button").forEach((b, k) => b.classList.toggle("on", !!subFocus && subFocus.i === k));
 }
 function setSelected(p, fromList){ wake(3500);
-  selected = p; selectedCap = null; subFocus = null; orb.phT = p && p.ph ? p.ph : null; orb.thT = p && p.th != null ? p.th : null; orb.zoom = 1; orb.px = orb.py = orb.pz = 0;
+  selected = p; camView = null; selectedCap = null; subFocus = null; orb.phT = p && p.ph ? p.ph : null; orb.thT = p && p.th != null ? p.th : null; orb.zoom = 1; orb.px = orb.py = orb.pz = 0;
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
     card.innerHTML = `<span class="n">${p.n} / ${String(PARTS.length).padStart(2, "0")}</span><h3>${p.name}</h3><div class="lines">${p.text.map(t => `<p>${t}</p>`).join("")}</div><div class="inside">${p.subs.map((x, i) => `<button type="button" data-i="${i}"${x[1] && x[1].length ? "" : " disabled"}><img src="${SUBICON[x[0]] || ICON[p.id]}" alt="" />${x[0]}</button>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><img src="assets/parts/shield.png" alt="" />${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
@@ -389,7 +394,7 @@ function outlinePass(){
 }
 /* per material state: the selected part solid, the rest a faint ghost, glass and xray walls handled on their own */
 function shade(){
-  const sel = selected ? selected.id : null;
+  const sel = selected && !camView ? selected.id : null;
   for (const [k, m] of matCache){
     const id = k.split("|")[0], b = m.userData.base;
     b.op0 ??= m.opacity; b.tr0 ??= m.transparent; b.dw0 ??= m.depthWrite;
@@ -423,6 +428,22 @@ function syncInstances(){
     for (const im of inst.ims) im.setMatrixAt(i, live ? inst.hide : inst.m.multiplyMatrices(c.matrix, im.userData.local));
   });
   for (const im of inst.ims){ im.instanceMatrix.needsUpdate = true; im.computeBoundingSphere(); }
+}
+/* the prize path runs while it is picked: the ball falls, sits on the beam and reader, the servo opens the gate, the ball drops in the tray, the door opens and the tray slides out */
+let prizeRig = null, prizeT = 0;
+const seg = (t, a, b) => { const k = Math.min(1, Math.max(0, (t - a)/(b - a))); return k*k*(3 - 2*k); };
+function prizeStep(dt){
+  if (!prizeRig) root.traverse(o => { if (o.userData.prizeRig) prizeRig = o.userData.prizeRig; }); if (!prizeRig) return;
+  const on = selected && selected.id === "chute"; if (on) prizeT = (prizeT + dt) % 7.4; else prizeT = 2;
+  const t = prizeT, R = prizeRig; let y = 0, z = 0;
+  if (t < .7){ const k = t/.7; y = -.04; z = .18 - .14*k*k; }
+  else if (t < 1.1){ const k = seg(t, .7, 1.1); y = -.04*(1 - k); z = .04*(1 - k); }
+  else if (t >= 2.8){ const k = Math.min(1, (t - 2.8)/.3), f = Math.min(1, Math.max(0, (t - 3.1)/.4)); y = .09*k + .05*f; z = -.01*k - .0635*f*f; }
+  const out = seg(t, 5, 5.7) - seg(t, 5.9, 6.5);
+  R.gate.rotation.x = 1.2*(seg(t, 2.4, 2.8) - seg(t, 3.5, 3.9));
+  R.door.rotation.z = 1.5*(seg(t, 4.3, 4.9) - seg(t, 6.5, 7));
+  R.tray.position.x = .13*out;
+  R.ball.position.set(t >= 3.5 ? .13*out : 0, y, z); R.ball.visible = t < 6.6;
 }
 function capAnim(dt){
   openK += ((selectedCap ? 1 : 0) - openK)*Math.min(1, dt*4);
@@ -486,7 +507,7 @@ stage.addEventListener("pointermove", () => { mouseMoved = true; });
 let last = performance.now(); let clawRig = null, clawT = 0; const clawQ = new THREE.Quaternion(); const linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), YAX = new THREE.Vector3(0, 1, 0);
 function frame(now){
   const raw = now - last, dt = Math.min(.05, raw/1000); last = now;
-  const clawOn = selected && selected.id === "claw";
+  const clawOn = selected && (selected.id === "claw" || selected.id === "chute");
   if (!(now < activeUntil || tour || clawOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0)){ requestAnimationFrame(frame); return; }
   /* frame time watchdog: drop the resolution a step if the device cannot keep up, raise it back when it can */
   if (REC) slow = fast = 0; else if (raw > 28) slow++; else if (raw < 18) fast++;
@@ -498,10 +519,11 @@ function frame(now){
   if (!orb.down && !orb.pan && !tour && mouseMoved){ mouseMoved = false; const p = pick(); if (p !== hovered && !(hovered && list.matches(":hover"))) hovered = p; capHover = p && p.id === "capsules" ? lastHitCap : null; stage.style.cursor = p ? "pointer" : "grab"; }
   /* the claw closes and opens while it is picked, then waits open */
   if (!clawRig) root.traverse(o => { if (o.userData.clawRig) clawRig = o.userData.clawRig; });
-  if (clawRig){ clawT = selected && selected.id === "claw" ? clawT + dt : 0; const want = clawT ? .55*(.5 + .5*Math.cos(clawT*1.7)) : .55;
+  if (clawRig){ clawT = clawOn && selected.id === "claw" ? clawT + dt : 0; const want = clawT ? .55*(.5 + .5*Math.cos(clawT*1.7)) : .55;
     if (Math.abs(want - clawRig.open) > .0005){ clawRig.open += (want - clawRig.open)*Math.min(1, dt*8);
       for (const arm of clawRig.arms){ const u = arm.userData.clawArm; arm.quaternion.copy(u.q0).multiply(clawQ.setFromAxisAngle(u.side, -clawRig.open)); }
       for (const l of clawRig.links){ linkB.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); linkD.copy(linkB).sub(l.a); l.mesh.position.copy(l.a).add(linkB).multiplyScalar(.5); l.mesh.scale.y = linkD.length(); l.mesh.quaternion.setFromUnitVectors(YAX, linkD.normalize()); } } }
+  prizeStep(dt);
   if (toastT > 0 && (toastT -= dt) <= 0) toast.classList.remove("on");
   applyExplode(); shade(); capAnim(dt); easeCam(dt); cam();
   renderer.toneMappingExposure += ((selected ? 1.08 : 1.0) - renderer.toneMappingExposure)*Math.min(1, dt*4);

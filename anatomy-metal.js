@@ -168,7 +168,7 @@ export function buildMachine(THREE, api){
   /* =========================================================================================== front panel: the front base skin, with the QR and the GRABLAB plate */
   use("panel");
   /* the plates sit on the front base skin, under the window: built facing +y, turned round to face the player at -y, outer face at y -353 */
-  { const g = new THREE.Group(); g.name = "panel_plates"; g.position.set(0, .159, -.03); g.rotation.z = Math.PI; G("panel").add(g); SUBP.panel = g; }
+  { const g = new THREE.Group(); g.name = "panel_plates"; g.position.set(.0525, .159, -.07); g.rotation.z = Math.PI; G("panel").add(g); SUBP.panel = g; }
   sm("box_skin_F_low", pvc, "panel_skin", G("panel"));
   const IN = .50, PY1 = .512;                                     // inner face (components) and outer face (QR, GRABLAB)
   /* scan to play: anodised plate, QR, caption */
@@ -372,21 +372,28 @@ export function buildMachine(THREE, api){
   const prizeM = () => m("prize", { color:0x2e313a, roughness:.48, metalness:.05 }), e3 = () => m("e3", { color:0x34373f, roughness:.5, metalness:.25 });
   sm("prize_funnel", () => m("funnel", { color:0x2b2e36, roughness:.35, metalness:.2, side:THREE.DoubleSide }), "chute_funnel");   // one piece: 222 opening, 100 mm wall on the floor, 55 mm throat
   sm("prize_seat", prizeM, "chute_seat");
-  sm("prize_gate", prizeM, "chute_gate");
+  /* a pivot that animates, holding parts drawn in machine coordinates */
+  const rig = (x, y, z) => { const pivot = new THREE.Group(), hold = new THREE.Group(); pivot.position.set(x, y, z); hold.position.set(-x, -y, -z); pivot.add(hold); G("chute").add(pivot); return { pivot, hold }; };
+  const gateR = rig(0, mm(200), mz(-974.8)), ballR = rig(0, 0, 0), trayR = rig(0, 0, 0), doorR = rig(mm(703.4), mm(438), mz(-1070));
+  sm("prize_gate", prizeM, "chute_gate", gateR.hold);
+  box(mm(522), mm(196), mz(-978), mm(540), mm(204), mz(-971), () => m("horn", { color:0xe9e9e4, roughness:.5 }), "chute_mg90s_horn", gateR.hold);
   sm("prize_servo", () => m("mg90", { color:0x1d2c55, roughness:.4 }), "chute_mg90s");
   sm("prize_reader", () => m("acr", { color:0x141518, roughness:.42 }), "chute_acr122u");
   for (const s of ["E", "R"]){ sm("prize_beam_" + s, e3, "chute_e3jk"); sm(`prize_beam_${s}_cable`, () => m("cableE3", { color:0x101114, roughness:.6 }), "chute_e3jk_cable"); sm(`prize_beam_${s}_win`, lens, "chute_e3jk_lens"); }
   { const g = mgeo("prize_beamline"); if (g) add(g, m("laserglow", { color:0xff3030, emissive:0xff2020, emissiveIntensity:1.6, transparent:true, opacity:.5, toneMapped:false, depthWrite:false, blending:THREE.AdditiveBlending }), 0, 0, 0, 0, 0, 0, "chute_e3jk_beam"); }
-  /* the ball tray: one drawer over the whole base, every ball fits in one layer, pulled out through the slot in the front skin */
-  { const trayM = m("trayM", { color:0x2b2e36, roughness:.45, metalness:.35 }), slotM = m("slotM", { color:0x05060a, roughness:.9 });
-    const X0 = mm(30), X1 = mm(670), Y0 = mm(30), Y1 = mm(670), Z0 = mz(-1108), Z1 = mz(-1105), ZT = mz(-1062), T = mm(33) - mm(30);
-    box(X0, Y0, Z0, X1, Y1, Z1, trayM, "chute_tray");
-    box(X0, Y0, Z1, X1, Y0 + T, ZT, trayM, "chute_tray"); box(X0, Y1 - T, Z1, X1, Y1, ZT, trayM, "chute_tray");
-    box(X0, Y0, Z1, X0 + T, Y1, ZT, trayM, "chute_tray"); box(X1 - T, Y0, Z1, X1, Y1, ZT, trayM, "chute_tray");
-    box(mm(28), mm(-3.4), mz(-1110), mm(672), mm(-3.05), mz(-1060), slotM, "chute_tray_slot");       // the slot in the front skin
-    box(mm(300), mm(-7), mz(-1092), mm(400), mm(-3.4), mz(-1082), steel, "chute_tray_handle"); }
+  /* the ball tray: a narrow drawer behind the gate, against the right skin, pulled out sideways through a small door */
+  { const trayM = m("trayM", { color:0x2b2e36, roughness:.45, metalness:.35 }), slotM = m("slotM", { color:0x05060a, roughness:.9 }), H = trayR.hold;
+    const X0 = mm(530), X1 = mm(672), Y0 = mm(235), Y1 = mm(435), Z0 = mz(-1106), Z1 = mz(-1103), ZT = mz(-1040), T = .003;
+    box(X0, Y0, Z0, X1, Y1, Z1, trayM, "chute_tray", H);
+    box(X0, Y0, Z1, X1, Y0 + T, ZT, trayM, "chute_tray", H); box(X0, Y1 - T, Z1, X1, Y1, ZT, trayM, "chute_tray", H);
+    box(X0, Y0, Z1, X0 + T, Y1, ZT, trayM, "chute_tray", H); box(X1 - T, Y0, Z1, X1, Y1, ZT, trayM, "chute_tray", H);
+    box(mm(672), mm(315), mz(-1078), mm(690), mm(355), mz(-1068), steel, "chute_tray", H);
+    box(mm(703), mm(232), mz(-1104), mm(703.4), mm(438), mz(-1036), slotM, "chute_tray_slot");
+    box(mm(703.4), mm(232), mz(-1104), mm(706), mm(438), mz(-1036), pvc, "chute_side_door", doorR.hold);
+    box(mm(706), mm(245), mz(-1080), mm(710), mm(255), mz(-1060), steel, "chute_side_door", doorR.hold); }
   /* a ball on the seat, tag down over the reader */
-  SM(["prize_ball_top", "prize_ball_bottom"], () => m("ballM", { color:0xf2f1ec, roughness:.68, metalness:0 }), "chute_ball");
+  { const ballM = () => m("ballM", { color:0xf2f1ec, roughness:.68, metalness:0 }); sm("prize_ball_top", ballM, "chute_ball", ballR.hold); sm("prize_ball_bottom", ballM, "chute_ball", ballR.hold); }
+  G("chute").userData.prizeRig = { gate:gateR.pivot, ball:ballR.pivot, tray:trayR.pivot, door:doorR.pivot };
   use("cage");
 
   /* =========================================================================================== capsules: 45 mm printed balls */
@@ -563,8 +570,14 @@ export function buildMachine(THREE, api){
   /* =========================================================================================== play camera: webcams on the top tubes */
   use("camera");
   /* two 1080p webcams: front on the top tube, side inside under the right top tube, each on a flat bar tab */
-  SM(["box_camtab_F", "box_camtab_S"], dark, "camera_tab");
-  SM(["camera_F", "camera_S"], () => m("c920", { color:0x111215, roughness:.35, metalness:.2 }), "camera_c920");
+  /* two webcams. Camera 1 in the back right top corner, turned to the middle of the floor. Camera 2 on the claw, straight down. */
+  { const c920 = () => m("c920", { color:0x111215, roughness:.35, metalness:.2 });
+    const c1 = sm("camera_S", c920, "camera_c920"), t1 = sm("box_camtab_S", dark, "camera_tab");
+    const c = new THREE.Vector3(), P1 = new THREE.Vector3(.315, .315, 1.04);
+    if (c1){ c1.geometry.computeBoundingBox(); c1.geometry.boundingBox.getCenter(c); c1.geometry.translate(-c.x, -c.y, -c.z); c1.position.copy(P1); c1.rotation.z = Math.PI/4; c1.userData.view = { pos:[.29, .29, 1.03], look:[-.03, -.03, .3] }; }
+    if (t1){ t1.geometry.translate(-c.x, -c.y, -c.z); t1.position.copy(P1); t1.rotation.z = Math.PI/4; }
+    const cb = new THREE.Box3(); G("claw").updateMatrixWorld(true); cb.setFromObject(G("claw")); const cx = (cb.min.x + cb.max.x)/2, cy = (cb.min.y + cb.max.y)/2, clawZ = cb.min.z + .12;
+    const c2 = add(BOX(.03, .03, .03), c920, cx + .035, cy, clawZ, 0, 0, 0, "camera_claw"); c2.userData.view = { pos:[cx + .035, cy, clawZ - .03], look:[cx + .035, cy + .001, .25] }; }
 
 
   /* =========================================================================================== cables: the motion build's own routes (mm), at the export pose */

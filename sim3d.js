@@ -5,7 +5,7 @@
    Game x runs along the machine's x (left..right as the front left play camera sees it), game z along y (front glass..back), so the prize hole is front right.
    Light on purpose: no point lights, no shadows, the electronics and cables left out, every still mesh merged, capsules one instanced mesh. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=25";
+import { buildMachine } from "./anatomy-metal.js?v=27";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const SCENE = await loadMachine();
@@ -106,10 +106,10 @@ export function createSim3D(canvas, pips, opts = {}){
   const cams = [
     /* recordings only: front view, not on the live machine */
     { name:"Front camera", cam:mk(56), pose(c){ c.up.set(0, 1, 0); c.position.set(0, 1.125, .31); c.lookAt(0, .25, -.04); } },
-    /* under the claw body, looking down past the arms; game back is up on screen */
-    { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, -1); c.position.set(p.x + .02, p.y - .12, p.z + .07); c.lookAt(p.x, FLOOR - .02, p.z - .005); } },
-    /* the real side camera: inside, under the right top tube, looking across the floor */
-    { name:"Side camera", cam:mk(56), pose(c){ c.up.set(0, 1, 0); c.position.set(.28, 1.03, 0); c.lookAt(-.042, .25, 0); } },
+    /* on the claw, straight down at 90 degrees; game back is up on screen */
+    { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, -1); c.position.set(p.x + .04, p.y - .03, p.z); c.lookAt(p.x + .04, FLOOR - .02, p.z); } },
+    /* the real side camera: in the back right top corner, looking across the floor */
+    { name:"Side camera", cam:mk(56), pose(c){ c.up.set(0, 1, 0); c.position.set(.29, 1.03, -.29); c.lookAt(-.03, .3, .03); } },
     /* recordings only: over the front glass, looking down into the pile */
     { name:"Stream camera", cam:mk(46), pose(c){ c.up.set(0, 1, 0); c.position.set(-.21, 1.02, .78); c.lookAt(.03, .45, -.04); } },
     /* recordings only: straight down from above the machine */
