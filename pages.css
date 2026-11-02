@@ -554,7 +554,7 @@ body{background:transparent}
 .loader.open{pointer-events:none}
 /* scene inside each leaf (duplicated, each leaf shows its half) */
 .ld-glow{position:absolute;inset:0;background:radial-gradient(40% 50% at 50% 55%,rgba(59,123,255,.14),transparent 70%)}
-.ld-machine{position:absolute;left:50%;top:50%;height:74vh;aspect-ratio:3/4;transform:translate(-50%,-50%);--y:calc(9.3% + var(--p,0%)*.758)} /* the machine fills 9.3% to 85.1% of the poster height */
+.ld-machine{position:absolute;left:50%;top:50%;height:74vh;aspect-ratio:3/4;transform:translate(-50%,-50%);--y:calc(.2% + var(--p,0%)*.977)} /* the machine fills .2% to 97.9% of the poster height */
 .ld-machine img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
   mask-image:linear-gradient(180deg,transparent 0%,#000 9%,#000 84%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 9%,#000 84%,transparent 100%)}
 .ld-machine .bw{filter:grayscale(1) brightness(.55) contrast(1.1)}
