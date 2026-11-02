@@ -1322,10 +1322,11 @@
   const JUP_CSS = `.bg-black:not(.fixed):not(.absolute):not([class*="inset"]):not([class*="opacity"]){background-color:rgb(13,18,40)!important}li,[role="listitem"]{background:transparent!important;border-radius:12px;transition:background .15s}li:hover,[role="listitem"]:hover{background:rgba(143,184,255,.1)!important}`;
   function themeJupiter(J){
     let n = 0; const roots = el => { const o = []; el.querySelectorAll("*").forEach(e => { if (e.shadowRoot) o.push(e.shadowRoot, ...roots(e.shadowRoot)); }); return o; };
-    const t = setInterval(() => { roots(document.body).forEach(r => { if (!r.querySelector("style[data-gl]")){ const st = document.createElement("style"); st.dataset.gl = "1"; st.textContent = JUP_CSS; r.appendChild(st); } }); if (++n > 240 || !document.getElementById("jupiter-plugin-instance")){ clearInterval(t); document.querySelector(".jup-back")?.remove(); } }, 500);
-    document.querySelector(".jup-back")?.remove();
+    const t = setInterval(() => { roots(document.body).forEach(r => { if (!r.querySelector("style[data-gl]")){ const st = document.createElement("style"); st.dataset.gl = "1"; st.textContent = JUP_CSS; r.appendChild(st); } }); if (++n > 240 || !document.getElementById("jupiter-plugin-instance")){ clearInterval(t); document.querySelectorAll(".jup-back,.jup-grain").forEach(e => e.remove()); } }, 500);
+    document.querySelectorAll(".jup-back,.jup-grain").forEach(e => e.remove());
     const b = document.createElement("button"); b.className = "jup-back"; b.type = "button"; b.setAttribute("aria-label", "Back"); b.textContent = "Back";
-    b.onclick = () => { try { J.close(); } catch (e) {} b.remove(); }; document.body.appendChild(b);
+    const gr = document.createElement("div"); gr.className = "jup-grain"; document.body.appendChild(gr);
+    b.onclick = () => { try { J.close(); } catch (e) {} b.remove(); gr.remove(); }; document.body.appendChild(b);
   }
   /* Jupiter (Solana): the widget reads initialAmount in the input token's smallest unit */
   async function openJupiter(inputMint, amountRaw){
