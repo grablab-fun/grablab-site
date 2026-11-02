@@ -16,3 +16,4 @@ palette.html
 # wallet island build deps
 wallet-src/node_modules/
 docs/pitch/_check/
+docs/pitch/_build/

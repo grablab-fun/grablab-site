@@ -138,8 +138,9 @@ export function buildMachine(THREE, api){
   const b64 = (s, T) => { const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return new T(u.buffer); };
   const toM = p => { for (let i = 0; i < p.length; i += 3){ p[i] = p[i]/1000 - .35; p[i + 1] = p[i + 1]/1000 - .35; p[i + 2] = (p[i + 2] + MP.BOX_H)/1000; } };
   /* keep: optional test on each triangle's centre (mm), to leave parts of a mesh out */
-  const mgeo = (n, keep) => { const d = SD.meshes[n]; if (!d) return null; const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(b64(d.v, Float32Array), 3)); g.setIndex(new THREE.BufferAttribute(b64(d.i, d.i32 ? Uint32Array : Uint16Array), 1));
+  const mgeo = (n, keep) => { const d = SD.meshes[n]; if (!d) return null; let g;
+    if (d.geo) g = d.geo.clone();   // from metal.glb (machine-scene.js)
+    else { g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.BufferAttribute(b64(d.v, Float32Array), 3)); g.setIndex(new THREE.BufferAttribute(b64(d.i, d.i32 ? Uint32Array : Uint16Array), 1)); }
     let f = g.toNonIndexed(); g.dispose();
     if (keep){ const P = f.attributes.position.array, out = []; for (let i = 0; i < P.length; i += 9) if (keep((P[i] + P[i + 3] + P[i + 6])/3, (P[i + 1] + P[i + 4] + P[i + 7])/3, (P[i + 2] + P[i + 5] + P[i + 8])/3)) for (let k = 0; k < 9; k++) out.push(P[i + k]);
       f.dispose(); f = new THREE.BufferGeometry(); f.setAttribute("position", new THREE.Float32BufferAttribute(out, 3)); }

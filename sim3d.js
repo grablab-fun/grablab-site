@@ -5,9 +5,10 @@
    Game x runs along the machine's x (left..right as the front left play camera sees it), game z along y (front glass..back), so the prize hole is front right.
    Light on purpose: no point lights, no shadows, the electronics and cables left out, every still mesh merged, capsules one instanced mesh. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=23";
+import { buildMachine } from "./anatomy-metal.js?v=24";
+import { loadMachine } from "./machine-scene.js?v=1";
 
-const SCENE = await fetch("assets/machine/metal.json?v=4").then(r => r.json());
+const SCENE = await loadMachine();
 
 export const CAP_R = .05;                                       // capsule radius in game x units (22.5 mm, the 45 mm printed ball)
 export const CHUTE = { x0:.2244, x1:.7222, z0:.139, z1:.3856, h:0, cx:.4733, cz:.2633, any:true };   // inside the funnel wall, front right in game space (any: test all four edges)
