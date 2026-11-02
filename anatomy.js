@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=32";
+import { buildMachine } from "./anatomy-metal.js?v=33";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const $ = s => document.querySelector(s);
@@ -438,7 +438,7 @@ function prizeStep(dt){
   const t = prizeT, R = prizeRig; let x = 0, y = 0, z = 0;
   if (t < .7){ const k = t/.7; y = -.04; z = .18 - .14*k*k; }
   else if (t < 1.1){ const k = seg(t, .7, 1.1); y = -.04*(1 - k); z = .04*(1 - k); }
-  else if (t >= 2.8){ const k = Math.min(1, (t - 2.8)/.3), f = Math.min(1, Math.max(0, (t - 3.1)/.4)); y = .09*k + .05*f; const g = seg(t, 3.5, 4.3); x = .077*g; y += .253*g; z = -.01*k - .031*f*f - .011*g; }
+  else if (t >= 2.8){ const k = Math.min(1, (t - 2.8)/.3), f = Math.min(1, Math.max(0, (t - 3.1)/.4)); y = .09*k + .05*f; const g = seg(t, 3.5, 4.3); x = .077*g; y -= .055*g; z = -.01*k - .0375*f*f - .0045*g; }
   const out = seg(t, 5, 5.7) - seg(t, 5.9, 6.5);
   R.gate.rotation.x = 1.2*(seg(t, 2.4, 2.8) - seg(t, 3.5, 3.9));
   R.door.rotation.z = 1.8*(seg(t, 4.3, 4.9) - seg(t, 6.5, 7));

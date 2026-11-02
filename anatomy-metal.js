@@ -389,8 +389,8 @@ export function buildMachine(THREE, api){
   { const trayM = m("trayM", { color:0x2b2e36, roughness:.45, metalness:.35 }), slotM = m("slotM", { color:0x05060a, roughness:.9 }), H = trayR.hold;
     const X0 = mm(40), X1 = mm(672), Y0 = mm(235), Y1 = mm(600), Z0 = mz(-1088), Z1 = mz(-1085), ZT = mz(-1034), T = .003;
     box(X0, Y0, Z0, X1, Y1, Z1, trayM, "chute_tray", H);
-    /* the floor falls toward the back right corner, so every ball ends there and none sits stuck */
-    add(BOX(.632, .365, .003), trayM, mm(356), mm(417.5), mz(-1072.5), -.0274, .0285, 0, "chute_tray", H);
+    /* the floor falls toward the front right corner, by the door, so every ball ends there and none sits stuck */
+    add(BOX(.632, .365, .003), trayM, mm(356), mm(417.5), mz(-1072.5), .0274, .0285, 0, "chute_tray", H);
     /* a notch in the wall facing the gate, so the ball leaves the seat freely */
     box(X0, Y0, Z1, mm(510), Y0 + T, ZT, trayM, "chute_tray", H); box(mm(616), Y0, Z1, X1, Y0 + T, ZT, trayM, "chute_tray", H); box(mm(510), Y0, Z1, mm(616), Y0 + T, mz(-1066), trayM, "chute_tray", H); box(X0, Y1 - T, Z1, X1, Y1, ZT, trayM, "chute_tray", H);
     box(X0, Y0, Z1, X0 + T, Y1, ZT, trayM, "chute_tray", H); box(X1 - T, Y0, Z1, X1, Y1, ZT, trayM, "chute_tray", H);
