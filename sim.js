@@ -1393,7 +1393,7 @@
   }
   function closeSwapUI(){ if (swEl){ swEl.hidden = true; swEl.querySelector(".swp-body").innerHTML = ""; } }
   function setHead(title, sub, back){
-    swEl.querySelector(".swp-t").textContent = title; const ss = swEl.querySelector(".swp-s"); ss.textContent = sub; if (sub.includes("deBridge")) ss.innerHTML = sub.replace("deBridge", '<img class="swp-db" src="assets/debridge.webp?v=1" alt="" />deBridge');
+    swEl.querySelector(".swp-t").textContent = title; const ss = swEl.querySelector(".swp-s"); ss.textContent = sub; if (sub.includes("deBridge")) ss.innerHTML = sub.replace("deBridge", '<img class="swp-dblogo" src="assets/debridge.webp?v=1" alt="" />deBridge');
     swEl.querySelector(".swp-back").style.display = back ? "" : "none";
   }
   function chainStep(){
@@ -1426,7 +1426,9 @@
       box.innerHTML = "";
       const cfg = { v:"1", element:"glDebridge", mode:"deswap", title:"Grablab", theme:"dark", styles:DB_STYLES, lang:"en",
         width: Math.round(box.clientWidth) || 420, height: 560,
-        inputChain: c.id, outputChain: DB_SOLANA, outputCurrency: USDC_MINT };
+        inputChain: c.id, outputChain: DB_SOLANA, outputCurrency: USDC_MINT,
+        /* the only way out is USDC on Solana */
+        supportedChains: JSON.stringify({ inputChains:{ [c.id]:"all" }, outputChains:{ [DB_SOLANA]:[USDC_MINT] } }) };
       if (t) cfg.inputCurrency = t.addr;
       if (t && /^USD/.test(t.sym)) cfg.amount = (usdc * 1.02).toFixed(2);   /* stablecoins: roughly 1:1, plus 2% for fees */
       await DB.widget(cfg);
