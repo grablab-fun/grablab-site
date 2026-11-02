@@ -984,3 +984,8 @@ body.sim-lock{overflow:hidden}
 }
 .swp-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .swp-dblogo{width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px}
+/* Jupiter token picker: site navy panel, quiet rows instead of bright blocks */
+#jupiter-plugin-instance [class*="bg-black"]{background-color:rgb(13,18,40)!important}
+#jupiter-plugin-instance{--jupiter-plugin-interactive:22, 29, 58}
+#jupiter-plugin-instance li,#jupiter-plugin-instance [role="listitem"]{border-radius:12px;background:transparent!important;transition:background .15s}
+#jupiter-plugin-instance li:hover,#jupiter-plugin-instance [role="listitem"]:hover{background:rgba(143,184,255,.1)!important}
