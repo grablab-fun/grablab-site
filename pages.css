@@ -956,12 +956,12 @@ body:not(.page-in) main,body:not(.page-in) .hero{transform:translateY(6px)}
 /* ============ INSIDE THE MACHINE (Oct 31): ORBIT. the five proofs sit on a ring round the exploding machine; scroll turns the ring, the proof at the top lights ============ */
 .inside-orb{position:relative;height:320vh}
 .inside-orb .st{position:sticky;top:0;height:100vh;min-height:720px;overflow:hidden;display:grid;place-items:center}
-.inside-orb .mach{position:relative;width:min(52vh,500px,30vw);aspect-ratio:800/940;z-index:2;transform:translateY(4vh)}
+.inside-orb .mach{position:relative;width:min(42vh,500px,30vw);aspect-ratio:800/940;z-index:2;transform:translateY(4vh)}
 .inside-orb .mach video,.inside-orb .mach .av-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
-.inside-orb .orb{position:absolute;left:50%;top:calc(50% + 4vh);width:min(80vh,860px,54vw);aspect-ratio:1;transform:translate(-50%,-50%) rotate(var(--r,0deg));will-change:transform}
+.inside-orb .orb{position:absolute;left:50%;top:calc(50% + 4vh);width:min(68vh,860px,54vw);aspect-ratio:1;transform:translate(-50%,-50%) rotate(var(--r,0deg));will-change:transform}
 .inside-orb .orb::before{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(180,186,255,.18)}
 .inside-orb .orb::after{content:"";position:absolute;inset:14%;border-radius:50%;border:1px dashed rgba(180,186,255,.1)}
-.inside-orb .sat{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(min(80vh,860px,54vw) / -2)) rotate(calc(-1 * var(--a) - var(--r,0deg)));will-change:transform}
+.inside-orb .sat{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(min(68vh,860px,54vw) / -2)) rotate(calc(-1 * var(--a) - var(--r,0deg)));will-change:transform}
 .inside-orb .sat > div{position:absolute;left:-110px;top:-54px;width:220px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;opacity:.45;transform:scale(.8);transition:opacity .5s,transform .5s}
 .inside-orb .sat.on > div{opacity:1;transform:scale(1.08)}
 .inside-orb .sat img{width:70px;height:70px;mix-blend-mode:screen;filter:drop-shadow(0 0 16px rgba(120,170,255,.4))}
@@ -999,3 +999,4 @@ section.section:has(.teasers){max-width:none;padding-left:clamp(16px,5vw,80px);p
   .mint-note{font-size:clamp(11.5px,3.45vw,15px)!important;white-space:nowrap}
 }
 @media (max-width:340px){.card p{font-size:13px!important}}
+@media (max-height:1100px) and (min-width:981px){.inside-orb .sat img{width:50px;height:50px}.inside-orb .sat b{font-size:19px}}
