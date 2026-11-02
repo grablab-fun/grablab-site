@@ -592,7 +592,9 @@ export function buildMachine(THREE, api){
       A(BOX(.024, .012, .016), dark, 0, .017, 0); };
     webcam("camera_c920", .3, .3, 1.05, .85, -Math.PI/4, { pos:[.285, .285, 1.03], look:[-.03, -.03, .3] });
     /* camera 2 is on the plate beside the winch, rides the carriage at a fixed height, looks straight down */
-    webcam("camera_claw", -.041, -.07, 1.165, Math.PI/2, 0, { pos:[-.041, -.07, 1.14], look:[-.041, -.069, .25] }); }
+    /* it hangs on a short arm below the top ring, or the ring and the skins cut the view at the end of travel */
+    webcam("camera_claw", -.041, -.07, 1.08, Math.PI/2, 0, { pos:[-.041, -.07, 1.06], look:[-.041, -.069, .25] });
+    box(-.045, -.0605, 1.09, -.037, -.0565, 1.165, dark, "camera_claw_arm"); }
 
 
   /* =========================================================================================== cables: the motion build's own routes (mm), at the export pose */

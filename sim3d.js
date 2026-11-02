@@ -5,7 +5,7 @@
    Game x runs along the machine's x (left..right as the front left play camera sees it), game z along y (front glass..back), so the prize hole is front right.
    Light on purpose: no point lights, no shadows, the electronics and cables left out, every still mesh merged, capsules one instanced mesh. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=35";
+import { buildMachine } from "./anatomy-metal.js?v=36";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const SCENE = await loadMachine();
@@ -56,7 +56,7 @@ export function createSim3D(canvas, pips, opts = {}){
   root.updateMatrixWorld(true);
   const riders = []; M.parts.gantry.traverse(o => { if (o.isMesh && (o.userData.move === "y" || o.userData.move === "xy")) riders.push(o); });
   for (const o of riders) (o.userData.move === "xy" ? moveX : moveY).attach(o);
-  moveX.attach(M.parts.winch); moveX.attach(M.parts.claw); { const cc = M.parts.camera && M.parts.camera.children.find(c => c.name === "camera_claw"); if (cc) moveX.attach(cc); }
+  moveX.attach(M.parts.winch); moveX.attach(M.parts.claw); { const cc = M.parts.camera && M.parts.camera.children.find(c => c.name === "camera_claw"); if (cc) moveX.attach(cc); const ca = M.parts.camera && M.parts.camera.children.find(c => c.name === "camera_claw_arm"); if (ca) moveX.attach(ca); }
   const D = M.dims, YC = D.YC, XC = D.XC;
   const clawPart = M.parts.claw, clawG = clawPart.children.find(c => c.userData.clawRig), rig = clawG.userData.clawRig, line = clawPart.children.find(c => c.name === "claw_line");
   clawPart.traverse(o => { if (o.name === "claw_coil_cable") o.visible = false; });
@@ -107,7 +107,7 @@ export function createSim3D(canvas, pips, opts = {}){
     /* recordings only: front view, not on the live machine */
     { name:"Front camera", cam:mk(56), pose(c){ c.up.set(0, 1, 0); c.position.set(0, 1.125, .31); c.lookAt(0, .25, -.04); } },
     /* on the carriage plate, fixed height, straight down at 90 degrees; game back is up on screen */
-    { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, -1); c.position.set(p.x - .041, 1.14, p.z + .066); c.lookAt(p.x - .041, FLOOR - .02, p.z + .066); } },
+    { name:"Claw camera", cam:mk(74), pose(c, s){ const p = s.claw; c.up.set(0, 0, -1); c.position.set(p.x - .041, 1.06, p.z + .07); c.lookAt(p.x - .041, FLOOR - .02, p.z + .07); } },
     /* the real side camera: in the back right top corner, looking across the floor */
     { name:"Side camera", cam:mk(56), pose(c){ c.up.set(0, 1, 0); c.position.set(.29, 1.03, -.29); c.lookAt(-.03, .3, .03); } },
     /* recordings only: over the front glass, looking down into the pile */
