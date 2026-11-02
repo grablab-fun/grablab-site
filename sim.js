@@ -51,7 +51,7 @@
   const FEED = [[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0]];   // one feed per drop, each with as many capsules as it has left
   function feedVideo(i){
     const [n, mir, off] = FEED[i % FEED.length];
-    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=15" poster="assets/feeds/feed${n}.jpg?v=15" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
+    return `<video class="pc-vid${mir ? " mir" : ""}" src="assets/feeds/feed${n}.mp4?v=16" poster="assets/feeds/feed${n}.jpg?v=16" muted loop playsinline preload="metadata" data-off="${off}" aria-hidden="true"></video>`;
   }
   /* project socials (demo projects: icons only, real ones link out) */
   const SOC = {
@@ -437,9 +437,9 @@
     $("#rmLogo", root).src = p.logo; $("#rmName", root).textContent = p.name; $("#rmTk", root).textContent = p.tk; $("#rmCat", root).textContent = p.tags;
     $("#rmSoc", root).innerHTML = socials(p);
     /* two cameras on the same play: the side camera and the claw camera; tap the window to swap it in */
-    const CAMN = { claw:"Claw camera", chute:"Side camera" }, url = k => `assets/feeds/feed${fn}-${k}.mp4?v=15`;
+    const CAMN = { claw:"Claw camera", chute:"Side camera" }, url = k => `assets/feeds/feed${fn}-${k}.mp4?v=16`;
     const pips = [...root.querySelectorAll(".rm-pip")];
-    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "chute"; pips.forEach(b => { b.querySelector("video").poster = `assets/feeds/feed${fn}-side.jpg?v=15`; }); v.src = url("chute"); v.poster = `assets/feeds/feed${fn}-side.jpg?v=15`;
+    if (v.dataset.fn !== String(fn)){ v.dataset.fn = fn; v.dataset.k = "chute"; pips.forEach(b => { b.querySelector("video").poster = `assets/feeds/feed${fn}-side.jpg?v=16`; }); v.src = url("chute"); v.poster = `assets/feeds/feed${fn}-side.jpg?v=16`;
       pips.forEach(b => { const pv = b.querySelector("video"); pv.src = url(b.dataset.k); pv.dataset.k = b.dataset.k; b.querySelector("span").textContent = CAMN[b.dataset.k]; }); $("#rmCam", root).textContent = CAMN.chute; }
     if (!root.dataset.rmPips){ root.dataset.rmPips = "1";
       /* keep the windows on the same moment as the main feed */
@@ -529,7 +529,7 @@
   function demoAddr(c){ return c === "base" ? "0x" + Array.from({length:40}, () => "0123456789abcdef"[Math.random()*16|0]).join("") : b58(44); }
   function enterPay(){
     const pi = PROJECTS.indexOf(proj), [fn, mir] = FEED[pi % FEED.length], pv = $("#payVid", root);
-    if (!pv.src.endsWith(`feed${fn}.mp4?v=10`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=15`; pv.poster = `assets/feeds/feed${fn}.jpg?v=15`; }
+    if (!pv.src.endsWith(`feed${fn}.mp4?v=10`)){ pv.src = `assets/feeds/feed${fn}.mp4?v=16`; pv.poster = `assets/feeds/feed${fn}.jpg?v=16`; }
     pv.classList.toggle("mir", !!mir); pv.play().catch(() => {});
     $("#payMach", root).textContent = `Catching at ${proj.name}`;
     const w = 380 + (proj.left * 37) % 1400, wv = $("#payWatch", root); wv.dataset.n = w; wv.dataset.base = w; wv.textContent = fmt(w);
