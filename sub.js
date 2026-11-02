@@ -201,8 +201,11 @@
 
   async function load(){
     ses = sessions(); if (!ses.cur) return;
+    /* the last candles seen are drawn at once, then replaced by fresh ones as the rate limited API answers */
+    const show = (row, list) => { const st = state.get(row) || {}; build(st, list); state.set(row, st); draw(row, st); };
+    for (const row of rows){ try{ const old = JSON.parse(cache("gl-last-" + row.dataset.mint) || "null"); if (old && old.length && !state.get(row)) show(row, old); }catch(e){} }
     for (const row of rows){
-      try{ const list = await candles(row.dataset.mint, row.dataset.pool), st = state.get(row) || {}; build(st, list); state.set(row, st); draw(row, st); }catch(e){}
+      try{ const list = await candles(row.dataset.mint, row.dataset.pool); show(row, list); if (list.length) cache("gl-last-" + row.dataset.mint, JSON.stringify(list.slice(-400))); }catch(e){}
     }
   }
   async function tick(){ /* the open session: Jupiter's live price moves the newest 5 min point */
