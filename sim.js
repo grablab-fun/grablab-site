@@ -1393,7 +1393,7 @@
   }
   function closeSwapUI(){ if (swEl){ swEl.hidden = true; swEl.querySelector(".swp-body").innerHTML = ""; } }
   function setHead(title, sub, back){
-    swEl.querySelector(".swp-t").textContent = title; swEl.querySelector(".swp-s").textContent = sub;
+    swEl.querySelector(".swp-t").textContent = title; const ss = swEl.querySelector(".swp-s"); ss.textContent = sub; if (sub.includes("deBridge")) ss.innerHTML = sub.replace("deBridge", '<img class="swp-db" src="assets/debridge.webp?v=1" alt="" />deBridge');
     swEl.querySelector(".swp-back").style.display = back ? "" : "none";
   }
   function chainStep(){
