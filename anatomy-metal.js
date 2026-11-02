@@ -579,12 +579,20 @@ export function buildMachine(THREE, api){
   /* two 1080p webcams: front on the top tube, side inside under the right top tube, each on a flat bar tab */
   /* two webcams. Camera 1 in the back right top corner, turned to the middle of the floor. Camera 2 on the carriage plate, straight down. */
   { const c920 = () => m("c920", { color:0x111215, roughness:.35, metalness:.2 });
-    const c1 = sm("camera_S", c920, "camera_c920"), t1 = sm("box_camtab_S", dark, "camera_tab");
-    const c = new THREE.Vector3(), P1 = new THREE.Vector3(.315, .315, 1.04);
-    if (c1){ c1.geometry.computeBoundingBox(); c1.geometry.boundingBox.getCenter(c); c1.geometry.translate(-c.x, -c.y, -c.z); c1.position.copy(P1); c1.rotation.z = Math.PI/4; c1.userData.view = { pos:[.29, .29, 1.03], look:[-.03, -.03, .3] }; }
-    if (t1){ t1.geometry.translate(-c.x, -c.y, -c.z); t1.position.copy(P1); t1.rotation.z = Math.PI/4; }
+    const lensM = () => m("camlens", { color:0x0a1430, roughness:.05, metalness:.9, emissive:0x16286a, emissiveIntensity:.5 }), faceM = () => m("camface", { color:0x050507, roughness:.1, metalness:.3 }), ringM = () => m("camring", { color:0x9aa0aa, roughness:.3, metalness:1 });
+    /* a C920 shape: a 94 mm pill, gloss face, metal lens ring, status light, clip. It looks along local -y. */
+    const webcam = (name, x, y, z, rx, rz, view) => { const g = new THREE.Group(); g.name = name; g.position.set(x, y, z); g.rotation.order = "ZXY"; g.rotation.set(rx, 0, rz); G("camera").add(g);
+      const A = (geo, mt, px, py, pz) => { const o = add(geo, mt, px, py, pz, 0, 0, 0, name, g); o.userData.view = view; return o; };
+      A(new THREE.CapsuleGeometry(.0145, .065, 8, 28).rotateZ(Math.PI/2), c920, 0, 0, 0);
+      A(new THREE.CapsuleGeometry(.0105, .062, 6, 24).rotateZ(Math.PI/2).scale(1, .22, 1), faceM, 0, -.0125, 0);
+      A(new THREE.CylinderGeometry(.0088, .0088, .004, 32), ringM, 0, -.0145, 0);
+      A(new THREE.CylinderGeometry(.0064, .0064, .001, 32), lensM, 0, -.0168, 0);
+      A(new THREE.CylinderGeometry(.0013, .0013, .001, 12), () => m("camled", { color:0x9cc0ff, emissive:0x5a8cff, emissiveIntensity:2 }), .02, -.0152, 0);
+      A(new THREE.CylinderGeometry(.0013, .0013, .001, 12), () => m("camled", { color:0x9cc0ff, emissive:0x5a8cff, emissiveIntensity:2 }), -.02, -.0152, 0);
+      A(BOX(.024, .012, .016), dark, 0, .017, 0); };
+    webcam("camera_c920", .3, .3, 1.05, .85, -Math.PI/4, { pos:[.285, .285, 1.03], look:[-.03, -.03, .3] });
     /* camera 2 is on the plate beside the winch, rides the carriage at a fixed height, looks straight down */
-    const c2 = add(BOX(.03, .024, .024), c920, -.041, -.066, 1.16, 0, 0, 0, "camera_claw"); c2.userData.view = { pos:[-.041, -.066, 1.14], look:[-.041, -.065, .25] }; }
+    webcam("camera_claw", -.041, -.07, 1.165, Math.PI/2, 0, { pos:[-.041, -.07, 1.14], look:[-.041, -.069, .25] }); }
 
 
   /* =========================================================================================== cables: the motion build's own routes (mm), at the export pose */
