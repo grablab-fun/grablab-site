@@ -1,3 +1,5 @@
+/* arrow cursor over text on every page; links and inputs keep their own */
+document.head.appendChild(Object.assign(document.createElement("style"), { textContent: "html,body{cursor:default}" }));
 /* ============ CONSENT : cookie / storage banner + settings, self-contained (injects its own CSS) ============
    Categories: essential (always on: this choice + the once-per-session intro flag) and embeds (third-party
    embeds that may store data in the browser, today only the SimArena physics lab).
