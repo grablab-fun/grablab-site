@@ -22,15 +22,9 @@
       "permanent": false
     },
     {
-      "source": "/((?!maintenance|assets/(?!tk/)|api/|docs/|lab/|preview|notify|sw\\.js|styles\\.css|pages\\.css|sub\\.css|site\\.js|consent\\.js).*)",
-      "destination": "/maintenance",
-      "permanent": false,
-      "missing": [
-        {
-          "type": "cookie",
-          "key": "gl_preview"
-        }
-      ]
+      "source": "/maintenance",
+      "destination": "/",
+      "permanent": false
     }
   ],
   "headers": [
