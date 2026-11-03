@@ -560,6 +560,7 @@ body{background:transparent}
 .ld-machine .bw{filter:grayscale(1) brightness(.55) contrast(1.1)}
 .ld-machine .col{clip-path:inset(calc(100% - var(--y)) 0 0 0)}
 .ld-machine .scan{position:absolute;left:6%;right:6%;height:2px;bottom:var(--y);background:linear-gradient(90deg,transparent,#9cc0ff,transparent);box-shadow:0 0 18px rgba(156,192,255,.8)}
+.ld-machine.done .scan{opacity:0;transition:opacity .45s ease}
 .ld-load{position:absolute;left:clamp(20px,3vw,48px);top:clamp(20px,3vw,40px);font-family:'Anton',Impact,sans-serif;font-size:clamp(28px,3vw,44px);letter-spacing:.02em;color:var(--ink);line-height:1}
 .ld-load i{font-style:normal;display:inline-block;width:1.2em;color:#9cc0ff}
 .ld-pct{position:absolute;font-family:'Anton',Impact,sans-serif;font-size:clamp(58px,8.5vw,140px);line-height:.82;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:.01em;white-space:nowrap;

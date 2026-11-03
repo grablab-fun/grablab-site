@@ -265,7 +265,7 @@ function bookingHTML(){
   let done = 0, shown = 0, finished = false; tasks.forEach(t => t.then(() => done++));
   function paint(n){
     q(".n").forEach(x => x.textContent = String(n).padStart(2, "0"));
-    q(".ld-machine").forEach(m => m.style.setProperty("--p", n + "%"));
+    q(".ld-machine").forEach(m => { m.style.setProperty("--p", n + "%"); m.classList.toggle("done", n >= 100); });
     place(n >= 100 ? 4 : Math.min(3, Math.floor(n / 25)));
   }
   function open(){
