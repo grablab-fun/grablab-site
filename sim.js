@@ -327,7 +327,7 @@
           <div class="rc-r"><i></i>Inventory committed<small id="rc0"></small></div>
           <div class="rc-r"><i></i>Grip locked<small>70%</small></div>
           <div class="rc-r"><i></i>Machine signed the play<small>peaqOS</small></div>
-          <div class="rc-r"><i></i>Drop seen<small>beam + tag</small></div>
+          <div class="rc-r"><i></i>Win checked<small>beam + tag</small></div>
           <div class="rc-r"><i></i><span id="rc4t">Paid out</span><small id="rc4"></small></div>
         </div>
         <div class="win-acts"><button class="btn btn-primary big" id="winAgain" type="button">Play again</button><button class="btn btn-ghost big" id="winOther" type="button">Other drops</button></div>
