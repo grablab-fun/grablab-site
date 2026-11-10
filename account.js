@@ -125,7 +125,39 @@
     else if (location.hash) { const h = document.querySelector(location.hash); if (h) h.scrollIntoView(); }
   }
 
-  /* ---------- swap: any token in the wallet into SOL ---------- */
+  /* ---------- where the money comes from: Solana swaps through Jupiter, every other chain bridges in through deBridge.
+     Whatever the source, the only thing that comes out is USDC on Solana ---------- */
+  const NATIVE = "0x0000000000000000000000000000000000000000", DB_SOLANA = 7565164, DLN = "https://dln.debridge.finance/v1.0/dln/order/create-tx";
+  const LG = n => `assets/chains/${n}`;
+  /* probe = how many units to price the coin with, big enough to clear the bridge's minimum */
+  const ETH = { symbol:"ETH", name:"Ether", icon:LG("ethereum.jpg"), mint:NATIVE, decimals:18, probe:"0.05" };
+  const evUSDC = a => ({ symbol:"USDC", name:"USD Coin", icon:LG("usdc.png"), mint:a, decimals:6, usd:true });
+  const evUSDT = (a, d = 6) => ({ symbol:"USDT", name:"Tether", icon:LG("usdt.svg"), mint:a, decimals:d, usd:true });
+  const CHAINS = [
+    { id:"solana", name:"Solana", icon:LG("solana-mark.svg"), note:"Swap with Jupiter" },
+    { id:1, name:"Ethereum", icon:LG("ethereum.jpg"), gas:"ETH", tokens:[ETH, evUSDC("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"), evUSDT("0xdAC17F958D2ee523a2206206994597C13D831ec7")] },
+    { id:8453, name:"Base", icon:LG("base.svg"), gas:"ETH", tokens:[ETH, evUSDC("0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913")] },
+    { id:42161, name:"Arbitrum", icon:LG("arbitrum.jpg"), gas:"ETH", tokens:[ETH, evUSDC("0xaf88d065e77c8cC2239327c5EDb3A432268e5831"), evUSDT("0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9")] },
+    { id:56, name:"BNB Chain", icon:LG("binance.jpg"), gas:"BNB", tokens:[{ symbol:"BNB", name:"BNB", icon:LG("binance.jpg"), mint:NATIVE, decimals:18, probe:"0.1" }, evUSDT("0x55d398326f99059fF775485246999027B3197955", 18), { ...evUSDC("0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"), decimals:18 }] },
+    { id:137, name:"Polygon", icon:LG("polygon.jpg"), gas:"POL", tokens:[{ symbol:"POL", name:"Polygon", icon:LG("polygon.jpg"), mint:NATIVE, decimals:18, probe:"200" }, evUSDC("0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359"), evUSDT("0xc2132D05D31c914a87C6611C10748AEb04B58e8F")] },
+    { id:10, name:"Optimism", icon:LG("optimism.jpg"), gas:"ETH", tokens:[ETH, evUSDC("0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85")] },
+    { id:43114, name:"Avalanche", icon:LG("avalanche.jpg"), gas:"AVAX", tokens:[{ symbol:"AVAX", name:"Avalanche", icon:LG("avalanche.jpg"), mint:NATIVE, decimals:18, probe:"2" }, evUSDC("0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"), evUSDT("0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7")] }
+  ];
+  for (const c of CHAINS) if (c.id !== "solana") c.note = "Bridge with deBridge";
+  /* deBridge widget colours, matched to the site (same as the simulator) */
+  const DB_STYLES = btoa(JSON.stringify({ appBackground:"#0b0e1b", appAccentBg:"#121a36", chartBg:"#0b0e1b", primary:"#b4baff", secondary:"#1e2648",
+    badge:"#7d84ff", borderColor:"#262e55", borderRadius:16, fontColor:"#f3f4fb", fontColorAccent:"#9cc0ff", fontFamily:"Inter" }));
+  let dbLoad = null;
+  function loadDeBridge(){
+    if (!dbLoad) dbLoad = new Promise((res, rej) => {
+      const sc = document.createElement("script"); sc.src = "https://app.debridge.com/assets/scripts/widget.js"; sc.async = true;
+      sc.onload = () => res(window.deBridge); sc.onerror = () => { dbLoad = null; sc.remove(); rej(new Error("deBridge failed to load")); };
+      document.head.appendChild(sc);
+    });
+    return dbLoad;
+  }
+
+  /* ---------- swap: any token in the wallet into USDC, or bridged in from another chain ---------- */
   const Swap = (() => {
     const BASE = [
       { mint:SOL, symbol:"SOL", decimals:9, ui:0, raw:"0", usd:0, icon:"assets/chains/solana-mark.svg" },
@@ -133,6 +165,8 @@
     ];
     let tokens = BASE, tk = BASE[0], order = null, tm = 0, seq = 0, busy = false, refresh = 0;
     let dir = "in", usdcRaw = 0n;   /* "in": a token becomes USDC. "out": USDC becomes the token. The arrow in the middle flips it */
+    let src = CHAINS[0], solTk = BASE[0], price = {};   /* src: the chain paying in. Bridges only run one way: into USDC on Solana */
+    const bridging = () => src.id !== "solana";
     const USDCT = { mint: USDC_MINT, symbol: "USDC", decimals: 6 };
     const pay = () => dir === "in" ? tk : USDCT, get = () => dir === "in" ? USDCT : tk;
     const payRaw = () => dir === "in" ? BigInt(tk.raw) : usdcRaw;
@@ -147,9 +181,10 @@
       return BigInt((m[1] || "0") + (m[2] || "").slice(0, dec).padEnd(dec, "0"));
     };
     const html = () => `<div class="sw">
-      <div class="sw-box"><div class="sw-top"><span class="sw-lab">You pay</span><span id="swHave"></span></div>
+      <div class="sw-box"><div class="sw-top"><span class="sw-lab">You pay on <button type="button" class="sw-ch" id="swCh" aria-haspopup="listbox" aria-label="Pick the chain you pay from"></button></span><span id="swHave"></span></div>
         <div class="sw-row"><input class="sw-amt" id="swAmt" inputmode="decimal" placeholder="0" aria-label="Amount to swap" autocomplete="off" /><span class="sw-side" id="swPayTk">${tkBtn}</span></div>
-        <div class="sw-pct"><button type="button" data-pct="25">25%</button><button type="button" data-pct="50">50%</button><button type="button" data-pct="75">75%</button><button type="button" data-pct="100">Max</button></div>
+        <div class="sw-pct" id="swPct"></div>
+        <div class="sw-m" id="swChMenu" hidden><div id="swChList" role="listbox">${CHAINS.map(c => `<button type="button" role="option" data-ch="${c.id}"><img src="${c.icon}" alt="" /><span>${c.name}<small>${c.note}</small></span>${c.id === "solana" ? "<em>Fastest</em>" : ""}</button>`).join("")}</div></div>
         <div class="sw-m" id="swMenu" hidden><input id="swFind" placeholder="Search any token or address" aria-label="Search a token" autocomplete="off" /><div id="swList" role="listbox"></div></div></div>
       <button type="button" class="sw-mid" id="swFlip" aria-label="Swap direction"><img src="assets/sub/a-swap.webp" alt="" /></button>
       <div class="sw-box"><div class="sw-top"><span class="sw-lab">You get</span><span id="swHaveGet"></span></div>
@@ -158,7 +193,9 @@
       <div class="sw-info" id="swInfo" hidden></div>
       <button type="button" class="nv-go" id="swGo" disabled>Enter an amount</button>
       <p class="sw-note" id="swNote" role="status"></p>
-      <p class="sw-fine"><img src="assets/chains/jup.png" alt="" />Routed by Jupiter. You approve every swap in your wallet.</p></div>`;
+      <p class="sw-fine" id="swFine"></p></div>`;
+    const PCT = `<button type="button" data-pct="25">25%</button><button type="button" data-pct="50">50%</button><button type="button" data-pct="75">75%</button><button type="button" data-pct="100">Max</button>`;
+    const USD = [10, 25, 50, 100].map(v => `<button type="button" data-usd="${v}">$${v}</button>`).join("");
     /* the list: what the wallet holds, then the most traded verified tokens, or the search results */
     const TOK = "https://lite-api.jup.ag/tokens/v2/";
     const fromJup = t => ({ mint:t.id, symbol:String(t.symbol || "").slice(0, 12), name:String(t.name || "").slice(0, 26), decimals:t.decimals, icon:t.icon || null, ui:0, raw:"0", usd:0 });
@@ -166,9 +203,12 @@
     let shown = [], popular = null, found = null, findSeq = 0;
     const paintMenu = () => {
       const l = $("swList"); if (!l) return;
-      const held = found ? found.map(f => tokens.find(t => t.mint === f.mint) || f) : [...tokens, ...(popular || []).filter(p => !tokens.some(t => t.mint === p.mint))];
+      const held = bridging() ? src.tokens : found ? found.map(f => tokens.find(t => t.mint === f.mint) || f) : [...tokens, ...(popular || []).filter(p => !tokens.some(t => t.mint === p.mint))];
       shown = held;
       l.innerHTML = held.length ? held.map(t => `<button type="button" role="option" data-mint="${esc(t.mint)}">${icon(t)}<span>${esc(t.symbol)}${t.name && t.name !== t.symbol ? `<small>${esc(t.name)}</small>` : ""}</span><em>${t.ui ? trim(t.ui, 4) : ""}</em></button>`).join("") : `<p class="sw-none">No token found.</p>`;
+      /* any other coin on that chain: deBridge has the full list */
+      if (bridging()) l.insertAdjacentHTML("beforeend", `<button type="button" role="option" data-any><span class="sw-any">+</span><span>Another coin<small>Search any token on ${esc(src.name)}</small></span></button>`);
+      $("swFind").hidden = bridging();
     };
     async function loadPopular(){
       if (popular) return;
@@ -185,10 +225,26 @@
       $("swTk").innerHTML = `${icon(tk)}${esc(tk.symbol)}${dot}`;
       /* the token list opens under whichever box holds the token button */
       const menu = $("swMenu"); menu.hidden = true; $("swTk").closest(".sw-box").appendChild(menu); paintMenu();
-      const usdcNow = `You have ${trim(Number(usdcRaw) / 1e6, 4)} USDC`, tkNow = `You have ${trim(tk.ui, 4)} ${tk.symbol}`;
+      const usdcNow = `You have ${trim(Number(usdcRaw) / 1e6, 4)} USDC`, tkNow = bridging() ? `Fee paid in ${src.gas}` : `You have ${trim(tk.ui, 4)} ${tk.symbol}`;
       $("swHave").textContent = dir === "in" ? tkNow : usdcNow; $("swHaveGet").textContent = dir === "in" ? usdcNow : tkNow;
-      $("swGo") && set(order ? `Swap to ${get().symbol}` : "Enter an amount", !!order);
+      $("swCh").innerHTML = `<img src="${src.icon}" alt="" />${esc(src.name)}${dot}`;
+      /* the wallet balance is only known on Solana: other chains get dollar amounts */
+      const pct = $("swPct"), want = bridging() ? "usd" : "pct";
+      if (pct.dataset.k !== want){ pct.innerHTML = bridging() ? USD : PCT; pct.dataset.k = want; }
+      $("swFlip").disabled = bridging();
+      $("swFine").innerHTML = bridging()
+        ? `<img src="assets/debridge-mark.webp?v=1" alt="" />Bridged by deBridge. You approve every step in your wallet.`
+        : `<img src="assets/chains/jup.png" alt="" />Routed by Jupiter. You approve every swap in your wallet.`;
+      $("swGo") && set(order ? goLabel() : "Enter an amount", !!order);
     };
+    const goLabel = () => bridging() ? "Bridge to USDC" : `Swap to ${get().symbol}`;
+    function pickChain(id){
+      const c = CHAINS.find(x => String(x.id) === String(id)); if (!c || c === src) return;
+      if (!bridging()) solTk = tk;
+      src = c; dir = "in"; tk = bridging() ? c.tokens[0] : solTk;
+      $("swAmt").value = ""; clearOut(); note(""); paintTk(); set("Enter an amount", false);
+      if (bridging()) loadDeBridge().catch(() => {});   /* warm the widget while they type */
+    }
     const set = (label, on) => { const b = $("swGo"); if (b){ b.textContent = label; b.disabled = !on; } };
     const note = (msg, bad) => { const n = $("swNote"); if (n){ n.innerHTML = msg; n.classList.toggle("bad", !!bad); } };
     const clearOut = () => { order = null; if ($("swOut")){ $("swOut").textContent = "0"; $("swOutUsd").textContent = "$0.00"; $("swInfo").hidden = true; } };
@@ -200,8 +256,41 @@
       if (!r.ok || o.error) throw new Error(o.error || "quote");
       return o;
     }
+    /* a bridge estimate from deBridge: no wallet needed until the bridge window opens */
+    async function bridgeQuote(t, raw){
+      const u = `${DLN}?srcChainId=${src.id}&srcChainTokenIn=${t.mint}&srcChainTokenInAmount=${raw}&dstChainId=${DB_SOLANA}&dstChainTokenOut=${USDC_MINT}&dstChainTokenOutAmount=auto&prependOperatingExpenses=false`;
+      const r = await fetch(u); const o = await r.json();
+      if (!r.ok || o.errorId || !o.estimation) throw new Error(o.errorId || "quote");
+      if (o.estimation.dstChainTokenOut.address !== USDC_MINT) throw new Error("mismatch");
+      return o;
+    }
+    const soon = s => !s || s < 60 ? "Under a minute" : `About ${Math.round(s / 60)} min`;
+    async function updateBridge(keep){
+      const mySeq = ++seq, t = tk, raw = toRaw($("swAmt").value, t.decimals);
+      if (keep !== true) note("");
+      if (raw <= 0n){ clearOut(); return set("Enter an amount", false); }
+      set("Getting price", false);
+      try {
+        const o = await bridgeQuote(t, raw); if (mySeq !== seq) return;
+        order = o;
+        const e = o.estimation, out = Number(e.dstChainTokenOut.recommendedAmount || e.dstChainTokenOut.amount) / 1e6, inAmt = Number(raw) / 10 ** t.decimals;
+        $("swOut").textContent = trim(out, 5);
+        $("swOutUsd").textContent = fmtUsd(e.dstChainTokenOut.recommendedApproximateUsdValue ?? e.dstChainTokenOut.approximateUsdValue ?? out);
+        const fee = Number(o.fixFee || 0) / 1e18;
+        const info = $("swInfo"); info.hidden = false;
+        info.innerHTML = `<p><span>Rate</span><em>1 ${esc(t.symbol)} = ${trim(out / inAmt, 4)} USDC</em></p>
+          ${fee ? `<p><span>Bridge fee</span><em>${trim(fee, 5)} ${esc(src.gas)}</em></p>` : ""}
+          <p><span>Arrives in</span><em>${soon(o.order?.approximateFulfillmentDelay)}</em></p>`;
+        set(goLabel(), true);
+        refresh = setTimeout(() => update(true), 20000);
+      } catch (e){
+        if (mySeq !== seq) return; clearOut(); set(goLabel(), false);
+        note(/LOW_GIVE/.test(e.message) ? "Too small to bridge.<br />Try a bigger amount." : "No price right now. Try again in a moment.", true);
+      }
+    }
     async function update(keep){
       clearTimeout(refresh);
+      if (bridging()) return updateBridge(keep);
       const P = pay(), G = get(), mySeq = ++seq, raw = toRaw($("swAmt").value, P.decimals);
       if (keep !== true) note("");
       if (raw <= 0n){ clearOut(); return set("Enter an amount", false); }
@@ -223,7 +312,70 @@
         refresh = setTimeout(update, 20000);   // a price is only good for a few seconds on chain
       } catch (e){ if (mySeq !== seq) return; clearOut(); set(`Swap to ${G.symbol}`, false); note("No price right now. Try again in a moment.", true); }
     }
+    /* the bridge itself runs in deBridge's own window: it connects the wallet on the other chain and asks it to sign.
+       Locked so the only way out is USDC on Solana, sent to the wallet signed in here */
+    let sheet = null;
+    const shut = () => { if (sheet){ sheet.remove(); sheet = null; document.documentElement.classList.remove("br-open"); } };
+    addEventListener("keydown", e => { if (e.key === "Escape" && sheet) shut(); });
+    async function openBridge(t){
+      if (sheet) return;
+      const addr = window.glWallet.addr, amt = $("swAmt").value.trim(), c = src;
+      clearTimeout(refresh);
+      sheet = document.createElement("div"); sheet.className = "br";
+      sheet.innerHTML = `<div class="br-sheet glass" role="dialog" aria-modal="true" aria-labelledby="brT">
+        <div class="br-h"><div><h2 id="brT">Bridge to USDC</h2>
+          <p>Connect your ${esc(c.name)} wallet below.</p>
+          <p>USDC lands in <b>${esc(addr.slice(0, 4))}...${esc(addr.slice(-4))}</b> on Solana.</p></div>
+          <button type="button" class="br-x" aria-label="Close">×</button></div>
+        <div class="br-db" id="brDb"><span class="br-load">Loading the bridge</span></div></div>`;
+      document.body.appendChild(sheet); document.documentElement.classList.add("br-open");
+      sheet.addEventListener("click", e => { if (e.target === sheet || e.target.closest(".br-x")) shut(); });
+      sheet.querySelector(".br-x").focus();
+      const mine = sheet;
+      try {
+        const DB = await loadDeBridge(); if (sheet !== mine) return;
+        const box = $("brDb"); box.innerHTML = "";
+        const cfg = { v:"1", element:"brDb", mode:"deswap", title:"Grablab", theme:"dark", styles:DB_STYLES, lang:"en",
+          width: Math.round(box.clientWidth) || 420, height: 600,
+          inputChain: c.id, outputChain: DB_SOLANA, outputCurrency: USDC_MINT,
+          supportedChains: JSON.stringify({ inputChains:{ [c.id]:"all" }, outputChains:{ [DB_SOLANA]:[USDC_MINT] } }) };
+        if (t){ cfg.inputCurrency = t.mint; if (amt && toRaw(amt, t.decimals) > 0n) cfg.amount = amt; }
+        const w = await DB.widget(cfg); if (sheet !== mine) return;
+        /* the window ignores some of its start settings, so set them again once it is ready and put them back if anything moves */
+        const lock = () => { try { w.changeOutputChain(DB_SOLANA); w.changeOutputToken(USDC_MINT); } catch (e) {} };
+        /* it takes a few seconds to accept the amount: keep offering it until they click into the window themselves */
+        const fill = () => { if (sheet !== mine || document.activeElement?.tagName === "IFRAME") return; try { w.setReceiverAddress(addr); if (cfg.amount) w.setInputAmount(cfg.amount); } catch (e) {} };
+        lock();
+        if (t){ try { w.changeInputChain(c.id); w.changeInputToken(t.mint); } catch (e) {} }
+        [500, 2000, 4000, 6500, 9000].forEach(ms => setTimeout(fill, ms));
+        let relock = 0;
+        const guard = ok => { if (!ok && relock++ < 5) lock(); };
+        w.on?.("outputChainChanged", (_, p) => { if (p) guard(p.chainId == DB_SOLANA); });
+        w.on?.("outputTokenChanged", (_, p) => { if (p && p.address) guard(String(p.address).toLowerCase() === USDC_MINT.toLowerCase()); });
+        w.on?.("order", () => {
+          window.glTrack({ a:"bridge" });
+          $("swAmt").value = ""; clearOut(); set("Enter an amount", false);
+          note(`Bridge sent from ${esc(c.name)}.<br />Your USDC lands in a minute or two.`);
+          [30, 90, 180].forEach(s => setTimeout(() => window.glChain.load(true), s * 1000));
+        });
+      } catch (e){
+        if (sheet === mine) $("brDb").innerHTML = `<p class="br-load">The bridge could not load.<br />Try again in a moment.</p>`;
+      }
+    }
+    /* a dollar chip: stablecoins are 1 to 1, other coins get priced once with a probe quote */
+    async function dollars(v){
+      const t = tk, key = src.id + ":" + t.mint;
+      if (!t.usd && !price[key]){
+        set("Getting price", false);
+        try { const e = (await bridgeQuote(t, toRaw(t.probe, t.decimals))).estimation.srcChainTokenIn; price[key] = e.originApproximateUsdValue / Number(t.probe); }
+        catch (e){ set(goLabel(), false); note("No price right now. Try again in a moment.", true); return; }
+        if (t !== tk) return;
+      }
+      const n = t.usd ? v : v / price[key];
+      $("swAmt").value = t.usd ? trim(n, 2) : n < 1 ? String(+n.toPrecision(4)) : trim(n, 4); update();
+    }
     async function go(){
+      if (bridging()) return openBridge(tk);
       if (busy || !order) return;
       busy = true; seq++; clearTimeout(refresh);
       const P = pay(), G = get(), addr = window.glWallet.addr, raw = toRaw($("swAmt").value, P.decimals);
@@ -261,12 +413,19 @@
       e.preventDefault(); if (!inList) l.scrollTop += e.deltaY;
     }, { passive:false });
     root.addEventListener("click", e => {
-      const menu = $("swMenu"); if (!menu) return;
-      if (e.target.closest("#swTk")){ menu.hidden = !menu.hidden; if (!menu.hidden){ loadPopular(); $("swFind").focus(); } return; }
+      const menu = $("swMenu"), chm = $("swChMenu"); if (!menu) return;
+      if (e.target.closest("#swCh")){ menu.hidden = true; chm.hidden = !chm.hidden; return; }
+      const ch = e.target.closest("[data-ch]");
+      if (ch){ chm.hidden = true; pickChain(ch.dataset.ch); return; }
+      if (e.target.closest("#swTk")){ chm.hidden = true; menu.hidden = !menu.hidden; if (!menu.hidden && !bridging()){ loadPopular(); $("swFind").focus(); } return; }
+      if (e.target.closest("[data-any]")){ menu.hidden = true; openBridge(null); return; }
       const b = e.target.closest("[data-mint]");
       if (b){ tk = shown.find(t => t.mint === b.dataset.mint) || tk; $("swFind").value = ""; found = null; menu.hidden = true; paintTk(); update(); return; }
       if (!menu.hidden && !e.target.closest("#swMenu")) menu.hidden = true;
-      if (e.target.closest("#swFlip")){ dir = dir === "in" ? "out" : "in"; $("swAmt").value = ""; clearOut(); paintTk(); set("Enter an amount", false); note(""); return; }
+      if (!chm.hidden && !e.target.closest("#swChMenu")) chm.hidden = true;
+      if (e.target.closest("#swFlip")){ if (bridging()) return; dir = dir === "in" ? "out" : "in"; $("swAmt").value = ""; clearOut(); paintTk(); set("Enter an amount", false); note(""); return; }
+      const usd = e.target.closest("[data-usd]");
+      if (usd){ dollars(+usd.dataset.usd); return; }
       const part = e.target.closest("[data-pct]");
       if (part){
         /* a share of it, with 0.01 SOL always kept for network fees when paying in SOL */
@@ -277,13 +436,14 @@
       if (e.target.id === "swGo") go();
     });
     return { html,
-      reset(){ tk = tokens[0]; order = null; dir = "in"; paintTk(); },
+      reset(){ shut(); src = CHAINS[0]; tk = solTk = tokens[0]; order = null; dir = "in"; paintTk(); },
       chain(c){
         usdcRaw = BigInt(c.tokens.find(t => t.mint === USDC_MINT)?.raw || "0");
         const sol = { ...BASE[0], ui:c.sol, raw:String(c.lamports), usd:c.usd || 0 }, usdt = c.tokens.find(t => t.mint === BASE[1].mint);
         const have = c.tokens.filter(t => t.mint !== USDC_MINT && !BASE.some(b => b.mint === t.mint));
         tokens = [sol, usdt ? { ...BASE[1], ...usdt, icon:BASE[1].icon } : BASE[1], ...have];
-        tk = tokens.find(t => t.mint === tk.mint) || tk;
+        solTk = tokens.find(t => t.mint === solTk.mint) || solTk;
+        if (!bridging()) tk = tokens.find(t => t.mint === tk.mint) || tk;
         paintMenu();
         paintTk();
       } };
