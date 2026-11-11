@@ -7,11 +7,12 @@
 <meta name="robots" content="noindex" />
 <link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
-<link rel="stylesheet" href="bench.css?v=3" />
+<link rel="stylesheet" href="bench.css?v=4" />
 </head>
 <body>
 <canvas id="bench"></canvas>
 <div class="grain" aria-hidden="true"></div>
+<div class="bn-tags" id="tags" aria-hidden="true"></div>
 
 <a class="bn-brand" href="anatomy.html"><img src="assets/brand/mark-chrome-256.png" alt="" /><b>Grablab</b><span>Workbench</span></a>
 
@@ -24,6 +25,7 @@
 </article>
 
 <div class="bn-dock">
+  <div class="bn-cap" id="cap" aria-live="polite"><b></b><p></p><i><em></em></i></div>
   <div class="bn-views" role="group" aria-label="View">
     <button type="button" data-v="iso" class="on">3/4</button>
     <button type="button" data-v="top">Top</button>
@@ -31,12 +33,15 @@
     <button type="button" data-v="front">Front</button>
     <i></i>
     <button type="button" id="spin" class="on" aria-label="Turn slowly">Turn</button>
+    <i></i>
+    <button type="button" id="apart" class="act" title="Take it apart, piece by piece"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Apart</button>
+    <button type="button" id="run" class="act pri" title="See how it works"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z" fill="currentColor"/></svg><span>Run</span></button>
   </div>
   <div class="bn-shelf" id="shelf"></div>
 </div>
 
 <div class="bn-boot" id="boot"><img src="assets/brand/mark-chrome-256.png" alt="" /><b>Laying out the bench</b></div>
 
-<script type="module" src="bench.js?v=5"></script>
+<script type="module" src="bench.js?v=9"></script>
 </body>
 </html>

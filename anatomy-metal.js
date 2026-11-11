@@ -557,12 +557,30 @@ export function buildMachine(THREE, api){
     const ln = C(new THREE.CylinderGeometry(.0024, .0024, 1, 10), blk2, 0, 0, 0, "claw_link");
     links.push({ mesh:ln, a:new THREE.Vector3(RE*c, RE*s, ZT0), arm, b:el.clone() });
   }
-  claw.userData.clawRig = { arms, links };
+  /* the mechanism: the actuator rod carries the pivot hub up and down the axis; the links are rigid, so they set the arm angle.
+     rig.set(open) takes the arm angle (0 closed, .55 wide), finds the hub travel that keeps every link its built length, and moves it all. */
+  const rod = C(new THREE.CylinderGeometry(.0034, .0034, 1, 16).rotateX(Math.PI/2), steel, 0, 0, -.1, "claw_actuator_rod");
+  for (const l of links){ l.L = new THREE.Vector3().copy(l.b).add(l.arm.position).sub(l.a).length(); }
+  for (const arm of arms) arm.userData.clawArm.z0 = arm.position.z;
+  const HUB = /^claw_(hub|hub_nut|lug)$/, TUBE_END = -.106, HUB_TOP = ZP + .005;
+  const cRig = claw.userData.clawRig = { arms, links, rod, open:0, d:0,
+    live:() => claw.children.filter(c => HUB.test(c.name) || c.name === "claw_actuator_rod"),
+    travel(open){   // hub travel (m, down) for an arm angle
+      const l = links[0], u = l.arm.userData.clawArm, q = new THREE.Quaternion().copy(u.q0).multiply(new THREE.Quaternion().setFromAxisAngle(u.side, -open));
+      const V = l.b.clone().applyQuaternion(q); V.x += l.arm.position.x; V.y += l.arm.position.y; V.z += u.z0; V.sub(l.a);
+      const disc = Math.max(0, V.z*V.z - V.lengthSq() + l.L*l.L), r1 = V.z + Math.sqrt(disc), r2 = V.z - Math.sqrt(disc);
+      return Math.abs(r1) < Math.abs(r2) ? r1 : r2;
+    },
+    set(open){
+      const d = cRig.travel(open), dd = d - cRig.d, q = new THREE.Quaternion(), Y = new THREE.Vector3(0, 1, 0), B = new THREE.Vector3(), D = new THREE.Vector3();
+      for (const o of claw.children) if (HUB.test(o.name)) o.position.z -= dd;
+      for (const arm of arms){ const u = arm.userData.clawArm; arm.position.z = u.z0 - d; arm.quaternion.copy(u.q0).multiply(q.setFromAxisAngle(u.side, -open)); }
+      for (const l of links){ B.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); D.copy(B).sub(l.a); l.mesh.position.copy(l.a).add(B).multiplyScalar(.5); l.mesh.scale.y = D.length(); l.mesh.quaternion.setFromUnitVectors(Y, D.normalize()); }
+      const bot = HUB_TOP - d, len = Math.max(.001, TUBE_END - bot + .004); rod.scale.set(1, 1, len); rod.position.z = bot + len/2 - .002;
+      cRig.open = open; cRig.d = d;
+    } };
   /* start open, as it waits over the capsules */
-  { const open = .55, q = new THREE.Quaternion(), Y = new THREE.Vector3(0, 1, 0), B = new THREE.Vector3(), D = new THREE.Vector3();
-    for (const arm of arms){ const u = arm.userData.clawArm; arm.quaternion.copy(u.q0).multiply(q.setFromAxisAngle(u.side, -open)); }
-    for (const l of links){ B.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); D.copy(B).sub(l.a); l.mesh.position.copy(l.a).add(B).multiplyScalar(.5); l.mesh.scale.y = D.length(); l.mesh.quaternion.setFromUnitVectors(Y, D.normalize()); }
-    claw.userData.clawRig.open = open; }
+  cRig.set(.55);
   /* coil cable: tied to a body wall 30 below the clamps, then up beside the line to the Wago on the carriage */
   const CA = Math.PI/3, ccx = LX + .036*Math.cos(CA), ccy = LY + .036*Math.sin(CA), ZT = EYE - .016, coil = [], turns = 28;
   for (const z of [-.016, -.028]){ C(BOX(.003, .012, .003), m("tie", { color:0x0c0c0d, roughness:.6 }), .0155*Math.cos(CA)*1.25, .0155*Math.sin(CA)*1.25, z, "claw_cable_tie", 0, 0, CA); }

@@ -5,7 +5,7 @@
    Game x runs along the machine's x (left..right as the front left play camera sees it), game z along y (front glass..back), so the prize hole is front right.
    Light on purpose: no point lights, no shadows, the electronics and cables left out, every still mesh merged, capsules one instanced mesh. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=37";
+import { buildMachine } from "./anatomy-metal.js?v=38";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const SCENE = await loadMachine();
@@ -64,9 +64,7 @@ export function createSim3D(canvas, pips, opts = {}){
   const lineTop = line.position.z + line.geometry.parameters.height/2, lineH = line.geometry.parameters.height;
   /* the claw's arms turn on their pins; the links follow both ends */
   const Yax = new THREE.Vector3(0, 1, 0), lb = new THREE.Vector3(), ld = new THREE.Vector3(), rq = new THREE.Quaternion();
-  function setOpen(k){ if (Math.abs(k - rig.open) < .0004) return; rig.open = k;
-    for (const arm of rig.arms){ const u = arm.userData.clawArm; arm.quaternion.copy(u.q0).multiply(rq.setFromAxisAngle(u.side, -k)); }
-    for (const l of rig.links){ lb.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); ld.copy(lb).sub(l.a); l.mesh.position.copy(l.a).add(lb).multiplyScalar(.5); l.mesh.scale.y = ld.length(); l.mesh.quaternion.setFromUnitVectors(Yax, ld.normalize()); } }
+  function setOpen(k){ if (Math.abs(k - rig.open) < .0004) return; rig.set(k); }
   root.updateMatrixWorld(true);
   /* draw calls: merge every mesh that never moves relative to its holder into one mesh per material */
   function merge(holder, skip){
@@ -84,7 +82,7 @@ export function createSim3D(canvas, pips, opts = {}){
     }
     for (const o of dead) o.parent && o.parent.remove(o);
   }
-  const live = new Set([...rig.arms, ...rig.links.map(l => l.mesh)]);
+  const live = new Set([...rig.arms, ...rig.links.map(l => l.mesh), ...rig.live()]);
   merge(root, new Set([moveY, fl])); merge(moveY, new Set([moveX])); merge(moveX, new Set([clawPart])); merge(clawPart, new Set([clawG, line])); merge(clawG, live); for (const a of rig.arms) merge(a, new Set());
   root.updateMatrixWorld(true);
 

@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=37";
+import { buildMachine } from "./anatomy-metal.js?v=38";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const $ = s => document.querySelector(s);
@@ -298,7 +298,7 @@ function applyExplode(){
   const wr = ents.get("wiring"); if (wr) wr.visible = E < .04;
 }
 /* the workbench: a close, studio lit model of one real part, opened over the machine */
-const BENCH = { "Computer":"pi", "Motors":"nema", "Winch motor":"nema", "Body":"claw", "Fingers":"claw" };
+const BENCH = { "Computer":"pi", "Motors":"nema", "Winch motor":"nema/run", "Body":"claw/run", "Fingers":"claw/apart" };
 let benchEl = null;
 function openBench(id){
   if (!benchEl){
@@ -307,10 +307,10 @@ function openBench(id){
     document.body.appendChild(benchEl); benchEl.querySelector(".bx").onclick = closeBench;
     addEventListener("message", e => { if (e.origin === location.origin && e.data && e.data.bench === "close") closeBench(); });
     addEventListener("keydown", e => { if (e.key === "Escape" && benchEl.classList.contains("on")) closeBench(); });
-  } else { try { benchEl.querySelector("iframe").contentWindow.location.hash = id; } catch (e) {} }
+  } else benchEl.querySelector("iframe").contentWindow.postMessage({ bench:"open", id }, location.origin);
   requestAnimationFrame(() => { benchEl.classList.add("on"); document.body.classList.add("bench-on"); benchEl.querySelector("iframe").focus(); });
 }
-function closeBench(){ if (!benchEl) return; benchEl.classList.remove("on"); document.body.classList.remove("bench-on"); wake(1500); }
+function closeBench(){ if (!benchEl) return; benchEl.classList.remove("on"); try { benchEl.querySelector("iframe").contentWindow.postMessage({ bench:"pause" }, location.origin); } catch (e) {} document.body.classList.remove("bench-on"); wake(1500); }
 
 let liftK = 0;
 /* the meshes of the selected part whose names start with one of the prefixes of a card item */
@@ -537,9 +537,7 @@ function frame(now){
   /* the claw closes and opens while it is picked, then waits open */
   if (!clawRig) root.traverse(o => { if (o.userData.clawRig) clawRig = o.userData.clawRig; });
   if (clawRig){ clawT = clawOn && selected.id === "claw" ? clawT + dt : 0; const want = clawT ? .55*(.5 + .5*Math.cos(clawT*1.7)) : .55;
-    if (Math.abs(want - clawRig.open) > .0005){ clawRig.open += (want - clawRig.open)*Math.min(1, dt*8);
-      for (const arm of clawRig.arms){ const u = arm.userData.clawArm; arm.quaternion.copy(u.q0).multiply(clawQ.setFromAxisAngle(u.side, -clawRig.open)); }
-      for (const l of clawRig.links){ linkB.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); linkD.copy(linkB).sub(l.a); l.mesh.position.copy(l.a).add(linkB).multiplyScalar(.5); l.mesh.scale.y = linkD.length(); l.mesh.quaternion.setFromUnitVectors(YAX, linkD.normalize()); } } }
+    if (Math.abs(want - clawRig.open) > .0005) clawRig.set(clawRig.open + (want - clawRig.open)*Math.min(1, dt*8)); }
   prizeStep(dt);
   if (toastT > 0 && (toastT -= dt) <= 0) toast.classList.remove("on");
   applyExplode(); shade(); capAnim(dt); easeCam(dt); cam();
