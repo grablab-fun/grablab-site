@@ -48,3 +48,9 @@ html,body{margin:0;height:100%;overflow:hidden;background:#070a18;color:var(--in
   .bn-shelf button{width:108px}
   .bn-shelf img{height:66px}
 }
+
+/* embedded in anatomy: the parent draws the close button and owns the brand */
+.embed .bn-brand,.embed .bn-shelf,.embed #cNum{display:none}
+.embed .bn-card{top:28px}
+.embed .grain{opacity:.16}
+@media(max-width:720px){.embed .bn-card{top:16px;right:72px}}

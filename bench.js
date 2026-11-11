@@ -90,8 +90,7 @@ function buildPi(){
     g.fillStyle = "#d9b45a"; for (let i = 0; i < 900; i++){ g.beginPath(); g.arc(rnd(2, 83) * S, rnd(2, 54) * S, .1 * S, 0, 7); g.fill(); }
     for (const [x, y] of holes){ g.fillStyle = "#d6b25e"; g.beginPath(); g.arc(x * S, y * S, 3.1 * S, 0, 7); g.fill(); g.fillStyle = "#0a0b0d"; g.beginPath(); g.arc(x * S, y * S, 1.375 * S, 0, 7); g.fill(); }
     /* silkscreen */
-    g.fillStyle = "#f2f2ea"; g.font = `700 ${2.4*S}px Satoshi, Arial, sans-serif`; g.fillText("Raspberry Pi 4 Model B", 13 * S, 41.6 * S);
-    g.font = `500 ${1.5*S}px Satoshi, Arial, sans-serif`; g.fillText("© Raspberry Pi 2018", 13 * S, 44.2 * S);
+    g.fillStyle = "#f2f2ea";
     g.font = `600 ${1.1*S}px ui-monospace, monospace`; g.fillText("J8", 6 * S, 8.6 * S); g.fillText("GPIO", 52 * S, 8.6 * S); g.fillText("DISPLAY", 6.2 * S, 22 * S); g.fillText("CAMERA", 49 * S, 33 * S);
     g.fillText("POWER IN", 6.5 * S, 47.5 * S); g.fillText("HDMI0", 23.5 * S, 47.5 * S); g.fillText("HDMI1", 37 * S, 47.5 * S); g.fillText("A/V", 52.5 * S, 47.5 * S);
     g.strokeStyle = "#f2f2ea"; g.lineWidth = .12 * S; g.strokeRect(6.6 * S, 0.9 * S, 51.6 * S, 5.2 * S);
@@ -127,7 +126,7 @@ function buildPi(){
   for (const [x, z, s, t] of [[59, 32, 7, "VL805"], [59, 13, 6, "BCM54213"], [21, 47, 5, "MXL7704"]])
     at(rbox(s, .9, s, .15, .05), [label(256, 256, (g, W) => { g.fillStyle = "#17181c"; g.fillRect(0, 0, W, W); g.fillStyle = "rgba(220,220,225,.55)"; g.font = `600 ${t.length > 6 ? 30 : 36}px Arial`; g.fillText(t, 24, 120); g.beginPath(); g.arc(30, 200, 8, 0, 7); g.fill(); }, { roughness:.55 }), blackPl], x, 0, z);
   /* wireless module under its can */
-  at(rbox(10, 1.3, 12, .3, .05), [label(256, 300, (g, W, H) => { g.fillStyle = "#cfd2d8"; g.fillRect(0, 0, W, H); g.fillStyle = "rgba(60,62,70,.7)"; g.font = "700 26px Arial"; g.fillText("Raspberry Pi", 30, 110); g.font = "500 20px Arial"; g.fillText("Wi-Fi 5 / BT 5.0", 30, 150); g.strokeStyle = "rgba(60,62,70,.6)"; g.lineWidth = 3; g.strokeRect(14, 14, W - 28, H - 28); }, { roughness:.3, metalness:.95 }), silver], 12, 0, 15);
+  at(rbox(10, 1.3, 12, .3, .05), [label(256, 300, (g, W, H) => { g.fillStyle = "#cfd2d8"; g.fillRect(0, 0, W, H); g.fillStyle = "rgba(60,62,70,.7)"; g.strokeStyle = "rgba(60,62,70,.6)"; g.lineWidth = 3; g.strokeRect(14, 14, W - 28, H - 28); }, { roughness:.3, metalness:.95 }), silver], 12, 0, 15);
 
   /* Ethernet jack, shell over the edge */
   const ej = new THREE.Group(); ej.position.set(75.5 - BX/2, T, 10.25 - BZ/2); P.add(ej);
@@ -158,8 +157,6 @@ function buildPi(){
     for (const [x, y] of holes){ g.beginPath(); g.arc(x*s, y*s, 3.1*s, 0, 7); g.fill(); }
     g.fillStyle = "#0a0b0d"; for (const [x, y] of holes){ g.beginPath(); g.arc(x*s, y*s, 1.375*s, 0, 7); g.fill(); }
     g.translate(0, H); g.scale(1, -1);   // seen from below, the print reads mirrored in board coordinates
-    g.fillStyle = "#f2f2ea"; g.font = `700 ${2.6*s}px Satoshi, Arial`; g.fillText("Raspberry Pi 4 Model B", 22*s, 30*s); g.font = `500 ${1.4*s}px ui-monospace, monospace`; g.fillText("Designed and Sold by Raspberry Pi", 22*s, 33.5*s); g.fillText("Made in the UK", 22*s, 36*s);
-    g.strokeStyle = "#f2f2ea"; g.lineWidth = .25*s; g.strokeRect(19*s, 25*s, 46*s, 13*s);
   });
   const ug = rbox(BX, .02, BZ, 3, 0), up = ug.attributes.position, uu = ug.attributes.uv;
   for (let i = 0; i < up.count; i++) uu.setXY(i, (up.getX(i) + BX/2)/BX, 1 - (up.getZ(i) + BZ/2)/BZ);
@@ -260,6 +257,9 @@ const PARTS = [
     job:"<b>In the machine:</b> the grip it promises is locked before you pay, and the grip it gave is signed after." }
 ];
 
+const EMBED = new URLSearchParams(location.search).has("embed");
+if (EMBED){ document.documentElement.classList.add("embed"); addEventListener("keydown", e => { if (e.key === "Escape") parent.postMessage({ bench:"close" }, location.origin); }); }
+
 /* ---------- camera: drag to turn, wheel to zoom, slow turn when idle ---------- */
 const view = { th:.7, ph:1.0, r:200, tTh:.7, tPh:1.0, tR:200, target:new THREE.Vector3(), tTarget:new THREE.Vector3(), spin:true };
 let drag = null;
@@ -285,7 +285,8 @@ document.getElementById("spin").onclick = () => setSpin(!view.spin);
 const holder = new THREE.Group(); scene.add(holder);
 function frame(obj){
   const bb = visBox(obj), s = bb.getBoundingSphere(new THREE.Sphere());
-  view.fit = s.radius / Math.sin(THREE.MathUtils.degToRad(cam.fov/2)) * 1.3;
+  const vf = THREE.MathUtils.degToRad(cam.fov/2), hf = Math.atan(Math.tan(vf) * Math.max(cam.aspect, .1));   // portrait screens: the width is the tight side
+  view.fit = s.radius / Math.sin(Math.min(vf, hf)) * (cam.aspect < 1 ? 1.15 : 1.3);
   view.tTarget.set(0, s.center.y * .9, 0); return s;
 }
 function show(p, instant){
@@ -335,6 +336,17 @@ function tick(){
 /* ---------- boot: build all, photograph each for the shelf, then show the one in the URL ---------- */
 (async () => {
   resize();
+  /* embedded in anatomy: build only the part asked for, no shelf; the parent switches parts through the hash */
+  if (EMBED){
+    const want = () => PARTS.find(p => "#" + p.id === location.hash) || PARTS[0];
+    const open = async (p, instant) => { if (!p.obj){ p.obj = await p.build(); holder.add(p.obj); p.h = visBox(p.obj).max.y; } show(p, instant); };
+    await open(want(), true);
+    addEventListener("hashchange", () => { const p = want(); if (p !== cur) open(p, true); });
+    tick();
+    document.getElementById("boot").classList.add("gone");
+    window.__bench = { PARTS, show, setView, view };
+    return;
+  }
   for (const p of PARTS){ p.obj = await p.build(); p.obj.rotation.y = 0; holder.add(p.obj); p.obj.visible = false; p.obj.visible = true; p.h = visBox(p.obj).max.y; p.obj.visible = false; }
   const shelf = document.getElementById("shelf"), w = innerWidth, h = innerHeight;
   R.setSize(264, 168, false); cam.aspect = 264/168; cam.clearViewOffset(); cam.updateProjectionMatrix();

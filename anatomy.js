@@ -297,6 +297,21 @@ function applyExplode(){
   for (const c of capsules){ c.position.copy(c.userData.home).addScaledVector(c.userData.spread, E); }
   const wr = ents.get("wiring"); if (wr) wr.visible = E < .04;
 }
+/* the workbench: a close, studio lit model of one real part, opened over the machine */
+const BENCH = { "Computer":"pi", "Motors":"nema", "Winch motor":"nema", "Body":"claw", "Fingers":"claw" };
+let benchEl = null;
+function openBench(id){
+  if (!benchEl){
+    benchEl = document.createElement("div"); benchEl.className = "an-bench"; benchEl.setAttribute("role", "dialog"); benchEl.setAttribute("aria-label", "Part up close");
+    benchEl.innerHTML = `<iframe title="Part up close" src="bench.html?embed=1#${id}"></iframe><button class="bx" type="button" aria-label="Back to the machine"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>`;
+    document.body.appendChild(benchEl); benchEl.querySelector(".bx").onclick = closeBench;
+    addEventListener("message", e => { if (e.origin === location.origin && e.data && e.data.bench === "close") closeBench(); });
+    addEventListener("keydown", e => { if (e.key === "Escape" && benchEl.classList.contains("on")) closeBench(); });
+  } else { try { benchEl.querySelector("iframe").contentWindow.location.hash = id; } catch (e) {} }
+  requestAnimationFrame(() => { benchEl.classList.add("on"); document.body.classList.add("bench-on"); benchEl.querySelector("iframe").focus(); });
+}
+function closeBench(){ if (!benchEl) return; benchEl.classList.remove("on"); document.body.classList.remove("bench-on"); wake(1500); }
+
 let liftK = 0;
 /* the meshes of the selected part whose names start with one of the prefixes of a card item */
 function subMeshes(p, pre){ const out = []; if (!pre || !pre.length) return out;
@@ -314,9 +329,9 @@ function setSelected(p, fromList){ wake(3500);
   selected = p; camView = null; selectedCap = null; subFocus = null; orb.phT = p && p.ph ? p.ph : null; orb.thT = p && p.th != null ? p.th : null; orb.zoom = 1; orb.px = orb.py = orb.pz = 0;
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
-    card.innerHTML = `<span class="n">${p.n} / ${String(PARTS.length).padStart(2, "0")}</span><h3>${p.name}</h3><div class="lines">${p.text.map(t => `<p>${t}</p>`).join("")}</div><div class="inside">${p.subs.map((x, i) => `<button type="button" data-i="${i}"${x[1] && x[1].length ? "" : " disabled"}><img src="${SUBICON[x[0]] || ICON[p.id]}" alt="" />${x[0]}</button>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><img src="assets/parts/shield.png" alt="" />${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
+    card.innerHTML = `<span class="n">${p.n} / ${String(PARTS.length).padStart(2, "0")}</span><h3>${p.name}</h3><div class="lines">${p.text.map(t => `<p>${t}</p>`).join("")}</div><div class="inside">${p.subs.map((x, i) => `<button type="button" data-i="${i}"${x[1] && x[1].length ? "" : " disabled"}><img src="${SUBICON[x[0]] || ICON[p.id]}" alt="" />${x[0]}${BENCH[x[0]] ? `<i class="ins" data-b="${BENCH[x[0]]}" title="Inspect up close" aria-label="Inspect ${x[0]} up close"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.2 10.2 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></i>` : ""}</button>`).join("")}</div>${p.logo ? `<a class="proof" href="${p.href}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" />${p.proof}</a>` : `<span class="proof"><img src="assets/parts/shield.png" alt="" />${p.proof}</span>`}<div class="cnav"><button type="button" data-prev>&larr;</button><button type="button" data-next>&rarr;</button></div><button class="x" type="button" aria-label="Close">&times;</button>`;
     card.classList.add("on"); document.body.classList.add("card-on"); wireCard(); mobileFocus(p);
-    card.querySelectorAll(".inside button").forEach(b => { b.onclick = () => setSub(+b.dataset.i); });
+    card.querySelectorAll(".inside button").forEach(b => { b.onclick = e => { const ins = e.target.closest(".ins"); if (ins){ e.stopPropagation(); openBench(ins.dataset.b); return; } setSub(+b.dataset.i); }; });
   } else { card.classList.remove("on"); document.body.classList.remove("card-on"); }
   if (!fromList && !tour) orb.idle = 0;
 }
