@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Workbench, Grablab</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
+<link rel="stylesheet" href="bench.css?v=1" />
+</head>
+<body>
+<canvas id="bench"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<a class="bn-brand" href="anatomy.html"><img src="assets/brand/mark-chrome-256.png" alt="" /><b>Grablab</b><span>Workbench</span></a>
+
+<article class="bn-card" id="card">
+  <div class="bn-k"><span id="cKind"></span><span id="cNum"></span></div>
+  <h1 id="cTitle"></h1>
+  <p class="bn-lead" id="cLead"></p>
+  <dl id="cSpecs"></dl>
+  <p class="bn-job" id="cJob"></p>
+</article>
+
+<div class="bn-dock">
+  <div class="bn-views" role="group" aria-label="View">
+    <button type="button" data-v="iso" class="on">3/4</button>
+    <button type="button" data-v="top">Top</button>
+    <button type="button" data-v="bottom">Bottom</button>
+    <button type="button" data-v="front">Front</button>
+    <i></i>
+    <button type="button" id="spin" class="on" aria-label="Turn slowly">Turn</button>
+  </div>
+  <div class="bn-shelf" id="shelf"></div>
+</div>
+
+<div class="bn-boot" id="boot"><img src="assets/brand/mark-chrome-256.png" alt="" /><b>Laying out the bench</b></div>
+
+<script type="module" src="bench.js?v=1"></script>
+</body>
+</html>
