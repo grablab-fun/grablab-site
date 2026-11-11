@@ -2,7 +2,7 @@
    The machine is the metal build: steel cabinet and motion system from the motion build geometry, the rest modelled part by part (anatomy-metal.js).
    Three.js, self-hosted. An optional pixel post shader posterises to the Grablab palette. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=38";
+import { buildMachine } from "./anatomy-metal.js?v=39";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const $ = s => document.querySelector(s);
@@ -26,7 +26,7 @@ const PARTS = [
     subs:[["Secure chip", ["el_optiga"]], ["Computer", ["el_pi4", "el_pi_usb", "el_pi_ethernet", "el_pi_heatsink", "el_pi_gpio", "el_pi_post"]], ["Case and fan", ["el_picase", "el_pi_fan"]], ["Power supply", ["el_psu"]], ["Motion controller", ["el_uno", "el_cnc", "el_shield", "el_a4988"]], ["Claw driver", ["el_l298n"]], ["5 V supply", ["el_converter", "el_carrier"]], ["Power splitters", ["el_wago"]], ["Wiring", ["el_wire", "el_usb", "el_dupont"]]], proof:"Signed on peaqOS", logo:"assets/brand/partners/peaq-white.svg", href:"https://peaq.xyz" },
   { id:"chute", n:"05", name:"Prize path", spec:"Printed funnel, seat, gate and tray", ph:1.22, th:.4, anchor:[.213,-.213,.15], ex:[.3,-.3,0],
     text:["A printed funnel fills the prize hole, walled 100 mm above the floor.", "The ball drops through a 55 mm throat onto the seat.", "A red light beam and the NFC reader both see it there.", "Beam broken for 0.3 s, same tag read twice, tag known and not yet won.", "Only then a small servo opens the gate.", "The ball rolls off into a wide tray behind the gate.", "Its floor falls to one corner, so no ball gets stuck.", "A small door on the right side opens and the tray slides out."],
-    subs:[["Funnel", ["chute_funnel"]], ["Light beam sensors", ["chute_e3jk"]], ["NFC reader", ["chute_acr122u"]], ["Seat", ["chute_seat", "chute_ball"]], ["Gate and servo", ["chute_gate", "chute_mg90s"]], ["Ball tray", ["chute_tray"]]], proof:"Checked twice: beam and tag" },
+    subs:[["Funnel", ["chute_funnel"]], ["Light beam sensors", ["chute_e3jk"], { out:[.15, -.15, .05] }], ["NFC reader", ["chute_acr122u"], { out:[.17, -.17, .06] }], ["Seat", ["chute_seat", "chute_ball"]], ["Gate and servo", ["chute_gate", "chute_mg90s"], { out:[.15, -.15, .05] }], ["Ball tray", ["chute_tray"]]], proof:"Checked twice: beam and tag" },
   { id:"capsules", n:"06", name:"Capsules", spec:"45 mm printed ball, NFC disc", ph:1.0, th:1.57, anchor:[.1,.1,.29], ex:[0,0,.98],
     text:["Two printed halves, 45 mm across.", "An NFC disc at the bottom pole, ballast above it, so it settles tag down.", "Factory UID, read only.", "Click one to open it."],
     subs:[["Printed two piece shell", []], ["NFC disc", []], ["Non metal ballast", []]], proof:"Inventory on chain", logo:"assets/chains/solana.jpg", href:"https://solana.com" },
@@ -321,11 +321,31 @@ function setSub(i){ wake(3500);
   if (!sd || (subFocus && subFocus.i === i)){ subFocus = null; }
   else { let ms = subMeshes(selected, sd[1]); if (sd[2] && sd[2].one) ms = ms.filter(m => m.position.distanceTo(ms[0].position) < .03); if (!ms.length){ subFocus = null; } else {
     root.updateMatrixWorld(true); const b = new THREE.Box3(); ms.forEach(m => { m.geometry.computeBoundingBox(); b.union(m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld)); });
-    subFocus = { i, meshes:ms, box:b }; if (sd[2] && sd[2].ph) orb.phT = sd[2].ph; } }
+    subFocus = { i, meshes:ms, box:b.clone(), box0:b, dw:new THREE.Vector3() }; if (sd[2] && sd[2].ph) orb.phT = sd[2].ph;
+    if (sd[2] && sd[2].out) popOut(ms, sd[2].out, subFocus); } }
+  for (const e of pops) if (!subFocus || e.focus !== subFocus) e.on = false;
   camView = subFocus && selected.id === "camera" ? subFocus.meshes[0].userData.view || null : null;
   card.querySelectorAll(".inside button").forEach((b, k) => b.classList.toggle("on", !!subFocus && subFocus.i === k));
 }
-function setSelected(p, fromList){ wake(3500);
+/* parts buried inside the machine slide out along "out" (machine frame, m) while picked, and slide back after */
+const pops = [];
+function popOut(ms, out, focus){
+  root.updateMatrixWorld(true);
+  const m0 = ms[0], h0 = (m0.userData.popHome || m0.position).clone(), w = new THREE.Vector3();
+  const dw = m0.parent.localToWorld(h0.clone().add(new THREE.Vector3(...out))).sub(m0.parent.localToWorld(h0.clone()));
+  const list = ms.map(m => { m.getWorldPosition(w); const home = m.userData.popHome || (m.userData.popHome = m.position.clone());
+    return { m, home, d:new THREE.Vector3(...out) }; });   // the part groups share the machine frame: metres, z up
+  pops.push({ list, k:0, on:true, focus, dw });
+}
+function popStep(dt){
+  for (let i = pops.length - 1; i >= 0; i--){ const e = pops[i];
+    e.k = Math.max(0, Math.min(1, e.k + (e.on ? dt : -dt) * 2.2)); const k = e.k*e.k*(3 - 2*e.k);
+    for (const { m, home, d } of e.list){ m.position.copy(home).addScaledVector(d, k); m.updateMatrix(); }   // meshes are frozen (matrixAutoUpdate off)
+    if (e.focus && e.focus === subFocus){ subFocus.box.copy(subFocus.box0).translate(subFocus.dw.copy(e.dw).multiplyScalar(k)); }
+    if (e.k > 0 && e.k < 1) wake(300);
+    if (!e.on && e.k === 0){ for (const { m, home } of e.list){ m.position.copy(home); m.updateMatrix(); } pops.splice(i, 1); } }
+}
+function setSelected(p, fromList){ wake(3500); for (const e of pops) e.on = false;
   selected = p; camView = null; selectedCap = null; subFocus = null; orb.phT = p && p.ph ? p.ph : null; orb.thT = p && p.th != null ? p.th : null; orb.zoom = 1; orb.px = orb.py = orb.pz = 0;
   for (const li of list.children) li.classList.toggle("on", !!p && li.dataset.id === p.id);
   if (p){
@@ -523,7 +543,7 @@ addEventListener("resize", () => wake());
 stage.addEventListener("pointermove", () => { mouseMoved = true; });
 let last = performance.now(); let clawRig = null, clawT = 0; const clawQ = new THREE.Quaternion(); const linkB = new THREE.Vector3(), linkD = new THREE.Vector3(), YAX = new THREE.Vector3(0, 1, 0);
 function frame(now){
-  const raw = now - last, dt = Math.min(.05, raw/1000); last = now;
+  const raw = now - last, dt = Math.min(.05, raw/1000); last = now; if (pops.length) popStep(dt);
   const clawOn = selected && (selected.id === "claw" || selected.id === "chute");
   if (!(now < activeUntil || tour || clawOn || Math.abs(explodeTarget - explode) > .001 || toastT > 0)){ requestAnimationFrame(frame); return; }
   /* frame time watchdog: drop the resolution a step if the device cannot keep up, raise it back when it can */

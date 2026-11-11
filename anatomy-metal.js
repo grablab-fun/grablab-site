@@ -573,10 +573,10 @@ export function buildMachine(THREE, api){
     },
     set(open){
       const d = cRig.travel(open), dd = d - cRig.d, q = new THREE.Quaternion(), Y = new THREE.Vector3(0, 1, 0), B = new THREE.Vector3(), D = new THREE.Vector3();
-      for (const o of claw.children) if (HUB.test(o.name)) o.position.z -= dd;
+      for (const o of claw.children) if (HUB.test(o.name)){ o.position.z -= dd; o.updateMatrix(); }   // pages may freeze mesh matrices
       for (const arm of arms){ const u = arm.userData.clawArm; arm.position.z = u.z0 - d; arm.quaternion.copy(u.q0).multiply(q.setFromAxisAngle(u.side, -open)); }
-      for (const l of links){ B.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); D.copy(B).sub(l.a); l.mesh.position.copy(l.a).add(B).multiplyScalar(.5); l.mesh.scale.y = D.length(); l.mesh.quaternion.setFromUnitVectors(Y, D.normalize()); }
-      const bot = HUB_TOP - d, len = Math.max(.001, TUBE_END - bot + .004); rod.scale.set(1, 1, len); rod.position.z = bot + len/2 - .002;
+      for (const l of links){ B.copy(l.b).applyQuaternion(l.arm.quaternion).add(l.arm.position); D.copy(B).sub(l.a); l.mesh.position.copy(l.a).add(B).multiplyScalar(.5); l.mesh.scale.y = D.length(); l.mesh.quaternion.setFromUnitVectors(Y, D.normalize()); l.mesh.updateMatrix(); }
+      const bot = HUB_TOP - d, len = Math.max(.001, TUBE_END - bot + .004); rod.scale.set(1, 1, len); rod.position.z = bot + len/2 - .002; rod.updateMatrix();
       cRig.open = open; cRig.d = d;
     } };
   /* start open, as it waits over the capsules */

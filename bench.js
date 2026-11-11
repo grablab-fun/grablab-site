@@ -1,7 +1,7 @@
 /* Workbench: one part of Prototype 01 at a time, built in code at real size (mm), on a dark ESD mat under a soft studio light.
    The claw is the same build the anatomy page uses (anatomy-metal.js); the Pi and the stepper are modelled here from their datasheets. */
 import * as THREE from "./assets/vendor/three.module.min.js";
-import { buildMachine } from "./anatomy-metal.js?v=38";
+import { buildMachine } from "./anatomy-metal.js?v=39";
 import { loadMachine } from "./machine-scene.js?v=2";
 
 const cv = document.getElementById("bench");
@@ -310,15 +310,15 @@ async function buildClaw(){
 
 /* ---------- the parts list shown on the card ---------- */
 const PARTS = [
-  { id:"pi", kind:"Brain", title:"Raspberry Pi", build:buildPi, yaw:-.35,
+  { id:"pi", kind:"Brain", icon:"assets/bench/pi-chrome.webp", title:"Raspberry Pi", build:buildPi, yaw:-.35,
     lead:"A full computer the size of a credit card. It runs the game, drives every motor and signs each play.",
     specs:[["Chip", "Broadcom BCM2711, 4 cores at 1.5 GHz"], ["Memory", "8 GB LPDDR4"], ["Board", "85 x 56 mm"], ["Runs", "Raspberry Pi OS, Klipper, peaqOS"]],
     job:"Behind the front panel, wired to the motor board, both cameras and the NFC reader." },
-  { id:"nema", kind:"Motion", title:"NEMA 17 stepper", build:buildNema, yaw:-.35,
+  { id:"nema", kind:"Motion", icon:"assets/bench/nema-chrome.webp", title:"NEMA 17 stepper", build:buildNema, yaw:-.35,
     lead:"Moves the gantry in 200 exact steps per turn, so the claw always knows where it is.",
     specs:[["Model", "StepperOnline 17HS15-1504S"], ["Frame", "42.3 x 42.3 x 39 mm"], ["Torque", "42 Ncm at 1.5 A"], ["Step", "1.8°, 200 per turn"]],
     job:"Two of them on the frame pull the X and Y belts, a slim one on the carriage winds the line." },
-  { id:"claw", kind:"Grip", title:"The claw", build:buildClaw, yaw:.3,
+  { id:"claw", kind:"Grip", icon:"assets/bench/claw-chrome.webp", title:"The claw", build:buildClaw, yaw:.3,
     lead:"Three printed arms on one pivot hub, pulled shut by a square actuator through three links.",
     specs:[["Arms", "3, black PETG"], ["Drive", "Linear actuator in a square tube"], ["Hangs on", "1.5 mm Dyneema line"], ["Grip", "Set before the play, measured after"]],
     job:"The grip it promises is locked before you pay, and the grip it gave is signed after." }
@@ -498,7 +498,7 @@ function show(p, instant){
   document.querySelectorAll(".bn-shelf button").forEach(b => b.classList.toggle("on", b.dataset.id === p.id));
   const card = document.getElementById("card"); card.classList.add("swap");
   setTimeout(() => {
-    document.getElementById("cKind").textContent = p.kind; document.getElementById("cNum").textContent = String(PARTS.indexOf(p) + 1).padStart(2, "0") + " / " + String(PARTS.length).padStart(2, "0");
+    document.getElementById("cKind").textContent = p.kind; document.getElementById("cIcon").src = p.icon; document.getElementById("cNum").textContent = String(PARTS.indexOf(p) + 1).padStart(2, "0") + " / " + String(PARTS.length).padStart(2, "0");
     document.getElementById("cTitle").textContent = p.title; document.getElementById("cLead").textContent = p.lead;
     document.getElementById("cSpecs").innerHTML = p.specs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join(""); document.getElementById("cJob").textContent = p.job;
     card.classList.remove("swap");
