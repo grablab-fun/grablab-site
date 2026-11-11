@@ -19,12 +19,15 @@ const cam = new THREE.PerspectiveCamera(28, 1, 5, 4000);
 /* ---------- studio: a dark room with three soft boxes, baked to an environment map ---------- */
 (function studio(){
   const s = new THREE.Scene();
-  s.add(new THREE.Mesh(new THREE.BoxGeometry(10, 6, 10), new THREE.MeshBasicMaterial({ color:0x262d4a, side:THREE.BackSide })));
+  s.add(new THREE.Mesh(new THREE.BoxGeometry(10, 6, 10), new THREE.MeshBasicMaterial({ color:0x3c3f48, side:THREE.BackSide })));
   const panel = (w, h, col, k, x, y, z) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color:new THREE.Color(col).multiplyScalar(k), side:THREE.DoubleSide })); m.position.set(x, y, z); m.lookAt(0, 0, 0); s.add(m); };
   panel(7, 4, 0xffffff, 4, -1, 2.9, 1.5);    // overhead soft box
   panel(4, 3, 0xffd9ae, 2.6, -4.9, 1, -1);   // warm lamp, left
-  panel(4, 2.4, 0x8fb4ff, 2.4, 4.9, .8, -2);   // blue rim, right
-  panel(7, 1.4, 0xffffff, 1.8, 0, .6, 4.9);     // low front strip, lifts the dark sides
+  panel(4, 2.4, 0xb8ccff, 1.6, 4.9, .8, -2);   // blue rim, right
+  panel(7, 1.4, 0xffffff, 2.2, 0, .6, 4.9);
+  panel(3, 5, 0xffffff, 1.4, 4.9, 1.5, 3);     // tall strip, right front: a clean line down the metal
+  panel(6, 3, 0xffffff, 1.3, 0, 1.2, -4.9);    // back wall card: the faces turned away still read as metal
+  panel(3, 4, 0xffffff, 1.1, -4.9, 1.2, 3);     // low front strip, lifts the dark sides
   const pm = new THREE.PMREMGenerator(R);
   scene.environment = pm.fromScene(s, .035).texture; scene.environmentIntensity = 1.15;
 })();
@@ -98,10 +101,10 @@ function buildPi(){
   /* board with the right UVs on top: the canvas maps straight onto x, z */
   const bg = rbox(BX, T, BZ, 3, 0), pos = bg.attributes.position, uv = bg.attributes.uv;
   for (let i = 0; i < pos.count; i++) uv.setXY(i, (pos.getX(i) + BX/2)/BX, 1 - (pos.getZ(i) + BZ/2)/BZ);
-  const board = mesh(bg, [phys({ map:pcb, roughness:.48, metalness:0, clearcoat:.35, clearcoatRoughness:.4 }), std({ color:0x2f5a34, roughness:.7 })]); P.add(board);
+  const board = mesh(bg, [phys({ map:pcb, roughness:.62, metalness:0, clearcoat:.12, clearcoatRoughness:.6 }), std({ color:0x2f5a34, roughness:.7 })]); P.add(board);
 
-  const silver = std({ color:0xd4d7dc, roughness:.28, metalness:1 }), brushed = std({ color:0xb9bdc4, roughness:.42, metalness:1 });
-  const blackPl = std({ color:0x141518, roughness:.55 }), gold = std({ color:0xe0b85e, roughness:.25, metalness:1 });
+  const silver = std({ color:0xe4e6ea, roughness:.3, metalness:.88 }), brushed = std({ color:0xb9bdc4, roughness:.42, metalness:1 });
+  const blackPl = std({ color:0x141518, roughness:.55 }), gold = std({ color:0xf2c46a, roughness:.22, metalness:1 });
   const white = std({ color:0xeeeae0, roughness:.6 }), hole = std({ color:0x050506, roughness:.9 });
 
   /* GPIO: 2 x 20 header, gold pins */
@@ -128,17 +131,49 @@ function buildPi(){
   /* wireless module under its can */
   at(rbox(10, 1.3, 12, .3, .05), [label(256, 300, (g, W, H) => { g.fillStyle = "#cfd2d8"; g.fillRect(0, 0, W, H); g.fillStyle = "rgba(60,62,70,.7)"; g.strokeStyle = "rgba(60,62,70,.6)"; g.lineWidth = 3; g.strokeRect(14, 14, W - 28, H - 28); }, { roughness:.3, metalness:.95 }), silver], 12, 0, 15);
 
-  /* Ethernet jack, shell over the edge */
+  /* metal shells with real openings: the front plate is a shape with holes, the cavity behind it is seen from inside */
+  const cavity = std({ color:0x7d8087, roughness:.5, metalness:1, side:THREE.BackSide });   // the inside of the shell, darker sheet metal
+  function shell(len, h, wid, openings, parent){   // len along x (front at +x), h up, wid along z; openings: [y, height, width, notch]
+    const t = .3, g = new THREE.Group(); parent.add(g);
+    mesh(new THREE.BoxGeometry(len - t, t, wid), silver, -t/2, h - t/2, 0, g);   // top
+    mesh(new THREE.BoxGeometry(len - t, t, wid), silver, -t/2, t/2, 0, g);       // bottom
+    for (const sz of [-1, 1]) mesh(new THREE.BoxGeometry(len - t, h, t), silver, -t/2, h/2, sz*(wid/2 - t/2), g);
+    mesh(new THREE.BoxGeometry(t, h, wid), silver, -len/2 + t/2, h/2, 0, g);    // back
+    const f = new THREE.Shape(); f.moveTo(-wid/2, 0); f.lineTo(wid/2, 0); f.lineTo(wid/2, h); f.lineTo(-wid/2, h); f.lineTo(-wid/2, 0);
+    for (const [y, hh, ww, notch] of openings){
+      const o = new THREE.Path(), r = .5, a = -ww/2, b = ww/2;
+      o.moveTo(a + r, y); if (notch){ o.lineTo(-notch/2, y); o.lineTo(-notch/2, y - 1.6); o.lineTo(notch/2, y - 1.6); o.lineTo(notch/2, y); }
+      o.lineTo(b - r, y); o.quadraticCurveTo(b, y, b, y + r); o.lineTo(b, y + hh - r); o.quadraticCurveTo(b, y + hh, b - r, y + hh);
+      o.lineTo(a + r, y + hh); o.quadraticCurveTo(a, y + hh, a, y + hh - r); o.lineTo(a, y + r); o.quadraticCurveTo(a, y, a + r, y); f.holes.push(o);
+      const cv = mesh(new THREE.BoxGeometry(len - 1.2, hh + (notch ? 1.6 : 0), ww), cavity, -.6, y + hh/2 - (notch ? .8 : 0), 0, g); cv.castShadow = cv.receiveShadow = false;
+    }
+    const fg = new THREE.ExtrudeGeometry(f, { depth:t, bevelEnabled:false, curveSegments:4 }); fg.rotateY(Math.PI/2);
+    mesh(fg, silver, len/2 - t, 0, 0, g);
+    /* a lip round the mouth and two spring tabs on top, as pressed in the sheet */
+    for (const sz of [-1, 1]) mesh(new THREE.BoxGeometry(4, .12, 1.6), silver, len/2 - 4, h + .04, sz*wid/4, g).rotation.z = -.12;
+    return g;
+  }
+
+  /* Ethernet jack, shell over the edge, latch slot down, LEDs in the top corners */
   const ej = new THREE.Group(); ej.position.set(75.5 - BX/2, T, 10.25 - BZ/2); P.add(ej);
-  mesh(rbox(21, 13.5, 16, .6, .3), silver, 0, 0, 0, ej);
-  mesh(new THREE.BoxGeometry(1, 9.5, 12), hole, 10.3, 1.5, 0, ej);
-  mesh(new THREE.BoxGeometry(.6, 2, 2.4), std({ color:0x3dff7a, emissive:0x1fdc5c, emissiveIntensity:.8, roughness:.3 }), 10.6, 11.2, -5.5, ej);
-  mesh(new THREE.BoxGeometry(.6, 2, 2.4), std({ color:0xffb23a, emissive:0xff9a1a, emissiveIntensity:.6, roughness:.3 }), 10.6, 11.2, 5.5, ej);
-  /* two USB stacks: USB 3 with blue tongues, USB 2 with black */
+  shell(21, 13.5, 16, [[3.2, 8.2, 11.8, 6.2]], ej);
+  const jackIn = std({ color:0x16171a, roughness:.7 });
+  mesh(new THREE.BoxGeometry(12, 2.4, 11.6), jackIn, -.5, 10.2, 0, ej);                // insert roof, carries the contacts
+  const wires = new THREE.InstancedMesh(new THREE.BoxGeometry(5, .2, .45), gold, 8);
+  for (let i = 0; i < 8; i++) wires.setMatrixAt(i, mx.makeTranslation(4, 9.9, -4.45 + i*1.27)); ej.add(wires);
+  mesh(new THREE.BoxGeometry(.4, 1.6, 2.2), std({ color:0x3dff7a, emissive:0x1fdc5c, emissiveIntensity:.9, roughness:.3 }), 10.55, 12, -5.6, ej);
+  mesh(new THREE.BoxGeometry(.4, 1.6, 2.2), std({ color:0xffb23a, emissive:0xff9a1a, emissiveIntensity:.7, roughness:.3 }), 10.55, 12, 5.6, ej);
+  /* two USB stacks: USB 3 with blue tongues, USB 2 with black; the tongue rides in the top of each mouth, contacts down */
   for (const [z, tongue] of [[29, 0x1f62e8], [47, 0x18191c]]){
     const u = new THREE.Group(); u.position.set(78.5 - BX/2, T, z - BZ/2); P.add(u);
-    mesh(rbox(17.5, 16, 13.1, .5, .25), silver, 0, 0, 0, u);
-    for (const y of [2, 9.6]){ mesh(new THREE.BoxGeometry(1, 5.2, 12.2), hole, 8.4, y, 0, u); mesh(new THREE.BoxGeometry(9, 1.9, 11), std({ color:tongue, roughness:.45 }), 4.8, y + 1.2, 0, u); }
+    shell(17.5, 16, 13.1, [[1.6, 5.2, 12], [9.2, 5.2, 12]], u);
+    mesh(new THREE.BoxGeometry(17, .9, 13.1), silver, -.25, 7.55, 0, u);              // divider between the two ports
+    const tm = std({ color:tongue === 0x18191c ? 0x1c1d21 : tongue, roughness:.42 });
+    for (const y of [1.6, 9.2]){
+      mesh(new THREE.BoxGeometry(14.5, 1.9, 11.2), tm, -.6, y + 5.2 - 1.9 - .55, 0, u);
+      const pads = new THREE.InstancedMesh(new THREE.BoxGeometry(6, .08, 1), gold, 4);
+      for (let i = 0; i < 4; i++) pads.setMatrixAt(i, mx.makeTranslation(3.2, y + 5.2 - 1.9 - .55 - .96, -3.75 + i*2.5)); u.add(pads);
+    }
   }
   /* bottom edge: USB C, two micro HDMI, the A/V jack */
   at(rbox(9, 3.2, 7.4, 1.5, .3), silver, 11.2, 0, 52.8); at(new THREE.BoxGeometry(6.4, 1.2, .6), hole, 11.2, 1, 56.55);
@@ -243,18 +278,18 @@ async function buildClaw(){
 
 /* ---------- the parts list shown on the card ---------- */
 const PARTS = [
-  { id:"pi", kind:"Brain", title:"Raspberry Pi 4 Model B", build:buildPi, yaw:-.35,
+  { id:"pi", kind:"Brain", title:"Raspberry Pi", build:buildPi, yaw:-.35,
     lead:"A full computer the size of a credit card. It runs the game, drives every motor and signs each play.",
     specs:[["Chip", "Broadcom BCM2711, 4 cores at 1.5 GHz"], ["Memory", "8 GB LPDDR4"], ["Board", "85 x 56 mm"], ["Runs", "Raspberry Pi OS, Klipper, peaqOS"]],
-    job:"<b>In the machine:</b> behind the front panel, wired to the motor board, both cameras and the NFC reader." },
+    job:"behind the front panel, wired to the motor board, both cameras and the NFC reader." },
   { id:"nema", kind:"Motion", title:"NEMA 17 stepper", build:buildNema, yaw:-.35,
     lead:"Moves the gantry in 200 exact steps per turn, so the claw always knows where it is.",
     specs:[["Model", "StepperOnline 17HS15-1504S"], ["Frame", "42.3 x 42.3 x 39 mm"], ["Torque", "42 Ncm at 1.5 A"], ["Step", "1.8°, 200 per turn"]],
-    job:"<b>In the machine:</b> two of them on the frame pull the X and Y belts, a slim one on the carriage winds the line." },
+    job:"two of them on the frame pull the X and Y belts, a slim one on the carriage winds the line." },
   { id:"claw", kind:"Grip", title:"The claw", build:buildClaw, yaw:.3,
     lead:"Three printed arms on one pivot hub, pulled shut by a square actuator through three links.",
     specs:[["Arms", "3, black PETG"], ["Drive", "Linear actuator in a square tube"], ["Hangs on", "1.5 mm Dyneema line"], ["Grip", "Set before the play, measured after"]],
-    job:"<b>In the machine:</b> the grip it promises is locked before you pay, and the grip it gave is signed after." }
+    job:"the grip it promises is locked before you pay, and the grip it gave is signed after." }
 ];
 
 const EMBED = new URLSearchParams(location.search).has("embed");
@@ -296,7 +331,7 @@ function show(p, instant){
   setTimeout(() => {
     document.getElementById("cKind").textContent = p.kind; document.getElementById("cNum").textContent = String(PARTS.indexOf(p) + 1).padStart(2, "0") + " / " + String(PARTS.length).padStart(2, "0");
     document.getElementById("cTitle").textContent = p.title; document.getElementById("cLead").textContent = p.lead;
-    document.getElementById("cSpecs").innerHTML = p.specs.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join(""); document.getElementById("cJob").innerHTML = p.job;
+    document.getElementById("cSpecs").innerHTML = p.specs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join(""); document.getElementById("cJob").textContent = p.job;
     card.classList.remove("swap");
   }, instant ? 0 : 220);
   holder.children.forEach(c => c.visible = false); p.obj.visible = true; p.drop = instant ? 0 : 1;
