@@ -295,16 +295,25 @@ function buildNema(){
 }
 
 /* ================================================================ the claw: the anatomy build, scaled to mm and stood up */
-async function buildClaw(){
+async function buildClaw(one){
   const cache = new Map();
   const mat = (part, k, o, p) => { const key = part + "|" + k; if (!cache.has(key)){ const m = p ? phys(o) : std(o); if (m.color && m.color.getHSL({ h:0, s:0, l:0 }).l < .06 && !m.metalness){ m.color.setHex(0x2b2d34); m.roughness = Math.min(m.roughness, .5); }   // black print reads as a dark grey under the studio light
       m.userData.base = { opacity:m.opacity, ei:m.emissiveIntensity || 0 }; cache.set(key, m); } return cache.get(key); };
   const M = buildMachine(THREE, { mat, onFont:cb => (document.fonts ? document.fonts.ready : Promise.resolve()).then(cb), scene:await loadMachine() });
   const claw = M.parts.claw; claw.traverse(o => { if (o.name === "claw_line" || o.name === "claw_coil_cable") o.visible = false; if (o.isMesh) o.castShadow = o.receiveShadow = true; });
+  if (one){
+    let rig; claw.traverse(o => { if (o.userData.clawRig) rig = o.userData.clawRig; });
+    rig.arms.forEach((a, k) => { a.visible = k === 0; }); rig.links.forEach((l, k) => { l.mesh.visible = k === 0; });
+    claw.traverse(o => { if (/^claw_(swivel|cap_eye|body|body_screw|cable_tie|actuator_lead)$/.test(o.name)) o.visible = false; });
+    rig.set(.3);
+  }
   const Z = new THREE.Group(); Z.add(claw); Z.rotation.x = -Math.PI/2; Z.scale.setScalar(1000);
   const H = new THREE.Group(); H.add(Z); H.updateMatrixWorld(true);
   const bb = visBox(H);
-  const c = bb.getCenter(new THREE.Vector3()); Z.position.set(-c.x, -bb.min.y, -c.z);
+  /* the arm sits in the middle of the screen; its pieces still move out from the claw's axis */
+  const c = bb.getCenter(new THREE.Vector3());
+  if (one){ const hub = []; claw.traverse(o => { if (o.name === "claw_hub") hub.push(o); }); const hc = new THREE.Box3().setFromObject(hub[0]).getCenter(new THREE.Vector3()); H.userData.axis = new THREE.Vector3(hc.x - c.x, 0, hc.z - c.z); }
+  Z.position.set(-c.x, -bb.min.y, -c.z);
   return H;
 }
 
@@ -321,13 +330,18 @@ const PARTS = [
   { id:"claw", kind:"Grip", icon:"assets/bench/claw-chrome.webp", title:"The claw", build:buildClaw, yaw:.3,
     lead:"Three printed arms on one pivot hub, pulled shut by a square actuator through three links.",
     specs:[["Arms", "3, black PETG"], ["Drive", "Linear actuator in a square tube"], ["Hangs on", "1.5 mm Dyneema line"], ["Grip", "Set before the play, measured after"]],
-    job:"The grip it promises is locked before you pay, and the grip it gave is signed after." }
+    job:"The grip it promises is locked before you pay, and the grip it gave is signed after." },
+  { id:"arm", kind:"Grip", icon:"assets/bench/claw-chrome.webp", title:"One arm", build:() => buildClaw(true), yaw:1.2,
+    lead:"Each arm is one printed piece that turns on a steel pin in the hub. A rigid link from the top plate holds its elbow.",
+    specs:[["Print", "Black PETG, one piece"], ["Pin", "Steel, in the hub lug"], ["Link", "Rigid, top plate to elbow"], ["Paddle", "Cupped, meets the other two"]],
+    job:"Three of them hang from the hub. They always move together, so the grip is the same on every side." }
 ];
 
 /* ---------- how each part comes apart and how it works ----------
    apart: pieces in build order, each lifted along dir (mm, in the part's own frame) or pushed out from the axis (radial).
    run: a loop of captioned steps; tick(t, dt, step, st) drives the motion. */
-const byName = re => root => { const out = []; root.traverse(o => { if (o.name && re.test(o.name) && !(o.parent && re.test(o.parent.name || ""))) out.push(o); }); return out; };
+const shown = o => { for (let q = o; q; q = q.parent) if (!q.visible) return false; return true; };
+const byName = re => root => { const out = []; root.traverse(o => { if (o.name && re.test(o.name) && !(o.parent && re.test(o.parent.name || "")) && shown(o)) out.push(o); }); return out; };
 const tagged = (...k) => root => k.flatMap(x => root.userData.tags[x] || []);
 const clawRig = root => { let r = null; root.traverse(o => { if (o.userData.clawRig) r = o.userData.clawRig; }); return r; };
 const HI = new Map();
@@ -338,6 +352,15 @@ function glow(objs, k, col = 0x2f6bff){   // swap in a glowing copy of the mater
     if (k > .01) for (const x of [].concat(m.userData.matHi)) x.emissiveIntensity = k; });
 }
 const SIM = {
+  arm:{
+    apart:[["Top plate", byName(/^claw_(cap|cap_ear)$/), [0, 34, 0]], ["Linear actuator", byName(/^claw_actuator(_collar|_rod)?$/), [0, 12, 0]], ["Link", byName(/^claw_link$/), { r:26, y:18 }],
+      ["Elbow lug", byName(/^claw_link_lug$/), { r:34, y:6 }], ["Arm", byName(/^claw_finger(_slot)?$/), { r:30, y:-8 }], ["Steel pin", byName(/^claw_rod$/), { r:2, y:-24 }],
+      ["Paddle", byName(/^claw_pad$/), { r:62, y:10 }], ["Pivot hub", byName(/^claw_(hub|hub_nut|lug)$/), [0, -40, 0]]],
+    steps:[["The rod pulls in and the hub rises. The link holds the elbow, so the arm turns in on its pin.", 2.42], ["The rod pushes out and the hub drops. The same link now swings the arm open.", 2.42],
+      ["Only the hub moves. The link never changes length.", 2.42], ["The paddle is cupped, so closed it meets the other two under the capsule.", 2.42]],
+    tick(root, t){ clawRig(root).set(.55*(.5 + .5*Math.cos(t*1.3))); },
+    stop(root){ clawRig(root).set(.3); }
+  },
   pi:{
     apart:[["Main chip", tagged("soc"), [0, 46, 0]], ["Memory", tagged("ram"), [0, 30, 0]], ["Wireless", tagged("wifi"), [-6, 30, -6]], ["GPIO header", tagged("gpio"), [0, 36, -18]],
       ["Ethernet", tagged("eth", "phy"), [26, 30, -10]], ["USB 3", tagged("usb3", "usbctl"), [30, 14, 0]], ["USB 2", tagged("usb2"), [34, 0, 8]],
@@ -390,14 +413,14 @@ function prep(p){
     return { name, dir, objs, anchor, ad:new THREE.Vector3(), k:0 };
   });
 }
-const dirOf = (dir, at) => Array.isArray(dir) ? new THREE.Vector3(...dir) : new THREE.Vector3(at.x, 0, at.z).normalize().multiplyScalar(dir.r).setY(dir.y);
+const dirOf = (dir, at, ax) => Array.isArray(dir) ? new THREE.Vector3(...dir) : new THREE.Vector3(at.x - (ax ? ax.x : 0), 0, at.z - (ax ? ax.z : 0)).normalize().multiplyScalar(dir.r).setY(dir.y);
 /* mode "apart": every piece to its place; "run": only the lifts the run asks for; null: all home */
 function aim(p, mode){
   const ra = SIM[p.id].runApart || {};
   for (const pc of p.pieces){
     const dir = mode === "apart" ? pc.dir : mode === "run" && ra[pc.name] ? ra[pc.name] : [0, 0, 0];
-    pc.ad.copy(dirOf(dir, pc.anchor));
-    for (const ob of pc.objs){ const w = ob.hr.clone().add(dirOf(dir, ob.hr)).applyMatrix4(ob.M); ob.d.copy(w).sub(ob.home); }
+    pc.ad.copy(dirOf(dir, pc.anchor, p.obj.userData.axis));
+    for (const ob of pc.objs){ const w = ob.hr.clone().add(dirOf(dir, ob.hr, p.obj.userData.axis)).applyMatrix4(ob.M); ob.d.copy(w).sub(ob.home); }
   }
 }
 function place(p){ if (p.pieces) for (const pc of p.pieces) for (const ob of pc.objs) ob.o.position.copy(ob.home).addScaledVector(ob.d, pc.k); }

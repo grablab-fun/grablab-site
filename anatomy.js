@@ -298,7 +298,7 @@ function applyExplode(){
   const wr = ents.get("wiring"); if (wr) wr.visible = E < .04;
 }
 /* the workbench: a close, studio lit model of one real part, opened over the machine */
-const BENCH = { "Computer":"pi", "Motors":"nema", "Winch motor":"nema/run", "Body":"claw/run", "Fingers":"claw/apart" };
+const BENCH = { "Computer":"pi", "Motors":"nema", "Winch motor":"nema/run", "Body":"claw/run", "Fingers":"arm/run" };
 let benchEl = null;
 function openBench(id){
   if (!benchEl){
