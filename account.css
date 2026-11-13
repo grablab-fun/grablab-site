@@ -144,11 +144,13 @@ html.br-open{overflow:hidden}
 
 .ac-admin{margin-top:14px;padding:0;border-radius:22px;overflow:hidden;background:#0b1130}
 .ac-admin iframe{display:block;width:100%;height:520px;border:0;background:#0b1130;color-scheme:dark}
-.ac.ac-room{display:block;width:100%;padding:80px 0 0}
+.ac.ac-room{display:block;width:100%;padding:0}
+/* the control room fills the screen: no site bar on top of it */
+body:has(.ac-room) .nav{display:none}
 body:has(.ac-room) .footer{display:none}
 .ac-room>:not(#acAdmin){display:none}
 .ac-room .ac-admin{margin-top:0;border-radius:0}
-.ac-room .ac-admin iframe{min-height:calc(100vh - 80px)}
+.ac-room .ac-admin iframe{min-height:100vh}
 
 @media (max-width:640px){
   .ac-grid{grid-template-columns:1fr}
@@ -192,7 +194,7 @@ body:has(.ac-room) .footer{display:none}
   .ac>*,.ac-grid{grid-column:auto}
   .ac-grid{display:contents}
   #acAdmin{grid-column:1/-1}#acAdmin:empty{display:none}
-  .ac.ac-room:not(:has(.ac-gate)){display:block;align-content:start;width:100%;padding:80px 0 0}
+  .ac.ac-room:not(:has(.ac-gate)){display:block;align-content:start;width:100%;padding:0}
   .ac-card{margin:0;padding:clamp(12px,1.9vh,20px) 18px;gap:clamp(3px,.7vh,7px);justify-content:center}
   .ac h2{font-size:clamp(20px,2.8vh,25px)}
   .ac-sub,.ac-empty{margin:0;font-size:14px}
