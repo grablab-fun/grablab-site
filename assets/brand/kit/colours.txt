@@ -1,0 +1,12 @@
+Grablab colours
+
+Night      #050918
+Navy       #0E1A4A
+Royal      #1F338F
+Chrome     #3B7BFF
+Periwinkle #7D84FF
+Ivory      #F3F4FB
+Gold       #FFB24A
+
+Type: Anton (headlines, wordmark), Satoshi (text)
+Contact: contact@grablab.fun

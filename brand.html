@@ -2,173 +2,174 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Grablab brand</title>
-<link rel="icon" href="assets/brand/favicon-64.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Brand kit, Grablab</title>
+<meta name="description" content="The Grablab logo, wordmark, colours, type and machine renders. Free to use when you write about us." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Grablab" />
+<meta property="og:title" content="Brand kit, Grablab" />
+<meta property="og:description" content="The Grablab logo, wordmark, colours, type and machine renders. Free to use when you write about us." />
+<meta property="og:url" content="https://grablab.fun/brand" />
+<meta property="og:image" content="https://grablab.fun/assets/og-share.jpg?v=7" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Brand kit, Grablab" />
+<meta name="twitter:image" content="https://grablab.fun/assets/og-share.jpg?v=7" />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="manifest" href="/assets/app/manifest.webmanifest" />
+<meta name="theme-color" content="#050918" />
+<link rel="apple-touch-icon" href="assets/app/apple-180.png" />
+<link rel="preload" href="assets/fonts/anton-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
-<style>
-  :root{--bg:#070912;--ink:#f4f3ee;--ink-2:#aeb1c2;--ink-3:#6c7189;--accent:#9a7bff;--accent-2:#c9bfff;
-        --display:'Clash Display',system-ui,sans-serif;--font:'Satoshi',system-ui,sans-serif;--mono:ui-monospace,Menlo,monospace}
-  *{box-sizing:border-box;margin:0}
-  body{background:var(--bg);color:var(--ink);font-family:var(--font);padding:48px clamp(16px,4vw,64px) 120px;-webkit-font-smoothing:antialiased}
-  h1{font-family:var(--display);font-weight:600;font-size:34px;letter-spacing:-.02em;margin-bottom:6px}
-  h2{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-2);margin:56px 0 18px;font-weight:500}
-  p{color:var(--ink-2);max-width:60ch;line-height:1.6}
-  .row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
-  .tile{background:#0b0e1b;border:1px solid rgba(244,243,238,.08);border-radius:12px;padding:28px;display:flex;align-items:center;justify-content:center;gap:28px}
-  .tile.light{background:#f4f3ee}
-  .mark{display:block}
-
-  /* lockup */
-  .lockup{display:inline-flex;align-items:center;gap:.5em;font-family:var(--display);font-weight:700;letter-spacing:.12em;line-height:1;white-space:nowrap}
-  .lockup img{height:1.15em;width:auto;flex:none}
-  .lockup span{display:block;transform:translateY(.04em)}
-  .lockup.navy{color:#070912}
-
-  /* exports */
-  .export{position:relative;overflow:hidden;background:var(--bg);flex:none}
-  #avatar{width:400px;height:400px;display:grid;place-items:center}
-  #avatar img{width:272px;height:272px}
-  #banner,#banner2{width:1500px;height:500px}
-  #banner .bg,#banner2 .bg{position:absolute;inset:0;background:url(assets/brand/hf/banner-bg-1.png) center 42%/cover no-repeat}
-  #banner2 .bg{position:absolute;inset:0;background:url(assets/brand/hf/banner-bg-2.png) center 50%/cover no-repeat}
-  #banner2.slogan .slg{right:560px}
-  #banner .scrim,#banner2 .scrim{position:absolute;inset:0;background:
-      linear-gradient(90deg,rgba(7,9,18,.72) 0%,rgba(7,9,18,.35) 45%,rgba(7,9,18,0) 75%),
-      linear-gradient(180deg,rgba(7,9,18,.25),rgba(7,9,18,0) 40%,rgba(7,9,18,.55))}
-  #banner .grain2,#banner2 .grain2{position:absolute;inset:0;opacity:.28;mix-blend-mode:soft-light;
-      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9  0 0 0 0 0.88  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>")}
-  #banner .grain,#banner2 .grain{position:absolute;inset:0;opacity:.42;mix-blend-mode:overlay;
-      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
-  #banner .content,#banner2 .content{position:absolute;left:120px;top:0;bottom:0;padding-bottom:64px;display:flex;flex-direction:column;justify-content:center;gap:26px}
-  #banner .lockup,#banner2 .lockup{font-size:72px;letter-spacing:.14em}
-  #banner .tag,#banner2 .tag{font-family:var(--mono);font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-2);display:flex;gap:22px;align-items:center}
-  #banner .tag i,#banner2 .tag i{width:6px;height:6px;border-radius:50%;background:var(--accent-2);opacity:.7}
-  #banner .tag em,#banner2 .tag em{font-style:normal;color:var(--ink);opacity:.92}
-  #banner .corner,#banner2 .corner{position:absolute;width:22px;height:22px;border:2px solid var(--accent-2);opacity:.6}
-  #banner .c1,#banner2 .c1{left:40px;top:40px;border-right:0;border-bottom:0}
-  #banner .c2,#banner2 .c2{right:40px;top:40px;border-left:0;border-bottom:0}
-  #banner .c3,#banner2 .c3{right:40px;bottom:40px;border-left:0;border-top:0}
-  #banner .c4,#banner2 .c4{left:40px;bottom:40px;border-right:0;border-top:0}
-  #banner .handle,#banner2 .handle{position:absolute;right:56px;bottom:46px;font-family:var(--mono);font-size:14px;letter-spacing:.16em;color:var(--ink-2);text-shadow:0 1px 12px rgba(7,9,18,.9)}
-  #banner .safe,#banner2 .safe{position:absolute;left:0;bottom:0;width:360px;height:160px;outline:1px dashed rgba(255,92,174,.6);display:none}
-
-  #lockup-dark{padding:48px 72px}
-  #lockup-dark .lockup{font-size:64px}
-  #lockup-light{padding:48px 72px;background:#f4f3ee}
-  #lockup-light .lockup{font-size:64px}
-  #mark-1024{width:1024px;height:1024px;display:grid;place-items:center;background:transparent}
-  #mark-1024 img{width:1024px;height:1024px}
-  #tile-1024{width:1024px;height:1024px;display:grid;place-items:center;background:#070912;border-radius:0}
-  #tile-1024 img{width:640px;height:640px}
-  .small{display:flex;gap:28px;align-items:center}
-  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.1em;margin-top:8px}
-  .scroll{overflow:auto;max-width:100%}
-
-  /* X profile mockup */
-  .xp{width:600px;background:#000;color:#e7e9ea;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;border:1px solid #2f3336;flex:none}
-  .xp .hdr{height:200px;background-size:cover;background-position:center;position:relative}
-  .xp .av{position:absolute;left:16px;bottom:-66px;width:134px;height:134px;border-radius:50%;border:4px solid #000;background:#070912 url(assets/brand/x-avatar-400.png) center/cover}
-  .xp .bar{display:flex;justify-content:flex-end;padding:12px 16px}
-  .xp .bar b{border:1px solid #536471;border-radius:999px;padding:6px 16px;font-size:15px;font-weight:700}
-  .xp .body{padding:26px 16px 18px}
-  .xp .nm{font-size:20px;font-weight:800;line-height:1.2}
-  .xp .hd{color:#71767b;font-size:15px}
-  .xp .bio{font-size:15px;line-height:1.4;margin:12px 0}
-  .xp .meta{color:#71767b;font-size:15px;display:flex;gap:14px;flex-wrap:wrap}
-  .xp .meta span{color:#1d9bf0}
-
-  #banner.slogan .scrim,#banner2.slogan .scrim{background:linear-gradient(180deg,rgba(7,9,18,.15),rgba(7,9,18,0) 35%,rgba(7,9,18,.35)),radial-gradient(60% 70% at 36% 48%,rgba(7,9,18,.45),rgba(7,9,18,0))}
-  #banner.slogan .slg,#banner2.slogan .slg{position:absolute;left:0;right:430px;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:40px;
-     font-family:var(--display);font-weight:700;font-size:80px;line-height:1;letter-spacing:-.005em;text-transform:uppercase;text-align:center;
-     background:linear-gradient(180deg,#ffffff 0%,#f4f3ee 45%,#b9bccb 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
-     filter:drop-shadow(0 6px 30px rgba(7,9,18,.7)) drop-shadow(0 1px 2px rgba(7,9,18,.9))}
-  #banner.slogan .slg span,#banner2.slogan .slg span{display:block}
-</style>
+<link rel="stylesheet" href="notify.css?v=26" />
+<link rel="stylesheet" href="styles.css?v=nv10" />
+<link rel="stylesheet" href="pages.css?v=u28" />
+<link rel="stylesheet" href="sub.css?v=d17" />
+<link rel="stylesheet" href="brand.css?v=3" />
 </head>
-<body>
-
-<h1>Grablab brand</h1>
-<p>A bold G whose inner bar is the claw, holding a capsule in its counter. Generated with Higgsfield, cut to a transparent mark, finished as blue chrome with a chromatic fringe (user pick, Oct 13 2026). Ivory and navy flats remain for one-color uses. Ivory on navy by default, violet only as an accent.</p>
-
-<h2>Mark</h2>
-<div class="row">
-  <div class="tile" style="padding:48px 64px"><img src="assets/brand/mark-chrome.png" alt="" class="mark" width="160" height="160"></div>
-  <div class="tile light" style="padding:48px 64px"><img src="assets/brand/mark-navy.png" alt="" class="mark" width="160" height="160"></div>
-  <div class="tile" style="padding:48px 64px"><img src="assets/brand/mark-violet.png" alt="" class="mark" width="160" height="160"></div>
-  <div class="tile small">
-    <img src="assets/brand/mark.svg" width="64" height="64" alt="">
-    <img src="assets/brand/mark.svg" width="32" height="32" alt="">
-    <img src="assets/brand/mark.svg" width="24" height="24" alt="">
-    <img src="assets/brand/mark.svg" width="16" height="16" alt="">
-    <img src="assets/brand/favicon-32.png" width="32" height="32" alt="">
-    <img src="assets/brand/favicon-32.png" width="16" height="16" alt="">
-  </div>
+<body data-page="brand">
+<div class="loader" id="loader" aria-hidden="true">
+  <script>try{if(sessionStorage.getItem("gl_loaded")||navigator.standalone||matchMedia("(display-mode:standalone),(display-mode:minimal-ui),(display-mode:window-controls-overlay)").matches){document.getElementById("loader").remove();}}catch(e){}</script>
 </div>
 
-<h2>Lockup</h2>
-<div class="row">
-  <div id="lockup-dark" class="tile export"><div class="lockup"><img src="assets/brand/mark-chrome.png" alt=""><span>GRABLAB</span></div></div>
-  <div id="lockup-light" class="tile export"><div class="lockup navy"><img src="assets/brand/mark-navy.png" alt=""><span>GRABLAB</span></div></div>
-</div>
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"></header>
+<main>
+<div class="bk">
 
-<h2>X / Twitter avatar · 400 × 400</h2>
-<div class="row">
-  <div id="avatar" class="export"><img src="assets/brand/mark-chrome.png" alt=""></div>
-  <div style="width:400px;height:400px;border-radius:50%;overflow:hidden;flex:none"><div style="width:400px;height:400px;background:#070912;display:grid;place-items:center"><img src="assets/brand/mark-chrome.png" alt="" width="236" height="236"></div></div>
-</div>
-<div class="meta">LEFT: EXPORT · RIGHT: HOW X CROPS IT</div>
-
-<h2>X / Twitter banner · 1500 × 500</h2>
-<div class="scroll">
-<div id="banner" class="export slogan">
-  <div class="bg"></div><div class="scrim"></div>
-  <div class="slg"><span>We undo</span><span>the rigged machines</span><span class="collab">BUILT ON<img src="assets/brand/partners/machinefun-white.svg" alt="">MACHINE.FUN</span></div>
-</div>
-</div>
-
-<div style="height:24px"></div>
-<div id="banner2" class="export slogan">
-  <div class="bg"></div><div class="scrim"></div>
-  <div class="slg"><span>Every capsule</span><span>is a stock</span></div>
-</div>
-</div>
-</div>
-<div class="meta">AVATAR OVERLAPS THE BOTTOM-LEFT ON X, SO THE LOCKUP SITS IN THE VERTICAL CENTER</div>
-
-<h2>X profile preview</h2>
-<div class="row">
-  <div id="xp1" class="xp">
-    <div class="hdr" style="background-image:url(assets/brand/x-banner-1500x500.png)"><div class="av"></div></div>
-    <div class="bar"><b>Follow</b></div>
-    <div class="body">
-      <div class="nm">Grablab</div>
-      <div class="hd">@grablabfun</div>
-      <div class="bio">A real claw machine, played from your browser. Every capsule holds an on-chain prize. Every grab is proven fair on Solana. Rent the claw for your launch.</div>
-      <div class="meta">📍 Inside the machine · Solana &nbsp; 🔗 <span>grablab.fun</span> &nbsp; 📅 Joined October 2026</div>
+  <section class="bk-hero">
+    <div>
+      <span class="bk-eye reveal">Brand kit</span>
+      <h1 class="reveal d1">Take the logo.<span class="hl">Keep it sharp.</span></h1>
+      <p class="reveal d2">Everything you need to write about Grablab or put us on a slide. Logo, wordmark, colours, type and the machine itself.</p>
+      <div class="bk-acts reveal d3">
+        <a class="btn btn-primary big" href="assets/brand/grablab-brand-kit.zip" download>Download the kit</a>
+        <a class="btn btn-ghost big" href="mailto:contact@grablab.fun?subject=Grablab%20brand">Ask us something</a>
+      </div>
     </div>
-  </div>
-  <div id="xp2" class="xp">
-    <div class="hdr" style="background-image:url(assets/brand/x-banner-claw-1500x500.png)"><div class="av"></div></div>
-    <div class="bar"><b>Follow</b></div>
-    <div class="body">
-      <div class="nm">Grablab</div>
-      <div class="hd">@grablabfun</div>
-      <div class="bio">A real claw machine, played from your browser. Every capsule holds an on-chain prize. Every grab is proven fair on Solana. Rent the claw for your launch.</div>
-      <div class="meta">📍 Inside the machine · Solana &nbsp; 🔗 <span>grablab.fun</span> &nbsp; 📅 Joined October 2026</div>
+    <div class="bk-orb reveal d2"><img src="assets/brand/mark-chrome-1024.png" alt="The Grablab mark, a chrome G with a claw inside" width="1024" height="1024" /></div>
+  </section>
+
+  <section class="bk-sec">
+    <div class="bk-head reveal">
+      <div><span class="bk-num">01</span><h2>The mark</h2></div>
+      <p>A G with a claw inside it, holding one capsule. Blue chrome is the one we use first. The flat versions are for one colour print and tiny sizes.</p>
     </div>
-  </div>
+    <div class="bk-grid bk-g4">
+      <div class="bk-card reveal"><div class="bk-art night"><img src="assets/brand/mark-chrome-1024.png" alt="" loading="lazy" /></div>
+        <div class="bk-foot"><div><b>Chrome on night</b><span>Primary</span></div><a class="bk-dl" href="assets/brand/kit/grablab-logo-night.png" download><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0L4.5 6.5M8 10l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PNG</a></div></div>
+      <div class="bk-card reveal d1"><div class="bk-art white"><img src="assets/brand/mark-chrome-1024.png" alt="" loading="lazy" /></div>
+        <div class="bk-foot"><div><b>Chrome on white</b><span>Light pages</span></div><a class="bk-dl" href="assets/brand/kit/grablab-logo-white.png" download><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0L4.5 6.5M8 10l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PNG</a></div></div>
+      <div class="bk-card reveal d2"><div class="bk-art ivory"><img src="assets/brand/mark-navy.png" alt="" loading="lazy" /></div>
+        <div class="bk-foot"><div><b>Flat, dark</b><span>One colour</span></div><a class="bk-dl" href="assets/brand/kit/grablab-logo-mono-light.png" download><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0L4.5 6.5M8 10l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PNG</a></div></div>
+      <div class="bk-card reveal d3"><div class="bk-art dark"><img src="assets/brand/mark-1024.png" alt="" loading="lazy" /></div>
+        <div class="bk-foot"><div><b>Flat, light</b><span>One colour</span></div><a class="bk-dl" href="assets/brand/kit/grablab-logo-mono-dark.png" download><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0L4.5 6.5M8 10l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PNG</a></div></div>
+    </div>
+  </section>
+
+  <section class="bk-sec">
+    <div class="bk-head reveal">
+      <div><span class="bk-num">02</span><h2>The wordmark</h2></div>
+      <p>The mark and the name, always in this order and at this spacing. One word, capital G only when written in a sentence: Grablab.</p>
+    </div>
+    <div class="bk-grid bk-g2">
+      <div class="bk-card reveal"><div class="bk-art wide night"><img src="assets/brand/kit/grablab-lockup-transparent.png" alt="Grablab wordmark on a dark background" loading="lazy" /></div>
+        <div class="bk-foot"><div><b>On night</b><span>Primary</span></div><a class="bk-dl" href="assets/brand/kit/grablab-lockup-night.png" download><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0L4.5 6.5M8 10l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PNG</a></div></div>
+      <div class="bk-card reveal d1"><div class="bk-art wide ivory"><img src="assets/brand/kit/grablab-lockup-light.png" alt="Grablab wordmark on a light background" loading="lazy" /></div>
+        <div class="bk-foot"><div><b>On light</b><span>Print and docs</span></div><a class="bk-dl" href="assets/brand/kit/grablab-lockup-light.png" download><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0L4.5 6.5M8 10l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PNG</a></div></div>
+    </div>
+  </section>
+
+  <section class="bk-sec">
+    <div class="bk-head reveal">
+      <div><span class="bk-num">03</span><h2>Colours</h2></div>
+      <p>Night sky first, chrome blue for the things that matter, gold only for prizes. Click a colour to copy it.</p>
+    </div>
+    <div class="bk-grid bk-sw">
+      <button class="bk-chip reveal" data-hex="#050918"><i style="background:#050918"></i><div><b>Night</b><code>#050918</code></div></button>
+      <button class="bk-chip reveal" data-hex="#0E1A4A"><i style="background:#0e1a4a"></i><div><b>Navy</b><code>#0E1A4A</code></div></button>
+      <button class="bk-chip reveal d1" data-hex="#1F338F"><i style="background:#1f338f"></i><div><b>Royal</b><code>#1F338F</code></div></button>
+      <button class="bk-chip reveal d1" data-hex="#3B7BFF"><i style="background:linear-gradient(170deg,#eaf1ff,#3b7bff 55%,#1f4fd1)"></i><div><b>Chrome</b><code>#3B7BFF</code></div></button>
+      <button class="bk-chip reveal d2" data-hex="#7D84FF"><i style="background:#7d84ff"></i><div><b>Periwinkle</b><code>#7D84FF</code></div></button>
+      <button class="bk-chip reveal d2" data-hex="#F3F4FB"><i style="background:#f3f4fb"></i><div><b>Ivory</b><code>#F3F4FB</code></div></button>
+      <button class="bk-chip reveal d3" data-hex="#FFB24A"><i style="background:#ffb24a"></i><div><b>Gold</b><code>#FFB24A</code></div></button>
+    </div>
+  </section>
+
+  <section class="bk-sec">
+    <div class="bk-head reveal">
+      <div><span class="bk-num">04</span><h2>Type</h2></div>
+      <p>Two typefaces do everything. Both are free to use.</p>
+    </div>
+    <div class="bk-grid bk-g2">
+      <div class="bk-card bk-type reveal"><span class="t-k">Anton</span><div class="t-a">The claw that can't lie</div><p class="t-n">Headlines and the wordmark. Always uppercase, tight line height.</p></div>
+      <div class="bk-card bk-type reveal d1"><span class="t-k">Satoshi</span><div class="t-s">A real claw machine you play from your browser.</div><p class="t-n">Everything you read. Medium for text, bold for names and buttons.</p></div>
+    </div>
+  </section>
+
+  <section class="bk-sec">
+    <div class="bk-head reveal">
+      <div><span class="bk-num">05</span><h2>The machine</h2></div>
+      <p>When you show Grablab, show this machine. It is the real one, not a stock arcade claw.</p>
+    </div>
+    <div class="bk-mach reveal">
+      <img src="assets/brand/kit/machine.webp" alt="Grablab Prototype 01, a tall black steel claw machine filled with white capsules" loading="lazy" />
+      <div>
+        <h3>Prototype 01</h3>
+        <p>Black welded steel, clear walls, white capsules, a QR code where the joystick used to be. You drive it from your phone.</p>
+        <div class="bk-facts">
+          <div><b>700 x 700</b><span>mm footprint</span></div>
+          <div><b>1110</b><span>mm tall</span></div>
+          <div><b>45</b><span>mm capsules</span></div>
+        </div>
+        <div class="bk-acts">
+          <a class="bk-dl" href="assets/brand/kit/grablab-machine.png" download><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0L4.5 6.5M8 10l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Three quarter view</a>
+          <a class="bk-dl" href="assets/brand/kit/grablab-machine-front.png" download><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0L4.5 6.5M8 10l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Front view</a>
+          <a class="bk-dl" href="anatomy.html">See it in 3D</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bk-sec">
+    <div class="bk-head reveal">
+      <div><span class="bk-num">06</span><h2>House rules</h2></div>
+      <p>Short list. If you are not sure, send it over and we will answer the same day.</p>
+    </div>
+    <div class="bk-grid bk-g2">
+      <div class="bk-card bk-rules yes reveal"><h3><i><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Please do</h3>
+        <ul><li>Leave clear space around the mark, at least half its width.</li><li>Use the chrome mark on dark backgrounds whenever you can.</li><li>Write the name as one word: Grablab.</li><li>Use our machine renders when you show the product.</li></ul></div>
+      <div class="bk-card bk-rules no reveal d1"><h3><i><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></i>Please don't</h3>
+        <ul><li>Recolour, stretch, rotate or outline the mark.</li><li>Put the chrome mark on busy photos or bright colours.</li><li>Use a generic arcade claw machine to stand in for ours.</li><li>Suggest a partnership or endorsement we have not announced.</li></ul></div>
+    </div>
+  </section>
+
 </div>
 
-<h2>Large exports</h2>
-<div class="scroll"><div class="row">
-  <div id="mark-1024" class="export"><img src="assets/brand/mark-chrome.png" alt=""></div>
-  <div id="tile-1024" class="export"><img src="assets/brand/mark-chrome.png" alt=""></div>
-</div></div>
-
+  <section class="callout glass reveal">
+    <h2 class="chrome">Writing about us?</h2>
+    <a href="mailto:contact@grablab.fun?subject=Press" class="btn btn-primary big">contact@grablab.fun</a>
+  </section>
+</main>
+<div class="bk-toast" id="bkToast" role="status" aria-live="polite"></div>
+<footer id="site-footer"></footer>
+<script src="site.js?v=kq181"></script>
+<script src="consent.js?v=9d"></script>
+<script src="sub.js?v=x7"></script>
+<script src="notify.js?v=7" defer></script>
+<script>
+(function(){
+  var t=document.getElementById("bkToast"),h;
+  document.querySelectorAll(".bk-chip").forEach(function(b){
+    b.addEventListener("click",function(){
+      var x=b.dataset.hex;
+      (navigator.clipboard?navigator.clipboard.writeText(x):Promise.reject()).catch(function(){}).then(function(){
+        t.textContent=x+" copied";t.classList.add("on");b.classList.add("ok");clearTimeout(h);
+        h=setTimeout(function(){t.classList.remove("on");b.classList.remove("ok");},1400);
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
-<style>
-#banner.slogan .slg{left:300px!important;right:300px!important;padding-bottom:0!important;font-size:60px!important;line-height:1.02!important}
-#banner.slogan .scrim{background:radial-gradient(50% 60% at 50% 50%,rgba(7,9,18,.55),rgba(7,9,18,.1) 80%)!important}
-</style><style>#banner.slogan .slg{left:220px!important;right:520px!important;font-size:52px!important}</style><style>#banner .slg .collab{margin-top:22px;font-family:ui-monospace,Menlo,monospace;font-size:17px;letter-spacing:.32em;font-weight:500;-webkit-text-fill-color:#c9d6ff;color:#c9d6ff}</style><style>#banner .slg .collab{display:flex!important;align-items:center;justify-content:center;gap:12px}#banner .slg .collab img{height:30px;width:auto}#banner .slg .collab i{font-style:normal;margin:0 10px;opacity:.7}</style>
