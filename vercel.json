@@ -22,6 +22,11 @@
       "permanent": false
     },
     {
+      "source": "/grablabtest",
+      "destination": "https://grablab-pi.tail25cde8.ts.net/",
+      "permanent": false
+    },
+    {
       "source": "/maintenance",
       "destination": "/",
       "permanent": false
