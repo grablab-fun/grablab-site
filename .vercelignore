@@ -21,6 +21,6 @@ _de-*.html
 _rec*.html
 _proof-video.html
 token.html
-assets/tk/
-whitepaper.html
+assets/tk/*
+!assets/tk/coin-blue.webp
 _brand-export.html

@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Whitepaper, Grablab</title>
+<meta name="description" content="How Grablab works, why it exists, how the coin moves through it, and where it goes next." />
+<meta name="robots" content="noindex" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Grablab" />
+<meta property="og:title" content="Whitepaper, Grablab" />
+<meta property="og:description" content="How Grablab works, why it exists, how the coin moves through it, and where it goes next." />
+<meta property="og:url" content="https://grablab.fun/whitepaper" />
+<meta property="og:image" content="https://grablab.fun/assets/og-share.jpg?v=7" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="manifest" href="/assets/app/manifest.webmanifest" />
+<meta name="theme-color" content="#050918" />
+<link rel="preload" href="assets/fonts/anton-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
+<link rel="stylesheet" href="notify.css?v=26" />
+<link rel="stylesheet" href="styles.css?v=nv10" />
+<link rel="stylesheet" href="pages.css?v=u28" />
+<link rel="stylesheet" href="sub.css?v=d17" />
+<style>
+/* ---- whitepaper: one long document, same sky. A rail on the left, the paper on the right. ---- */
+.wp{position:relative;z-index:2;width:min(100%,1920px);margin:0 auto;padding:clamp(120px,16vh,170px) max(20px,env(safe-area-inset-right,0px)) 80px max(20px,env(safe-area-inset-left,0px))}
+.wp-hero{max-width:1100px;margin-left:auto;margin-right:auto;text-align:center;margin-bottom:clamp(48px,8vh,90px)}
+.wp-hero .k{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#9cc0ff;margin-bottom:20px}
+.wp-hero h1{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(52px,8vw,128px);line-height:.9;margin:0;color:var(--ink);text-wrap:balance}
+.wp-hero h1 .hl{background:var(--blue-chrome,linear-gradient(180deg,#e9f1ff,#3b7bff));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+@media(max-width:900px){.wp-hero>p{white-space:normal!important;max-width:620px!important}}
+.wp-hero p{margin:26px auto 0;max-width:none;white-space:nowrap;color:var(--ink-2);font-size:clamp(16px,1.3vw,19px);line-height:1.55}
+.wp-meta{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:32px;padding:7px;border-radius:14px;background:rgba(5,9,24,.62);border:1px solid rgba(180,186,255,.18);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 18px 40px rgba(0,0,0,.4)}
+.wp-meta span{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2);padding:9px 16px;border-radius:9px;white-space:nowrap}
+.wp-meta span.on{color:#071029;background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);box-shadow:0 6px 18px rgba(59,123,255,.35)}
+.wp-meta img{height:15px;width:auto;display:block}
+.wp-meta img.pq{height:12px}
+@media(max-width:560px){.wp-meta span{padding:8px 11px;font-size:11px;letter-spacing:.08em}}
+.wp-body{display:block}
+.wp-toc{position:fixed;z-index:20;left:max(20px,env(safe-area-inset-left,0px));top:50%;width:196px;transform:translate(-14px,-50%);opacity:0;pointer-events:none;transition:opacity .35s,transform .35s;display:flex;flex-direction:column;gap:3px;padding:10px;border-radius:16px;background:rgba(5,9,24,.62)!important;border:1px solid rgba(180,186,255,.18)!important;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 18px 40px rgba(0,0,0,.4)!important}
+.wp-toc.show{opacity:1;transform:translate(0,-50%);pointer-events:auto}
+.wp-toc b{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;padding:8px 12px 12px;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wp-toc a{display:flex;gap:12px;align-items:baseline;padding:8px 12px;border-radius:9px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.07em;line-height:1.3;white-space:nowrap;transition:background .2s,color .2s,box-shadow .2s}
+.wp-toc a i{font-style:normal;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--ink-3);min-width:18px;letter-spacing:.04em}
+.wp-toc a:hover{background:rgba(243,244,251,.06);color:var(--ink)}
+.wp-toc a.on{color:#071029;background:linear-gradient(176deg,#fff 0%,#d6e4ff 30%,#3b7bff 50%,#e8f0ff 62%,#1f4fd1 100%);box-shadow:0 6px 18px rgba(59,123,255,.35)}
+.wp-toc a.on i{color:#0b1f55}
+.wp-paper{min-width:0;width:100%;max-width:min(1400px,calc(100vw - 452px));margin:0 auto;display:flex;flex-direction:column;gap:clamp(36px,6vh,64px);counter-reset:pg}
+.wp-sec{scroll-margin-top:110px;min-width:0;text-align:center;position:relative;counter-increment:pg;padding:clamp(36px,5vw,64px) clamp(20px,2.4vw,36px) 30px;border-radius:28px;background:linear-gradient(180deg,rgba(14,22,52,.62),rgba(5,9,24,.62));border:1px solid rgba(180,186,255,.16);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 30px 70px -30px rgba(0,0,0,.7)}
+.wp-sec::after{content:"Page " counter(pg,decimal-leading-zero) " of 16";display:block;margin-top:34px;padding-top:18px;border-top:1px solid rgba(180,196,255,.1);font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-3)}
+.wp-sec>.n{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#9cc0ff;margin-bottom:14px}
+.wp-sec h2{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(34px,4.2vw,64px);line-height:.95;margin:0 0 22px;color:var(--ink);text-wrap:balance}
+.wp-sec h3{font-family:'Satoshi',system-ui,sans-serif;font-weight:700;font-size:19px;color:var(--ink);margin:34px 0 10px}
+.wp-sec>p,.wp-sec>ul li,.wp-sec>h3,.wp-coinrow p{text-shadow:0 1px 2px rgba(5,9,24,.9),0 0 18px rgba(5,9,24,.85)}
+.wp-sec>p:not(.wp-lead):not(.wp-note),.wp-sec>ul li{color:#c9d1ea!important}
+.wp-sec>p:not(.wp-note),.wp-sec>ul{max-width:1200px;margin-left:auto;margin-right:auto}
+.wp-sec>p.wp-one{max-width:none;white-space:nowrap;font-size:16px}@media(max-width:1400px){.wp-sec>p.wp-one{white-space:normal;max-width:860px}}
+.wp-sec p{color:var(--ink-2);font-size:16.5px;line-height:1.75;margin:0 0 18px;text-wrap:pretty}
+.wp-sec p b,.wp-sec li b{color:var(--ink);font-weight:700}
+.wp-sec ul{margin:0 0 18px;padding:0;list-style:none;display:flex;flex-direction:column;align-items:center;gap:10px}
+.wp-sec li{color:var(--ink-2);font-size:16px;line-height:1.6}
+.wp-sec li::marker{color:#7db0ff}
+.wp-lead{font-size:clamp(18px,1.5vw,21px)!important;color:var(--ink)!important;line-height:1.55!important}
+.wp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:24px 0 26px}
+.wp-grid.n2,.wp-grid.n4{grid-template-columns:repeat(2,minmax(0,1fr))}
+.wp-grid.n5{grid-template-columns:repeat(6,minmax(0,1fr))}
+.wp-grid.n5>:nth-child(-n+3){grid-column:span 2}
+.wp-grid.n5>:nth-child(n+4){grid-column:span 3}
+.wp-card{padding:24px 22px 22px;border-radius:18px;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+.wp-card .t{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#9cc0ff;margin-bottom:10px}
+.wp-card h4{font-family:'Satoshi',system-ui,sans-serif;font-weight:700;font-size:17px;color:var(--ink);margin:0 0 14px}
+.wp-card p{font-size:14.5px!important;line-height:1.6!important;margin:0!important;text-wrap:pretty}
+.wp-card .big{font-family:'Anton',Impact,sans-serif;font-size:44px;line-height:1;color:var(--ink);display:block;margin-bottom:8px}
+.wp-quote{margin:26px auto;max-width:1000px;padding:22px 24px;border-radius:18px;border:1px solid rgba(125,176,255,.3);background:rgba(59,123,255,.08);box-shadow:0 0 40px -16px rgba(59,123,255,.5)}
+.wp-quote p{margin:0!important;color:var(--ink)!important;font-size:18px!important}
+.wp-steps{counter-reset:s;display:flex;flex-direction:column;gap:10px;margin:22px 0}
+.wp-step{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 20px;border-radius:16px;text-align:center}
+.wp-step::before{counter-increment:s;content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#9cc0ff}
+.wp-step h4{margin:0 0 4px;font-family:'Satoshi',system-ui,sans-serif;font-size:16px;color:var(--ink)}
+.wp-step p{margin:0!important;font-size:14.5px!important;line-height:1.55!important}
+.wp-tbl{overflow-x:auto;margin:20px 0;border-radius:16px}
+.wp-tbl table{width:100%;border-collapse:collapse;min-width:520px}
+.wp-tbl th{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:500;text-align:left;padding:14px 16px;border-bottom:1px solid rgba(180,196,255,.14)}
+.wp-tbl td{padding:13px 16px;color:var(--ink-2);font-size:14.5px;line-height:1.45;border-bottom:1px solid rgba(180,196,255,.07);vertical-align:top}
+.wp-tbl td:first-child{color:var(--ink);font-weight:700;white-space:nowrap}
+.wp-tbl tr:last-child td{border-bottom:0}
+.wp-tbl .r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wp-bar{display:flex;gap:3px;height:54px;margin:24px 0 10px;border-radius:14px;overflow:hidden}
+.wp-bar i{position:relative;display:flex;align-items:center;justify-content:center;font-style:normal;font-family:'Anton',Impact,sans-serif;font-size:18px;color:#071029;min-width:0}
+.wp-bar i:nth-child(1){flex:45;background:linear-gradient(180deg,#e9f1ff,#7db0ff)}
+.wp-bar i:nth-child(2){flex:25;background:linear-gradient(180deg,#b9d2ff,#3b7bff)}
+.wp-bar i:nth-child(3){flex:10;background:linear-gradient(180deg,#7db0ff,#1f4fd1);color:#e9f1ff}
+.wp-bar i:nth-child(4){flex:10;background:linear-gradient(180deg,#5a6ea8,#2a3a72);color:#e9f1ff}
+.wp-bar i:nth-child(5){flex:5;background:linear-gradient(180deg,#3d4d82,#1d2a58);color:#e9f1ff;font-size:13px}
+.wp-bar i:nth-child(6){flex:5;background:linear-gradient(180deg,#d6e4ff,#9cc0ff);font-size:13px}
+.wp-legend{justify-content:center;display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:8px}
+.wp-legend span{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)}
+.wp-legend span em{width:10px;height:10px;border-radius:3px;display:inline-block}
+.wp-note{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-3);line-height:1.6;margin-top:10px!important}
+.wp-tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#071029;background:#9cc0ff;border-radius:999px;padding:3px 9px;margin-left:8px;vertical-align:middle}
+.wp-tag.soon{background:transparent;color:#9cc0ff;border:1px solid rgba(156,192,255,.4)}
+.wp-disc{padding:24px;border-radius:18px;max-width:1200px;margin:0 auto}
+.wp-disc p{font-size:14px!important;line-height:1.65!important;color:var(--ink-3)!important}
+.tk-bar{display:flex;gap:6px;height:64px}
+.tk-bar i{position:relative;flex:0 0 calc(var(--w) - 4px);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-style:normal;color:#071029;min-width:0;overflow:hidden}
+.tk-bar i b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:24px;letter-spacing:.03em;line-height:1}
+.tk-bar i span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;opacity:.8}
+.tk-bar i:nth-child(1){background:var(--blue-chrome)}
+.tk-bar i:nth-child(2){background:var(--chrome)}
+.tk-bar i:nth-child(3){background:linear-gradient(176deg,#c7cfe2,#8d97b4 50%,#b4bcd4);color:#071029;animation:tkSegBurn 4.2s ease-in-out infinite}
+.tk-bar i:nth-child(3)::before{content:"";position:absolute;inset:-40% -10%;pointer-events:none;background:radial-gradient(60px 40px at 20% 110%,rgba(125,176,255,.9),transparent 60%),radial-gradient(70px 50px at 55% 115%,rgba(214,228,255,.9),transparent 60%),radial-gradient(50px 40px at 85% 110%,rgba(125,176,255,.85),transparent 60%);mix-blend-mode:screen;opacity:0;animation:tkFlames 4.2s ease-in-out infinite}
+.tk-bar i:nth-child(3)::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 6px,rgba(5,9,24,.35) 6px 7px);opacity:0;animation:tkAsh 4.2s ease-in-out infinite}
+@keyframes tkSegBurn{0%,35%{filter:brightness(1)}60%{filter:brightness(1.25)}80%,92%{filter:brightness(.45) saturate(.4)}100%{filter:brightness(1)}}
+@keyframes tkFlames{0%,30%{opacity:0;transform:translateY(30%) scaleY(.6)}45%{opacity:1;transform:translateY(0) scaleY(1)}55%{opacity:.8;transform:translateY(-6%) scaleY(1.15)}70%{opacity:.9;transform:translateY(-14%) scaleY(1.3)}85%,100%{opacity:0;transform:translateY(-40%) scaleY(1.4)}}
+@keyframes tkAsh{0%,55%{opacity:0}80%,92%{opacity:1}100%{opacity:0}}
+/* scenes */
+.wp-sec .tk-bar{margin:22px 0 8px}
+.wp-coinrow{display:flex;flex-direction:column;align-items:center;gap:10px}
+.wp-coin{order:-1;width:150px;height:auto;filter:drop-shadow(0 24px 40px rgba(0,0,0,.6)) drop-shadow(0 0 36px rgba(59,123,255,.35));animation:wpFloat 5.2s ease-in-out infinite}
+@keyframes wpFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+@media (max-width:1199px){
+  .wp-paper{max-width:none}
+  .wp-toc{position:relative;left:auto;top:0;width:auto;transform:none;opacity:1;pointer-events:auto;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;gap:6px;padding:8px;margin-bottom:24px;scrollbar-width:none}
+  .wp-toc b{display:none}
+  .wp-toc a{white-space:nowrap;flex:0 0 auto}
+}
+@media (max-width:900px){
+  .wp-grid,.wp-grid.n2,.wp-grid.n4,.wp-grid.n5{grid-template-columns:minmax(0,1fr)}.wp-grid.n5>*{grid-column:auto!important}
+  .wp-coinrow{grid-template-columns:minmax(0,1fr)}.wp-coin{width:130px;order:-1}
+  .tk-bar{height:58px}.tk-bar i b{font-size:18px}.tk-bar i span{font-size:8px;letter-spacing:.06em}
+  .wp-bar i{font-size:14px}
+  .wp-bar i:nth-child(5),.wp-bar i:nth-child(6){font-size:0}
+}
+
+/* page polish: balanced lines, card lists, centered tables */
+.wp-sec>p,.wp-card p,.wp-step p,.wp-quote p,.wp-disc p{text-wrap:balance}
+.wp-card h4{text-wrap:balance}
+@media(min-width:1200px){.wp-grid.n3>.wp-card h4{white-space:nowrap;font-size:16px}}
+.wp-list{margin-top:14px}
+.wp-li .t{margin-bottom:8px}
+.wp-li p{color:var(--ink-2)}
+/* tables read as columns: labels and text on one left edge, numbers on the right */
+.wp-tbl th,.wp-tbl td{text-align:left;padding-left:24px;padding-right:24px}
+.wp-tbl th:first-child,.wp-tbl td:first-child{width:1%;white-space:nowrap;padding-right:40px}
+.wp-tbl .r{text-align:right}
+.wp-sec h3{margin-top:40px}
+</style>
+</head>
+<body data-page="whitepaper">
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"></header>
+<main class="wp">
+
+  <div class="wp-hero">
+    <span class="k reveal">Whitepaper</span>
+    <h1 class="reveal d1">The claw that <span class="hl">can't cheat you.</span></h1>
+    <p class="reveal d2">How Grablab works, why it exists, how the machines buy back one coin, and where the machines go next.</p>
+    <div class="wp-meta reveal d3"><span class="on">November 2026</span><span><img src="assets/chains/solana-mark.svg" alt="" />Solana</span><span>Built on<img src="assets/brand/partners/machinefun-white.svg" alt="" />machine.fun and<img class="pq" src="assets/brand/partners/peaq-white.svg" alt="peaq" /></span></div>
+  </div>
+
+  <div class="wp-body">
+    <nav class="wp-toc glass" id="wpToc" aria-label="Contents">
+      <b>Contents</b>
+      <a href="#abstract"><i>00</i>Abstract</a>
+      <a href="#premise"><i>01</i>The premise</a>
+      <a href="#product"><i>02</i>How a play works</a>
+      <a href="#proofs"><i>03</i>Five proofs</a>
+      <a href="#machine"><i>04</i>The machine</a>
+      <a href="#projects"><i>05</i>Claw as a service</a>
+      <a href="#model"><i>06</i>Business model</a>
+      <a href="#coin"><i>07</i>The coin</a>
+      <a href="#launch"><i>08</i>Launch</a>
+      <a href="#allocation"><i>09</i>Allocation</a>
+      <a href="#flow"><i>10</i>Value flow</a>
+      <a href="#scheme"><i>11</i>The grand scheme</a>
+      <a href="#autonomy"><i>12</i>Toward autonomy</a>
+      <a href="#roadmap"><i>13</i>Roadmap</a>
+      <a href="#investors"><i>14</i>For investors</a>
+      <a href="#legal"><i>15</i>Disclaimer</a>
+    </nav>
+
+    <div class="wp-paper">
+
+      <section class="wp-sec" id="abstract">
+        <span class="n">00 Abstract</span>
+        <h2>A real machine. A public receipt.</h2>
+        <p class="wp-lead">Grablab is a real claw machine, played from the browser, where every capsule holds an on-chain prize and every play is proven fair on Solana.</p>
+        <p>Projects rent the machine for a night and turn their airdrop into a live show.<br>Players connect a wallet, drive the claw on live video for thirty seconds, and get paid from escrow in seconds, or refunded.</p>
+        <p>Every play leaves five public proofs: the prizes were sealed, the grip was promised, the machine signed what happened, the win was checked twice, and the payout moved.</p>
+        <p>Plays, rents and sponsored capsules are paid in USDC.<br>Half of what Grablab keeps runs the machines.<br>The other half buys the coin back on the market every week: part of it is burned, part returns to holders as plays and prizes.</p>
+        <p>This paper describes the product, the machine, the business, the coin and the long plan: a network of machines that sign for themselves, earn for themselves and, step by step, run themselves.</p>
+      </section>
+
+      <section class="wp-sec" id="premise">
+        <span class="n">01 The premise</span>
+        <h2>Two rigged games. One fix.</h2>
+        <div class="wp-grid n2">
+          <div class="wp-card glass"><span class="t">Problem one</span><h4>Claw machines are rigged.</h4><p>The operator sets the grip.<br>Nobody can check it.<br>Everyone knows it, so nobody trusts it.</p></div>
+          <div class="wp-card glass"><span class="t">Problem two</span><h4>Airdrops are invisible.</h4><p>A snapshot and a transfer.<br>No moment, no clip, no reason to hold.<br>Bots farm them, real users miss them.</p></div>
+        </div>
+        <p class="wp-one">We started from one question: what if the most distrusted machine in the arcade became the most verifiable machine on the internet?</p>
+        <p>A claw whose grip is promised on-chain before you play, filled with the prizes a project gives away, fixes both problems at once.<br>The player gets a game that cannot cheat.<br>The project gets an airdrop that people watch, clip and share, with a public receipt for every prize.</p>
+        <div class="wp-quote glass"><p>The receipt is the marketing asset.<br>A rug cannot produce one.</p></div>
+      </section>
+
+      <section class="wp-sec" id="product">
+        <span class="n">02 How a play works</span>
+        <h2>Thirty seconds. Five receipts.</h2>
+        <div class="wp-steps">
+          <div class="wp-step glass"><div><h4>Connect.</h4><p>Any Solana wallet, or one made on the spot.<br>No app to install.</p></div></div>
+          <div class="wp-step glass"><div><h4>Grip promised.</h4><p>The grip strength is written on-chain before you touch the controls.</p></div></div>
+          <div class="wp-step glass"><div><h4>Drive.</h4><p>Live video, four directions and a drop.<br>Every move is signed by the machine.</p></div></div>
+          <div class="wp-step glass"><div><h4>Win checked twice.</h4><p>A light beam sees the capsule fall.<br>An NFC reader reads its tag twice.</p></div></div>
+          <div class="wp-step glass"><div><h4>Paid in seconds.</h4><p>The prize moves from escrow to your wallet.<br>If anything fails, the play is refunded.</p></div></div>
+        </div>
+        <p>Real plays require approving a payment in your wallet.<br>Free modes, like the airdrop claw, ask for no stake at all.</p>
+      </section>
+
+      <section class="wp-sec" id="proofs">
+        <span class="n">03 Five proofs</span>
+        <h2>Don't trust. Check every play.</h2>
+        <div class="wp-grid n5">
+          <div class="wp-card glass"><span class="t">Proof 1</span><h4>Inventory sealed</h4><p>Before the night, every capsule and prize is hashed into one on-chain commitment, with the pool total.<br>Each prize is revealed when grabbed, <span style="white-space:nowrap">with proof it was in the seal.</span><br>The full list opens after the night.</p></div>
+          <div class="wp-card glass"><span class="t">Proof 2</span><h4>Grip promised</h4><p>Locked on-chain before the play.<br>Then measured by a load cell.<br>Below the promise, the machine is flagged.</p></div>
+          <div class="wp-card glass"><span class="t">Proof 3</span><h4>The machine signs</h4><p>A secure chip inside, an Infineon OPTIGA, signs every event with a key nobody can copy.<br>Its identity lives on peaq.</p></div>
+          <div class="wp-card glass"><span class="t">Proof 4</span><h4>Win checked twice</h4><p>The beam is broken and the same tag is read twice.<br>The tag must be known and not yet won.</p></div>
+          <div class="wp-card glass"><span class="t">Proof 5</span><h4>Paid from escrow</h4><p>Prizes sit in escrow before the night.<br>The prize moves, or the play is refunded.</p></div>
+        </div>
+        <h3>When something goes wrong</h3>
+        <div class="wp-grid n3 wp-list">
+          <div class="wp-card glass wp-li"><span class="t">01</span><h4>Grip below the promise</h4><p>The machine is flagged and the play is refunded.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">02</span><h4>Drop not confirmed</h4><p>The play is voided and refunded.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">03</span><h4>Stream or machine down</h4><p>The play is cancelled and refunded.</p></div>
+        </div>
+        <p>Every play gets a numbered receipt anyone can look up.<br>Big prizes gone early?<br>A sealed restock batch, with a new commitment, keeps the night alive without breaking the seal.</p>
+      </section>
+
+      <section class="wp-sec" id="machine">
+        <span class="n">04 The machine</span>
+        <h2>Prototype 01. Built three times.</h2>
+        <p>Prototype 01 is a welded steel cabinet, 70 by 70 cm and 113 cm tall, with clear windows, a gantry on top and a three-paddle claw.<br>There is no joystick and no coin slot: you scan a QR code, the browser is the controller.<br>The only physical button is the emergency stop.</p>
+        <div class="wp-grid n3">
+          <div class="wp-card glass"><span class="t">In physics</span><h4>A digital twin first</h4><p>Real physics in SimArena by CodecFlow.<br>Grab rates tested before any metal was cut.</p></div>
+          <div class="wp-card glass"><span class="t">In metal</span><h4>The workshop build</h4><p>Off the shelf parts, one parts list.<br>The second machine costs the same as the first.</p></div>
+          <div class="wp-card glass"><span class="t">On chain</span><h4>Solana and peaq</h4><p>Escrow, grip promise, signed events and payouts on Solana.<br>Machine identity through peaq.</p></div>
+        </div>
+        <h3>Inside</h3>
+        <div class="wp-grid n5 wp-list">
+          <div class="wp-card glass wp-li"><span class="t">01</span><p>A Raspberry Pi runs the machine agent: it talks to the motion board, the sensors and the chain.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">02</span><p>Stepper motors on a gantry move the claw; a winch lowers it.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">03</span><p>Two cameras stream the play, front and side.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">04</span><p>The prize path ends in a funnel with a light beam and an NFC reader: the capsule is seen, read, and only then released.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">05</span><p>The OPTIGA chip signs every event. The machine has its own wallet identity.</p></div>
+        </div>
+        <p>One machine handles about 100 plays an hour.</p>
+      </section>
+
+      <section class="wp-sec" id="projects">
+        <span class="n">05 Claw as a service</span>
+        <h2>Your airdrop, live on stream.</h2>
+        <p>Projects rent the machine.<br>They bring the prizes; we run the machine, the stream, the proofs and the public report.</p>
+        <div class="wp-grid n4">
+          <div class="wp-card glass"><span class="t">Recommended</span><h4>Airdrop claw</h4><p>Holders play free, on stream.<br>The airdrop becomes a show.</p></div>
+          <div class="wp-card glass"><span class="t">Mode 2</span><h4>Play to grab</h4><p>Players pay per play.<br>The project earns on every try.</p></div>
+          <div class="wp-card glass"><span class="t">Mode 3</span><h4>Community claw</h4><p>A KOL or a DAO runs the machine for a week.</p></div>
+          <div class="wp-card glass"><span class="t">Mode 4</span><h4>Mint night</h4><p>One grab, one mint.<br>No allowlist leaks, no sniper bots, no gas war.</p></div>
+        </div>
+        <h3>What goes in a capsule</h3>
+        <p>Anything on-chain: the project's token, NFTs and allowlist spots, merch claimed on-chain and shipped, tokenized stocks with identity checks, and capsules from partner projects.</p>
+        <h3>The marketing loop</h3>
+        <p>A night is a campaign, not a giveaway.<br>Before it, quests earn free plays: follow, join, invite, hold.<br>Holding unlocks more plays, so selling early loses your turn.<br>During it, every play is a thirty-second clip with the project's logo on the capsule.<br>After it, winners post their clips and a public report shows where every prize went.</p>
+        <h3>Formats</h3>
+        <p>Launch nights, claw battles between two communities, KOL claws, holder drops, whitelist claws, burn to play, seasons, charity claws and machines at conference booths.<br>The machine stays.<br>The tenant changes.</p>
+      </section>
+
+      <section class="wp-sec" id="model">
+        <span class="n">06 Business model</span>
+        <h2>Every machine adds a stage.</h2>
+        <div class="wp-tbl glass"><table>
+          <thead><tr><th>Revenue line</th><th>How it works</th><th class="r">Price</th></tr></thead>
+          <tbody>
+            <tr><td>Night rental</td><td>Flat fee per night or week. The project brings the prizes.</td><td class="r">[€__]</td></tr>
+            <tr><td>Revenue share</td><td>A cut of every paid play, settled with the payout.</td><td class="r">[__ %]</td></tr>
+            <tr><td>Sponsored capsules</td><td>Issuers and brands place a stock, a device or a ticket in any night.</td><td class="r">[€__]</td></tr>
+            <tr><td>Packages</td><td>Seasons, leaderboards, conference units.</td><td class="r">[€__]</td></tr>
+          </tbody>
+        </table></div>
+        <p>The unit economics are simple because the machine is simple.<br>One parts list, off the shelf, so every new machine costs the same as the last: roughly 1,800 to 1,900 euro per unit landed and fitted, before tax, at a first batch of 24.</p>
+        <div class="wp-grid n3">
+          <div class="wp-card glass"><span class="big">100</span><p>Plays an hour, one machine.</p></div>
+          <div class="wp-card glass"><span class="big">1,600</span><p>Plays a month at four nights of four hours.</p></div>
+          <div class="wp-card glass"><span class="big">16,000</span><p>Plays a month with ten machines.</p></div>
+        </div>
+        <h3>The survival rule</h3>
+        <p>The first machine and twelve months of software, hosting and one technician must be covered by creator fees and rented nights, without selling a single locked token.<br>If even the worst case is not covered, we run one machine, not a fleet.</p>
+      </section>
+
+      <section class="wp-sec" id="coin">
+        <span class="n">07 The coin<span class="wp-tag soon">Name soon</span></span>
+        <h2>The machines earn.<br>The coin gets bought.</h2>
+        <div class="wp-coinrow"><p class="wp-lead">Everything runs in USDC.<br>The coin is bought back from what the machines earn.</p><img class="wp-coin" src="assets/tk/coin-blue.webp" alt="The Grablab coin" /></div>
+        <p>Prices are in dollars and every payment settles in USDC.<br>People pay with whatever they hold: SOL, USDC, another token.<br>At checkout it is swapped into USDC through Jupiter, in the same click.<br>Players, projects and sponsors never need to hold the coin to use Grablab.</p>
+        <p>Every week, Grablab uses part of what it keeps to buy the coin on the open market, publicly, for the holder pool and for the burn.</p>
+        <div class="wp-grid n3">
+          <div class="wp-card glass"><span class="t">In</span><h4>Anything goes in.</h4><p>Anything goes in.<br>USDC comes out.<br>Approved in your wallet.</p></div>
+          <div class="wp-card glass"><span class="t">Through</span><h4>Settled in USDC.</h4><p>Every play and rent settles in USDC.<br>On-chain, every time.</p></div>
+          <div class="wp-card glass"><span class="t">Out</span><h4>Cut in three.</h4><p>Two pieces buy the coin.<br>Half runs the machines.</p></div>
+        </div>
+        <p>Because nobody pays in the coin, nobody using the machine carries its price risk.<br>The coin's demand comes from scheduled, public buybacks, not from checkout.</p>
+        <p>The name and ticker are not final.<br>They are announced with the launch, and anything using the Grablab name before that is not ours.</p>
+      </section>
+
+      <section class="wp-sec" id="launch">
+        <span class="n">08 Launch</span>
+        <h2>On machine.fun. In public.</h2>
+        <p>The coin launches on machine.fun, the launchpad for robotics and machine projects on Solana, through a bonding curve.<br>There is no hidden team allocation and no presale: everything the team holds is bought on the curve, at the same price as anyone, in the launch block, and announced before launch.</p>
+        <div class="wp-tbl glass"><table>
+          <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Supply</td><td>1,000,000,000. Fixed. No mint after launch.</td></tr>
+            <tr><td>Bonding curve</td><td>75% of supply is sold on the curve.</td></tr>
+            <tr><td>Graduation</td><td>25% of supply plus the SOL raised goes to a Raydium pool. That pool is the market after the curve.</td></tr>
+            <tr><td>Trading fee</td><td>1.5%, of which 0.5% is the creator fee that funds operations.</td></tr>
+            <tr><td>Market maker</td><td>No token loans. Ignition and the platform's liquidity management only.</td></tr>
+          </tbody>
+        </table></div>
+        <p>The launch date is set when the first machine plays for real and the legal review is done.<br>The community hears it first, 24 hours before.<br>No rushed launch.</p>
+      </section>
+
+      <section class="wp-sec" id="allocation">
+        <span class="n">09 Allocation</span>
+        <h2>Every wallet labeled. Every unlock public.</h2>
+        <div class="wp-bar" role="img" aria-label="Supply: 45% public curve, 25% Raydium pool, 10% Ignition, 10% team, 5% marketing, 5% community and rewards"><i>45%</i><i>25%</i><i>10%</i><i>10%</i><i>5%</i><i>5%</i></div>
+        <div class="wp-legend">
+          <span><em style="background:#b9d2ff"></em>Public curve</span>
+          <span><em style="background:#3b7bff"></em>Raydium pool</span>
+          <span><em style="background:#1f4fd1"></em>Ignition</span>
+          <span><em style="background:#3a4a80"></em>Team</span>
+          <span><em style="background:#26346a"></em>Marketing</span>
+          <span><em style="background:#c4d8ff"></em>Community and rewards</span>
+        </div>
+        <p>The team buys <b>30% of supply</b> on the curve in the launch block, from one dev buy wallet, and announces the size beforehand.<br>That 30% is split four ways, and each part has a public rule:</p>
+        <div class="wp-tbl glass"><table>
+          <thead><tr><th>Part</th><th class="r">Supply</th><th>Rule</th></tr></thead>
+          <tbody>
+            <tr><td>Ignition</td><td class="r">10%</td><td>Sold only at public market cap levels, through machine.fun Ignition. Set once, cannot be cancelled.</td></tr>
+            <tr><td>Team</td><td class="r">10%</td><td>Locked on Streamflow: nothing for the first three months, then released linearly over two years. Never market sold.</td></tr>
+            <tr><td>Marketing</td><td class="r">5%</td><td>On Streamflow, an equal part unlocks every week. Spending is published.</td></tr>
+            <tr><td>Community and rewards</td><td class="r">5%</td><td>Held for the community. What it rewards, and when, is announced here first.</td></tr>
+          </tbody>
+        </table></div>
+        <h3>Ignition levels</h3>
+        <p>Ignition sells our tokens only when the market reaches each level, so the treasury is paid only if holders are winning too.<br>Proceeds go to a multisig treasury with a published destination: new machines.</p>
+        <div class="wp-tbl glass"><table>
+          <thead><tr><th>Level</th><th class="r">Market cap</th><th class="r">Supply sold</th><th class="r">Value at level</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td class="r">$1M</td><td class="r">2.5%</td><td class="r">$25,000</td></tr>
+            <tr><td>2</td><td class="r">$2M</td><td class="r">2.5%</td><td class="r">$50,000</td></tr>
+            <tr><td>3</td><td class="r">$5M</td><td class="r">2.5%</td><td class="r">$125,000</td></tr>
+            <tr><td>4</td><td class="r">$10M</td><td class="r">2.5%</td><td class="r">$250,000</td></tr>
+          </tbody>
+        </table></div>
+        <p class="wp-note">Values are supply sold times market cap, before fees.<br>A level that is never reached sells nothing.</p>
+        <p>Every team address is listed publicly and locked.<br>One undeclared wallet would break everything this paper stands for.</p>
+      </section>
+
+      <section class="wp-sec" id="flow">
+        <span class="n">10 Value flow</span>
+        <h2>Revenue in. Coin out.</h2>
+        <p class="wp-note" style="text-transform:uppercase;letter-spacing:.2em">Every settlement, the same split</p>
+        <div class="tk-bar"><i style="--w:50%"><b>50%</b><span>Machines and people</span></i><i style="--w:30%"><b>30%</b><span>Bought for holders</span></i><i style="--w:20%"><b>20%</b><span>Bought and burned</span></i></div>
+        <div class="wp-grid n3">
+          <div class="wp-card glass"><span class="big">50%</span><h4>Machines and people</h4><p>Hardware, hosting, technicians, halls.<br>Stays in USDC.</p></div>
+          <div class="wp-card glass"><span class="big">30%</span><h4>Bought for holders</h4><p>Buys the coin every week for the holder pool.<br>Paid out as plays and prizes.</p></div>
+          <div class="wp-card glass"><span class="big">20%</span><h4>Bought and burned</h4><p>Buys the coin every week.<br>Burned to a public address.</p></div>
+        </div>
+        <p>On paid plays in rented nights, the project's share goes out first.<br>What stays with Grablab splits as above.</p>
+        <h3>Buyback</h3>
+        <p>Every week, the 50% set aside buys the coin on Jupiter, automatically, in equal published amounts.<br>60% of what is bought goes to the holder pool, 40% is burned.<br>Every transaction is public.<br>Once the month's bills are paid, half of the creator fee can join the buyback.</p>
+        <h3>Why hold it</h3>
+        <div class="wp-grid n3">
+          <div class="wp-card glass"><span class="t">Demand</span><h4>Every week is a buy</h4><p>More machines, more revenue, more buys.</p></div>
+          <div class="wp-card glass"><span class="t">Supply</span><h4>Bought and burned every week</h4><p>The more the machines run, the less coin is left.</p></div>
+          <div class="wp-card glass"><span class="t">Aligned</span><h4>We sell only above the line</h4><p>Ignition levels published before launch.</p></div>
+        </div>
+        <h3>What holders get</h3>
+        <div class="wp-grid n4 wp-list">
+          <div class="wp-card glass wp-li"><span class="t">01</span><h4>Hold, and the tiers unlock</h4><p>More free plays. Tiers set in the coin, published at launch.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">02</span><h4>A holder capsule every night</h4><p>Every tenant puts 5% of the night's prizes in a holders-only capsule, written in the contract.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">03</span><h4>Busy night, holders first</h4><p>Queue priority.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">04</span><h4>A rent discount</h4><p>Projects that hold the coin pay less. That is how clients become holders.</p></div>
+        </div>
+      </section>
+
+      <section class="wp-sec" id="scheme">
+        <span class="n">11 The grand scheme</span>
+        <h2>A network of machines that pay their own way.</h2>
+        <p class="wp-lead">One machine is a game.<br>A hundred machines, all signing for themselves, all settling in one coin, are an economy.</p>
+        <p>Every Grablab machine is a stage, a wallet and a witness.<br>It has its own identity on peaq, it signs what it does, it holds escrow and pays winners.<br>It earns from every night it hosts.<br>That makes each machine a small business with a public ledger, and every new machine adds another stage, another city and another stream of settlements in the same coin.</p>
+        <div class="wp-steps">
+          <div class="wp-step glass"><div><h4>One machine, one night.</h4><p>A launch night with one tenant, a public report, proof that it works.</p></div></div>
+          <div class="wp-step glass"><div><h4>A fleet.</h4><p>Halls, conference units and partner venues, all on the same parts list and the same proofs.</p></div></div>
+          <div class="wp-step glass"><div><h4>A marketplace.</h4><p>Projects, brands and issuers book nights and fill capsules on their own.<br>Players follow the drops they care about.</p></div></div>
+          <div class="wp-step glass"><div><h4>A machine economy.</h4><p>Machines that book, run, maintain and pay for themselves, settling in one coin.</p></div></div>
+        </div>
+        <p>The coin is the thread through all of it.<br>The more machines play, the more revenue, the more the coin is bought, burned and handed back to holders as plays and prizes.<br>Growth comes from usage, not from emissions.</p>
+      </section>
+
+      <section class="wp-sec" id="autonomy">
+        <span class="n">12 Toward autonomy</span>
+        <h2>The machine learns to run itself.</h2>
+        <p>Today a technician fills the machine, watches the stream and fixes what breaks.<br>The long plan is a machine that needs a person less every month.<br>Each step below is announced on its own, when it works on a real machine, not before.</p>
+        <div class="wp-grid n6">
+          <div class="wp-card glass"><span class="t">Upgrade <span class="wp-tag soon">Announced later</span></span><h4>An AI referee</h4><p>Vision models watch both cameras and confirm the drop next to the beam and the tag.<br>A third witness, signed like the others.</p></div>
+          <div class="wp-card glass"><span class="t">Upgrade <span class="wp-tag soon">Announced later</span></span><h4>Self-calibrating grip</h4><p>The machine measures its own grip before every night and corrects drift.<br>The promise on-chain always matches the claw.</p></div>
+          <div class="wp-card glass"><span class="t">Upgrade <span class="wp-tag soon">Announced later</span></span><h4>An AI host</h4><p>Live commentary, highlights and clips cut automatically from every play.<br>Every night produces its own content.</p></div>
+          <div class="wp-card glass"><span class="t">Upgrade <span class="wp-tag soon">Announced later</span></span><h4>Self-diagnosis</h4><p>Motors, sensors and cameras checked continuously.<br>The machine flags itself and pauses before a fault becomes a bad play.</p></div>
+          <div class="wp-card glass"><span class="t">Upgrade <span class="wp-tag soon">Announced later</span></span><h4>Autonomous operations</h4><p>The machine books its own nights, requests restocks and reports its own numbers.<br>Its wallet pays its own hosting.</p></div>
+          <div class="wp-card glass"><span class="t">Upgrade <span class="wp-tag soon">Announced later</span></span><h4>Robotic restock</h4><p>Capsules loaded and the prize path cleared without hands.<br>A machine that can stay open all night, every night.</p></div>
+        </div>
+        <p>We already test in simulation before we touch metal: the physics twin in SimArena by CodecFlow is where grab rates, grip settings and new behaviours are tried first.<br>That is also where autonomy starts.</p>
+        <div class="wp-quote glass"><p>One rule does not change: AI can run the machine, but it never decides who wins. The proofs do.</p></div>
+      </section>
+
+      <section class="wp-sec" id="roadmap">
+        <span class="n">13 Roadmap</span>
+        <h2>Stages, not dates.</h2>
+        <div class="wp-steps">
+          <div class="wp-step glass"><div><h4>Now: Prototype 01 plays <span class="wp-tag">In progress</span></h4><p>Parts final, wiring delivered, physics twin running.<br>Site, wallet, simulator and community live.</p></div></div>
+          <div class="wp-step glass"><div><h4>Stage 2: First launch night</h4><p>One tenant, airdrop mode, mainnet escrow, public report.</p></div></div>
+          <div class="wp-step glass"><div><h4>Stage 3: The coin and prizes beyond tokens</h4><p>Launch on machine.fun.<br>Tokenized stocks, mint nights, merch.<br>Legal review for paid modes.</p></div></div>
+          <div class="wp-step glass"><div><h4>Stage 4: More machines</h4><p>Second unit, conference units, seasons.<br>Ignition proceeds fund the fleet.</p></div></div>
+          <div class="wp-step glass"><div><h4>Stage 5: Autonomy</h4><p>The AI upgrades, one announcement at a time.</p></div></div>
+        </div>
+        <p>On board: machine.fun, peaq, CodecFlow, Privy, Jupiter, Streamflow.<br>Dates are set stage by stage and announced to the community first.</p>
+      </section>
+
+      <section class="wp-sec" id="investors">
+        <span class="n">14 For investors</span>
+        <h2>What you should know.</h2>
+        <h3>Where we really are</h3>
+        <p>The first machine is being built.<br>The site, the wallet, the simulator and the community are live.<br>No real paid play has happened yet, no tenant has signed yet, and the coin does not exist yet.</p>
+        <h3>Why it can work</h3>
+        <div class="wp-grid n5 wp-list">
+          <div class="wp-card glass wp-li"><span class="t">01</span><h4>Solana settles in seconds</h4><p>The payout is the show.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">02</span><h4>Machines can sign for themselves</h4><p>Secure chips and peaq identity give a physical machine a wallet.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">03</span><h4>Tokenized stocks exist</h4><p>A stock in a capsule is a transfer, not a legal project.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">04</span><h4>Launches need a stage</h4><p>Hundreds of tokens launch every day, none with a moment. We are that moment.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">05</span><h4>Fixed hardware cost</h4><p>Every machine is the same parts list, so growth is linear and predictable.</p></div>
+        </div>
+        <h3>What we commit to</h3>
+        <div class="wp-grid n4 wp-list">
+          <div class="wp-card glass wp-li"><span class="t">01</span><p>Every team wallet public, every lock on Streamflow, every Ignition level published.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">02</span><p>Weekly buybacks and burns in USDC, with public transactions.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">03</span><p>A public report after every night.</p></div>
+          <div class="wp-card glass wp-li"><span class="t">04</span><p>No token loans, no presale, no promised yield.</p></div>
+        </div>
+        <p>For a conversation: <b>contact@grablab.fun</b>.</p>
+      </section>
+
+      <section class="wp-sec" id="legal">
+        <span class="n">15 Disclaimer</span>
+        <div class="wp-disc glass">
+          <p>This whitepaper is a draft that describes the plan as it stands today.<br>Every number, rule and stage in it can change before launch, and changes are announced publicly.</p>
+          <p>It is not an offer to sell, a solicitation to buy, or financial, legal or tax advice.<br>The coin is a utility within the Grablab system: it gives access to plays, prizes and services.<br>It is not a share, does not represent a claim on revenue, and comes with no promise of profit, yield or price.</p>
+          <p>Crypto assets are volatile and can lose all their value.<br>Rules on crypto assets and on games with prizes differ by country; check yours before taking part.<br>Nothing has launched yet.<br>Any token using the Grablab name before an official announcement on our channels is not ours.</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js?v=kq181"></script>
+<script src="consent.js?v=9d"></script>
+<script src="sub.js?v=x7"></script>
+<script src="notify.js?v=7" defer></script>
+<script>
+/* contents rail: highlight the section in view */
+(function(){
+  const links=[...document.querySelectorAll('#wpToc a')],map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=map.get(e.target.id);if(a){a.classList.add('on');if(innerWidth<1200)a.scrollIntoView({block:'nearest',inline:'center'})}}})},{rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('.wp-sec').forEach(s=>io.observe(s));
+  const toc=document.getElementById('wpToc'),body=document.querySelector('.wp-body');
+  const vis=()=>{const r=body.getBoundingClientRect();toc.classList.toggle('show',r.top<innerHeight*.45&&r.bottom>innerHeight*.55)};
+  addEventListener('scroll',vis,{passive:true});addEventListener('resize',vis);vis();
+})();
+</script>
+<script>
+/* no lonely words: the last three words of every line run stay together */
+(function(){
+  const glue=el=>{const runs=[[]];const walk=n=>n.childNodes.forEach(c=>{if(c.nodeName==='BR')runs.push([]);else if(c.nodeType===3)runs[runs.length-1].push(c);else walk(c)});walk(el);
+    runs.forEach(r=>{let need=2;for(let i=r.length-1;i>=0&&need>0;i--){let t=r[i].textContent;const trail=t.match(/\s*$/)[0];t=t.slice(0,t.length-trail.length);let j=t.length;while(need>0){const k=t.lastIndexOf(' ',j-1);if(k<0)break;t=t.slice(0,k)+' '+t.slice(k+1);j=k;need--}r[i].textContent=t+trail;if(need>0&&/^\s/.test(r[i].textContent)){}}})};
+  document.querySelectorAll('.wp-sec p,.wp-sec td,.wp-sec h4,.wp-hero p').forEach(el=>{if(el.textContent.trim().split(/\s+/).length>=4)glue(el)});
+  /* hyphenated words never split across lines */
+  const tw=document.createTreeWalker(document.querySelector('.wp'),NodeFilter.SHOW_TEXT),hits=[];
+  while(tw.nextNode()){const n=tw.currentNode;if(/[A-Za-z0-9]-[A-Za-z0-9]/.test(n.textContent)&&!n.parentElement.closest('script,style,svg'))hits.push(n)}
+  hits.forEach(n=>{const f=document.createDocumentFragment();n.textContent.split(/(\S*[A-Za-z0-9]-[A-Za-z0-9]\S*)/).forEach((p,i)=>{if(!p)return;if(i%2){const sp=document.createElement('span');sp.style.whiteSpace='nowrap';sp.textContent=p;f.appendChild(sp)}else f.appendChild(document.createTextNode(p))});n.replaceWith(f)});
+
+})();
+</script>
+</body>
+</html>
