@@ -146,6 +146,14 @@
 .wp-tbl th:first-child,.wp-tbl td:first-child{width:1%;white-space:nowrap;padding-right:40px}
 .wp-tbl .r{text-align:right}
 .wp-sec h3{margin-top:40px}
+/* phones: body text reads left aligned, lines break where the words fall */
+@media(max-width:700px){
+  .wp-sec{text-align:left}
+  .wp-sec>p,.wp-sec>ul,.wp-coinrow p,.wp-quote p,.wp-card p,.wp-step p,.wp-disc p{text-wrap:pretty}
+  .wp-sec>p,.wp-coinrow p{text-align:left}
+  .wp-sec>p br,.wp-coinrow p br{content:"";display:block;height:6px}
+  .wp-coinrow{align-items:flex-start}
+}
 </style>
 </head>
 <body data-page="whitepaper">
@@ -481,7 +489,7 @@
 /* contents rail: highlight the section in view */
 (function(){
   const links=[...document.querySelectorAll('#wpToc a')],map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
-  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=map.get(e.target.id);if(a){a.classList.add('on');if(innerWidth<1200)a.scrollIntoView({block:'nearest',inline:'center'})}}})},{rootMargin:'-30% 0px -60% 0px'});
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=map.get(e.target.id);if(a){a.classList.add('on');if(innerWidth<1200){const t=a.parentElement;t.scrollTo({left:a.offsetLeft-(t.clientWidth-a.offsetWidth)/2,behavior:'smooth'})}}}})},{rootMargin:'-30% 0px -60% 0px'});
   document.querySelectorAll('.wp-sec').forEach(s=>io.observe(s));
   const toc=document.getElementById('wpToc'),body=document.querySelector('.wp-body');
   const vis=()=>{const r=body.getBoundingClientRect();toc.classList.toggle('show',r.top<innerHeight*.45&&r.bottom>innerHeight*.55)};
@@ -493,7 +501,7 @@
 (function(){
   const glue=el=>{const runs=[[]];const walk=n=>n.childNodes.forEach(c=>{if(c.nodeName==='BR')runs.push([]);else if(c.nodeType===3)runs[runs.length-1].push(c);else walk(c)});walk(el);
     runs.forEach(r=>{let need=2;for(let i=r.length-1;i>=0&&need>0;i--){let t=r[i].textContent;const trail=t.match(/\s*$/)[0];t=t.slice(0,t.length-trail.length);let j=t.length;while(need>0){const k=t.lastIndexOf(' ',j-1);if(k<0)break;t=t.slice(0,k)+' '+t.slice(k+1);j=k;need--}r[i].textContent=t+trail;if(need>0&&/^\s/.test(r[i].textContent)){}}})};
-  document.querySelectorAll('.wp-sec p,.wp-sec td,.wp-sec h4,.wp-hero p').forEach(el=>{if(el.textContent.trim().split(/\s+/).length>=4)glue(el)});
+  if(innerWidth>700)document.querySelectorAll('.wp-sec p,.wp-sec td,.wp-sec h4,.wp-hero p').forEach(el=>{if(el.textContent.trim().split(/\s+/).length>=4)glue(el)});
   /* hyphenated words never split across lines */
   const tw=document.createTreeWalker(document.querySelector('.wp'),NodeFilter.SHOW_TEXT),hits=[];
   while(tw.nextNode()){const n=tw.currentNode;if(/[A-Za-z0-9]-[A-Za-z0-9]/.test(n.textContent)&&!n.parentElement.closest('script,style,svg'))hits.push(n)}

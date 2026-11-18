@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The coin the machine runs on, Grablab</title>
+<meta name="description" content="Every play, rent and capsule is paid in USDC. Every week, the machines buy the coin back." />
+<meta name="robots" content="noindex" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Grablab" />
+<meta property="og:title" content="The coin the machine runs on, Grablab" />
+<meta property="og:description" content="Every play, rent and capsule is paid in USDC. Every week, the machines buy the coin back." />
+<meta property="og:url" content="https://grablab.fun/token" />
+<meta property="og:image" content="https://grablab.fun/assets/og-share.jpg?v=7" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="assets/brand/mark-chrome-256.png?v=fav2" />
+<link rel="manifest" href="/assets/app/manifest.webmanifest" />
+<meta name="theme-color" content="#050918" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Grablab" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-icon" href="assets/app/apple-180.png" />
+<link rel="preload" href="assets/fonts/anton-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=1" />
+<link rel="stylesheet" href="notify.css?v=26" />
+<link rel="stylesheet" href="styles.css?v=nv10" />
+<link rel="stylesheet" href="pages.css?v=u28" />
+<link rel="stylesheet" href="sub.css?v=d17" />
+<style>
+/* ---- token page: the same sky, a gold thread through it. Everything on this page is about one coin. ---- */
+body[data-page="token"] .ph .eyebrow,body[data-page="token"] .sh .k{color:#9cc0ff}
+body[data-page="token"] .ph h1 .hl,body[data-page="token"] .sh h2 .hl{background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+body[data-page="token"] .card .num{display:none}
+body[data-page="token"] .callout h2 .hl{background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+/* hero: the coin hangs from the claw */
+.tk-hero{position:relative;width:min(100%,520px);aspect-ratio:1;display:grid;place-items:center}
+.tk-hero .tk-claw{position:absolute;left:50%;top:-6%;height:46%;width:auto;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6));animation:clawBob 4s ease-in-out infinite}
+.tk-hero .tk-coin{position:relative;z-index:1;width:72%;height:auto;margin-top:0;filter:drop-shadow(0 30px 50px rgba(0,0,0,.65)) drop-shadow(0 0 40px rgba(59,123,255,.3));animation:tkFloat 5.2s ease-in-out infinite}
+.tk-hero .tk-glow{position:absolute;left:50%;top:62%;width:70%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(59,123,255,.22),rgba(59,123,255,.1) 45%,transparent 70%);filter:blur(10px);pointer-events:none}
+@keyframes tkFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}}
+/* the ecosystem: coins travel from the people who pay, through the coin, to where it goes */
+.tk-flow{position:relative;max-width:1040px;margin:0 auto;padding:clamp(14px,2.4vw,28px);border-radius:24px;overflow:hidden}
+.tk-stage{position:relative}
+.tk-flow svg{width:100%;height:auto;display:block;overflow:visible}
+.tk-flow canvas{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.tk-flow .lane{fill:none;stroke-width:1.6;stroke-dasharray:4 8;animation:tkLane 1.4s linear infinite}
+.tk-flow .lane.in{stroke:url(#tkLaneIn)}.tk-flow .lane.out{stroke:url(#tkLaneOut)}
+@keyframes tkLane{to{stroke-dashoffset:-12}}
+.tk-flow .node{fill:rgba(14,26,74,.72);stroke:rgba(180,196,255,.22);stroke-width:1}
+.tk-flow .node.on{stroke:rgba(125,176,255,.55)}
+.tk-flow .nd{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.tk-flow text{font-family:'Satoshi',system-ui,sans-serif;fill:#f3f4fb;font-size:16px;font-weight:700}
+.tk-flow text.s{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;fill:#a7b0cc;font-weight:500}
+.tk-flow text.sol{font-family:'Satoshi',system-ui,sans-serif;font-size:13px;font-weight:700;letter-spacing:.02em;fill:#f3f4fb}
+.tk-flow text.pct{font-family:'Anton',Impact,sans-serif;font-size:30px;fill:#f3f4fb;font-weight:400;letter-spacing:.02em}
+.tk-flow image{filter:drop-shadow(0 10px 20px rgba(0,0,0,.6))}
+.tk-flow .core{filter:drop-shadow(0 20px 40px rgba(0,0,0,.7)) drop-shadow(0 0 36px rgba(59,123,255,.35))}
+.tk-flow .ring{fill:none;stroke:rgba(125,176,255,.28);stroke-width:1;stroke-dasharray:2 6}
+.tk-flow .pulse{fill:none;stroke:rgba(125,176,255,.6);stroke-width:2;transform-box:fill-box;transform-origin:center;opacity:0}
+.tk-flow .pulse.go{animation:tkPulse .9s ease-out}
+@keyframes tkPulse{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.tk-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:1040px;margin:18px auto 0}
+.tk-legend .card{padding:20px 22px;gap:8px}
+.tk-legend .card h3{font-size:clamp(20px,1.7vw,26px)}
+/* why it matters: three movements of the coin */
+.tk-why{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tk-why .card{padding:28px 26px;gap:12px}
+.tk-why .card .big{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(40px,4.4vw,64px);line-height:.95;letter-spacing:.01em;background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tk-why .card h3{font-size:clamp(20px,1.7vw,26px)}
+.tk-why .card .ico{height:84px;width:auto;object-fit:contain;align-self:flex-start;filter:drop-shadow(0 16px 24px rgba(0,0,0,.55))}
+/* the split bar: full width, every settlement */
+.tk-split{max-width:1040px;margin:18px auto 0;padding:20px 24px 22px;border-radius:20px}
+.tk-split-k{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#9cc0ff;margin-bottom:14px;text-align:center}
+.tk-bar{display:flex;gap:6px;height:64px}
+.tk-bar i{position:relative;flex:0 0 calc(var(--w) - 4px);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-style:normal;color:#071029;min-width:0;overflow:hidden}
+.tk-bar i b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:24px;letter-spacing:.03em;line-height:1}
+.tk-bar i span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;opacity:.8}
+.tk-bar i:nth-child(1){background:var(--blue-chrome)}
+.tk-bar i:nth-child(2){background:var(--chrome)}
+.tk-bar i:nth-child(3){background:linear-gradient(176deg,#c7cfe2,#8d97b4 50%,#b4bcd4);color:#071029;animation:tkSegBurn 4.2s ease-in-out infinite}
+.tk-bar i:nth-child(3)::before{content:"";position:absolute;inset:-40% -10%;pointer-events:none;background:radial-gradient(60px 40px at 20% 110%,rgba(125,176,255,.9),transparent 60%),radial-gradient(70px 50px at 55% 115%,rgba(214,228,255,.9),transparent 60%),radial-gradient(50px 40px at 85% 110%,rgba(125,176,255,.85),transparent 60%);mix-blend-mode:screen;opacity:0;animation:tkFlames 4.2s ease-in-out infinite}
+.tk-bar i:nth-child(3)::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 6px,rgba(5,9,24,.35) 6px 7px);opacity:0;animation:tkAsh 4.2s ease-in-out infinite}
+@keyframes tkSegBurn{0%,35%{filter:brightness(1)}60%{filter:brightness(1.25)}80%,92%{filter:brightness(.45) saturate(.4)}100%{filter:brightness(1)}}
+@keyframes tkFlames{0%,30%{opacity:0;transform:translateY(30%) scaleY(.6)}45%{opacity:1;transform:translateY(0) scaleY(1)}55%{opacity:.8;transform:translateY(-6%) scaleY(1.15)}70%{opacity:.9;transform:translateY(-14%) scaleY(1.3)}85%,100%{opacity:0;transform:translateY(-40%) scaleY(1.4)}}
+@keyframes tkAsh{0%,55%{opacity:0}80%,92%{opacity:1}100%{opacity:0}}
+/* scenes */
+.tk-sc{position:relative;width:100%}
+.tk-cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* hero market card */
+.tk-mk{position:relative;width:min(100%,560px);padding:18px;border-radius:24px;display:flex;flex-direction:column;gap:12px}
+.tk-mk .tk-mk-coin{position:absolute;right:-34px;top:-64px;width:132px;height:auto;z-index:2;filter:drop-shadow(0 18px 30px rgba(0,0,0,.6)) drop-shadow(0 0 30px rgba(59,123,255,.3));animation:tkFloat 5.2s ease-in-out infinite}
+.tk-mk-top{display:flex;align-items:center;gap:12px}
+.tk-mk-top b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:26px;letter-spacing:.02em;color:var(--ink)}
+.tk-mk-top span img{width:15px;height:auto}
+.tk-mk-top span{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.tk-mk-chart{position:relative;aspect-ratio:2/1;border-radius:14px;overflow:hidden;background:rgba(5,9,24,.55);border:1px solid rgba(180,196,255,.12);display:grid;place-items:center}
+.tk-mk-chart iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.tk-mk-chart .tk-sc{position:absolute;inset:0;height:100%}
+.tk-soon{position:absolute;left:clamp(16px,4%,26px);top:clamp(14px,8%,26px)}
+.tk-soon span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#9cc0ff;margin-bottom:8px}
+.tk-soon b{display:block;font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(28px,3vw,44px);line-height:1;letter-spacing:.01em;background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tk-mk-ca{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(5,9,24,.5);border:1px solid rgba(180,196,255,.12);font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ink-2)}
+.tk-mk-ca em{font-style:normal;font-size:10px;letter-spacing:.2em;color:var(--ink-3)}
+.tk-mk-ca span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk-mk-ca button{font:inherit;font-size:11px;color:#9cc0ff;background:none;border:0;cursor:pointer;padding:0}
+.tk-mk-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tk-mk-acts .btn{justify-content:center;text-align:center;white-space:nowrap}
+.tk-mk-acts .off{background:var(--blue-chrome);color:#071029;cursor:default;box-shadow:0 8px 30px rgba(59,123,255,.35)}
+.tk-mk-link{display:flex;align-items:center;justify-content:center;gap:8px}
+.tk-mk-link img{width:18px;height:18px}
+/* the three loops */
+.tk-loop{padding:18px 20px 20px;gap:8px}
+.tk-loop h3{margin-top:4px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.tk-loop h3 em{font-family:var(--mono);font-style:normal;font-size:9.5px;letter-spacing:.16em;color:#9cc0ff;white-space:nowrap}
+/* why: tall cards, the scene on top */
+.tk-why .card{padding:22px 24px 24px;gap:10px;overflow:hidden}
+.tk-why .tk-sc{margin-bottom:6px}
+.tk-why .card p{margin-top:auto}
+/* holders */
+.tk-hold{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tk-hold .case{padding:18px 20px 22px;display:flex;flex-direction:column;gap:8px}
+/* how: one panel, one clock */
+.tk-how{position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:24px;overflow:hidden}
+.tk-how-bar{position:absolute;left:0;right:0;top:0;height:2px;background:var(--blue-bar);transform-origin:left;transform:scaleX(0)}
+.tk-step{padding:26px 24px 24px;display:flex;flex-direction:column;gap:10px;opacity:.55;transition:opacity .4s}
+.tk-step.on{opacity:1}
+.tk-step+.tk-step{border-left:1px solid rgba(180,196,255,.1)}
+.tk-step h3{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(22px,1.9vw,30px);line-height:1;letter-spacing:.01em;margin:6px 0 0;color:var(--ink)}
+.tk-step p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.45}
+/* buyback: one wide machine */
+.tk-bb{max-width:1100px;margin:0 auto;padding:clamp(16px,2.4vw,30px);border-radius:24px}
+/* supply: a hundred coins and what each block does */
+.tk-sup{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:18px;max-width:1100px;margin:0 auto;align-items:stretch}
+.tk-grid{padding:18px;border-radius:24px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.tk-read{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid rgba(180,196,255,.12)}
+.tk-read b{display:block;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(26px,2.6vw,36px);line-height:1;letter-spacing:.02em;font-variant-numeric:tabular-nums;background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tk-read span{display:block;margin-top:6px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.tk-read em{font-family:var(--mono);font-style:normal;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#9cc0ff;white-space:nowrap}
+.tk-rows2{display:flex;flex-direction:column;gap:10px}
+.tk-row{flex:1;display:grid;grid-template-columns:150px 92px minmax(0,1fr) 40px;align-items:center;gap:14px;padding:12px 16px;border-radius:16px;transition:border-color .3s,background .3s}
+.tk-row{cursor:pointer}
+.tk-row.on{border-color:rgba(125,176,255,.55)}
+.tk-row.pin{border-color:#d6e4ff;box-shadow:0 0 0 1px rgba(214,228,255,.35),0 10px 34px rgba(59,123,255,.28)}
+.tk-row b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:28px;line-height:1;color:var(--ink);display:block}
+.tk-row small{display:block;margin-top:4px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.tk-row p{margin:0;color:var(--ink-2);font-size:13.5px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk-row .lg{display:flex;justify-content:center}
+.tk-row .lg img{width:30px;height:30px;object-fit:contain;border-radius:8px}
+/* the close */
+.tk-out{max-width:280px;margin:0 auto 6px}
+.tk-final{margin-bottom:26px}
+.tk-facts{display:grid;grid-template-columns:repeat(4,1fr);max-width:1040px;margin:0 auto;border-block:1px solid rgba(180,196,255,.16)}
+.tk-facts div{padding:clamp(20px,2.6vw,34px) 14px;text-align:center;transition:background .3s}
+.tk-facts div+div{border-left:1px solid rgba(180,196,255,.12)}
+.tk-facts div:hover{background:rgba(59,123,255,.1)}
+.tk-facts b{display:block;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(44px,5.4vw,84px);line-height:1;letter-spacing:.01em;font-variant-numeric:tabular-nums;background:var(--blue-chrome);-webkit-background-clip:text;background-clip:text;color:transparent;transition:transform .3s}
+.tk-facts div:hover b{transform:translateY(-3px)}
+.tk-facts span{display:block;margin-top:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+@media (max-width:1120px){.tk-mk .tk-mk-coin{right:-8px}.tk-sup{grid-template-columns:1fr}.tk-grid{max-width:560px;width:100%;margin:0 auto}}
+@media (max-width:860px){
+  .tk-hero{width:min(78vw,360px)}
+  .tk-legend,.tk-why,.tk-hold,.tk-how,.tk-sup{grid-template-columns:1fr}
+  .tk-step+.tk-step{border-left:0;border-top:1px solid rgba(180,196,255,.1)}
+  .tk-step{opacity:1}
+  .tk-mk .tk-mk-coin{right:18px;top:12px;width:52px}
+  .tk-facts{grid-template-columns:1fr 1fr}.tk-facts div:nth-child(3){border-left:0}.tk-facts div:nth-child(n+3){border-top:1px solid rgba(180,196,255,.12)}
+  .tk-row{grid-template-columns:96px 1fr 40px}.tk-row p{grid-column:1/-1;grid-row:2}
+  .tk-flow{padding:12px}
+  .tk-flow text{font-size:19px}.tk-flow text.s{font-size:12px}.tk-flow text.pct{font-size:34px}
+  .tk-bar{height:58px}.tk-bar i b{font-size:18px}.tk-bar i span{font-size:8px;letter-spacing:.06em}
+}
+</style>
+</head>
+<body data-page="token">
+<div class="loader" id="loader" aria-hidden="true">
+  <script>try{if(sessionStorage.getItem("gl_loaded")||navigator.standalone||matchMedia("(display-mode:standalone),(display-mode:minimal-ui),(display-mode:window-controls-overlay)").matches){document.getElementById("loader").remove();}}catch(e){}</script>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"></header>
+<main>
+  <!-- HERO -->
+  <section class="ph">
+    <div class="ph-copy">
+      <span class="eyebrow reveal">The Grablab coin</span>
+      <h1 class="reveal d1"><span class="line">The machines earn.</span><span class="line l2 hl">The coin gets bought.</span></h1>
+      <p class="sub reveal d2"><span class="sl">Every play, rent and capsule is paid in USDC.</span><br><span class="sl">Every week, part of it buys the coin on the market.</span></p>
+      <div class="acts reveal d3"><a href="#flow" class="btn btn-primary big">Watch it move</a><a href="#why" class="btn btn-ghost big">Why hold it</a></div>
+    </div>
+    <div class="ph-art reveal d2">
+      <div class="tk-mk glass" id="tkMarket">
+        <img class="tk-mk-coin" src="assets/tk/coin-blue.webp" alt="The Grablab coin" />
+        <div class="tk-mk-top"><b>Name soon</b><span><img src="assets/chains/solana-mark.svg" alt="" />Solana</span></div>
+        <div class="tk-mk-chart" id="mkChart"><div class="tk-sc" id="scChart"></div><div class="tk-soon"><span>Live chart</span><b>Opens at<br>launch</b></div></div>
+        <div class="tk-mk-ca"><em>CA</em><span id="mkCa">Posted at launch</span><button id="mkCopy" type="button" hidden>Copy</button></div>
+        <div class="tk-mk-acts"><a class="btn btn-primary off" id="mkBuy" href="#" aria-disabled="true">Buy at launch</a><a class="btn btn-ghost tk-mk-link" id="mkLink" href="https://machine.fun/" target="_blank" rel="noopener"><img src="assets/partners/machine-fun.svg" alt="" />machine.fun</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE ECOSYSTEM, LIVE -->
+  <section class="blk" id="flow">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">The ecosystem</span><h2 class="reveal d1">Everything that happens<br class="mbr"> <span class="hl">feeds it.</span></h2></div>
+      <div class="tk-flow glass reveal" id="tkFlow">
+        <div class="tk-stage">
+        <svg viewBox="0 0 1000 420" aria-label="Players, projects and sponsors pay in USDC. Half runs the machines. The other half buys the coin: 30% goes to holders, 20% is burned.">
+          <defs>
+                        <linearGradient id="tkLaneIn" gradientUnits="userSpaceOnUse" x1="240" y1="0" x2="430" y2="0"><stop offset="0" stop-color="#7db0ff" stop-opacity=".1"/><stop offset="1" stop-color="#7db0ff" stop-opacity=".55"/></linearGradient>
+            <linearGradient id="tkLaneOut" gradientUnits="userSpaceOnUse" x1="570" y1="0" x2="760" y2="0"><stop offset="0" stop-color="#7db0ff" stop-opacity=".55"/><stop offset="1" stop-color="#7db0ff" stop-opacity=".1"/></linearGradient>
+            <radialGradient id="tkHalo" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3b7bff" stop-opacity=".26"/><stop offset=".6" stop-color="#3b7bff" stop-opacity=".08"/><stop offset="1" stop-color="#3b7bff" stop-opacity="0"/></radialGradient>
+          </defs>
+          <path class="lane in" d="M240 80 C 380 80 400 210 430 210"/>
+          <path class="lane in" d="M240 210 C 380 210 400 210 430 210"/>
+          <path class="lane in" d="M240 340 C 380 340 400 210 430 210"/>
+          <path class="lane out" d="M570 210 C 600 210 620 80 760 80"/>
+          <path class="lane out" d="M570 210 C 600 210 620 210 760 210"/>
+          <path class="lane out" d="M570 210 C 600 210 620 340 760 340"/>
+          <circle cx="500" cy="210" r="150" fill="url(#tkHalo)"/>
+          <circle class="ring" cx="500" cy="210" r="84"/>
+          <circle class="pulse" id="tkPulse" cx="500" cy="210" r="84"/>
+          <image class="core" href="assets/tk/coin-blue.webp" x="430" y="140" width="140" height="140"/>
+          <g class="nd"><rect class="node" x="30" y="34" width="210" height="92" rx="20"/><image href="assets/sub/a-ticket.webp" x="46" y="48" width="64" height="64"/><text x="126" y="76">Players</text><text class="s" x="126" y="98">pay a play</text></g>
+          <g class="nd"><rect class="node" x="30" y="164" width="210" height="92" rx="20"/><image href="assets/sub/inventory.webp" x="46" y="178" width="64" height="64"/><text x="126" y="206">Projects</text><text class="s" x="126" y="228">pay the rent</text></g>
+          <g class="nd"><rect class="node" x="30" y="294" width="210" height="92" rx="20"/><image href="assets/sub/para.webp" x="46" y="308" width="64" height="64"/><text x="126" y="336">Sponsors</text><text class="s" x="126" y="358">buy a capsule</text></g>
+          <g class="nd"><rect class="node on" x="760" y="34" width="210" height="92" rx="20"/><text class="pct" x="780" y="90">50%</text><text x="860" y="76">Machines</text><text class="s" x="860" y="98">fleet, people</text></g>
+          <g class="nd"><rect class="node on" x="760" y="164" width="210" height="92" rx="20"/><text class="pct" x="780" y="220">30%</text><text x="860" y="206">Holders</text><text class="s" x="860" y="228">bought back</text></g>
+          <g class="nd"><rect class="node on" x="760" y="294" width="210" height="92" rx="20"/><text class="pct" x="780" y="350">20%</text><text x="860" y="336">Burned</text><text class="s" x="860" y="358">then burned</text></g>
+        </svg>
+        <canvas id="tkCanvas" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <div class="tk-legend">
+        <div class="card glass glass-hover reveal tk-loop"><div class="tk-sc" id="scIn"></div><h3>In<em>Tap a coin</em></h3><p>Anything goes in. USDC comes out.</p></div>
+        <div class="card glass glass-hover reveal d1 tk-loop"><div class="tk-sc" id="scThrough"></div><h3>Through<em>Drag or use the arrows</em></h3><p>Every play and rent settles in USDC.</p></div>
+        <div class="card glass glass-hover reveal d2 tk-loop"><div class="tk-sc" id="scOut"></div><h3>Out<em>Tap a slice</em></h3><p>Cut in three. Two pieces buy the coin.</p></div>
+      </div>
+      <div class="tk-split glass reveal">
+        <span class="tk-split-k">Every settlement, the same split</span>
+        <div class="tk-bar"><i style="--w:50%"><b>50%</b><span>Machines and people</span></i><i style="--w:30%"><b>30%</b><span>Bought for holders</span></i><i style="--w:20%"><b>20%</b><span>Bought and burned</span></i></div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY HOLD IT -->
+  <section class="blk" id="why">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Why hold it</span><h2 class="reveal d1">More machines,<br class="mbr"> <span class="hl">less coin.</span></h2></div>
+      <div class="tk-why">
+        <div class="card glass glass-hover reveal"><div class="tk-sc" id="scDemand"></div><span class="big">Demand</span><h3>Every week is a buy</h3><p>More machines, more revenue, more buys.</p></div>
+        <div class="card glass glass-hover reveal d1"><div class="tk-sc" id="scBurn"></div><span class="big">Supply</span><h3>Bought and burned every week</h3><p>The more the machines run, the less coin is left.</p></div>
+        <div class="card glass glass-hover reveal d2"><div class="tk-sc" id="scAligned"></div><span class="big">Aligned</span><h3>We sell only above the line</h3><p>Levels published before launch.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOLDERS -->
+  <section class="blk" id="holders">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Holders</span><h2 class="reveal d1">The machine opens<br> <span class="hl">more for holders.</span></h2><p class="reveal d2">Tiers set in coin, published at launch</p></div>
+      <div class="tk-hold">
+        <div class="case glass reveal"><div class="tk-sc" id="scPlays"></div><div class="if">Plays</div><h3>Hold, and the tiers unlock</h3></div>
+        <div class="case glass reveal d1"><div class="tk-sc" id="scCapsule"></div><div class="if">Capsules</div><h3>A holder capsule every night</h3></div>
+        <div class="case glass reveal d2"><div class="tk-sc" id="scQueue"></div><div class="if">Queue</div><h3>Busy night, holders first</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="blk" id="how">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">How it works</span><h2 class="reveal d1">You pay. <span class="hl">It settles.</span></h2></div>
+      <div class="tk-how glass reveal" id="tkHow"><i class="tk-how-bar" id="tkHowBar"></i>
+        <div class="tk-step"><div class="tk-sc" id="scPay"></div><h3>Pay with anything</h3><p>Any token in your wallet. A play is priced in dollars.</p></div>
+        <div class="tk-step"><div class="tk-sc" id="scSwap"></div><h3>Paid in USDC</h3><p>Arrives as USDC, approved in your wallet.</p></div>
+        <div class="tk-step"><div class="tk-sc" id="scSettle"></div><h3>Bought back weekly</h3><p>Half our cut buys the coin, on-chain.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUYBACK -->
+  <section class="blk" id="buyback">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">The buyback</span><h2 class="reveal d1">Revenue in,<br class="mbr"> <span class="hl">coin out.</span></h2></div>
+      <div class="tk-bb glass reveal"><div class="tk-sc" id="scBuyback"></div></div>
+    </div>
+  </section>
+
+  <!-- SUPPLY AND LOCKS -->
+  <section class="blk" id="supply">
+    <div class="blk-in">
+      <div class="sh c"><span class="k reveal">Supply</span><h2 class="reveal d1">One billion.<br class="mbr"> <span class="hl">Fixed.</span></h2><p class="reveal d2">Every wallet listed at launch, every lock links to its transaction</p></div>
+      <div class="tk-sup">
+        <div class="tk-grid glass reveal"><div class="tk-sc" id="scGrid"></div><div class="tk-read"><div><b id="rdAmt">450,000,000</b><span id="rdLab">tokens, public curve</span></div><em>Pick a coin</em></div></div>
+        <div class="tk-rows2">
+          <div class="tk-row glass reveal" data-cat="0"><div class="tk-sc" id="spPub"></div><div><b>45%</b><small>Public curve</small></div><p>Anyone, same price, in public.</p><div class="lg"><img src="assets/partners/machine-fun.svg" alt="machine.fun" /></div></div>
+          <div class="tk-row glass reveal" data-cat="1"><div class="tk-sc" id="spLp"></div><div><b>25%</b><small>Raydium pool</small></div><p>Goes to the pool at graduation.</p><div class="lg"><img src="assets/partners/machine-fun.svg" alt="machine.fun" /></div></div>
+          <div class="tk-row glass reveal" data-cat="2"><div class="tk-sc" id="spIgn"></div><div><b>10%</b><small>Ignition</small></div><p>Sells only at published levels.</p><div class="lg"><img src="assets/partners/machine-fun.svg" alt="machine.fun" /></div></div>
+          <div class="tk-row glass reveal" data-cat="3"><div class="tk-sc" id="spTeam"></div><div><b>10%</b><small>Team</small></div><p>Locked three months, then two years linear.</p><div class="lg"><img src="assets/partners/streamflow.webp" alt="Streamflow" /></div></div>
+          <div class="tk-row glass reveal" data-cat="4"><div class="tk-sc" id="spMkt"></div><div><b>5%</b><small>Marketing</small></div><p>An equal part unlocks every week.</p><div class="lg"><img src="assets/partners/streamflow.webp" alt="Streamflow" /></div></div>
+          <div class="tk-row glass reveal" data-cat="5"><div class="tk-sc" id="spEco"></div><div><b>5%</b><small>Community</small></div><p>Rewards. What and when, soon.</p><div class="lg"><img src="assets/brand/mark-chrome-256.png" alt="Grablab" /></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="blk-in">
+      <div class="tk-sc tk-out reveal" id="scOutro"></div>
+      <div class="sh c tk-final"><span class="k reveal">The coin</span><h2 class="reveal d1">The machines buy it.<br><span class="hl">Everything else follows.</span></h2></div>
+      <div class="tk-facts reveal d2"><div><b>1</b><span>One coin</span></div><div><b>1B</b><span>Fixed supply</span></div><div><b data-n="20" data-s="%">20%</b><span>Burned every week</span></div><div><b data-n="50" data-s="%">50%</b><span>Buys the coin back</span></div></div>
+    </div>
+  </section>
+</main>
+<footer id="site-footer"></footer>
+<script src="site.js?v=kq181"></script>
+<script src="consent.js?v=9d"></script>
+<script src="sub.js?v=x7"></script>
+<script src="notify.js?v=7" defer></script>
+<script>
+/* the stream: coins flow from the people who pay, into the coin, out to where it goes. Canvas over the SVG, same 1000x520 space. */
+(function(){
+  const box=document.getElementById("tkFlow"),cv=document.getElementById("tkCanvas"),svg=box&&box.querySelector("svg"),pulse=document.getElementById("tkPulse");
+  if(!box||!cv||!svg)return;const ctx=cv.getContext("2d");
+  const B=(p0,p1,p2,p3)=>t=>{const u=1-t;return [u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]]};
+  const IN=[B([240,80],[380,80],[400,210],[430,210]),B([240,210],[380,210],[400,210],[430,210]),B([240,340],[380,340],[400,210],[430,210])];
+  const OUT=[B([570,210],[600,210],[620,80],[760,80]),B([570,210],[600,210],[620,210],[760,210]),B([570,210],[600,210],[620,340],[760,340])];
+  const parts=[];let W=1000,H=420,scale=1,last=0,inT=0,outT=0,beat=0;
+  function size(){const r=svg.getBoundingClientRect();const dpr=Math.min(2,devicePixelRatio||1);cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);scale=r.width/1000*dpr}
+  size();addEventListener("resize",size);
+  function spawn(dir,lane){parts.push({dir,lane,t:0,v:.0022+Math.random()*.0012,r:3.2+Math.random()*2.4,ash:dir===1&&lane===2,w:Math.random()*6.28})}
+  function frame(ts){const dt=Math.min(40,ts-last||16);last=ts;
+    inT+=dt;outT+=dt;
+    if(inT>170){inT=0;const w=Math.random();spawn(0,w<.5?0:w<.8?1:2)}
+    if(outT>120){outT=0;const w=Math.random();spawn(1,w<.5?0:w<.8?1:2)}
+    ctx.setTransform(scale,0,0,scale,0,0);ctx.clearRect(0,0,1000,420);
+    for(let i=parts.length-1;i>=0;i--){const p=parts[i];p.t+=p.v*dt;if(p.t>=1){if(p.dir===0){beat=1;if(pulse){pulse.classList.remove("go");void pulse.getBoundingClientRect();pulse.classList.add("go")}}parts.splice(i,1);continue}
+      const f=(p.dir?OUT:IN)[p.lane];const [x,y]=f(p.t);const a=Math.min(1,p.t*8,(1-p.t)*8);
+      const k=p.ash?Math.max(.35,1-p.t*.8):1;const col=p.ash?"120,128,160":"125,176,255";
+      // tail
+      ctx.beginPath();for(let s=1;s<=6;s++){const [tx,ty]=f(Math.max(0,p.t-s*.012));s===1?ctx.moveTo(tx,ty):ctx.lineTo(tx,ty)}
+      ctx.strokeStyle=`rgba(${col},${.35*a*k})`;ctx.lineWidth=p.r*.9;ctx.lineCap="round";ctx.stroke();
+      // glow + coin
+      const g=ctx.createRadialGradient(x,y,0,x,y,p.r*3.2);g.addColorStop(0,`rgba(${col},${.5*a*k})`);g.addColorStop(1,`rgba(${col},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,p.r*3.2,0,6.28);ctx.fill();
+      const c=ctx.createRadialGradient(x-p.r*.4,y-p.r*.4,0,x,y,p.r);c.addColorStop(0,p.ash?"#9aa3c4":"#ffffff");c.addColorStop(.6,p.ash?"#69739a":"#7db0ff");c.addColorStop(1,p.ash?"#3a4060":"#1f4fd1");
+      ctx.fillStyle=c;ctx.globalAlpha=a;ctx.beginPath();ctx.arc(x,y,p.r*k,0,6.28);ctx.fill();ctx.globalAlpha=1;}
+    // the coin breathes when a payment lands
+    if(beat>0){const g=ctx.createRadialGradient(500,210,50,500,210,120);g.addColorStop(0,`rgba(125,176,255,${.3*beat})`);g.addColorStop(1,"rgba(125,176,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(500,210,120,0,6.28);ctx.fill();beat=Math.max(0,beat-dt/450)}
+    requestAnimationFrame(frame)}
+  requestAnimationFrame(frame);
+})();
+</script>
+<script src="assets/tk/tk.js?v=33"></script>
+
+</body>
+</html>
