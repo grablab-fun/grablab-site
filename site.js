@@ -11,34 +11,34 @@
 const I18N = {
   en: {
     _name:"English", _flag:"EN",
-    "nav.home":"Home", "nav.inside":"INSIDE", "nav.fair":"Provably fair", "nav.anatomy":"Anatomy", "nav.rent":"Rent", "nav.participate":"Play",
+    "nav.home":"Home", "nav.inside":"INSIDE", "nav.fair":"Provably fair", "nav.anatomy":"Anatomy", "nav.rent":"Rent", "nav.participate":"Play", "nav.coin":"Coin",
     "cta.connect":"CONNECT WALLET",
     "foot.tagline":"The first claw machine that can't cheat you, and every capsule is a coin.",
     "foot.explore":"Explore", "foot.projects":"Projects", "foot.connect":"Connect",
     "foot.inside":"Inside the machine", "foot.fair":"Provably fair", "foot.rent":"Rent the claw",
-    "foot.participate":"Play", "foot.formats":"Formats", "foot.book":"Book a launch night",
+    "foot.participate":"Play", "foot.formats":"Formats", "foot.coin":"The coin", "foot.whitepaper":"Whitepaper", "foot.book":"Book a launch night",
     "wallet.title":"Connect a wallet", "wallet.side":"Connect a wallet to check eligibility and grab live.",
     "wallet.secured":"Secured by Privy", "wallet.new":"New to wallets?", "wallet.get":"Get Phantom ↗",
   },
   zh: {
     _name:"中文", _flag:"中文",
-    "nav.home":"首页", "nav.inside":"机器内部", "nav.fair":"公平可证", "nav.anatomy":"机器解剖", "nav.rent":"租用", "nav.participate":"开玩",
+    "nav.home":"首页", "nav.inside":"机器内部", "nav.fair":"公平可证", "nav.anatomy":"机器解剖", "nav.rent":"租用", "nav.participate":"开玩", "nav.coin":"代币",
     "cta.connect":"连接钱包",
     "foot.tagline":"第一台无法作弊的抓娃娃机，每一个胶囊都是一枚代币。",
     "foot.explore":"探索", "foot.projects":"项目方", "foot.connect":"联系",
     "foot.inside":"机器内部", "foot.fair":"公平可证", "foot.rent":"租用机器",
-    "foot.participate":"开玩", "foot.formats":"玩法", "foot.book":"预订发射之夜",
+    "foot.participate":"开玩", "foot.formats":"玩法", "foot.coin":"代币", "foot.whitepaper":"白皮书", "foot.book":"预订发射之夜",
     "wallet.title":"连接钱包", "wallet.side":"连接钱包以查看资格并实时抓取。只读，我们从不请求授权。",
     "wallet.secured":"由 Privy 保护", "wallet.new":"还没有钱包？", "wallet.get":"获取 Phantom ↗",
   },
   es: {
     _name:"Español", _flag:"ES",
-    "nav.home":"Inicio", "nav.inside":"POR DENTRO", "nav.fair":"Juego justo", "nav.anatomy":"Anatomía", "nav.rent":"Alquilar", "nav.participate":"Jugar",
+    "nav.home":"Inicio", "nav.inside":"POR DENTRO", "nav.fair":"Juego justo", "nav.anatomy":"Anatomía", "nav.rent":"Alquilar", "nav.participate":"Jugar", "nav.coin":"Moneda",
     "cta.connect":"CONECTAR WALLET",
     "foot.tagline":"La primera máquina de garra que no puede hacer trampa, y cada cápsula es una moneda.",
     "foot.explore":"Explorar", "foot.projects":"Proyectos", "foot.connect":"Conectar",
     "foot.inside":"Por dentro", "foot.fair":"Juego justo", "foot.rent":"Alquila la garra",
-    "foot.participate":"Jugar", "foot.formats":"Formatos", "foot.book":"Reserva una noche de lanzamiento",
+    "foot.participate":"Jugar", "foot.formats":"Formatos", "foot.coin":"La moneda", "foot.whitepaper":"Whitepaper", "foot.book":"Reserva una noche de lanzamiento",
     "wallet.title":"Conecta una wallet", "wallet.side":"Conecta una wallet para ver tu elegibilidad y jugar en vivo.<br>Solo lectura, nunca pedimos aprobaciones.",
     "wallet.secured":"Protegido por Privy", "wallet.new":"¿Nuevo en wallets?", "wallet.get":"Descarga Phantom ↗",
   },
@@ -82,6 +82,7 @@ function navHTML(){
       ${link("anatomy.html","nav.anatomy","anatomy")}
       ${link("rent.html","nav.rent","rent")}
       ${link("participate.html","nav.participate","participate")}
+      ${link("token.html","nav.coin","token")}
     </nav>
     <div class="nav-right">
       <span class="flipwrap"><button class="cta btn-flip" id="connectBtn"><span class="f" data-i18n="cta.connect">${t("cta.connect")}</span><span class="k" aria-hidden="true"><img src="assets/wallets/phantom.png" alt="" /><img src="assets/wallets/solflare.png" alt="" /><img src="assets/wallets/backpack.png" alt="" /><img src="assets/wallets/metamask.png" alt="" /><img src="assets/wallets/okx.png" alt="" /></span></button></span>
@@ -98,6 +99,7 @@ function navHTML(){
         <div class="mm-li">${link("anatomy.html","nav.anatomy","anatomy")}</div>
         <div class="mm-li">${link("rent.html","nav.rent","rent")}</div>
         <div class="mm-li">${link("participate.html","nav.participate","participate")}</div>
+        <div class="mm-li">${link("token.html","nav.coin","token")}</div>
       </nav>
       <button class="mm-cta" id="connectBtnM" data-i18n="cta.connect">${t("cta.connect")}</button>
       <button type="button" class="nav-bell mm-bell" data-notify><img src="assets/sub/n-bell.webp" alt="" /><span>Notifications</span></button>
@@ -119,6 +121,8 @@ function footHTML(){
       <a href="index.html#inside" data-i18n="foot.inside">${t("foot.inside")}</a>
       <a href="provably-fair.html" data-i18n="foot.fair">${t("foot.fair")}</a>
       <a href="rent.html#formats" data-i18n="foot.formats">${t("foot.formats")}</a>
+      <a href="token.html" data-i18n="foot.coin">${t("foot.coin")}</a>
+      <a href="whitepaper.html" data-i18n="foot.whitepaper">${t("foot.whitepaper")}</a>
     </div>
     <div class="foot-col">
       <h5 data-i18n="foot.projects">${t("foot.projects")}</h5>
